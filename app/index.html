@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yieldr - Decentralized Asset Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            background: #000000;
+        }
+
+        /* Animated Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(20, 20, 40, 0.4), transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(30, 30, 60, 0.3), transparent 50%),
+                        #000000;
+        }
+
+        .network-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-svg {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-svg circle {
+            animation: nodePulse 2s ease-in-out infinite;
+        }
+
+        .logo-svg circle:nth-child(1) { animation-delay: 0s; }
+        .logo-svg circle:nth-child(2) { animation-delay: 0.3s; }
+        .logo-svg circle:nth-child(3) { animation-delay: 0.6s; }
+        .logo-svg circle:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes nodePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.15em;
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .problem-solution {
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .problem {
+            font-size: 1.3rem;
+            color: #ff6b6b;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .solution {
+            font-size: 1.3rem;
+            color: #4ecdc4;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .blackrock-callout {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.95rem;
+            color: #ffffff;
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            padding: 1.2rem 3.5rem;
+            border-radius: 8px;
+            border: none;
+            background: #ffffff;
+            color: #000000;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        /* Partners Section */
+        .partners {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.9));
+            z-index: 2;
+        }
+
+        .partners-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .partners-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .partners-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .partner-logo {
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
+        }
+
+        .base-circle {
+            width: 24px;
+            height: 24px;
+            background: #0052FF;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-svg {
+                width: 70px;
+                height: 70px;
+            }
+
+            .logo-text {
+                font-size: 2rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .problem, .solution {
+                font-size: 1.1rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .partners-logos {
+                gap: 1.5rem;
+            }
+
+            .partner-logo {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <canvas class="network-canvas" id="networkCanvas"></canvas>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo-container">
+                <!-- Network Node Logo SVG -->
+                <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Top node -->
+                    <circle cx="60" cy="20" r="8" fill="#ffffff"/>
+                    
+                    <!-- Left branch node -->
+                    <circle cx="30" cy="60" r="6" fill="#ffffff"/>
+                    
+                    <!-- Right branch node -->
+                    <circle cx="90" cy="60" r="6" fill="#ffffff"/>
+                    
+                    <!-- Bottom stem node -->
+                    <circle cx="60" cy="100" r="8" fill="#ffffff"/>
+                    
+                    <!-- Connections (lines) -->
+                    <line x1="60" y1="20" x2="30" y2="60" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+                    <line x1="60" y1="20" x2="90" y2="60" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+                    <line x1="30" y1="60" x2="60" y2="100" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+                    <line x1="90" y1="60" x2="60" y2="100" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+                </svg>
+                
+                <div class="logo-text">YIELDR</div>
+            </div>
+            
+            <h1>Decentralized Asset Management</h1>
+            
+            <div class="problem-solution">
+                <p class="problem">
+                    95% of crypto traders and investors lose money.
+                </p>
+                <p class="solution">
+                    Elite asset managers are out of reach for most.
+                </p>
+            </div>
+
+            <p class="description">
+                Connect with verified crypto asset managers through on-chain performance tracking and smart contract-powered copy trading.
+            </p>
+
+            <div class="blackrock-callout">
+                Taking on BlackRock, one smart contract at a time.
+            </div>
+
+            <a href="https://discord.gg/2KbqEMwP" class="cta-button" target="_blank" rel="noopener noreferrer">
+                Join Waitlist
+            </a>
+        </div>
+    </section>
+
+    <!-- Partners Footer -->
+    <div class="partners">
+        <div class="partners-content">
+            <div class="partners-label">Building with</div>
+            <div class="partners-logos">
+                <div class="partner-logo">
+                    <span class="base-circle"></span>
+                    Base
+                </div>
+                <div class="partner-logo">Avantis</div>
+                <div class="partner-logo">Aerodrome</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Network Canvas Animation
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class Node {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        const nodes = [];
+        const nodeCount = 50;
+
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push(new Node(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height
+            ));
+        }
+
+        function drawConnections() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawConnections();
+            
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
