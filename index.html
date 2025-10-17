@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yieldr - Decentralized Asset Management</title>
+    <title>Yieldr - Invest with Top Crypto Asset Managers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,25 +13,15 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            color: #e0e0e0;
-            overflow-x: hidden;
+            font-family: 'Inter', -apple-system, sans-serif;
             background: #000000;
+            color: #FFFFFF;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
         }
 
         /* Animated Background */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(20, 20, 40, 0.4), transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(30, 30, 60, 0.3), transparent 50%),
-                        #000000;
-        }
-
         .network-canvas {
             position: fixed;
             top: 0;
@@ -47,17 +38,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 6rem 2rem 8rem;
             position: relative;
             z-index: 1;
         }
 
-        .hero-content {
-            max-width: 800px;
-            text-align: center;
-            position: relative;
-        }
-
+        /* Logo */
         .logo-container {
             margin-bottom: 2rem;
             display: flex;
@@ -67,9 +53,9 @@
         }
 
         .logo-svg {
-            width: 100px;
-            height: 100px;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 20px rgba(0, 200, 5, 0.3));
             animation: logoFloat 3s ease-in-out infinite;
         }
 
@@ -89,125 +75,333 @@
 
         @keyframes nodePulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+            50% { opacity: 0.7; }
         }
 
         .logo-text {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            color: #ffffff;
+            color: #FFFFFF;
             letter-spacing: 0.15em;
-            position: relative;
         }
 
-        .logo-text::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        /* Hero Content */
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 4rem;
         }
 
-        h1 {
+        .hero h1 {
             font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 2rem;
-            line-height: 1.2;
-            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
             letter-spacing: -0.02em;
         }
 
-        .problem-solution {
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        .problem {
-            font-size: 1.3rem;
-            color: #ff6b6b;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
-
-        .solution {
-            font-size: 1.3rem;
-            color: #4ecdc4;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
-
-        .description {
-            font-size: 1.1rem;
-            color: #b0b0b0;
-            line-height: 1.8;
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #8A8A8A;
             margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
-        .blackrock-callout {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            font-size: 0.95rem;
-            color: #ffffff;
-            margin-bottom: 5rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
+        .hero-subtitle .heart {
+            color: #00C805;
+        }
+
+        /* Floating Universe Container */
+        .universe-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+            margin-bottom: 4rem;
+        }
+
+        /* Manager Star Cards */
+        .manager-star {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: orbit 20s linear infinite;
+        }
+
+        .manager-star:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            animation-duration: 25s;
+        }
+
+        .manager-star:nth-child(2) {
+            top: 15%;
+            right: 10%;
+            animation-duration: 30s;
+            animation-delay: -5s;
+        }
+
+        .manager-star:nth-child(3) {
+            top: 45%;
+            left: 5%;
+            animation-duration: 28s;
+            animation-delay: -10s;
+        }
+
+        .manager-star:nth-child(4) {
+            top: 50%;
+            right: 15%;
+            animation-duration: 32s;
+            animation-delay: -15s;
+        }
+
+        .manager-star:nth-child(5) {
+            bottom: 15%;
+            left: 20%;
+            animation-duration: 26s;
+            animation-delay: -20s;
+        }
+
+        .manager-star:nth-child(6) {
+            bottom: 10%;
+            right: 20%;
+            animation-duration: 29s;
+            animation-delay: -25s;
+        }
+
+        @keyframes orbit {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(20px, -15px) scale(1.05);
+            }
+            50% {
+                transform: translate(0, -30px) scale(1);
+            }
+            75% {
+                transform: translate(-20px, -15px) scale(1.05);
+            }
+        }
+
+        /* Avatar */
+        .manager-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #00C805;
+            box-shadow: 0 0 30px rgba(0, 200, 5, 0.4);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            background: #0A0A0A;
+        }
+
+        .manager-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .avatar-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #00C805;
+            filter: blur(15px);
+            opacity: 0.3;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        /* Metrics Card */
+        .metrics-card {
+            background: #0A0A0A;
+            border: 1px solid #1A1A1A;
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 180px;
+            transition: all 0.3s ease;
+        }
+
+        .manager-star:hover .metrics-card {
+            border-color: #00C805;
+            box-shadow: 0 0 20px rgba(0, 200, 5, 0.2);
+        }
+
+        .manager-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #FFFFFF;
+        }
+
+        .metrics {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+            border-bottom: 1px solid #1A1A1A;
+        }
+
+        .metric-row:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #8A8A8A;
+        }
+
+        .metric-value {
+            color: #FFFFFF;
+        }
+
+        .metric-value.positive {
+            color: #00C805;
+        }
+
+        /* Platform Icons */
+        .platform-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #1A1A1A;
+            align-items: center;
+        }
+
+        .platform-icon {
+            height: 32px;
+            width: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .platform-icon:hover {
+            opacity: 1;
         }
 
         /* CTA Button */
         .cta-button {
-            padding: 1.2rem 3.5rem;
-            border-radius: 8px;
-            border: none;
-            background: #ffffff;
+            background: #00C805;
             color: #000000;
-            font-size: 1.1rem;
+            border: none;
+            padding: 1.25rem 3rem;
+            font-size: 1.125rem;
             font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 0 40px rgba(0, 200, 5, 0.3);
+            position: relative;
+            z-index: 10;
         }
 
         .cta-button:hover {
+            background: #00A000;
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 60px rgba(0, 200, 5, 0.5);
         }
 
         .cta-button:active {
             transform: translateY(0);
         }
 
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: #8A8A8A;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: #00C805;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cta-button-small {
+            background: #00C805;
+            color: #000000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button-small:hover {
+            background: #00A000;
+            transform: translateY(-1px);
+        }
+
         /* Partners Section */
-        .partners {
+        .partners-section {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
+            background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.95));
             padding: 2rem;
-            background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.9));
-            z-index: 2;
+            z-index: 10;
         }
 
         .partners-content {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             text-align: center;
         }
 
         .partners-label {
             font-size: 0.85rem;
-            color: #666;
+            color: #8A8A8A;
             margin-bottom: 1rem;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
         }
 
         .partners-logos {
@@ -219,135 +413,345 @@
         }
 
         .partner-logo {
-            opacity: 0.6;
-            transition: opacity 0.3s;
-            font-size: 1.2rem;
-            color: #ffffff;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            height: 32px;
         }
 
         .partner-logo:hover {
             opacity: 1;
         }
 
-        .base-circle {
-            width: 24px;
-            height: 24px;
-            background: #0052FF;
-            border-radius: 50%;
-            display: inline-block;
+        .partner-logo img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .universe-container {
+                height: 800px;
+            }
+
+            .manager-star {
+                position: relative !important;
+                animation: none !important;
+                margin-bottom: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            .logo-svg {
-                width: 70px;
-                height: 70px;
+            .top-nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 0.75rem;
+            }
+
+            .nav-link {
+                font-size: 0;
+            }
+
+            .nav-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            .cta-button-small {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 5rem 1rem 8rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.125rem;
             }
 
             .logo-text {
                 font-size: 2rem;
             }
 
-            h1 {
-                font-size: 2.2rem;
+            .universe-container {
+                height: auto;
             }
 
-            .problem, .solution {
-                font-size: 1.1rem;
-            }
-
-            .description {
-                font-size: 1rem;
+            .manager-star {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
 
             .partners-logos {
-                gap: 1.5rem;
+                gap: 2rem;
             }
 
             .partner-logo {
+                height: 24px;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
                 font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
     <canvas class="network-canvas" id="networkCanvas"></canvas>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="logo-container">
-                <!-- Network Node Logo SVG -->
-                <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Top node -->
-                    <circle cx="60" cy="20" r="8" fill="#ffffff"/>
-                    
-                    <!-- Left branch node -->
-                    <circle cx="30" cy="60" r="6" fill="#ffffff"/>
-                    
-                    <!-- Right branch node -->
-                    <circle cx="90" cy="60" r="6" fill="#ffffff"/>
-                    
-                    <!-- Bottom stem node -->
-                    <circle cx="60" cy="100" r="8" fill="#ffffff"/>
-                    
-                    <!-- Connections (lines) -->
-                    <line x1="60" y1="20" x2="30" y2="60" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
-                    <line x1="60" y1="20" x2="90" y2="60" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
-                    <line x1="30" y1="60" x2="60" y2="100" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
-                    <line x1="90" y1="60" x2="60" y2="100" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="#" class="nav-link">Whitepaper</a>
+            <a href="https://github.com/robbin2102" class="nav-link" target="_blank" rel="noopener noreferrer" title="GitHub">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
-                
-                <div class="logo-text">YIELDR</div>
-            </div>
-            
-            <h1>Decentralized Asset Management</h1>
-            
-            <div class="problem-solution">
-                <p class="problem">
-                    95% of crypto traders and investors lose money.
-                </p>
-                <p class="solution">
-                    Elite asset managers are out of reach for most.
-                </p>
-            </div>
-
-            <p class="description">
-                Connect with verified crypto asset managers through on-chain performance tracking and smart contract-powered copy trading.
-            </p>
-
-            <div class="blackrock-callout">
-                Taking on BlackRock, one smart contract at a time.
-            </div>
-
-            <a href="https://discord.gg/2KbqEMwP" class="cta-button" target="_blank" rel="noopener noreferrer">
-                Join Waitlist
             </a>
+            <a href="https://discord.com/channels/1426305214176165941/1426305389812646091" class="nav-link" target="_blank" rel="noopener noreferrer" title="Discord">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <!-- Logo -->
+        <div class="logo-container">
+            <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Network nodes in green -->
+                <circle cx="60" cy="20" r="8" fill="#00C805"/>
+                <circle cx="30" cy="60" r="6" fill="#00C805"/>
+                <circle cx="90" cy="60" r="6" fill="#00C805"/>
+                <circle cx="60" cy="100" r="8" fill="#00C805"/>
+                
+                <!-- Connections -->
+                <line x1="60" y1="20" x2="30" y2="60" stroke="#00C805" stroke-width="2" opacity="0.6"/>
+                <line x1="60" y1="20" x2="90" y2="60" stroke="#00C805" stroke-width="2" opacity="0.6"/>
+                <line x1="30" y1="60" x2="60" y2="100" stroke="#00C805" stroke-width="2" opacity="0.6"/>
+                <line x1="90" y1="60" x2="60" y2="100" stroke="#00C805" stroke-width="2" opacity="0.6"/>
+            </svg>
+            
+            <div class="logo-text">YIELDR</div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h1>Invest & Earn with Top Asset Managers in Crypto</h1>
+            <p class="hero-subtitle">
+                Yieldr is the BlackRock of DeFi, built with <span class="heart">❤️</span> on Base
+            </p>
+            <a href="https://app.yieldr.org" class="cta-button">
+                Launch App
+            </a>
+        </div>
+
+        <!-- Floating Universe of Managers -->
+        <div class="universe-container">
+            <!-- Manager 1 -->
+            <div class="manager-star">
+                <div class="manager-avatar">
+                    <div class="avatar-glow"></div>
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731746086x138133871256527200/kgjADCj7_400x400.jpg" alt="Alex Kim">
+                </div>
+                <div class="metrics-card">
+                    <div class="manager-name">Alex Kim</div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">AUM:</span>
+                            <span class="metric-value">$245K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">ROI:</span>
+                            <span class="metric-value positive">+47.2%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Fee:</span>
+                            <span class="metric-value">20%</span>
+                        </div>
+                    </div>
+                    <div class="platform-icons">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730571727x652164385115809700/Avantis%20White%20Logo%20-%20Horizontal.png" alt="Avantis" class="platform-icon">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manager 2 -->
+            <div class="manager-star">
+                <div class="manager-avatar">
+                    <div class="avatar-glow"></div>
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730842873x784538099904239200/av%202.jpeg" alt="Sarah Chen">
+                </div>
+                <div class="metrics-card">
+                    <div class="manager-name">Sarah Chen</div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">AUM:</span>
+                            <span class="metric-value">$412K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">ROI:</span>
+                            <span class="metric-value positive">+63.8%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Fee:</span>
+                            <span class="metric-value">25%</span>
+                        </div>
+                    </div>
+                    <div class="platform-icons">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730571727x652164385115809700/Avantis%20White%20Logo%20-%20Horizontal.png" alt="Avantis" class="platform-icon">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manager 3 -->
+            <div class="manager-star">
+                <div class="manager-avatar">
+                    <div class="avatar-glow"></div>
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730856935x924574333228713700/av%203.jpeg" alt="Mike Park">
+                </div>
+                <div class="metrics-card">
+                    <div class="manager-name">Mike Park</div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">AUM:</span>
+                            <span class="metric-value">$328K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">ROI:</span>
+                            <span class="metric-value positive">+52.4%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Fee:</span>
+                            <span class="metric-value">22%</span>
+                        </div>
+                    </div>
+                    <div class="platform-icons">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730571727x652164385115809700/Avantis%20White%20Logo%20-%20Horizontal.png" alt="Avantis" class="platform-icon">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manager 4 -->
+            <div class="manager-star">
+                <div class="manager-avatar">
+                    <div class="avatar-glow"></div>
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731762868x445415526606580700/QngrqCSC_400x400.jpg" alt="Lisa Jones">
+                </div>
+                <div class="metrics-card">
+                    <div class="manager-name">Lisa Jones</div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">AUM:</span>
+                            <span class="metric-value">$567K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">ROI:</span>
+                            <span class="metric-value positive">+71.3%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Fee:</span>
+                            <span class="metric-value">18%</span>
+                        </div>
+                    </div>
+                    <div class="platform-icons">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manager 5 -->
+            <div class="manager-star">
+                <div class="manager-avatar">
+                    <div class="avatar-glow"></div>
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731794127x999562132716905700/R6ihm6Et_400x400.jpg" alt="Raj Kumar">
+                </div>
+                <div class="metrics-card">
+                    <div class="manager-name">Raj Kumar</div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">AUM:</span>
+                            <span class="metric-value">$189K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">ROI:</span>
+                            <span class="metric-value positive">+39.6%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Fee:</span>
+                            <span class="metric-value">15%</span>
+                        </div>
+                    </div>
+                    <div class="platform-icons">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730571727x652164385115809700/Avantis%20White%20Logo%20-%20Horizontal.png" alt="Avantis" class="platform-icon">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manager 6 -->
+            <div class="manager-star">
+                <div class="manager-avatar">
+                    <div class="avatar-glow"></div>
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730891764x296275179448961700/av%206.png" alt="Emma Miller">
+                </div>
+                <div class="metrics-card">
+                    <div class="manager-name">Emma Miller</div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">AUM:</span>
+                            <span class="metric-value">$693K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">ROI:</span>
+                            <span class="metric-value positive">+84.7%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Fee:</span>
+                            <span class="metric-value">30%</span>
+                        </div>
+                    </div>
+                    <div class="platform-icons">
+                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Partners Footer -->
-    <div class="partners">
+    <!-- Partners Section -->
+    <div class="partners-section">
         <div class="partners-content">
             <div class="partners-label">Building with</div>
             <div class="partners-logos">
                 <div class="partner-logo">
-                    <span class="base-circle"></span>
-                    Base
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730551690x161831425309488800/_base-square%20%282%29.svg" alt="Base">
                 </div>
-                <div class="partner-logo">Avantis</div>
-                <div class="partner-logo">Aerodrome</div>
+                <div class="partner-logo">
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730571727x652164385115809700/Avantis%20White%20Logo%20-%20Horizontal.png" alt="Avantis">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome">
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Network Canvas Animation
+        // Network Canvas Animation (Floating Dots Background)
         const canvas = document.getElementById('networkCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -363,8 +767,8 @@
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
                 this.radius = Math.random() * 2 + 1;
             }
 
@@ -379,13 +783,13 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillStyle = 'rgba(0, 200, 5, 0.4)';
                 ctx.fill();
             }
         }
 
         const nodes = [];
-        const nodeCount = 50;
+        const nodeCount = 60;
 
         for (let i = 0; i < nodeCount; i++) {
             nodes.push(new Node(
@@ -405,7 +809,7 @@
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
                         ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 * (1 - distance / 150)})`;
+                        ctx.strokeStyle = `rgba(0, 200, 5, ${0.15 * (1 - distance / 150)})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
