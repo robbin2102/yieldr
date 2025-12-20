@@ -1090,8 +1090,1204 @@
             </section>
 
 
-            <!-- Remaining page sections truncated for brevity - they follow the same structure as provided in your docs HTML -->
-            <!-- In the actual file, all sections would be included -->
+            <!-- PAGE: The Problem -->
+            <section class="page-section" id="page-the-problem">
+                <h1>The Problem</h1>
+                <p class="page-subtitle">Why earning and scaling alpha in DeFi is harder than it should be.</p>
+
+                <h2>For Investors</h2>
+                <p>You want to earn alpha by following top DeFi traders. But you face two problems:</p>
+
+                <h3>🔍 Discovery Problem</h3>
+                <p>Finding top traders across DeFi protocols is fragmented and manual. There's no unified view of who's actually generating alpha across Avantis, Hyperliquid, Polymarket, Kalshi, Aerodrome, Uniswap, and other protocols.</p>
+                <div class="solution-callout">
+                    <p><strong>→ Solved by:</strong> AI agents discover and rank top traders across protocols <span class="stage-badge stage-now">MVP</span></p>
+                </div>
+
+                <h3>🤝 Trust Problem</h3>
+                <p>Copy trading platforms exist, but there's no way to validate the performance they claim. Even when wallet addresses are provided, there's massive friction to pull transaction data and do true analysis. Without understanding what actually drives a trader's alpha, investing is blind guesswork.</p>
+                <div class="solution-callout">
+                    <p><strong>→ Solved by:</strong> AI analyzes on-chain transactions, explains alpha drivers <span class="stage-badge stage-now">MVP</span></p>
+                </div>
+
+                <h2>For Traders</h2>
+                <p>Traders who generate consistent alpha have no way to scale:</p>
+
+                <h3>✓ Validation Problem</h3>
+                <p>No place to publicly validate performance in a verifiable way. No path from managing $200K personal capital to $2M+ with outside investors. You're stuck trading your own capital with no way to prove your edge to potential investors.</p>
+                <div class="solution-callout blue">
+                    <p><strong>→ Solved by:</strong> AI agent-driven onchain performance validation + Fund management <span class="stage-badge stage-beta">Beta</span> <span class="stage-badge stage-later">v1.0</span></p>
+                </div>
+
+                <h3>🔒 Edge Preservation Problem</h3>
+                <p>Top traders don't want their wallet transactions parsed and strategies reverse-engineered. No incentive structure exists for them to let their alpha be accessible to investors. Why would they share their edge for free?</p>
+                <div class="solution-callout blue">
+                    <p><strong>→ Solved by:</strong> Transparency levels (performance-only vs full) + Compensation for alpha <span class="stage-badge stage-later">v1.0</span></p>
+                </div>
+
+                <h2>Why Current Solutions Fail</h2>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Discovery</th>
+                            <th>Verification</th>
+                            <th>Intelligence</th>
+                            <th>Trader Incentives</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CEX Copy Trading</td>
+                            <td>Limited</td>
+                            <td><span class="cross">✗</span> No on-chain proof</td>
+                            <td><span class="cross">✗</span> None</td>
+                            <td><span class="cross">⚠</span> Standard or no comp.</td>
+                        </tr>
+                        <tr>
+                            <td>DeFi Vaults</td>
+                            <td>Limited</td>
+                            <td><span class="partial">⚠</span> Protocol-specific</td>
+                            <td><span class="cross">✗</span> None</td>
+                            <td><span class="partial">⚠</span> Basic fees only</td>
+                        </tr>
+                        <tr>
+                            <td>Aggregators</td>
+                            <td>Limited</td>
+                            <td><span class="cross">✗</span> No verification</td>
+                            <td><span class="cross">✗</span> None</td>
+                            <td><span class="cross">✗</span> No structure</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong style="color: var(--accent-green);">Yieldr</strong></td>
+                            <td><span class="check">✓</span> AI-powered</td>
+                            <td><span class="check">✓</span> On-chain verified</td>
+                            <td><span class="check">✓</span> AI analysis</td>
+                            <td><span class="check">✓</span> Compensation + privacy</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">The Two Missing Layers</div>
+                    <p><strong>Intelligence Layer:</strong> Even if all wallet data were indexed, alpha isn't constant. Traders have hot and cold streaks. Markets change. You'd need to constantly monitor and rotate capital — a full-time job. AI agents solve this.</p>
+                    <p><strong>Trust Layer:</strong> Even with intelligence, there's no way to execute trustlessly. Smart contracts with coded risk limits, transparency options, and compensation structures solve this. This is what enables traders to participate without giving away their edge for free.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('what-is-yieldr')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← What is Yieldr?</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('quick-start')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">Quick Start →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: Quick Start -->
+            <section class="page-section" id="page-quick-start">
+                <h1>Quick Start</h1>
+                <p class="page-subtitle">Get started in 30 seconds.</p>
+
+                <div class="flow">
+                    <div class="flow-step"><strong>1.</strong> Name Your Agent</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step"><strong>2.</strong> Connect Wallet</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step"><strong>3.</strong> Start Chatting</div>
+                </div>
+
+                <h2>Step 1: Name Your Agent</h2>
+                <p>Give your AI agent a name. This creates emotional ownership and makes the experience personal from the start.</p>
+
+                <h2>Step 2: Connect Wallet</h2>
+                <p>Connect your wallet so your agent can scan your positions across perps, LPs, and tokens. Your agent uses this to personalize recommendations from message #1.</p>
+
+                <h2>Step 3: Start Chatting</h2>
+                <p>Your agent will show a summary of your positions and highlight anything that needs attention. From there, just ask questions:</p>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"Find traders with >60% win rate and <15% max drawdown"</div>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-text">"ETH SHORTS on Avantis are up 75%, good time to take profits?"</div>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-text">"What are top wallets doing with $DEGEN?"</div>
+                </div>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">No Goal Selection Required</div>
+                    <p>Your agent infers your context from your positions. If you have perp positions, it knows you're trading. If you have LP positions, it helps with IL management. If you hold meme coins, it tracks what top wallets are doing. (memecoins integration is coming in v1)</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('the-problem')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← The Problem</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('how-it-works')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">How It Works →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: How It Works -->
+            <section class="page-section" id="page-how-it-works">
+                <h1>How It Works</h1>
+                <p class="page-subtitle">Two layers that power decentralized asset management.</p>
+
+                <p>Yieldr combines two layers to enable trustless asset management at scale:</p>
+
+                <div class="cards-grid">
+                    <div class="card highlight">
+                        <div class="card-icon">🧠</div>
+                        <div class="card-title">Intelligence Layer <span class="stage-badge stage-now">Now</span></div>
+                        <p class="card-desc">AI agents that discover top traders, analyze alpha drivers, advise on positions, and monitor your portfolio. This is what makes institutional-grade intelligence accessible to everyone.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔐</div>
+                        <div class="card-title">Trust Layer <span class="stage-badge stage-later">v1.0</span></div>
+                        <p class="card-desc">Smart contracts that enable trustless execution — auto trading, fund management, risk controls, and compensation. This is what makes it safe for traders to share alpha and investors to deploy capital.</p>
+                    </div>
+                </div>
+
+                <h2>Intelligence Layer (MVP)</h2>
+
+                <p>The AI agent is your interface to DeFi's best traders & fund managers:</p>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">🔗</div>
+                        <div class="card-title">On-Chain Data</div>
+                        <p class="card-desc">Real transactions from Base protocols — Avantis, Aerodrome, Uniswap. Can't be faked.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔍</div>
+                        <div class="card-title">AI Analysis</div>
+                        <p class="card-desc">Parses transactions to extract performance, style, risk profile, and alpha drivers.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💬</div>
+                        <div class="card-title">Natural Language</div>
+                        <p class="card-desc">Ask questions in plain English. Get answers backed by data.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔔</div>
+                        <div class="card-title">Proactive Alerts</div>
+                        <p class="card-desc">Your agent monitors positions and notifies you when action is needed.</p>
+                    </div>
+                </div>
+
+                <h2>Trust Layer (v1.0)</h2>
+
+                <p>Smart contracts that make execution trustless for both sides:</p>
+
+                <h3>For Investors</h3>
+                <ul class="feature-list">
+                    <li><strong>Non-custodial</strong> — Funds deployed directly from your wallet, you keep custody</li>
+                    <li><strong>Risk controls coded in</strong> — Max drawdown, position limits, asset whitelists enforced by code</li>
+                    <li><strong>Transparent execution</strong> — Every trade verifiable on-chain</li>
+                </ul>
+
+                <h3>For Traders</h3>
+                <ul class="feature-list">
+                    <li><strong>Raise capital</strong> — Investors can deploy capital to follow your strategy</li>
+                    <li><strong>Earn performance fees</strong> — Programmable compensation for alpha delivery</li>
+                    <li><strong>Control transparency</strong> — Choose performance-only or full disclosure</li>
+                    <li><strong>Edge preservation</strong> — Get paid for alpha, don't give it away for free</li>
+                </ul>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">💡 Why Two Layers?</div>
+                    <p><strong>Intelligence without trust</strong> = You know who's good but can't safely invest with them.</p>
+                    <p><strong>Trust without intelligence</strong> = You can execute safely but don't know who to invest with.</p>
+                    <p><strong>Both layers together</strong> = True decentralized asset management.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('quick-start')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← Quick Start</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('ai-agents')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">AI Agents →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: AI Agents -->
+            <section class="page-section" id="page-ai-agents">
+                <h1>AI Agents</h1>
+                <p class="page-subtitle">How your AI agent helps you earn alpha.</p>
+
+                <h2>What Your Agent Does</h2>
+
+                <p>Your AI agent is your personal copilot for DeFi. It handles the work that would take you hours:</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>What It Means</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Discover</strong></td>
+                            <td>Find top traders across protocols based on verified on-chain performance</td>
+                            <td><span class="stage-badge stage-now">Now</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analyze</strong></td>
+                            <td>Parses transactions to explain win rates, styles, risk profiles, alpha drivers</td>
+                            <td><span class="stage-badge stage-now">Now</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Advise</strong></td>
+                            <td>Recommends actions on your positions based on data, not emotion</td>
+                            <td><span class="stage-badge stage-now">Now</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Monitor</strong></td>
+                            <td>Tracks your positions and alerts you when something needs attention</td>
+                            <td><span class="stage-badge stage-now">Now</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Learn</strong></td>
+                            <td>Trains from top traders, YOUR preferences and goals to become personalized PM & trading copilot</td>
+                            <td><span class="stage-badge stage-beta">Beta</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Execute</strong></td>
+                            <td>Based on learning and risk/return goals set by user, trades and manages funds via smart contracts</td>
+                            <td><span class="stage-badge stage-later">v1.0</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>How Your Agent Learns</h2>
+
+                <p>Your agent gets smarter the more you use it:</p>
+
+                <div class="flow">
+                    <div class="flow-step"><strong>Day 1</strong><br>Top traders data</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step"><strong>Week 1</strong><br>Understands goals</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step"><strong>Month 1</strong><br>Anticipates needs</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step"><strong>Month 3+</strong><br>Deeply personalized</div>
+                </div>
+
+                <p>The agent learns from:</p>
+                <ul class="feature-list">
+                    <li><strong>Top traders</strong> — Patterns that drive alpha across protocols</li>
+                    <li><strong>Your positions</strong> — Your allocation, risk tolerance, trading style</li>
+                    <li><strong>Market context</strong> — Current conditions, trends, sentiment</li>
+                    <li><strong>Your conversations</strong> — Your preferences, goals, philosophy</li>
+                </ul>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">Coming in Beta: Train Your Agent</div>
+                    <p>In the Beta release, you'll be able to explicitly train your agent on your trading style and investment preferences. This makes your agent truly personalized — it learns what matters to YOU and tailors its discovery and advice accordingly.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('how-it-works')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← How It Works</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('for-investors')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">For Investors →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: For Investors -->
+            <section class="page-section" id="page-for-investors">
+                <h1>For Investors</h1>
+                <p class="page-subtitle">Discover alpha, deploy with confidence.</p>
+
+                <h2>What You Can Do Now (MVP)</h2>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">🔍</div>
+                        <div class="card-title">Discover Top Traders</div>
+                        <p class="card-desc">Find top performers across Avantis, Hyperliquid, Aerodrome, Uniswap, and more — ranked by verified on-chain performance.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title">Understand Alpha Drivers</div>
+                        <p class="card-desc">AI parses transactions to explain what makes them profitable: win rates, risk profiles, trading styles, timing patterns.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💡</div>
+                        <div class="card-title">Get Recommendations</div>
+                        <p class="card-desc">Your agent analyzes your current positions and recommends actions based on data, not emotion.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔔</div>
+                        <div class="card-title">Monitor Positions</div>
+                        <p class="card-desc">Get proactive alerts when positions need attention — before small losses become big ones.</p>
+                    </div>
+                </div>
+
+                <h2>Example Prompts</h2>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"Find traders with >60% win rate and <15% max drawdown on Avantis"</div>
+                    <p class="prompt-desc">Discover consistent performers who manage risk well</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"My ETH SHORT is up 75%, should I take profits?"</div>
+                    <p class="prompt-desc">Get data-backed recommendations on position management</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"What are top wallets doing with $DEGEN?"</div>
+                    <p class="prompt-desc">Track smart money movement on memecoins</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"Analyze this trader's last 50 trades: 0xABC..."</div>
+                    <p class="prompt-desc">Deep-dive into any wallet's trading performance</p>
+                </div>
+
+                <h2>Coming Soon</h2>
+
+                <h3>Beta: Fine-Tuned PM Agents</h3>
+                <p>Your agent will train on top traders AND your specific preferences, becoming a truly personalized portfolio manager. It will learn what matters to YOU — your risk tolerance, time horizon, strategy preference — and tailor all discovery and advice accordingly.</p>
+
+                <h3>v1.0: Deploy Capital Trustlessly</h3>
+                <p>Once the Trust Layer launches, you'll be able to:</p>
+                <ul class="feature-list">
+                    <li>Deploy capital directly from your wallet (non-custodial)</li>
+                    <li>Set coded risk limits (max drawdown, position size, asset whitelist)</li>
+                    <li>Follow top traders' strategies automatically</li>
+                    <li>Verify every trade on-chain</li>
+                </ul>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('ai-agents')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← AI Agents</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('for-traders')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">For Traders →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: For Traders -->
+            <section class="page-section" id="page-for-traders">
+                <h1>For Traders</h1>
+                <p class="page-subtitle">Build your track record. Validate your edge. Scale to fund management.</p>
+
+                <h2>What You Can Do Now (MVP)</h2>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-title">Benchmark Performance</div>
+                        <p class="card-desc">See how you stack up against top traders on the same protocols. Understand your win rate, risk profile, and areas to improve.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💬</div>
+                        <div class="card-title">Get Position Advice</div>
+                        <p class="card-desc">Your agent analyzes your open positions and recommends when to take profits, cut losses, or add to winners.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-title">Risk Management</div>
+                        <p class="card-desc">Monitor position sizing, correlation, and drawdown risk in real-time.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title">Track Record Analysis</div>
+                        <p class="card-desc">Get a full breakdown of your trading stats: win rate, average profit/loss, max drawdown, Sharpe ratio.</p>
+                    </div>
+                </div>
+
+                <h2>Example Prompts</h2>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"How does my win rate compare to top Avantis traders?"</div>
+                    <p class="prompt-desc">Benchmark your performance against the best</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"Analyze my last 30 trades and tell me what I'm doing wrong"</div>
+                    <p class="prompt-desc">Get actionable feedback on your trading patterns</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"My portfolio correlation is too high, what should I hedge?"</div>
+                    <p class="prompt-desc">Improve risk management with AI-powered recommendations</p>
+                </div>
+
+                <h2>Coming Soon</h2>
+
+                <h3>Beta: Fine-Tuned Trade Execution Agents</h3>
+                <p>Your agent will learn from top traders and YOUR specific edge, helping you execute better. It will identify patterns in your best trades and help you replicate them more consistently.</p>
+
+                <h3>v1.0: Raise Capital & Scale</h3>
+                <p>Once the Trust Layer launches, you'll be able to:</p>
+                <ul class="feature-list">
+                    <li><strong>Validate performance</strong> — Build a public, verifiable track record on-chain</li>
+                    <li><strong>Raise capital</strong> — Investors can deploy to your strategy via smart contracts</li>
+                    <li><strong>Earn performance fees</strong> — Get compensated for alpha delivery</li>
+                    <li><strong>Control transparency</strong> — Choose performance-only or full disclosure mode</li>
+                    <li><strong>Preserve your edge</strong> — Get paid for alpha, don't give it away for free</li>
+                </ul>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">From Trader to Fund Manager</div>
+                    <p>Yieldr gives you the path from managing $200K personal capital to $2M+ with outside investors. Build your track record in the MVP. Train your execution agent in Beta. Launch your fund in v1.0.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('for-investors')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← For Investors</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('for-lps')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">For LPs →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: For LPs -->
+            <section class="page-section" id="page-for-lps">
+                <h1>For LPs (Liquidity Providers)</h1>
+                <p class="page-subtitle">Monitor IL, optimize yields, get alerts across protocols.</p>
+
+                <h2>What You Can Do (Coming in Beta)</h2>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">💧</div>
+                        <div class="card-title">Monitor IL</div>
+                        <p class="card-desc">Track impermanent loss across all your LP positions in real-time.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title">Yield Optimization</div>
+                        <p class="card-desc">Get recommendations on when to enter/exit pools based on fee APR trends.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔔</div>
+                        <div class="card-title">Proactive Alerts</div>
+                        <p class="card-desc">Get notified when IL crosses thresholds or fee revenue drops.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔍</div>
+                        <div class="card-title">Cross-Protocol View</div>
+                        <p class="card-desc">See all your LP positions across Aerodrome, Uniswap, Velodrome in one place.</p>
+                    </div>
+                </div>
+
+                <h2>Example Prompts</h2>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"What's my current IL on the ETH/USDC pool?"</div>
+                    <p class="prompt-desc">Monitor impermanent loss in real-time</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"Which pools have the best risk-adjusted APR on Aerodrome?"</div>
+                    <p class="prompt-desc">Find the best yield opportunities</p>
+                </div>
+
+                <div class="prompt-card">
+                    <div class="prompt-text">"Alert me if my IL goes above 10% on any position"</div>
+                    <p class="prompt-desc">Set proactive risk alerts</p>
+                </div>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">LP Management Made Simple</div>
+                    <p>Most LPs manage positions manually, checking pools one by one. Your Yieldr agent gives you a unified view, proactive alerts, and AI-powered recommendations — so you can optimize yields without spending hours monitoring.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('for-traders')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← For Traders</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('roadmap')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">Roadmap →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: Roadmap -->
+            <section class="page-section" id="page-roadmap">
+                <h1>Roadmap</h1>
+                <p class="page-subtitle">From AI copilot to autonomous fund management.</p>
+
+                <div class="roadmap-item current">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 1 — Now</div>
+                    <h3 class="roadmap-title">MVP: Intelligence Layer</h3>
+                    <p class="roadmap-desc">AI agents that deliver standalone value:</p>
+                    <ul class="feature-list">
+                        <li>Discover top traders across Base protocols</li>
+                        <li>Analyze alpha drivers from on-chain transactions</li>
+                        <li>Advise on positions & portfolio management</li>
+                        <li>Monitor positions with proactive alerts</li>
+                        <li>Chat interface for natural language interaction</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 2 — Q1 2025</div>
+                    <h3 class="roadmap-title">Beta: Fine-Tuned Agents</h3>
+                    <p class="roadmap-desc">Agents that learn from top traders AND your preferences:</p>
+                    <ul class="feature-list">
+                        <li>Train your agent on your trading style & goals</li>
+                        <li>PM agents personalized for investor risk profiles</li>
+                        <li>Execution agents fine-tuned on trader strategies</li>
+                        <li>LP management agents for yield optimization</li>
+                        <li>Cross-protocol position aggregation</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 3 — Q2 2025</div>
+                    <h3 class="roadmap-title">v1.0: Trust Layer</h3>
+                    <p class="roadmap-desc">Smart contracts for trustless execution:</p>
+                    <ul class="feature-list">
+                        <li>Non-custodial capital deployment</li>
+                        <li>Coded risk controls (drawdown, position limits)</li>
+                        <li>Performance-based trader compensation</li>
+                        <li>Transparency levels (performance-only vs full)</li>
+                        <li>Semi-autonomous portfolio management</li>
+                        <li>Fund manager onboarding & capital raising</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 4 — Q3 2025+</div>
+                    <h3 class="roadmap-title">v2.0+: Autonomous Agents</h3>
+                    <p class="roadmap-desc">Fully autonomous AI fund managers:</p>
+                    <ul class="feature-list">
+                        <li>Agent-managed funds with full autonomy</li>
+                        <li>Multi-strategy portfolio construction</li>
+                        <li>Dynamic capital allocation across managers</li>
+                        <li>Agent reputation & performance staking</li>
+                        <li>Cross-chain expansion beyond Base</li>
+                    </ul>
+                </div>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">Progressive Decentralization</div>
+                    <p>We're building in stages to deliver value at each step. Phase 1 = standalone AI value. Phase 2 = personalization. Phase 3 = trustless execution. Phase 4 = full autonomy. Each phase unlocks new capabilities while the previous functionality continues to improve.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('for-lps')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← For LPs</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('token-overview')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">Token Overview →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: Token Overview -->
+            <section class="page-section" id="page-token-overview">
+                <h1>$YLDR Token</h1>
+                <p class="page-subtitle">The token powering Yieldr's AI-enabled asset management platform.</p>
+
+                <div class="token-hero">
+                    <div class="token-symbol">💎</div>
+                    <div class="token-name">$YLDR</div>
+                    <p class="token-tagline">Utility token for AI agents & decentralized fund management</p>
+                    <div class="token-stats">
+                        <div class="token-stat">
+                            <div class="token-stat-value">10M</div>
+                            <div class="token-stat-label">Max Supply</div>
+                        </div>
+                        <div class="token-stat">
+                            <div class="token-stat-value">Base</div>
+                            <div class="token-stat-label">Network</div>
+                        </div>
+                        <div class="token-stat">
+                            <div class="token-stat-value">Q1 2025</div>
+                            <div class="token-stat-label">TGE</div>
+                        </div>
+                        <div class="token-stat">
+                            <div class="token-stat-value">Fair Launch</div>
+                            <div class="token-stat-label">Distribution</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Why $YLDR Exists</h2>
+
+                <p>$YLDR is the utility token that powers Yieldr's two-sided marketplace. It aligns incentives between investors, traders, and AI agents while enabling trustless coordination at scale.</p>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title">Access AI Agents</div>
+                        <p class="card-desc">Stake $YLDR to unlock advanced agent capabilities and features</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎁</div>
+                        <div class="card-title">Earn Rewards</div>
+                        <p class="card-desc">Get platform fees redistributed to stakers and active participants</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🗳️</div>
+                        <div class="card-title">Governance Rights</div>
+                        <p class="card-desc">Vote on protocol upgrades, fee structures, and feature priorities</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-title">Fund Access</div>
+                        <p class="card-desc">Access exclusive funds and top trader strategies</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">Fair Launch Model</div>
+                    <p>We're committed to fair token distribution. No VC pre-sales, no team allocation at TGE. Tokens are earned through platform usage, community contributions, and progressive unlocks tied to real usage milestones.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('roadmap')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← Roadmap</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('token-utility')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">Utility →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: Token Utility -->
+            <section class="page-section" id="page-token-utility">
+                <h1>Token Utility</h1>
+                <p class="page-subtitle">What you can do with $YLDR tokens.</p>
+
+                <h2>Core Utility</h2>
+
+                <h3>1. AI Agent Access</h3>
+                <p>Stake $YLDR to unlock advanced agent capabilities:</p>
+                <ul class="feature-list">
+                    <li><strong>Free Tier</strong> — Basic discovery & analysis (no staking required)</li>
+                    <li><strong>Pro Tier</strong> — Advanced analytics, monitoring, alerts (stake 1,000 $YLDR)</li>
+                    <li><strong>Elite Tier</strong> — Fine-tuned PM agents, priority support (stake 10,000 $YLDR)</li>
+                </ul>
+
+                <h3>2. Platform Fee Discounts</h3>
+                <p>Stakers get reduced fees on all platform transactions:</p>
+                <ul>
+                    <li>Standard: 1% platform fee on fund deployments</li>
+                    <li>Stakers: 0.5% platform fee (50% discount)</li>
+                    <li>Elite Stakers: 0.25% platform fee (75% discount)</li>
+                </ul>
+
+                <h3>3. Revenue Sharing</h3>
+                <p>Platform fees are redistributed to $YLDR stakers:</p>
+                <ul class="feature-list">
+                    <li>80% of platform fees → redistributed to stakers</li>
+                    <li>20% of platform fees → protocol treasury</li>
+                </ul>
+
+                <h3>4. Governance</h3>
+                <p>Vote on protocol decisions:</p>
+                <ul class="feature-list">
+                    <li>Feature prioritization & roadmap</li>
+                    <li>Fee structure changes</li>
+                    <li>Protocol integrations (new chains, protocols)</li>
+                    <li>Treasury management & grants</li>
+                </ul>
+
+                <h3>5. Exclusive Fund Access</h3>
+                <p>Top fund managers can set $YLDR requirements for access:</p>
+                <ul class="feature-list">
+                    <li>Access allocation slots in oversubscribed funds</li>
+                    <li>Early access to new fund launches</li>
+                    <li>Lower minimum investment requirements</li>
+                </ul>
+
+                <h2>Future Utility (v2.0+)</h2>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title">Agent Reputation Staking</div>
+                        <p class="card-desc">Stake on AI agents to vouch for their performance and earn a share of their fees</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-title">Trader Incentives</div>
+                        <p class="card-desc">Top traders earn $YLDR rewards for consistent alpha delivery</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💡</div>
+                        <div class="card-title">Strategy Marketplace</div>
+                        <p class="card-desc">Buy/sell access to proprietary trading strategies using $YLDR</p>
+                    </div>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('token-overview')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← Token Overview</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('tokenomics')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">Tokenomics →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: Tokenomics -->
+            <section class="page-section" id="page-tokenomics">
+                <h1>Tokenomics</h1>
+                <p class="page-subtitle">Token distribution, vesting, and progressive unlock schedule.</p>
+
+                <h2>Token Supply</h2>
+
+                <div class="token-hero" style="margin-bottom: 2rem;">
+                    <div class="token-stat-value" style="font-size: 2.5rem; margin-bottom: 0.5rem;">10,000,000 $YLDR</div>
+                    <p style="margin: 0; color: var(--text-secondary);">Fixed max supply — no inflation</p>
+                </div>
+
+                <h2>Distribution Breakdown</h2>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Allocation</th>
+                            <th>%</th>
+                            <th>Amount</th>
+                            <th>Unlock Schedule</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Community Rewards</strong></td>
+                            <td>40%</td>
+                            <td>4,000,000</td>
+                            <td>Progressive unlock over 4 years based on platform usage</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Early Contributors</strong></td>
+                            <td>25%</td>
+                            <td>2,500,000</td>
+                            <td>1-year cliff, 3-year linear vest</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Liquidity Provision</strong></td>
+                            <td>15%</td>
+                            <td>1,500,000</td>
+                            <td>Initial LP at TGE + ongoing incentives</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Protocol Treasury</strong></td>
+                            <td>10%</td>
+                            <td>1,000,000</td>
+                            <td>Governed by DAO for grants & partnerships</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Team</strong></td>
+                            <td>10%</td>
+                            <td>1,000,000</td>
+                            <td>1-year cliff, 4-year linear vest</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Progressive Unlock Model</h2>
+
+                <p>40% of tokens (Community Rewards) unlock progressively based on real platform usage, not arbitrary time schedules:</p>
+
+                <table class="stage-table">
+                    <thead>
+                        <tr>
+                            <th>Milestone</th>
+                            <th>Unlock</th>
+                            <th>Criteria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="stage-name">Phase 1: MVP Launch</td>
+                            <td class="tokens">500K $YLDR</td>
+                            <td>1,000 active agent users</td>
+                        </tr>
+                        <tr>
+                            <td class="stage-name">Phase 2: Beta Launch</td>
+                            <td class="tokens">750K $YLDR</td>
+                            <td>5,000 active users + fine-tuned agents live</td>
+                        </tr>
+                        <tr>
+                            <td class="stage-name">Phase 3: v1.0 Launch</td>
+                            <td class="tokens">1M $YLDR</td>
+                            <td>$10M AUM managed via smart contracts</td>
+                        </tr>
+                        <tr>
+                            <td class="stage-name">Phase 4: Scale</td>
+                            <td class="tokens">1.75M $YLDR</td>
+                            <td>$100M AUM + 20,000 active users</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">Usage-Driven Token Economics</div>
+                    <p>We believe token unlocks should be tied to real value creation, not arbitrary time schedules. As the platform grows and delivers more value, more tokens unlock to reward the community that made it possible.</p>
+                </div>
+
+                <h2>Anti-Dilution Safeguards</h2>
+
+                <ul class="feature-list">
+                    <li><strong>No inflation</strong> — Fixed 10M supply, no minting function</li>
+                    <li><strong>Team vesting</strong> — 1-year cliff + 4-year vest ensures long-term alignment</li>
+                    <li><strong>Progressive unlocks</strong> — Community rewards unlock only when platform hits usage milestones</li>
+                    <li><strong>Revenue sharing</strong> — 80% of fees redistributed to stakers creates buy pressure</li>
+                </ul>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('token-utility')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← Utility</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('how-to-participate')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">How to Participate →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: How to Participate -->
+            <section class="page-section" id="page-how-to-participate">
+                <h1>How to Participate</h1>
+                <p class="page-subtitle">Get involved before TGE.</p>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">Token Generation Event (TGE) — Q1 2025</div>
+                    <p>$YLDR tokens will launch in Q1 2025. Until then, you can earn allocation by contributing to the platform.</p>
+                </div>
+
+                <h2>Ways to Earn $YLDR Before TGE</h2>
+
+                <div class="cards-grid">
+                    <div class="card highlight">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title">Use the Platform</div>
+                        <p class="card-desc">Early users earn points that convert to $YLDR at TGE. The more you use your AI agent, the more you earn.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-title">Build Track Records</div>
+                        <p class="card-desc">Traders who build verified performance records before TGE get bonus allocation.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💬</div>
+                        <div class="card-title">Community Contributions</div>
+                        <p class="card-desc">Active Discord/Twitter contributors, bug reporters, and feature suggestions earn allocation.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔗</div>
+                        <div class="card-title">Referrals</div>
+                        <p class="card-desc">Invite others to Yieldr and earn a share of their activity rewards.</p>
+                    </div>
+                </div>
+
+                <h2>Points System (Pre-TGE)</h2>
+
+                <p>Before token launch, you earn points for platform activity. At TGE, points convert to $YLDR tokens based on your share of total points earned.</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Points Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Connect wallet & create agent</td>
+                            <td>100 points (one-time)</td>
+                        </tr>
+                        <tr>
+                            <td>Daily active usage</td>
+                            <td>10 points/day</td>
+                        </tr>
+                        <tr>
+                            <td>Analyze a trader</td>
+                            <td>5 points/analysis</td>
+                        </tr>
+                        <tr>
+                            <td>Share verified track record (traders)</td>
+                            <td>500 points (one-time)</td>
+                        </tr>
+                        <tr>
+                            <td>Successful referral (friend uses platform 7+ days)</td>
+                            <td>200 points + 10% of their points</td>
+                        </tr>
+                        <tr>
+                            <td>Community contribution (bug report, feature suggestion)</td>
+                            <td>50-500 points (case-by-case)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Public Sale (TGE)</h2>
+
+                <p>A portion of tokens will be available for public sale at TGE to ensure broad distribution:</p>
+                <ul class="feature-list">
+                    <li><strong>Fair launch</strong> — No private sales or pre-sales to VCs</li>
+                    <li><strong>Allocation caps</strong> — Max purchase limits to prevent whales</li>
+                    <li><strong>Points bonus</strong> — Early users get discounted pricing or bonus allocation</li>
+                </ul>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">Get Started Now</div>
+                    <p>The best way to maximize your $YLDR allocation is to start using Yieldr today. Connect your wallet, create your agent, and start discovering alpha. Every interaction earns you points toward TGE.</p>
+                    <p style="margin-top: 1rem;"><a href="https://app.yieldr.org" style="color: var(--accent-green); font-weight: 600;">Launch App →</a></p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('tokenomics')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← Tokenomics</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('faq')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">FAQ →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: FAQ -->
+            <section class="page-section" id="page-faq">
+                <h1>FAQ</h1>
+                <p class="page-subtitle">Common questions about Yieldr.</p>
+
+                <h2>General</h2>
+
+                <h3>What is Yieldr?</h3>
+                <p>Yieldr is an AI-enabled decentralized asset management platform. It's a two-sided marketplace where investors discover top traders & fund managers while traders validate performance and raise capital — all powered by AI agents and secured by smart contracts.</p>
+
+                <h3>What can I do with Yieldr today?</h3>
+                <p>In Phase 1 (MVP), you can use AI agents to discover top DeFi traders, analyze their performance, get recommendations on your positions, and monitor your portfolio with proactive alerts. Think of it as a smart copilot for DeFi investing and trading.</p>
+
+                <h3>Is Yieldr custodial?</h3>
+                <p>No. In Phase 1, your agent analyzes on-chain data but doesn't execute trades. In Phase 3 (v1.0), when the Trust Layer launches, all capital deployment will be non-custodial via smart contracts — you maintain full custody of your funds.</p>
+
+                <h3>Which chains and protocols does Yieldr support?</h3>
+                <p>Currently: Base chain only, covering Avantis (perps), Aerodrome (DEX), Uniswap v3, and other major Base protocols. We'll expand to other chains in later phases based on community demand.</p>
+
+                <h2>For Investors</h2>
+
+                <h3>How does Yieldr help me find top traders?</h3>
+                <p>Your AI agent scans on-chain transaction data across DeFi protocols to identify wallets with strong, verifiable performance. It ranks traders by metrics like win rate, risk-adjusted returns, max drawdown, and consistency — all based on real, unfakeable on-chain data.</p>
+
+                <h3>Can I copy trade top traders right now?</h3>
+                <p>Not yet. Phase 1 (MVP) provides intelligence — discovery, analysis, and recommendations. Phase 3 (v1.0) will enable trustless capital deployment via smart contracts, allowing you to follow traders' strategies automatically.</p>
+
+                <h3>How do I know the performance data is real?</h3>
+                <p>All data comes directly from on-chain transactions. It can't be faked or manipulated. Your agent parses wallet transactions from protocols like Avantis and Aerodrome to calculate performance metrics in real-time.</p>
+
+                <h2>For Traders</h2>
+
+                <h3>How can Yieldr help me raise capital?</h3>
+                <p>Yieldr gives you a path from solo trader to fund manager. Build a verified track record in Phase 1. Train your execution agent in Phase 2 (Beta). Launch your fund and raise capital in Phase 3 (v1.0) via smart contracts that let investors deploy trustlessly while you earn performance fees.</p>
+
+                <h3>Will my trading strategies be public?</h3>
+                <p>You control transparency. In v1.0, you'll choose between performance-only mode (investors see results but not individual trades) or full disclosure mode (complete transparency). You get compensated for alpha either way — so sharing your edge isn't free.</p>
+
+                <h3>What fees do traders earn?</h3>
+                <p>In v1.0, traders can set performance fees (typically 10-20% of profits) when raising capital. You also earn a share of platform revenue if you're a top-performing fund manager. Fee structures are coded into smart contracts and enforced automatically.</p>
+
+                <h2>Token & Economics</h2>
+
+                <h3>When is the $YLDR token launching?</h3>
+                <p>Token Generation Event (TGE) is planned for Q1 2025. Until then, you can earn points by using the platform, which will convert to $YLDR allocation at TGE.</p>
+
+                <h3>Do I need $YLDR to use Yieldr?</h3>
+                <p>No. Basic agent features (discovery, analysis) are free. Staking $YLDR unlocks advanced features like fine-tuned agents, proactive monitoring, and fee discounts — but the core product works without tokens.</p>
+
+                <h3>How do I earn $YLDR before TGE?</h3>
+                <p>Use the platform daily, analyze traders, build track records (if you're a trader), refer friends, and contribute to the community (Discord, bug reports, feature ideas). All activity earns points that convert to tokens at TGE.</p>
+
+                <h2>AI & Privacy</h2>
+
+                <h3>What data does my AI agent access?</h3>
+                <p>Your agent reads public on-chain data (transactions, positions) from your connected wallet and other wallets you ask it to analyze. It does NOT access private keys, cannot execute transactions without your approval, and only reads publicly available blockchain data.</p>
+
+                <h3>Can my agent execute trades without my permission?</h3>
+                <p>In Phase 1 (MVP): No. Your agent only provides recommendations. In Phase 3 (v1.0): Only if you explicitly enable semi-autonomous mode and set coded risk limits in the smart contract. You maintain full control and can revoke permissions anytime.</p>
+
+                <h3>Is my chat history with the agent private?</h3>
+                <p>Yes. Your conversations are private and encrypted. We use them to personalize your agent's recommendations, but they're never shared publicly or sold to third parties.</p>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">Still have questions?</div>
+                    <p>Join our <a href="https://discord.gg/yieldr" style="color: var(--accent-green);">Discord community</a> to ask the team and other users, or reach out on <a href="https://twitter.com/yieldr" style="color: var(--accent-green);">Twitter/X</a>.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('how-to-participate')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← How to Participate</div>
+                        </a>
+                        <a class="footer-nav-btn next" onclick="showPage('glossary')">
+                            <div class="footer-nav-label">Next</div>
+                            <div class="footer-nav-title">Glossary →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PAGE: Glossary -->
+            <section class="page-section" id="page-glossary">
+                <h1>Glossary</h1>
+                <p class="page-subtitle">Key terms and definitions.</p>
+
+                <h3>AI Agent</h3>
+                <p>An autonomous or semi-autonomous AI system that can perform tasks on behalf of a user. In Yieldr, your AI agent discovers traders, analyzes performance, recommends actions, and (in later phases) can execute trades based on your preferences and risk limits.</p>
+
+                <h3>Alpha</h3>
+                <p>Excess returns generated by a trading strategy or fund manager, beyond what would be expected from market movements alone. In DeFi, alpha typically refers to profit generated through skill (strategy, timing, selection) rather than luck or broad market growth.</p>
+
+                <h3>AUM (Assets Under Management)</h3>
+                <p>The total market value of assets that a fund manager or trader is managing on behalf of investors. Higher AUM typically indicates stronger investor confidence and track record.</p>
+
+                <h3>Base</h3>
+                <p>An Ethereum Layer 2 blockchain developed by Coinbase. Yieldr is initially built on Base, covering protocols like Avantis, Aerodrome, and Uniswap v3 on Base.</p>
+
+                <h3>Fine-Tuning</h3>
+                <p>The process of training an AI model on specific data to specialize it for a particular task. In Yieldr, agents are fine-tuned on top traders' strategies AND your personal preferences to become personalized investment copilots.</p>
+
+                <h3>Fund Manager</h3>
+                <p>A trader who manages capital on behalf of outside investors, typically earning a management fee and/or performance fee. Yieldr enables traders to transition from solo trading to fund management via verified track records and smart contract infrastructure.</p>
+
+                <h3>IL (Impermanent Loss)</h3>
+                <p>The opportunity cost of providing liquidity to an AMM pool vs. simply holding the assets. Occurs when the price ratio of pooled assets changes. Yieldr agents help LPs monitor IL and optimize yield.</p>
+
+                <h3>Intelligence Layer</h3>
+                <p>Yieldr's AI-powered discovery, analysis, and recommendation system. The Intelligence Layer is live in Phase 1 (MVP) and enables users to find top traders, understand alpha drivers, and get data-backed investment advice.</p>
+
+                <h3>LP (Liquidity Provider)</h3>
+                <p>A user who deposits token pairs into a decentralized exchange pool (like Uniswap or Aerodrome) to enable trading, earning fees in return. LPs face risks like impermanent loss and need to actively manage positions for optimal returns.</p>
+
+                <h3>Max Drawdown</h3>
+                <p>The largest peak-to-trough decline in portfolio value over a specified period. A key risk metric — a trader with 80% win rate but 50% max drawdown is riskier than one with 60% win rate and 15% max drawdown.</p>
+
+                <h3>Non-Custodial</h3>
+                <p>A system where users retain full control of their funds and private keys. Yieldr's Trust Layer (v1.0) will be non-custodial — capital is deployed via smart contracts, not transferred to Yieldr or fund managers.</p>
+
+                <h3>On-Chain</h3>
+                <p>Data or transactions recorded on a public blockchain, making them transparent, verifiable, and immutable. Yieldr analyzes on-chain transaction data to validate trader performance — it can't be faked.</p>
+
+                <h3>Perps (Perpetual Futures)</h3>
+                <p>Derivative contracts that allow traders to speculate on asset prices with leverage, without an expiration date. Popular DeFi perp platforms include Avantis, Hyperliquid, and GMX.</p>
+
+                <h3>PM (Portfolio Manager) Agent</h3>
+                <p>An AI agent specialized in portfolio management for investors. In Yieldr Beta, PM agents are fine-tuned on top traders' strategies and your specific risk tolerance & goals to provide personalized investment advice.</p>
+
+                <h3>Risk-Adjusted Returns</h3>
+                <p>Returns measured relative to the risk taken to achieve them. A trader with 50% annual return and 10% max drawdown has better risk-adjusted returns than one with 60% return and 40% drawdown. Metrics like Sharpe Ratio measure this.</p>
+
+                <h3>Sharpe Ratio</h3>
+                <p>A measure of risk-adjusted returns, calculated as (return - risk-free rate) / volatility. Higher Sharpe = better return for the risk taken. A Sharpe >1.0 is good, >2.0 is excellent.</p>
+
+                <h3>Smart Contract</h3>
+                <p>Self-executing code on a blockchain that automatically enforces agreement terms without intermediaries. Yieldr's Trust Layer uses smart contracts to enable non-custodial fund management with coded risk controls.</p>
+
+                <h3>Staking</h3>
+                <p>Locking tokens in a protocol to unlock benefits or earn rewards. In Yieldr, staking $YLDR unlocks advanced agent features, fee discounts, and revenue sharing from platform fees.</p>
+
+                <h3>TGE (Token Generation Event)</h3>
+                <p>The launch event when a project's tokens are first created and distributed. Yieldr's TGE is planned for Q1 2025, when early users' points convert to $YLDR tokens.</p>
+
+                <h3>Track Record</h3>
+                <p>A verifiable history of a trader's performance over time, including metrics like total return, win rate, max drawdown, and Sharpe ratio. Yieldr enables traders to build on-chain verified track records to raise capital.</p>
+
+                <h3>Trust Layer</h3>
+                <p>Yieldr's smart contract infrastructure (launching in v1.0) that enables trustless capital deployment, coded risk controls, performance-based fees, and transparency options. Combined with the Intelligence Layer, it enables true decentralized asset management.</p>
+
+                <h3>Win Rate</h3>
+                <p>The percentage of trades that are profitable. Example: 60% win rate = 60 out of 100 trades were winners. High win rate alone doesn't guarantee profitability — you also need to consider average win/loss size and risk management.</p>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">New to DeFi?</div>
+                    <p>Don't worry if these terms are unfamiliar — your Yieldr agent can explain concepts in plain English. Just ask: "What does impermanent loss mean?" or "Explain Sharpe ratio like I'm 5."</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a class="footer-nav-btn prev" onclick="showPage('faq')">
+                            <div class="footer-nav-label">Previous</div>
+                            <div class="footer-nav-title">← FAQ</div>
+                        </a>
+                        <div></div>
+                    </div>
+                </div>
+            </section>
 
         </div>
     </main>
