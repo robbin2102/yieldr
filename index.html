@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yieldr - Invest with Top Asset Managers in Crypto</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="apple-touch-icon" href="/favicon.svg">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="AI-powered DeFi asset management. Agents that help you become better investors, traders & fund managers onchain.">
+    <title>Yieldr - AI for DeFi's Top 1%</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,8 +18,6 @@
             background: #000000;
             color: #FFFFFF;
             overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
         }
 
         /* Animated Background */
@@ -32,296 +28,6 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 6rem 2rem 8rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Logo */
-        .logo-container {
-            margin-bottom: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-svg {
-            width: 80px;
-            height: 80px;
-            filter: drop-shadow(0 0 20px rgba(0, 200, 5, 0.3));
-            animation: logoFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .logo-svg circle {
-            animation: nodePulse 2s ease-in-out infinite;
-        }
-
-        .logo-svg circle:nth-child(1) { animation-delay: 0s; }
-        .logo-svg circle:nth-child(2) { animation-delay: 0.3s; }
-        .logo-svg circle:nth-child(3) { animation-delay: 0.6s; }
-        .logo-svg circle:nth-child(4) { animation-delay: 0.9s; }
-
-        @keyframes nodePulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .logo-text {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #FFFFFF;
-            letter-spacing: 0.15em;
-        }
-
-        /* Hero Content */
-        .hero-content {
-            text-align: center;
-            max-width: 800px;
-            margin-bottom: 4rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: #8A8A8A;
-            margin-bottom: 2rem;
-        }
-
-        .hero-subtitle .heart {
-            color: #00C805;
-        }
-
-        /* Floating Universe Container */
-        .universe-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            height: 600px;
-            margin-bottom: 4rem;
-        }
-
-        /* Manager Star Cards */
-        .manager-star {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            animation: orbit 20s linear infinite;
-        }
-
-        .manager-star:nth-child(1) {
-            top: 10%;
-            left: 15%;
-            animation-duration: 25s;
-        }
-
-        .manager-star:nth-child(2) {
-            top: 15%;
-            right: 10%;
-            animation-duration: 30s;
-            animation-delay: -5s;
-        }
-
-        .manager-star:nth-child(3) {
-            top: 45%;
-            left: 5%;
-            animation-duration: 28s;
-            animation-delay: -10s;
-        }
-
-        .manager-star:nth-child(4) {
-            top: 50%;
-            right: 15%;
-            animation-duration: 32s;
-            animation-delay: -15s;
-        }
-
-        .manager-star:nth-child(5) {
-            bottom: 15%;
-            left: 20%;
-            animation-duration: 26s;
-            animation-delay: -20s;
-        }
-
-        .manager-star:nth-child(6) {
-            bottom: 10%;
-            right: 20%;
-            animation-duration: 29s;
-            animation-delay: -25s;
-        }
-
-        @keyframes orbit {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            25% {
-                transform: translate(20px, -15px) scale(1.05);
-            }
-            50% {
-                transform: translate(0, -30px) scale(1);
-            }
-            75% {
-                transform: translate(-20px, -15px) scale(1.05);
-            }
-        }
-
-        /* Avatar */
-        .manager-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid #00C805;
-            box-shadow: 0 0 30px rgba(0, 200, 5, 0.4);
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-            background: #0A0A0A;
-        }
-
-        .manager-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .avatar-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: #00C805;
-            filter: blur(15px);
-            opacity: 0.3;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-        }
-
-        /* Metrics Card */
-        .metrics-card {
-            background: #0A0A0A;
-            border: 1px solid #1A1A1A;
-            border-radius: 8px;
-            padding: 1rem;
-            min-width: 180px;
-            transition: all 0.3s ease;
-        }
-
-        .manager-star:hover .metrics-card {
-            border-color: #00C805;
-            box-shadow: 0 0 20px rgba(0, 200, 5, 0.2);
-        }
-
-        .manager-name {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: #FFFFFF;
-        }
-
-        .metrics {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-        }
-
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.35rem 0;
-            border-bottom: 1px solid #1A1A1A;
-        }
-
-        .metric-row:last-of-type {
-            border-bottom: none;
-            padding-bottom: 0.5rem;
-        }
-
-        .metric-label {
-            color: #8A8A8A;
-        }
-
-        .metric-value {
-            color: #FFFFFF;
-        }
-
-        .metric-value.positive {
-            color: #00C805;
-        }
-
-        /* Platform Icons */
-        .platform-icons {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid #1A1A1A;
-            align-items: center;
-        }
-
-        .platform-icon {
-            height: 32px;
-            width: auto;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-
-        .platform-icon:hover {
-            opacity: 1;
-        }
-
-        /* CTA Button */
-        .cta-button {
-            background: #00C805;
-            color: #000000;
-            border: none;
-            padding: 1.25rem 5rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 0 40px rgba(0, 200, 5, 0.3);
-            position: relative;
-            z-index: 10;
-            margin-top: 2rem; 
-        }
-
-        .cta-button:hover {
-            background: #00A000;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 60px rgba(0, 200, 5, 0.5);
-        }
-
-        .cta-button:active {
-            transform: translateY(0);
         }
 
         /* Top Navigation */
@@ -364,32 +70,397 @@
             height: 20px;
         }
 
-        .cta-button-small {
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-svg {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 20px rgba(0, 200, 5, 0.4));
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: 0.15em;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #8A8A8A;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
             background: #00C805;
             color: #000000;
             border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 0.95rem;
+            padding: 1.25rem 5rem;
+            font-size: 1.125rem;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 0 40px rgba(0, 200, 5, 0.3);
         }
 
-        .cta-button-small:hover {
+        .cta-button:hover {
             background: #00A000;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 60px rgba(0, 200, 5, 0.5);
         }
 
-        /* Partners Section */
-        .partners-section {
+        /* Flowchart Section - STATIC LAYOUT */
+        .flowchart-section {
             position: relative;
             width: 100%;
+            max-width: 1400px;
+            margin: 1rem auto 4rem;
+            padding: 2rem 2rem 4rem;
+            z-index: 1;
+        }
+
+        .flowchart-container {
+            position: relative;
+            display: grid;
+            grid-template-rows: auto auto auto;
+            gap: 6rem;
+            min-height: 800px;
+        }
+
+        /* Card Styles - OPAQUE BACKGROUND */
+        .card {
+            background: #0a0a0a;
+            border: 2px solid #1A1A1A;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card:hover {
+            border-color: #00C805;
+            box-shadow: 0 10px 60px rgba(0, 200, 5, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* TOP ROW - Traders */
+        .traders-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .trader-card {
+            flex: 1;
+            max-width: 280px;
+        }
+
+        .trader-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .trader-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #00C805;
+            overflow: hidden;
+        }
+
+        .trader-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trader-info h3 {
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin-bottom: 0.25rem;
+        }
+
+        .trader-strategy {
+            font-size: 0.75rem;
+            color: #8A8A8A;
+        }
+
+        /* Agent to Fund Connector */
+        .agent-fund-connector {
+            display: flex;
+            align-items: center;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #00C805, #00C805);
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 200, 5, 0.6);
+        }
+
+        .agent-fund-connector::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 8px solid transparent;
+            border-left: 12px solid #00C805;
+        }
+
+        .agent-fund-connector .connector-dot {
+            width: 12px;
+            height: 12px;
+            background: #00C805;
+            border-radius: 50%;
+            position: absolute;
+            animation: moveDot 2s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 200, 5, 0.8);
+        }
+
+        @keyframes moveDot {
+            0% { left: 0; }
+            100% { left: calc(100% - 12px); }
+        }
+
+        /* MIDDLE ROW - Agent & Fund */
+        .middle-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+        }
+
+        .agent-card {
+            width: 280px;
+            border: 3px solid #00C805;
+            box-shadow: 0 0 60px rgba(0, 200, 5, 0.4);
+        }
+
+        .agent-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+        }
+
+        .agent-title {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #00C805;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-status {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8A8A8A;
+            margin-bottom: 1rem;
+        }
+
+        .fund-card {
+            width: 280px;
+        }
+
+        .fund-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        /* BOTTOM ROW - Creator & Investors */
+        .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .creator-card {
+            width: 280px;
+        }
+
+        .creator-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .creator-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid #00C805;
+            overflow: hidden;
+        }
+
+        .creator-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .creator-role {
+            font-size: 0.75rem;
+            color: #00C805;
+            font-weight: 600;
+        }
+
+        .investors-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .investor-card {
+            width: 220px;
+        }
+
+        .investor-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .investor-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #00C805;
+            background: #1A1A1A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .investor-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .investor-amount {
+            font-size: 0.75rem;
+            color: #8A8A8A;
+        }
+
+        /* Metrics */
+        .metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-label {
+            color: #8A8A8A;
+        }
+
+        .metric-value {
+            color: #FFFFFF;
+        }
+
+        .metric-value.positive {
+            color: #00C805;
+        }
+
+        /* Connection Lines - SVG Overlay */
+        .connections-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .connection-line {
+            stroke: #00C805;
+            stroke-width: 2;
+            fill: none;
+            opacity: 0.6;
+        }
+
+        .flow-dot {
+            fill: #00C805;
+            opacity: 0.9;
+        }
+
+        /* Flow Labels */
+        .flow-label {
+            position: absolute;
+            font-size: 0.7rem;
+            color: #00C805;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 200, 5, 0.5);
+            white-space: nowrap;
+            z-index: 15;
+        }
+
+        /* Partners */
+        .partners-section {
+            width: 100%;
             background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.95));
-            padding: 2rem;
+            padding: 4rem 2rem;
             margin-top: 4rem;
+            z-index: 1;
+            position: relative;
         }
 
         .partners-content {
@@ -401,7 +472,7 @@
         .partners-label {
             font-size: 0.85rem;
             color: #8A8A8A;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
@@ -427,81 +498,78 @@
         .partner-logo img {
             height: 100%;
             width: auto;
-            object-fit: contain;
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .universe-container {
-                height: 800px;
+            .flowchart-container {
+                grid-template-rows: auto;
+                gap: 3rem;
             }
 
-            .manager-star {
-                position: relative !important;
-                animation: none !important;
-                margin-bottom: 2rem;
+            .traders-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .middle-row {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .bottom-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .investors-group {
+                flex-direction: column;
+            }
+
+            .trader-card,
+            .agent-card,
+            .fund-card,
+            .creator-card,
+            .investor-card {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .connections-svg,
+            .flow-label {
+                display: none;
+            }
+
+            .agent-fund-connector {
+                display: none;
+            }
+
+            .middle-row {
+                gap: 3rem;
             }
         }
 
         @media (max-width: 768px) {
-            .top-nav {
-                padding: 1rem;
-            }
-
-            .nav-links {
-                gap: 0.75rem;
-            }
-
-            .nav-link {
-                font-size: 0;
-            }
-
-            .nav-icon {
-                width: 24px;
-                height: 24px;
-            }
-
-            .cta-button-small {
-                padding: 0.6rem 1rem;
-                font-size: 0.85rem;
-            }
-
-            .hero {
-                padding: 5rem 1rem 8rem;
-            }
-
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.25rem;
             }
 
             .hero-subtitle {
-                font-size: 1.125rem;
+                font-size: 1rem;
+            }
+
+            .logo-svg {
+                width: 60px;
+                height: 60px;
             }
 
             .logo-text {
-                font-size: 2rem;
-            }
-
-            .universe-container {
-                height: auto;
-            }
-
-            .manager-star {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .partners-logos {
-                gap: 2rem;
-            }
-
-            .partner-logo {
-                height: 24px;
+                font-size: 1.75rem;
             }
 
             .cta-button {
-                padding: 1rem 2rem;
+                padding: 1rem 2.5rem;
                 font-size: 1rem;
             }
         }
@@ -510,16 +578,17 @@
 <body>
     <canvas class="network-canvas" id="networkCanvas"></canvas>
 
-    <!-- Top Navigation -->
+    <!-- Navigation -->
     <nav class="top-nav">
         <div class="nav-links">
-            
-            <a href="https://github.com/robbin2102" class="nav-link" target="_blank" rel="noopener noreferrer" title="GitHub">
+            <a href="/team" class="nav-link">Team</a>
+            <a href="/docs" class="nav-link">Docs</a>
+            <a href="https://github.com/robbin2102" class="nav-link" target="_blank">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
             </a>
-            <a href="https://discord.com/channels/1426305214176165941/1426305389812646091" class="nav-link" target="_blank" rel="noopener noreferrer" title="Discord">
+            <a href="https://discord.com/channels/1426305214176165941/1426305389812646091" class="nav-link" target="_blank">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
                 </svg>
@@ -527,211 +596,318 @@
         </div>
     </nav>
 
+    <!-- Hero -->
     <section class="hero">
-        <!-- Logo -->
         <div class="logo-container">
-            <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <!-- Network nodes in green -->
-                <circle cx="60" cy="20" r="8" fill="#00C805"/>
-                <circle cx="30" cy="60" r="6" fill="#00C805"/>
-                <circle cx="90" cy="60" r="6" fill="#00C805"/>
-                <circle cx="60" cy="100" r="8" fill="#00C805"/>
-                
-                <!-- Connections -->
-                <line x1="60" y1="20" x2="30" y2="60" stroke="#00C805" stroke-width="2" opacity="0.6"/>
-                <line x1="60" y1="20" x2="90" y2="60" stroke="#00C805" stroke-width="2" opacity="0.6"/>
-                <line x1="30" y1="60" x2="60" y2="100" stroke="#00C805" stroke-width="2" opacity="0.6"/>
-                <line x1="90" y1="60" x2="60" y2="100" stroke="#00C805" stroke-width="2" opacity="0.6"/>
+            <svg class="logo-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z"
+                      fill="#00C805" stroke="#00C805" stroke-width="2"/>
+                <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
+                <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
             </svg>
-            
             <div class="logo-text">YIELDR</div>
         </div>
-
-        <!-- Hero Content -->
         <div class="hero-content">
-            <h1>Invest with Top Asset Managers in Crypto</h1>
+            <h1>AI for DeFi's Top 1%</h1>
             <p class="hero-subtitle">
-                Yieldr is the BlackRock of DeFi, built with <span class="heart">❤️</span> on Base
+                Agents that help you become better investors, traders & fund managers onchain.
             </p>
-            <a href="https://app.yieldr.org" class="cta-button">
-                Launch App
-            </a>
+            <a href="https://app.yieldr.org" class="cta-button">Launch Agent</a>
         </div>
+    </section>
 
-        <!-- Floating Universe of Managers -->
-        <div class="universe-container">
-            <!-- Manager 1 -->
-            <div class="manager-star">
-                <div class="manager-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731746086x138133871256527200/kgjADCj7_400x400.jpg" alt="Alex Kim">
-                </div>
-                <div class="metrics-card">
-                    <div class="manager-name">Alex Kim</div>
-                    <div class="metrics">
-                        <div class="metric-row">
-                            <span class="metric-label">AUM:</span>
-                            <span class="metric-value">$245K</span>
+    <!-- Flowchart -->
+    <section class="flowchart-section">
+        <div class="flowchart-container">
+            <!-- SVG Connections Overlay - UPDATED with elbow connectors -->
+            <svg class="connections-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet">
+                <!-- Trader 1 vertical line down -->
+                <line class="connection-line" x1="150" y1="155" x2="150" y2="220"/>
+                <!-- Trader 1 horizontal to center -->
+                <line class="connection-line" x1="150" y1="220" x2="600" y2="220"/>
+
+                <!-- Trader 2 vertical line down to merge point -->
+                <line class="connection-line" x1="600" y1="155" x2="600" y2="220"/>
+
+                <!-- Trader 3 vertical line down -->
+                <line class="connection-line" x1="1050" y1="155" x2="1050" y2="220"/>
+                <!-- Trader 3 horizontal to center -->
+                <line class="connection-line" x1="1050" y1="220" x2="600" y2="220"/>
+
+                <!-- Single merged line from center down to Agent card top -->
+                <line class="connection-line" x1="600" y1="220" x2="600" y2="310"/>
+
+                <!-- Animated dots on trader lines -->
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="3s" repeatCount="indefinite" path="M 150,155 L 150,220 L 600,220 L 600,310"/>
+                </circle>
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="3s" repeatCount="indefinite" begin="1s" path="M 600,155 L 600,220 L 600,310"/>
+                </circle>
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="3s" repeatCount="indefinite" begin="2s" path="M 1050,155 L 1050,220 L 600,220 L 600,310"/>
+                </circle>
+
+                <!-- Agent to Creator -->
+                <line class="connection-line" x1="500" y1="450" x2="500" y2="520"/>
+                <line class="connection-line" x1="500" y1="520" x2="200" y2="520"/>
+                <line class="connection-line" x1="200" y1="520" x2="200" y2="620"/>
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="4s" repeatCount="indefinite" begin="0.3s" path="M 500,450 L 500,520 L 200,520 L 200,620"/>
+                </circle>
+
+                <!-- Fund to Investor 1 -->
+                <line class="connection-line" x1="900" y1="480" x2="900" y2="540"/>
+                <line class="connection-line" x1="900" y1="540" x2="720" y2="540"/>
+                <line class="connection-line" x1="720" y1="540" x2="720" y2="620"/>
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="4s" repeatCount="indefinite" path="M 900,480 L 900,540 L 720,540 L 720,620"/>
+                </circle>
+
+                <!-- Fund to Investor 2 -->
+                <line class="connection-line" x1="920" y1="480" x2="920" y2="620"/>
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="4s" repeatCount="indefinite" begin="0.5s" path="M 920,480 L 920,620"/>
+                </circle>
+
+                <!-- Fund to Investor 3 -->
+                <line class="connection-line" x1="940" y1="480" x2="940" y2="540"/>
+                <line class="connection-line" x1="940" y1="540" x2="1100" y2="540"/>
+                <line class="connection-line" x1="1100" y1="540" x2="1100" y2="620"/>
+                <circle class="flow-dot" r="6">
+                    <animateMotion dur="4s" repeatCount="indefinite" begin="1s" path="M 940,480 L 940,540 L 1100,540 L 1100,620"/>
+                </circle>
+            </svg>
+
+            <!-- Flow Labels -->
+            <div class="flow-label" style="top: 26%; left: 46%;">Learning</div>
+            <div class="flow-label" style="top: 68%; left: 22%;">Fee 20%</div>
+            <div class="flow-label" style="bottom: 26%; right: 18%;">Invest</div>
+
+            <!-- TOP ROW: Traders -->
+            <div class="traders-row">
+                <div class="card trader-card">
+                    <div class="trader-header">
+                        <div class="trader-avatar">
+                            <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731746086x138133871256527200/kgjADCj7_400x400.jpg" alt="Alex Kim">
                         </div>
+                        <div class="trader-info">
+                            <h3>Alex Kim</h3>
+                            <p class="trader-strategy">LP Yield Optimizer</p>
+                        </div>
+                    </div>
+                    <div class="metrics">
                         <div class="metric-row">
                             <span class="metric-label">ROI:</span>
                             <span class="metric-value positive">+47.2%</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Fee:</span>
-                            <span class="metric-value">20%</span>
+                            <span class="metric-label">Win Rate:</span>
+                            <span class="metric-value">73%</span>
                         </div>
-                    </div>
-                    <div class="platform-icons">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Manager 2 -->
-            <div class="manager-star">
-                <div class="manager-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730842873x784538099904239200/av%202.jpeg" alt="Sarah Chen">
-                </div>
-                <div class="metrics-card">
-                    <div class="manager-name">Sarah Chen</div>
-                    <div class="metrics">
                         <div class="metric-row">
-                            <span class="metric-label">AUM:</span>
-                            <span class="metric-value">$412K</span>
+                            <span class="metric-label">Platform:</span>
+                            <span class="metric-value">Aerodrome</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="card trader-card">
+                    <div class="trader-header">
+                        <div class="trader-avatar">
+                            <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730842873x784538099904239200/av%202.jpeg" alt="Sarah Chen">
+                        </div>
+                        <div class="trader-info">
+                            <h3>Sarah Chen</h3>
+                            <p class="trader-strategy">Delta Neutral</p>
+                        </div>
+                    </div>
+                    <div class="metrics">
                         <div class="metric-row">
                             <span class="metric-label">ROI:</span>
                             <span class="metric-value positive">+63.8%</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Fee:</span>
-                            <span class="metric-value">25%</span>
+                            <span class="metric-label">Win Rate:</span>
+                            <span class="metric-value">81%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Platform:</span>
+                            <span class="metric-value">Avantis</span>
                         </div>
                     </div>
-                    <div class="platform-icons">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760735602576x626366481309788300/Avantis%20White%20Logo%20-%20Vertical.png" alt="Avantis" class="platform-icon">
-                     </div>
                 </div>
-            </div>
 
-            <!-- Manager 3 -->
-            <div class="manager-star">
-                <div class="manager-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730856935x924574333228713700/av%203.jpeg" alt="Mike Park">
-                </div>
-                <div class="metrics-card">
-                    <div class="manager-name">Mike Park</div>
+                <div class="card trader-card">
+                    <div class="trader-header">
+                        <div class="trader-avatar">
+                            <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731794127x999562132716905700/R6ihm6Et_400x400.jpg" alt="Raj Kumar">
+                        </div>
+                        <div class="trader-info">
+                            <h3>Raj Kumar</h3>
+                            <p class="trader-strategy">Multi-Protocol Arb</p>
+                        </div>
+                    </div>
                     <div class="metrics">
-                        <div class="metric-row">
-                            <span class="metric-label">AUM:</span>
-                            <span class="metric-value">$328K</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">ROI:</span>
-                            <span class="metric-value positive">+52.4%</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Fee:</span>
-                            <span class="metric-value">22%</span>
-                        </div>
-                    </div>
-                    <div class="platform-icons">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760735602576x626366481309788300/Avantis%20White%20Logo%20-%20Vertical.png" alt="Avantis" class="platform-icon">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Manager 4 -->
-            <div class="manager-star">
-                <div class="manager-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731762868x445415526606580700/QngrqCSC_400x400.jpg" alt="Lisa Jones">
-                </div>
-                <div class="metrics-card">
-                    <div class="manager-name">Lisa Jones</div>
-                    <div class="metrics">
-                        <div class="metric-row">
-                            <span class="metric-label">AUM:</span>
-                            <span class="metric-value">$567K</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">ROI:</span>
-                            <span class="metric-value positive">+71.3%</span>
-                        </div>
-                        <div class="metric-row">
-                            <span class="metric-label">Fee:</span>
-                            <span class="metric-value">18%</span>
-                        </div>
-                    </div>
-                    <div class="platform-icons">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Manager 5 -->
-            <div class="manager-star">
-                <div class="manager-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731794127x999562132716905700/R6ihm6Et_400x400.jpg" alt="Raj Kumar">
-                </div>
-                <div class="metrics-card">
-                    <div class="manager-name">Raj Kumar</div>
-                    <div class="metrics">
-                        <div class="metric-row">
-                            <span class="metric-label">AUM:</span>
-                            <span class="metric-value">$189K</span>
-                        </div>
                         <div class="metric-row">
                             <span class="metric-label">ROI:</span>
                             <span class="metric-value positive">+39.6%</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Fee:</span>
-                            <span class="metric-value">15%</span>
+                            <span class="metric-label">Win Rate:</span>
+                            <span class="metric-value">68%</span>
                         </div>
-                    </div>
-                    <div class="platform-icons">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760735602576x626366481309788300/Avantis%20White%20Logo%20-%20Vertical.png" alt="Avantis" class="platform-icon">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                        <div class="metric-row">
+                            <span class="metric-label">Platform:</span>
+                            <span class="metric-value">Multi</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Manager 6 -->
-            <div class="manager-star">
-                <div class="manager-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730891764x296275179448961700/av%206.png" alt="Emma Miller">
+            <!-- MIDDLE ROW: Agent & Fund -->
+            <div class="middle-row">
+                <div class="card agent-card">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <rect x="8" y="8" width="48" height="48" rx="8" stroke="#00C805" stroke-width="3"/>
+                            <circle cx="24" cy="26" r="4" fill="#00C805"/>
+                            <circle cx="40" cy="26" r="4" fill="#00C805"/>
+                            <path d="M 20 42 Q 32 48 44 42" stroke="#00C805" stroke-width="3" stroke-linecap="round" fill="none"/>
+                        </svg>
+                    </div>
+                    <h2 class="agent-title">AI Trading Agent</h2>
+                    <p class="agent-status">Learning from 3 top traders</p>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">Status:</span>
+                            <span class="metric-value positive">● Active</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Strategies:</span>
+                            <span class="metric-value">12 Deployed</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="metrics-card">
-                    <div class="manager-name">Emma Miller</div>
+
+                <!-- Connector Line -->
+                <div class="agent-fund-connector">
+                    <div class="connector-dot"></div>
+                </div>
+
+                <div class="card fund-card">
+                    <h3 class="fund-title">💼 Managed Fund</h3>
                     <div class="metrics">
                         <div class="metric-row">
                             <span class="metric-label">AUM:</span>
-                            <span class="metric-value">$693K</span>
+                            <span class="metric-value">$847K</span>
                         </div>
                         <div class="metric-row">
                             <span class="metric-label">ROI:</span>
-                            <span class="metric-value positive">+84.7%</span>
+                            <span class="metric-value positive">+56.3%</span>
                         </div>
                         <div class="metric-row">
-                            <span class="metric-label">Fee:</span>
-                            <span class="metric-value">30%</span>
+                            <span class="metric-label">Investors:</span>
+                            <span class="metric-value">127</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Perf. Fee:</span>
+                            <span class="metric-value">20%</span>
                         </div>
                     </div>
-                    <div class="platform-icons">
-                        <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" class="platform-icon">
+                </div>
+            </div>
+
+            <!-- BOTTOM ROW: Creator & Investors -->
+            <div class="bottom-row">
+                <div class="card creator-card">
+                    <div class="creator-header">
+                        <div class="creator-avatar">
+                            <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730891764x296275179448961700/av%206.png" alt="You">
+                        </div>
+                        <div class="trader-info">
+                            <h3>You</h3>
+                            <p class="creator-role">Fund Manager</p>
+                        </div>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric-row">
+                            <span class="metric-label">Perf. Fee:</span>
+                            <span class="metric-value">20%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Earned:</span>
+                            <span class="metric-value positive">+$95.2K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="investors-group">
+                    <div class="card investor-card">
+                        <div class="investor-header">
+                            <div class="investor-avatar">👤</div>
+                            <div>
+                                <div class="investor-name">Investor #24</div>
+                                <div class="investor-amount">$12.5K invested</div>
+                            </div>
+                        </div>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-label">Returns:</span>
+                                <span class="metric-value positive">+$7.1K</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">ROI:</span>
+                                <span class="metric-value positive">+56.8%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card investor-card">
+                        <div class="investor-header">
+                            <div class="investor-avatar">👤</div>
+                            <div>
+                                <div class="investor-name">Investor #51</div>
+                                <div class="investor-amount">$8.2K invested</div>
+                            </div>
+                        </div>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-label">Returns:</span>
+                                <span class="metric-value positive">+$4.6K</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">ROI:</span>
+                                <span class="metric-value positive">+56.1%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card investor-card">
+                        <div class="investor-header">
+                            <div class="investor-avatar">👤</div>
+                            <div>
+                                <div class="investor-name">Investor #89</div>
+                                <div class="investor-amount">$5.7K invested</div>
+                            </div>
+                        </div>
+                        <div class="metrics">
+                            <div class="metric-row">
+                                <span class="metric-label">Returns:</span>
+                                <span class="metric-value positive">+$3.2K</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">ROI:</span>
+                                <span class="metric-value positive">+56.1%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Partners Section -->
+    <!-- Partners -->
     <div class="partners-section">
         <div class="partners-content">
             <div class="partners-label">Building with</div>
@@ -750,16 +926,16 @@
     </div>
 
     <script>
-        // Network Canvas Animation (Floating Dots Background)
+        // Network Canvas Animation
         const canvas = document.getElementById('networkCanvas');
         const ctx = canvas.getContext('2d');
-        
+
         canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.height = document.documentElement.scrollHeight;
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.height = document.documentElement.scrollHeight;
         });
 
         class Node {
@@ -782,13 +958,13 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 200, 5, 0.4)';
+                ctx.fillStyle = 'rgba(0, 200, 5, 0.5)';
                 ctx.fill();
             }
         }
 
         const nodes = [];
-        const nodeCount = 60;
+        const nodeCount = 100;
 
         for (let i = 0; i < nodeCount; i++) {
             nodes.push(new Node(
@@ -818,9 +994,9 @@
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             drawConnections();
-            
+
             nodes.forEach(node => {
                 node.update();
                 node.draw();
