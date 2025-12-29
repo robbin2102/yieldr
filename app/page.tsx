@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { PaymentPopup } from '../components/PaymentPopup';
+import { PaymentPopup } from './components/PaymentPopup';
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
