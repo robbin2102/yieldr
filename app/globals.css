@@ -62,6 +62,7 @@ html {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    text-decoration: none;
 }
 
 .logo-icon { width: 36px; height: 36px; }
@@ -317,6 +318,21 @@ html {
 }
 
 .message-text strong { color: var(--text-primary); }
+
+.message-user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.message-user .bubble {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-secondary);
+    border-radius: 12px 12px 4px 12px;
+    padding: 0.6rem 0.9rem;
+    max-width: 75%;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
 
 .position-summary {
     background: var(--bg-tertiary);

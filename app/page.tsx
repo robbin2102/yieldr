@@ -103,79 +103,86 @@ export default function HomePage() {
 
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    const addMessage = (html: string, delay: number) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const div = document.createElement('div');
-          div.innerHTML = html;
-          chatArea.appendChild(div.firstElementChild!);
-          chatArea.scrollTop = chatArea.scrollHeight;
-          resolve(null);
-        }, delay);
-      });
-    };
-
-    const runDemo = async () => {
-      await addMessage(`
-        <div class="message message-agent">
-          <div class="message-avatar agent">🤖</div>
-          <div class="message-content">
-            <div class="message-header">
-              <span class="message-sender">AlphaHunter</span>
-              <span class="message-time">${time}</span>
-            </div>
-            <div class="message-text">
-              <p>👋 <strong>Hey! I've scanned your wallet. Here's your portfolio:</strong></p>
-              <div class="position-summary">
-                <div class="position-row">
-                  <span class="position-label">💰 Tokens</span>
-                  <span class="value-neutral">$87,340</span>
-                </div>
-                <div class="position-row">
-                  <span class="position-label">⚡ BTC SHORT 20×</span>
-                  <span class="value-positive">+$200,000</span>
-                </div>
-                <div class="position-row">
-                  <span class="position-label">💧 cbBTC/USDC LP</span>
-                  <span class="value-neutral">$250,000</span>
-                </div>
-                <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
-                  <span class="position-label"><strong>📊 Total Portfolio</strong></span>
-                  <span class="value-positive" style="font-size: 1rem;"><strong>$587,340</strong></span>
-                </div>
+    const messages = [
+      {
+        html: `
+          <div class="message message-agent">
+            <div class="message-avatar agent">🤖</div>
+            <div class="message-content">
+              <div class="message-header">
+                <span class="message-sender">AlphaHunter</span>
+                <span class="message-time">${time}</span>
               </div>
-              <p style="margin-top: 0.75rem;">I'm now monitoring your positions. What would you like to optimize?</p>
+              <div class="message-text">
+                <p>👋 <strong>Hey! I've scanned your wallet. Here's your portfolio:</strong></p>
+                <div class="position-summary">
+                  <div class="position-row">
+                    <span class="position-label">💰 Tokens</span>
+                    <span class="value-neutral">$87,340</span>
+                  </div>
+                  <div class="position-row">
+                    <span class="position-label">⚡ BTC SHORT 20×</span>
+                    <span class="value-positive">+$200,000</span>
+                  </div>
+                  <div class="position-row">
+                    <span class="position-label">💧 cbBTC/USDC LP</span>
+                    <span class="value-neutral">$250,000</span>
+                  </div>
+                  <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
+                    <span class="position-label"><strong>📊 Total Portfolio</strong></span>
+                    <span class="value-positive" style="font-size: 1rem;"><strong>$587,340</strong></span>
+                  </div>
+                </div>
+                <p style="margin-top: 0.75rem;">I'm now monitoring your positions. What would you like to optimize?</p>
+              </div>
             </div>
           </div>
-        </div>
-      `, 800);
-
-      await addMessage(`
-        <div class="message message-user">
-          <div class="bubble" style="background: var(--bg-tertiary); border: 1px solid var(--border-secondary); border-radius: 12px 12px 4px 12px; padding: 0.6rem 0.9rem; max-width: 75%; margin-left: auto; font-size: 0.85rem; color: var(--text-primary);">
-            Should I take profits on my BTC short? It's up 2000%
-          </div>
-        </div>
-      `, 2500);
-
-      await addMessage(`
-        <div class="message message-agent">
-          <div class="message-avatar agent">🤖</div>
-          <div class="message-content">
-            <div class="message-header">
-              <span class="message-sender">AlphaHunter</span>
-              <span class="message-time">${time}</span>
-            </div>
-            <div class="message-text">
-              <p><strong>✅ Yes, take partial profits.</strong></p>
-              <p style="margin-top: 0.5rem;">Your <span class="value-positive">+$200K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.</p>
+        `,
+        delay: 1000,
+      },
+      {
+        html: `
+          <div class="message message-user">
+            <div class="bubble">
+              Should I take profits on my BTC short? It's up 2000%
             </div>
           </div>
-        </div>
-      `, 2000);
-    };
+        `,
+        delay: 2500,
+      },
+      {
+        html: `
+          <div class="message message-agent">
+            <div class="message-avatar agent">🤖</div>
+            <div class="message-content">
+              <div class="message-header">
+                <span class="message-sender">AlphaHunter</span>
+                <span class="message-time">${time}</span>
+              </div>
+              <div class="message-text">
+                <p><strong>✅ Yes, take partial profits.</strong></p>
+                <p style="margin-top: 0.5rem;">Your <span class="value-positive">+$200K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.</p>
+              </div>
+            </div>
+          </div>
+        `,
+        delay: 2000,
+      },
+    ];
 
-    runDemo();
+    let totalDelay = 0;
+    messages.forEach((message) => {
+      totalDelay += message.delay;
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.innerHTML = message.html.trim();
+        const element = div.firstElementChild;
+        if (element) {
+          chatArea.appendChild(element);
+          chatArea.scrollTop = chatArea.scrollHeight;
+        }
+      }, totalDelay);
+    });
   }, []);
 
   return (
