@@ -1,5 +1,5 @@
-import './globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
+import './globals.css';
 import type { Metadata } from 'next';
 import { Providers } from './providers';
 
@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body style={{ margin: 0, padding: 0, background: '#000000', color: '#FFFFFF' }}>
         <Providers>{children}</Providers>
       </body>
     </html>
