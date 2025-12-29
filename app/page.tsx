@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PaymentPopup } from './components/PaymentPopup';
+import { Providers } from './providers';
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
@@ -179,14 +180,18 @@ export default function HomePage() {
         const element = div.firstElementChild;
         if (element) {
           chatArea.appendChild(element);
-          chatArea.scrollTop = chatArea.scrollHeight;
+          // Smooth scroll animation
+          chatArea.scrollTo({
+            top: chatArea.scrollHeight,
+            behavior: 'smooth'
+          });
         }
       }, totalDelay);
     });
   }, []);
 
   return (
-    <>
+    <Providers>
       <canvas className="bg-canvas" id="bgCanvas" />
 
       {/* Navigation */}
@@ -276,21 +281,21 @@ export default function HomePage() {
             <p className="trust-subtitle">Transparency, security, and performance at the core.</p>
           </div>
           <div className="trust-grid">
-            <div className="trust-card">
+            <Link href="/build-in-public" className="trust-card">
               <div className="trust-icon">🔐</div>
               <h4>Treasury Public</h4>
               <p>All funds in multisig. Usage reported monthly. Full transparency.</p>
-            </div>
-            <div className="trust-card">
+            </Link>
+            <Link href="/build-in-public" className="trust-card">
               <div className="trust-icon">📊</div>
               <h4>Build in Public</h4>
               <p>Weekly updates on progress, code shipped, and milestones hit.</p>
-            </div>
-            <div className="trust-card">
+            </Link>
+            <Link href="/team" className="trust-card">
               <div className="trust-icon">👤</div>
               <h4>Based Builder</h4>
               <p>2x founder. Ex-KPMG, BCG, CA/CFA turned vibe coder.</p>
-            </div>
+            </Link>
           </div>
         </div>
 
@@ -322,6 +327,6 @@ export default function HomePage() {
 
       {/* Payment Popup */}
       <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-    </>
+    </Providers>
   );
 }
