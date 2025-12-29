@@ -17,10 +17,8 @@ export default function HomePage() {
     if (!ctx) return;
 
     function resizeCanvas() {
-      if (canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = document.documentElement.scrollHeight;
-      }
+      canvas.width = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
     }
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
@@ -48,7 +46,6 @@ export default function HomePage() {
       }
 
       draw() {
-        if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(0, 200, 5, 0.35)';
@@ -56,13 +53,9 @@ export default function HomePage() {
       }
     }
 
-    const particles: Particle[] = [];
-    for (let i = 0; i < 50; i++) {
-      particles.push(new Particle());
-    }
+    const particles = Array.from({ length: 50 }, () => new Particle());
 
     function drawConnections() {
-      if (!ctx) return;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -81,10 +74,9 @@ export default function HomePage() {
     }
 
     function animateBg() {
-      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawConnections();
-      particles.forEach((p) => {
+      particles.forEach(p => {
         p.update();
         p.draw();
       });
@@ -97,97 +89,416 @@ export default function HomePage() {
     };
   }, []);
 
-  // Animated chat demo
+  // Animated chat demo - EXACT match to HTML design
   useEffect(() => {
     const chatArea = document.getElementById('chatArea');
     if (!chatArea) return;
 
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    function getTime() {
+      const now = new Date();
+      return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    }
 
-    const messages = [
-      {
-        html: `
-          <div class="message message-agent">
-            <div class="message-avatar agent">🤖</div>
-            <div class="message-content">
-              <div class="message-header">
-                <span class="message-sender">AlphaHunter</span>
-                <span class="message-time">${time}</span>
-              </div>
-              <div class="message-text">
-                <p>👋 <strong>Hey! I've scanned your wallet. Here's your portfolio:</strong></p>
-                <div class="position-summary">
-                  <div class="position-row">
-                    <span class="position-label">💰 Tokens</span>
-                    <span class="value-neutral">$87,340</span>
+    function addMessage(html: string, delay = 0): Promise<void> {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const element = div.firstElementChild;
+          if (element && chatArea) {
+            chatArea.appendChild(element);
+            chatArea.scrollTop = chatArea.scrollHeight;
+          }
+          resolve();
+        }, delay);
+      });
+    }
+
+    function addLog(text: string, isComplete = false, delay = 0): Promise<HTMLElement | null> {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const log = document.createElement('div');
+          log.className = 'agent-log';
+          log.innerHTML = isComplete
+            ? `<span class="log-check">✓</span><span>${text}</span>`
+            : `<div class="log-spinner"></div><span>${text}</span>`;
+          if (chatArea) {
+            chatArea.appendChild(log);
+            chatArea.scrollTop = chatArea.scrollHeight;
+          }
+          resolve(log);
+        }, delay);
+      });
+    }
+
+    function removeElement(el: HTMLElement | null) {
+      if (el && el.parentNode) el.remove();
+    }
+
+    async function runDemo() {
+      const time = getTime();
+
+      // Step 1: Agent scans wallet
+      let log1 = await addLog('Connecting to wallet 0x7a3f...9c2e...', false, 800);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(log1);
+      await addLog('Wallet connected', true);
+
+      let log2 = await addLog('Scanning token holdings...', false, 600);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(log2);
+      await addLog('Found 3 tokens', true);
+
+      let log3 = await addLog('Scanning perpetual positions...', false, 600);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(log3);
+      await addLog('Found 1 position on Avantis', true);
+
+      let log4 = await addLog('Scanning LP positions...', false, 600);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(log4);
+      await addLog('Found 1 LP on Aerodrome', true);
+
+      await new Promise(r => setTimeout(r, 800));
+
+      // Agent shows portfolio summary
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p>👋 <strong>Hey! I've scanned your wallet. Here's your portfolio:</strong></p>
+
+              <div class="position-summary">
+                <div class="position-row">
+                  <span class="position-label">💰 Tokens</span>
+                  <span class="value-neutral">$87,340</span>
+                </div>
+                <div class="summary-line">
+                  <span class="token-tag"><span class="token-symbol" style="color:#FF0420;">OP</span> <span class="token-amount">4,827</span></span>
+                  <span class="token-tag"><span class="token-symbol" style="color:#8B5CF6;">JESSE</span> <span class="token-amount">7,193</span></span>
+                  <span class="token-tag"><span class="token-symbol" style="color:#627EEA;">WETH</span> <span class="token-amount">16.42</span></span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem;">
+                  <div class="position-left">
+                    <span class="position-label">⚡ BTC/USDC SHORT 20×</span>
+                    <span class="platform-tag avantis">Avantis</span>
                   </div>
-                  <div class="position-row">
-                    <span class="position-label">⚡ BTC SHORT 20×</span>
-                    <span class="value-positive">+$200,000</span>
-                  </div>
-                  <div class="position-row">
+                  <span class="value-positive">+$200,000</span>
+                </div>
+                <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
+                  Entry $100K → Now $90K • Margin $10K • ROI <span class="value-positive">+2000%</span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem;">
+                  <div class="position-left">
                     <span class="position-label">💧 cbBTC/USDC LP</span>
-                    <span class="value-neutral">$250,000</span>
+                    <span class="platform-tag aerodrome">Aerodrome</span>
                   </div>
-                  <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
-                    <span class="position-label"><strong>📊 Total Portfolio</strong></span>
-                    <span class="value-positive" style="font-size: 1rem;"><strong>$587,340</strong></span>
+                  <span class="value-neutral">$250,000</span>
+                </div>
+                <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
+                  184.5% APR • Fees <span class="value-positive">+$5,790</span> • IL <span class="value-negative">-$12,908</span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
+                  <span class="position-label">💵 Idle USDC</span>
+                  <span class="value-neutral">$50,000</span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
+                  <span class="position-label"><strong>📊 Total Portfolio</strong></span>
+                  <span class="value-positive" style="font-size: 1rem;"><strong>$587,340</strong></span>
+                </div>
+              </div>
+
+              <p style="margin-top: 0.75rem;">I'm now monitoring your positions. What would you like to optimize?</p>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3500));
+
+      // User Q1: BTC Short
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">Should I take profits on my BTC short? It's up 2000%</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logA1 = await addLog('Analyzing BTC market sentiment...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logA1);
+      let logA2 = await addLog('Checking what top traders are doing...', false);
+      await new Promise(r => setTimeout(r, 1400));
+      removeElement(logA2);
+      await addLog('67% of top traders closing shorts', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>✅ Yes, take partial profits.</strong></p>
+              <div class="summary-line">
+                Your <span class="value-positive">+$200K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.
+              </div>
+              <div class="position-summary" style="margin-top: 0.5rem;">
+                <div class="position-row">
+                  <span class="position-label">Recommendation</span>
+                  <span class="value-positive">Close 50% → Lock $100K</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Stop-loss on rest</span>
+                  <span class="value-neutral">$95,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3000));
+
+      // User Q2: LP Hedge
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">How do I reduce the impermanent loss on my cbBTC LP?</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logB1 = await addLog('Calculating LP delta exposure...', false);
+      await new Promise(r => setTimeout(r, 1300));
+      removeElement(logB1);
+      let logB2 = await addLog('Finding optimal hedge ratio...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logB2);
+      await addLog('Delta-neutral strategy identified', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>🛡️ Delta-Neutral Hedge Strategy</strong></p>
+              <div class="summary-line">
+                Current IL: <span class="value-negative">-$12,908</span> (BTC moved +15% since entry)
+              </div>
+              <div class="position-summary" style="margin-top: 0.5rem;">
+                <div class="position-row">
+                  <span class="position-label">Open BTC SHORT on</span>
+                  <span class="platform-tag avantis">Avantis</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Size: 0.65 BTC @ 5×</span>
+                  <span class="value-neutral">$12K margin</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Expected IL reduction</span>
+                  <span class="value-positive">-65%</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Net APR after hedge</span>
+                  <span class="value-positive">~142%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3000));
+
+      // User Q3: ETH Long
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">Fed rate cut next week. Should I open an ETH long?</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logC1 = await addLog('Fetching macro news & Fed expectations...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logC1);
+      let logC2 = await addLog('Analyzing ETH OI & funding rates...', false);
+      await new Promise(r => setTimeout(r, 1300));
+      removeElement(logC2);
+      let logC3 = await addLog('Checking top trader ETH positions...', false);
+      await new Promise(r => setTimeout(r, 1100));
+      removeElement(logC3);
+      await addLog('73% of top traders are long ETH', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>🎯 ETH Long Setup Looks Good</strong></p>
+              <div class="summary-line">
+                <strong>73%</strong> of top traders are long • Funding: <span class="value-positive">-0.01%</span> (favorable)
+              </div>
+              <div class="position-summary" style="margin-top: 0.5rem;">
+                <div class="position-row">
+                  <span class="position-label">Entry Zone</span>
+                  <span class="value-neutral">$3,450 - $3,500</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Stop Loss</span>
+                  <span class="value-negative">$3,280 (-5%)</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Target</span>
+                  <span class="value-positive">$4,100 (+18%)</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Suggested size (from idle)</span>
+                  <span class="value-neutral">$15,000</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Risk/Reward</span>
+                  <span class="value-positive">3.2:1 ✓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3000));
+
+      // User Q4: Allocate idle USDC
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">Allocate my remaining 50K USDC across top 10 traders in perps, predictions, and LPs. Max 20% drawdown.</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logD1 = await addLog('Discovering traders across protocols...', false);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(logD1);
+      let logD2 = await addLog('Analyzing 847 traders...', false);
+      await new Promise(r => setTimeout(r, 1400));
+      removeElement(logD2);
+      let logD3 = await addLog('Filtering by drawdown < 20%...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logD3);
+      let logD4 = await addLog('Optimizing allocation for Sharpe ratio...', false);
+      await new Promise(r => setTimeout(r, 1300));
+      removeElement(logD4);
+      await addLog('30 traders meet criteria', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>🔍 Discovery Complete</strong> — 847 traders scanned → 30 meet criteria</p>
+
+              <div class="allocation-card">
+                <div class="allocation-header">
+                  <span>📊</span>
+                  <span class="allocation-title">Optimized Allocation</span>
+                </div>
+
+                <div class="allocation-bars">
+                  <div class="alloc-bar">
+                    <div class="alloc-label">⚡ Perpetuals</div>
+                    <div class="alloc-track">
+                      <div class="alloc-fill perps" style="width: 40%;">40%</div>
+                    </div>
+                    <span class="alloc-amount">$20,000</span>
+                  </div>
+                  <div class="alloc-bar">
+                    <div class="alloc-label">🎯 Prediction</div>
+                    <div class="alloc-track">
+                      <div class="alloc-fill pred" style="width: 30%;">30%</div>
+                    </div>
+                    <span class="alloc-amount">$15,000</span>
+                  </div>
+                  <div class="alloc-bar">
+                    <div class="alloc-label">💧 Liquidity</div>
+                    <div class="alloc-track">
+                      <div class="alloc-fill lp" style="width: 30%;">30%</div>
+                    </div>
+                    <span class="alloc-amount">$15,000</span>
                   </div>
                 </div>
-                <p style="margin-top: 0.75rem;">I'm now monitoring your positions. What would you like to optimize?</p>
-              </div>
-            </div>
-          </div>
-        `,
-        delay: 1000,
-      },
-      {
-        html: `
-          <div class="message message-user">
-            <div class="bubble">
-              Should I take profits on my BTC short? It's up 2000%
-            </div>
-          </div>
-        `,
-        delay: 2500,
-      },
-      {
-        html: `
-          <div class="message message-agent">
-            <div class="message-avatar agent">🤖</div>
-            <div class="message-content">
-              <div class="message-header">
-                <span class="message-sender">AlphaHunter</span>
-                <span class="message-time">${time}</span>
-              </div>
-              <div class="message-text">
-                <p><strong>✅ Yes, take partial profits.</strong></p>
-                <p style="margin-top: 0.5rem;">Your <span class="value-positive">+$200K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.</p>
-              </div>
-            </div>
-          </div>
-        `,
-        delay: 2000,
-      },
-    ];
 
-    let totalDelay = 0;
-    messages.forEach((message) => {
-      totalDelay += message.delay;
-      setTimeout(() => {
-        const div = document.createElement('div');
-        div.innerHTML = message.html.trim();
-        const element = div.firstElementChild;
-        if (element) {
-          chatArea.appendChild(element);
-          // Smooth scroll animation
-          chatArea.scrollTo({
-            top: chatArea.scrollHeight,
-            behavior: 'smooth'
-          });
-        }
-      }, totalDelay);
-    });
+                <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">TOP PICKS</div>
+                <div class="picks-row">
+                  <div class="pick-chip">
+                    <div class="pick-name">perp_alpha</div>
+                    <div class="pick-platform">Avantis</div>
+                    <div class="pick-roi">+47%</div>
+                  </div>
+                  <div class="pick-chip">
+                    <div class="pick-name">poly_og</div>
+                    <div class="pick-platform">Polymarket</div>
+                    <div class="pick-roi">+52%</div>
+                  </div>
+                  <div class="pick-chip">
+                    <div class="pick-name">aero_whale</div>
+                    <div class="pick-platform">Aerodrome</div>
+                    <div class="pick-roi">+38%</div>
+                  </div>
+                </div>
+
+                <div class="summary-stats">
+                  <div class="stat-item">
+                    <div class="stat-value">42-67%</div>
+                    <div class="stat-label">Est. Return</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">18.3% ✓</div>
+                    <div class="stat-label">Max Drawdown</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">30</div>
+                    <div class="stat-label">Traders</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    // Start demo after 1.2s
+    setTimeout(runDemo, 1200);
   }, []);
 
   return (
@@ -248,6 +559,7 @@ export default function HomePage() {
               <input
                 type="text"
                 className="chat-input"
+                id="chatInput"
                 placeholder="Try asking about positions, traders, or strategies..."
                 onClick={() => setShowPopup(true)}
                 readOnly
@@ -268,9 +580,7 @@ export default function HomePage() {
               <span>BASE BATCHES 002 WINNER</span>
             </div>
             <h2 className="batches-title">Selected by Base Ecosystem</h2>
-            <p className="batches-subtitle">
-              Yieldr was chosen as one of the winners of Base Batches 002, recognized for building innovative DeFi infrastructure on Base.
-            </p>
+            <p className="batches-subtitle">Yieldr was chosen as one of the winners of Base Batches 002, recognized for building innovative DeFi infrastructure on Base.</p>
           </div>
         </div>
 
