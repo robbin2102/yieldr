@@ -201,7 +201,7 @@ export default function HomePage() {
                     <span class="position-label">⚡ BTC/USDC SHORT 20×</span>
                     <span class="platform-tag avantis">Avantis</span>
                   </div>
-                  <span class="value-positive">+$200,000</span>
+                  <span class="value-positive">+$20,000</span>
                 </div>
                 <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
                   Entry $100K → Now $90K • Margin $10K • ROI <span class="value-positive">+200%</span>
@@ -266,12 +266,12 @@ export default function HomePage() {
             <div class="message-text">
               <p><strong>✅ Yes, take partial profits.</strong></p>
               <div class="summary-line">
-                Your <span class="value-positive">+$200K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.
+                Your <span class="value-positive">+$20K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.
               </div>
               <div class="position-summary" style="margin-top: 0.5rem;">
                 <div class="position-row">
                   <span class="position-label">Recommendation</span>
-                  <span class="value-positive">Close 50% → Lock $100K</span>
+                  <span class="value-positive">Close 50% → Lock $10K</span>
                 </div>
                 <div class="position-row">
                   <span class="position-label">Stop-loss on rest</span>
