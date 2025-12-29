@@ -107,7 +107,13 @@ export default function HomePage() {
           const element = div.firstElementChild;
           if (element && chatArea) {
             chatArea.appendChild(element);
-            chatArea.scrollTop = chatArea.scrollHeight;
+            // Smooth scroll with small delay
+            setTimeout(() => {
+              chatArea.scrollTo({
+                top: chatArea.scrollHeight,
+                behavior: 'smooth'
+              });
+            }, 50);
           }
           resolve();
         }, delay);
@@ -124,7 +130,13 @@ export default function HomePage() {
             : `<div class="log-spinner"></div><span>${text}</span>`;
           if (chatArea) {
             chatArea.appendChild(log);
-            chatArea.scrollTop = chatArea.scrollHeight;
+            // Smooth scroll with small delay
+            setTimeout(() => {
+              chatArea.scrollTo({
+                top: chatArea.scrollHeight,
+                behavior: 'smooth'
+              });
+            }, 50);
           }
           resolve(log);
         }, delay);
@@ -192,7 +204,7 @@ export default function HomePage() {
                   <span class="value-positive">+$200,000</span>
                 </div>
                 <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
-                  Entry $100K → Now $90K • Margin $10K • ROI <span class="value-positive">+2000%</span>
+                  Entry $100K → Now $90K • Margin $10K • ROI <span class="value-positive">+200%</span>
                 </div>
 
                 <div class="position-row" style="margin-top: 0.5rem;">
