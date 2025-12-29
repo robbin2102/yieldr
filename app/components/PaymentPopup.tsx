@@ -24,10 +24,20 @@ interface PaymentPopupProps {
   onClose: () => void;
 }
 
+// Default Genesis tier (fallback if API fails)
+const DEFAULT_TIER = {
+  name: 'Genesis',
+  tokensAvailable: 1500000,
+  tokensSold: 0,
+  pricePerToken: 0.057,
+  fdv: 12000000,
+  targetRaise: 85500,
+};
+
 export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {
   const { address, isConnected } = useAccount();
   const [usdcAmount, setUsdcAmount] = useState('1000');
-  const [currentTier, setCurrentTier] = useState<any>(null);
+  const [currentTier, setCurrentTier] = useState<any>(DEFAULT_TIER);
 
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
@@ -37,11 +47,12 @@ export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {
       try {
         const res = await fetch('/api/tiers');
         const data = await res.json();
-        if (data.success) {
+        if (data.success && data.currentTier) {
           setCurrentTier(data.currentTier);
         }
       } catch (err) {
         console.error('Error fetching tier:', err);
+        // Keep using DEFAULT_TIER
       }
     }
     if (isOpen) {
@@ -106,8 +117,7 @@ export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {
         </div>
         <div className="popup-body">
           {/* Allocation Section */}
-          {currentTier && (
-            <div className="popup-allocation">
+          <div className="popup-allocation">
               <div className="popup-allocation-header">
                 <div className="popup-tier">
                   <span className="tier-badge">{currentTier.name.toUpperCase()}</span>
@@ -139,7 +149,6 @@ export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {
                 <div className="receive-timing">at TGE (Q1 2027)</div>
               </div>
             </div>
-          )}
 
           {/* Utility Section */}
           <div className="popup-utility">
