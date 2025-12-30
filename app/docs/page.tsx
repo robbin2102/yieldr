@@ -564,7 +564,7 @@ export default function DocsPage() {
               <p><strong>Trust:</strong> AI analyzes transactions, explains alpha drivers.</p>
             </div>
 
-            <h2>What You Can Ask</h2>
+            <h2>Some use cases</h2>
 
             <h3>Find & Compare Traders</h3>
             <div className="prompt-card">
@@ -691,7 +691,7 @@ export default function DocsPage() {
               <p><strong>Constant monitoring burden:</strong> AI alerts and advises so you don&apos;t have to watch 24/7.</p>
             </div>
 
-            <h2>What You Can Ask</h2>
+            <h2>Some use cases</h2>
 
             <h3>Monitor Positions</h3>
             <div className="prompt-card">
@@ -855,7 +855,7 @@ export default function DocsPage() {
 
             <h2>The Model</h2>
             <div className="architecture-diagram">
-<pre>{`   <span class="arch-highlight">NOW</span>                                              <span class="arch-highlight">TGE (Q1 2027)</span>
+              <pre dangerouslySetInnerHTML={{__html: `   <span class="arch-highlight">NOW</span>                                              <span class="arch-highlight">TGE (Q1 2027)</span>
 
    ┌─────────────────┐                            ┌─────────────────────────┐
    │                 │                            │                         │
@@ -870,7 +870,7 @@ export default function DocsPage() {
    • AI credits (immediate)                       • Trading begins
    • Snapshot voting rights                       • Burn mechanism activates
    • Monthly transparency reports                 • All allocations vest
-`}</pre>
+`}} />
             </div>
 
             <div className="callout callout-success">
@@ -900,14 +900,14 @@ export default function DocsPage() {
 
             <h2>How It Works <span className="tge-badge">At TGE</span></h2>
             <div className="architecture-diagram">
-<pre>{`
+              <pre dangerouslySetInnerHTML={{__html: `
 ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
 │                 │      │                 │      │                 │
 │  <span class="arch-highlight">Acquire YLDR</span>   │─────▶│   <span class="arch-highlight">Burn YLDR</span>    │─────▶│    <span class="arch-highlight">Use AI</span>       │
 │  (CEX or DEX)   │      │  (Market Rate)  │      │  (Train Agent)  │
 │                 │      │                 │      │                 │
 └─────────────────┘      └─────────────────┘      └─────────────────┘
-`}</pre>
+`}} />
             </div>
 
             <ol>
@@ -1173,7 +1173,7 @@ export default function DocsPage() {
 
             <h2>Contribution Flow</h2>
             <div className="architecture-diagram">
-<pre>{`
+              <pre dangerouslySetInnerHTML={{__html: `
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                                                                         │
 │   1. <span class="arch-highlight">CONTRIBUTE</span>                                                        │
@@ -1197,7 +1197,7 @@ export default function DocsPage() {
 │      • Burn mechanism activates                                         │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
-`}</pre>
+`}} />
             </div>
 
             <h2>What Contributors Get</h2>
