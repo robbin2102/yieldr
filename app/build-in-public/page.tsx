@@ -548,7 +548,7 @@ export default function BuildInPublicPage() {
 
           <div className="verification-note">
             <span>🔍</span>
-            <span>All trades verifiable on-chain via Avantis (Base) • Wallet: <a href="https://basescan.org/address/0x780BB763e1463D2236FEC780b7BD6ADb40AAa120" target="_blank" className="verify-link">0x780BB763...Aa120</a></span>
+            <span>All trades verifiable on-chain @Base • AI Trading Wallet: <a href="https://basescan.org/address/0x780BB763e1463D2236FEC780b7BD6ADb40AAa120" target="_blank" className="verify-link">0x780BB763...Aa120</a> owned by founder & used to fund project expense deficits.</span>
           </div>
         </section>
 
@@ -561,9 +561,9 @@ export default function BuildInPublicPage() {
 
           <div className="treasury-summary">
             <div className="treasury-card">
-              <div className="treasury-label">Opening Balance (Oct '25)</div>
-              <div className="treasury-value">$0</div>
-              <div className="treasury-detail">Self-funded bootstrap</div>
+              <div className="treasury-label">Total Expenses</div>
+              <div className="treasury-value negative">-$4,325</div>
+              <div className="treasury-detail">Oct-Dec '25</div>
             </div>
             <div className="treasury-card">
               <div className="treasury-label">Total Receipts</div>
@@ -572,7 +572,7 @@ export default function BuildInPublicPage() {
             </div>
             <div className="treasury-card highlight">
               <div className="treasury-label">Current Balance</div>
-              <div className="treasury-value positive">$3,255</div>
+              <div className="treasury-value positive">$675</div>
               <div className="treasury-detail">As of Dec 28, 2025</div>
             </div>
           </div>
@@ -606,26 +606,32 @@ export default function BuildInPublicPage() {
             </div>
             <div className="accounting-row">
               <div className="category"><span className="icon">🗄️</span> Database</div>
-              <div className="amount negative">-$75</div>
-              <div className="amount negative">-$75</div>
-              <div className="amount negative">-$75</div>
+              <div className="amount negative">-$100</div>
+              <div className="amount negative">-$100</div>
+              <div className="amount negative">-$100</div>
             </div>
             <div className="accounting-row">
               <div className="category"><span className="icon">☁️</span> Servers</div>
-              <div className="amount negative">-$120</div>
-              <div className="amount negative">-$120</div>
-              <div className="amount negative">-$120</div>
+              <div className="amount negative">-$25</div>
+              <div className="amount negative">-$25</div>
+              <div className="amount negative">-$25</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">🏢</span> Office & Utils</div>
+              <div className="amount negative">-$150</div>
+              <div className="amount negative">-$150</div>
+              <div className="amount negative">-$150</div>
             </div>
             <div className="accounting-row">
               <div className="category"><span className="icon">💻</span> Hardware</div>
               <div className="amount">-</div>
-              <div className="amount negative">-$1,450</div>
+              <div className="amount negative">-$3,200</div>
               <div className="amount">-</div>
             </div>
             <div className="accounting-row sub">
-              <div className="category">MacBook for development</div>
+              <div className="category">Macbook + monitor terminals</div>
               <div className="amount">-</div>
-              <div className="amount">$1,450</div>
+              <div className="amount">$3,200</div>
               <div className="amount">-</div>
             </div>
             <div className="accounting-row">
@@ -640,29 +646,23 @@ export default function BuildInPublicPage() {
               <div className="amount">$0</div>
               <div className="amount">$0</div>
             </div>
-            <div className="accounting-row">
-              <div className="category"><span className="icon">🏢</span> Office & Utils</div>
-              <div className="amount">$0</div>
-              <div className="amount">$0</div>
-              <div className="amount">$0</div>
-            </div>
 
             <div className="accounting-row total">
               <div className="category"><strong>Monthly Total</strong></div>
-              <div className="amount negative">-$295</div>
-              <div className="amount negative">-$1,745</div>
-              <div className="amount positive">+$4,705</div>
+              <div className="amount negative">-$375</div>
+              <div className="amount negative">-$3,575</div>
+              <div className="amount positive">+$4,625</div>
             </div>
             <div className="accounting-row total">
               <div className="category"><strong>Running Balance</strong></div>
-              <div className="amount negative">-$295</div>
-              <div className="amount negative">-$2,040</div>
-              <div className="amount positive">$3,255</div>
+              <div className="amount negative">-$375</div>
+              <div className="amount negative">-$3,950</div>
+              <div className="amount positive">$675</div>
             </div>
           </div>
 
           <p style={{fontSize: '0.7rem', color: 'var(--text-tertiary)', marginTop: '1rem', textAlign: 'center'}}>
-            * Negative balance Oct-Nov covered by founder. Treasury wallet <a href="https://basescan.org/address/0xB56C6247F39A992dbcF172a4308386A23d0ea15C" target="_blank" rel="noopener noreferrer" style={{color: 'var(--primary)', textDecoration: 'none'}}>0xB56C6247F39.....a15C</a>
+            * Negative balance Oct-Dec covered by founder from AI Trading PNL. Treasury wallet <a href="https://basescan.org/address/0xB56C6247F39A992dbcF172a4308386A23d0ea15C" target="_blank" rel="noopener noreferrer" style={{color: 'var(--primary)', textDecoration: 'none'}}>0xB56C6247F39.....a15C</a>
           </p>
         </section>
       </main>
