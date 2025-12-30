@@ -3334,7 +3334,7 @@ html {
     gap: 0.6rem;
 }
 
-.roadmap-item {
+.build-roadmap-item {
     display: flex;
     align-items: flex-start;
     gap: 0.6rem;
@@ -3343,13 +3343,13 @@ html {
     line-height: 1.5;
 }
 
-.roadmap-item .status {
+.build-roadmap-item .status {
     color: var(--text-secondary);
     font-size: 0.9rem;
     flex-shrink: 0;
 }
 
-.roadmap-item .status.planned {
+.build-roadmap-item .status.planned {
     color: #9B59B6;
 }
 

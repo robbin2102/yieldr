@@ -409,7 +409,7 @@ export default function BuildInPublicPage() {
                   <span>Week 1: Jan 6-12</span>
                 </div>
                 <div className="roadmap-week-items">
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>UI design for agent launch & user onboarding</span>
                   </div>
@@ -421,11 +421,11 @@ export default function BuildInPublicPage() {
                   <span>Week 2: Jan 13-20</span>
                 </div>
                 <div className="roadmap-week-items">
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>Top 1.5K wallets on Base - real-time swap monitoring</span>
                   </div>
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>Wallet performance metrics service</span>
                   </div>
@@ -437,19 +437,19 @@ export default function BuildInPublicPage() {
                   <span>Week 3: Jan 21-28</span>
                 </div>
                 <div className="roadmap-week-items">
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>Market data context services for LLM tooling:</span>
                   </div>
-                  <div className="roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+                  <div className="build-roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
                     <span className="status planned">○</span>
                     <span>Tier-1 CEX data feeds (OI, Funding rates, Volume, Orderflow)</span>
                   </div>
-                  <div className="roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+                  <div className="build-roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
                     <span className="status planned">○</span>
                     <span>Technical indicators (RSI, MACD, BBANDS, EMA 20D/50D, ATR)</span>
                   </div>
-                  <div className="roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
+                  <div className="build-roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
                     <span className="status planned">○</span>
                     <span>DEX pool data (Liquidity depth, Volume, Price impact)</span>
                   </div>
@@ -470,15 +470,15 @@ export default function BuildInPublicPage() {
                   <span>6-10 Weeks Sprint</span>
                 </div>
                 <div className="roadmap-week-items">
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>Onboarding journey frontend integration (1 week)</span>
                   </div>
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>LLM tooling orchestration - bringing all data monitoring modules together as LLM tools and functions (3-4 weeks)</span>
                   </div>
-                  <div className="roadmap-item">
+                  <div className="build-roadmap-item">
                     <span className="status planned">○</span>
                     <span>Actionable insights engine - providing alpha to users (3-weeks)</span>
                   </div>
