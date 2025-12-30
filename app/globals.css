@@ -2795,10 +2795,10 @@ html {
 /* Main Content */
 .build-main {
     padding-top: 100px;
-    max-width: 1400px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 /* Hero */
@@ -2853,53 +2853,53 @@ html {
 
 /* Page Title and Subtitle */
 .page-title {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     line-height: 1.2;
 }
 
 .page-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 700px;
+    line-height: 1.5;
+    max-width: 600px;
     margin: 0 auto;
 }
 
 /* Progress Overview */
 .progress-overview {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .progress-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .progress-card {
     background: var(--card-bg);
     border: 1px solid var(--border-primary);
-    border-radius: 16px;
-    padding: 2rem;
+    border-radius: 12px;
+    padding: 1.5rem;
     text-align: center;
     transition: all 0.3s;
 }
 
 .progress-card:hover {
     border-color: var(--primary);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
 }
 
 .progress-value {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
 }
 
 .progress-label {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
@@ -2907,39 +2907,39 @@ html {
 .section-header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .section-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .section-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
 }
 
 /* Development Metrics */
 .dev-metrics {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .dev-metrics-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .dev-metrics-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .metric-item {
@@ -2947,14 +2947,14 @@ html {
 }
 
 .metric-value {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: var(--primary);
     margin-bottom: 0.5rem;
 }
 
 .metric-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
@@ -3027,58 +3027,58 @@ html {
 /* Timeline */
 .timeline {
     position: relative;
-    padding-left: 3rem;
+    padding-left: 2.5rem;
 }
 
 .timeline::before {
     content: '';
     position: absolute;
-    left: 1rem;
-    top: 2rem;
-    bottom: 2rem;
+    left: 0.75rem;
+    top: 1.5rem;
+    bottom: 1.5rem;
     width: 2px;
     background: var(--border-secondary);
 }
 
 .timeline-month {
     position: relative;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 .timeline-dot {
     position: absolute;
-    left: -2.375rem;
-    top: 0.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    left: -2rem;
+    top: 0.4rem;
+    width: 1.25rem;
+    height: 1.25rem;
     border-radius: 50%;
     background: var(--card-bg);
-    border: 3px solid var(--border-secondary);
+    border: 2px solid var(--border-secondary);
 }
 
 .timeline-dot.current {
     border-color: var(--primary);
     background: var(--primary);
-    box-shadow: 0 0 0 4px rgba(0, 200, 5, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 200, 5, 0.2);
 }
 
 /* Month Headers */
 .month-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 
 .month-name {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
 }
 
 .month-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
@@ -3106,9 +3106,9 @@ html {
 .month-vision {
     background: rgba(0, 200, 5, 0.05);
     border: 1px solid rgba(0, 200, 5, 0.2);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .vision-label {
@@ -3130,33 +3130,33 @@ html {
 .modules-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .module-item {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     background: var(--card-bg);
     border: 1px solid var(--border-primary);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 10px;
+    padding: 1.25rem;
     transition: all 0.2s;
 }
 
 .module-item:hover {
     border-color: var(--primary);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .module-status {
     flex-shrink: 0;
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .module-status.complete {
@@ -3172,17 +3172,17 @@ html {
 }
 
 .module-name {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     color: var(--text-primary);
 }
 
 .module-desc {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 1rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
 }
 
 .module-footer {
@@ -3194,13 +3194,13 @@ html {
 .module-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .module-tag {
-    padding: 0.25rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 5px;
+    font-size: 0.7rem;
     font-weight: 600;
 }
 
@@ -3284,66 +3284,66 @@ html {
 
 /* Roadmap Section */
 .roadmap-section {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .roadmap-month {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .roadmap-month-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 
 .roadmap-month-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
 }
 
 .roadmap-weeks {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.25rem;
 }
 
 .roadmap-week {
     background: var(--card-bg);
     border: 1px solid var(--border-primary);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 10px;
+    padding: 1.25rem;
 }
 
 .roadmap-week-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
     color: var(--text-primary);
 }
 
 .roadmap-week-items {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.6rem;
 }
 
 .roadmap-item {
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
-    font-size: 0.95rem;
+    gap: 0.6rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .roadmap-item .status {
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
 }
 
@@ -3353,32 +3353,32 @@ html {
 
 /* Trading Section */
 .trading-section {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .treasury-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .treasury-card-item {
     background: var(--card-bg);
     border: 1px solid var(--border-primary);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 10px;
+    padding: 1.25rem;
     text-align: center;
 }
 
 .treasury-card-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
 }
 
 .treasury-card-value {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 800;
 }
 
@@ -3394,7 +3394,7 @@ html {
 .accounting-table {
     background: var(--card-bg);
     border: 1px solid var(--border-primary);
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     margin-bottom: 1rem;
 }
@@ -3402,20 +3402,21 @@ html {
 .accounting-header {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
     background: rgba(0, 0, 0, 0.3);
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.25rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
 .accounting-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
     border-top: 1px solid var(--border-secondary);
+    font-size: 0.9rem;
 }
 
 .accounting-row.total {
@@ -3429,9 +3430,10 @@ html {
 }
 
 .verification-note {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
     text-align: center;
+    margin-top: 0.75rem;
 }
 
 .verify-link {
@@ -3446,13 +3448,13 @@ html {
 
 /* Treasury Section */
 .treasury-section {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .treasury-accounting-table {
     background: var(--card-bg);
     border: 1px solid var(--border-primary);
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     margin-bottom: 1rem;
 }
@@ -3460,20 +3462,21 @@ html {
 .treasury-accounting-header {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
     background: rgba(0, 0, 0, 0.3);
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.25rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
 .treasury-accounting-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
     border-top: 1px solid var(--border-secondary);
+    font-size: 0.85rem;
 }
 
 .treasury-accounting-row.receipts {
@@ -3497,10 +3500,10 @@ html {
 .treasury-accounting-subrow {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 1rem;
-    padding: 0.75rem 1.5rem 0.75rem 3rem;
+    gap: 0.75rem;
+    padding: 0.65rem 1.25rem 0.65rem 2.5rem;
     border-top: 1px solid var(--border-secondary);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
 }
 
@@ -3516,15 +3519,15 @@ html {
 }
 
 .category-icon {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
 }
 
 .treasury-note {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
     font-style: italic;
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
 }
 
 /* Color Utilities */
