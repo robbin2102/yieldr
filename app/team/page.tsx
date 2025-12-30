@@ -24,6 +24,7 @@ export default function TeamPage() {
           <Link href="/" className="team-nav-link">Home</Link>
           <Link href="/docs" className="team-nav-link">Docs</Link>
           <Link href="/team" className="team-nav-link active">Team</Link>
+          <Link href="/build-in-public" className="team-nav-link">Build Progress</Link>
           <div className="team-nav-divider"></div>
           <Link href="https://discord.com/channels/1426305214176165941/1426305389812646091" target="_blank" className="team-nav-icon discord" title="Discord">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
