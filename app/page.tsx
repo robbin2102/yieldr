@@ -1,9 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { PaymentPopup } from './components/PaymentPopup';
-import { Providers } from './providers';
+
+const Providers = dynamic(
+  () => import('./providers').then((mod) => mod.Providers),
+  { ssr: false }
+);
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
