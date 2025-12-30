@@ -2867,6 +2867,42 @@ html {
     margin: 0 auto;
 }
 
+/* Progress Overview */
+.progress-overview {
+    margin-bottom: 4rem;
+}
+
+.progress-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.progress-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.progress-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+}
+
+.progress-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.progress-label {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
 /* Section Headers */
 .section-header {
     display: flex;
