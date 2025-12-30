@@ -3527,6 +3527,15 @@ html {
     margin-top: 1rem;
 }
 
+/* Color Utilities */
+.positive {
+    color: var(--primary);
+}
+
+.negative {
+    color: #FF4444;
+}
+
 /* Footer */
 .build-footer {
     border-top: 1px solid var(--border-primary);
@@ -3584,12 +3593,12 @@ html {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .performance-summary {
-        grid-template-columns: repeat(2, 1fr);
+    .dev-metrics-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .results-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .treasury-cards {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -3607,11 +3616,11 @@ html {
         display: none;
     }
 
-    .build-hero h1 {
+    .page-title {
         font-size: 2.5rem;
     }
 
-    .build-hero p {
+    .page-subtitle {
         font-size: 1rem;
     }
 
@@ -3623,33 +3632,21 @@ html {
         grid-template-columns: 1fr;
     }
 
-    .roadmap-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .performance-summary {
-        grid-template-columns: 1fr;
+    .dev-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
 
-    .performance-months {
+    .treasury-cards {
         grid-template-columns: 1fr;
     }
 
-    .commit-chart {
-        height: 250px;
-        padding: 1rem;
+    .month-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
-    .results-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .timeline-month-header {
-        gap: 0.75rem;
-    }
-
-    .timeline-month-header h3 {
+    .month-name {
         font-size: 1.4rem;
     }
 
@@ -3657,35 +3654,36 @@ html {
         padding: 1rem;
     }
 
-    .module-code {
-        position: static;
-        transform: none;
-        opacity: 1;
-        display: block;
-        margin-top: 1rem;
-        text-align: right;
+    .view-code {
+        font-size: 0.8rem;
     }
 
-    .module-item:hover .module-code {
-        transform: none;
+    .roadmap-week {
+        padding: 1rem;
     }
 
-    .roadmap-period {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
+    .accounting-table,
+    .treasury-accounting-table {
+        font-size: 0.85rem;
     }
 
-    .goal-icon {
+    .accounting-header,
+    .accounting-row,
+    .treasury-accounting-header,
+    .treasury-accounting-row,
+    .treasury-accounting-subrow {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .treasury-accounting-header,
+    .treasury-accounting-row,
+    .treasury-accounting-subrow {
+        grid-template-columns: 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr;
+    }
+
+    .section-title {
         font-size: 1.5rem;
-    }
-
-    .dev-metrics h2,
-    .build-timeline h2,
-    .module-status h2,
-    .roadmap h2,
-    .trading-performance h2,
-    .treasury h2 {
-        font-size: 2rem;
     }
 }
