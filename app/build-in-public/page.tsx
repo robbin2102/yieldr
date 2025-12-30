@@ -662,7 +662,7 @@ export default function BuildInPublicPage() {
           </div>
 
           <p style={{fontSize: '0.7rem', color: 'var(--text-tertiary)', marginTop: '1rem', textAlign: 'center'}}>
-            * Negative balance Oct-Nov covered by founder. Treasury funded by Base Batches grant in Dec '25.
+            * Negative balance Oct-Nov covered by founder. Treasury wallet <a href="https://basescan.org/address/0xB56C6247F39A992dbcF172a4308386A23d0ea15C" target="_blank" rel="noopener noreferrer" style={{color: 'var(--primary)', textDecoration: 'none'}}>0xB56C6247F39.....a15C</a>
           </p>
         </section>
       </main>
