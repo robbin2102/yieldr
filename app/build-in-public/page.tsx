@@ -72,64 +72,73 @@ export default function BuildInPublicPage() {
         {/* Hero */}
         <section className="build-hero">
           <div className="build-hero-badge">
-            <span className="build-badge-dot"></span>
-            <span>Building in public</span>
+            <span>📊</span>
+            <span>Updated Dec 2025</span>
           </div>
-          <h1>Transparent. <span>Accountable.</span> Open.</h1>
-          <p>Real-time updates on code shipped, money spent, and lessons learned. No fluff, no hiding failures.</p>
+          <h1 className="page-title">Build in Public</h1>
+          <p className="page-subtitle">Transparent development progress, milestones achieved, and treasury accounting. Every module, every commit, tracked.</p>
         </section>
 
         {/* Progress Overview */}
         <section className="progress-overview">
           <div className="progress-grid">
             <div className="progress-card">
-              <div className="progress-icon">📅</div>
-              <div className="progress-value">3 Months</div>
-              <div className="progress-label">Building</div>
+              <div className="progress-value">3</div>
+              <div className="progress-label">Months Building</div>
             </div>
             <div className="progress-card">
-              <div className="progress-icon">💻</div>
               <div className="progress-value">+28.7K</div>
               <div className="progress-label">Lines of Code</div>
             </div>
-            <div className="progress-card positive">
-              <div className="progress-icon">📈</div>
+            <div className="progress-card">
               <div className="progress-value">$14.7K</div>
               <div className="progress-label">Trading PnL</div>
             </div>
             <div className="progress-card">
-              <div className="progress-icon">💰</div>
               <div className="progress-value">$3.3K</div>
-              <div className="progress-label">Treasury Balance</div>
+              <div class="progress-label">Treasury Balance</div>
             </div>
           </div>
         </section>
 
         {/* Development Metrics */}
         <section className="dev-metrics">
-          <h2>Development Activity</h2>
-          <div className="metrics-card">
-            <div className="metric-header">
-              <div>
-                <div className="metric-title">Git Commits</div>
-                <div className="metric-subtitle">Last 90 days</div>
-              </div>
-              <div className="metric-total">387 commits</div>
+          <div className="dev-metrics-header">
+            <span>📊</span>
+            <span>Development Metrics</span>
+          </div>
+          <div className="dev-metrics-grid">
+            <div className="metric-item">
+              <div className="metric-value">153</div>
+              <div className="metric-label">Commits</div>
             </div>
-            <div className="commit-chart">
-              {[
-                { month: 'Oct', commits: 89, percentage: 23 },
-                { month: 'Nov', commits: 156, percentage: 40 },
-                { month: 'Dec', commits: 142, percentage: 37 }
-              ].map((data, i) => (
-                <div key={i} className="commit-month">
-                  <div className="commit-bar-container">
-                    <div className="commit-bar" style={{ height: `${data.percentage}%` }}></div>
-                  </div>
-                  <div className="commit-label">{data.month}</div>
-                  <div className="commit-count">{data.commits}</div>
-                </div>
-              ))}
+            <div className="metric-item">
+              <div className="metric-value">45</div>
+              <div className="metric-label">Features</div>
+            </div>
+            <div className="metric-item">
+              <div className="metric-value">71</div>
+              <div className="metric-label">Bug Fixes</div>
+            </div>
+            <div className="metric-item">
+              <div className="metric-value">364</div>
+              <div className="metric-label">Files</div>
+            </div>
+            <div className="metric-item">
+              <div className="metric-value">2</div>
+              <div className="metric-label">Contributors</div>
+            </div>
+          </div>
+          <div className="commit-bar">
+            <div className="commit-bar-visual">
+              <div className="commit-bar-segment oct"></div>
+              <div className="commit-bar-segment nov"></div>
+              <div className="commit-bar-segment dec"></div>
+            </div>
+            <div className="commit-bar-legend">
+              <div className="legend-item"><div className="legend-dot oct"></div> Oct: 43</div>
+              <div className="legend-item"><div className="legend-dot nov"></div> Nov: 48</div>
+              <div className="legend-item"><div className="legend-dot dec"></div> Dec: 62</div>
             </div>
           </div>
         </section>
