@@ -100,12 +100,18 @@ export default function HomePage() {
   useEffect(() => {
     if (demoStartedRef.current) return; // Prevent multiple runs
 
-    const chatArea = document.getElementById('chatArea');
-    if (!chatArea) return;
+    // Wait for chatArea to be available (due to dynamic Providers import)
+    const initDemo = () => {
+      const chatArea = document.getElementById('chatArea');
+      if (!chatArea) {
+        // Retry after a short delay
+        setTimeout(initDemo, 100);
+        return;
+      }
 
-    // Clear any existing content
-    chatArea.innerHTML = '';
-    demoStartedRef.current = true;
+      // Clear any existing content
+      chatArea.innerHTML = '';
+      demoStartedRef.current = true;
 
     function getTime() {
       const now = new Date();
@@ -522,8 +528,12 @@ export default function HomePage() {
       `);
     }
 
-    // Start demo after 1.2s
-    setTimeout(runDemo, 1200);
+      // Start demo after 1.2s
+      setTimeout(runDemo, 1200);
+    };
+
+    // Initialize demo (will retry if chatArea not ready)
+    initDemo();
   }, []);
 
   return (
