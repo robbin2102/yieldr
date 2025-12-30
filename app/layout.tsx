@@ -1,6 +1,7 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import './globals.css';
 import type { Metadata } from 'next';
+import { ProvidersLayout } from './ProvidersLayout';
 
 export const metadata: Metadata = {
   title: 'Yieldr - AI for DeFi\'s Top 1%',
@@ -15,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ margin: 0, padding: 0, background: '#000000', color: '#FFFFFF' }}>
-        {children}
+        <ProvidersLayout>{children}</ProvidersLayout>
       </body>
     </html>
   );

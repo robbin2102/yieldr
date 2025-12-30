@@ -1,14 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { PaymentPopup } from '../components/PaymentPopup';
-
-const Providers = dynamic(
-  () => import('../providers').then((mod) => mod.Providers),
-  { ssr: false }
-);
 
 export default function DocsPage() {
   const [activePage, setActivePage] = useState('what-is-yieldr');
@@ -34,7 +28,7 @@ export default function DocsPage() {
     }
   }, []);
 
-  const showPage = (pageId) => {
+  const showPage = (pageId: string) => {
     setActivePage(pageId);
     window.scrollTo(0, 0);
     if (isMobileView) {
@@ -54,7 +48,7 @@ export default function DocsPage() {
   };
 
   return (
-    <Providers>
+    <>
       {/* Sidebar Overlay for mobile */}
       <div className={'sidebar-overlay ' + (sidebarOpen ? 'visible' : '')} onClick={closeSidebar}></div>
 
@@ -1374,6 +1368,6 @@ export default function DocsPage() {
 
       {/* Payment Popup */}
       <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-    </Providers>
+    </>
   );
 }

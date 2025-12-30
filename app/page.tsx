@@ -1,14 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { PaymentPopup } from './components/PaymentPopup';
-
-const Providers = dynamic(
-  () => import('./providers').then((mod) => mod.Providers),
-  { ssr: false }
-);
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
@@ -53,10 +47,10 @@ export default function HomePage() {
       }
 
       draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 200, 5, 0.35)';
-        ctx.fill();
+        ctx!.beginPath();
+        ctx!.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx!.fillStyle = 'rgba(0, 200, 5, 0.35)';
+        ctx!.fill();
       }
     }
 
@@ -69,19 +63,19 @@ export default function HomePage() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0, 200, 5, ${0.08 * (1 - dist / 100)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+            ctx!.beginPath();
+            ctx!.moveTo(particles[i].x, particles[i].y);
+            ctx!.lineTo(particles[j].x, particles[j].y);
+            ctx!.strokeStyle = `rgba(0, 200, 5, ${0.08 * (1 - dist / 100)})`;
+            ctx!.lineWidth = 0.5;
+            ctx!.stroke();
           }
         }
       }
     }
 
     function animateBg() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas.width, canvas.height);
       drawConnections();
       particles.forEach(p => {
         p.update();
@@ -537,7 +531,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <Providers>
+    <>
       <canvas className="bg-canvas" id="bgCanvas" />
 
       {/* Navigation */}
@@ -699,6 +693,6 @@ export default function HomePage() {
 
       {/* Payment Popup */}
       <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-    </Providers>
+    </>
   );
 }

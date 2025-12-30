@@ -1,21 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { PaymentPopup } from '../components/PaymentPopup';
-
-const Providers = dynamic(
-  () => import('../providers').then((mod) => mod.Providers),
-  { ssr: false }
-);
 
 export default function BuildInPublicPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   return (
-    <Providers>
+    <>
       {/* Header */}
       <header className="build-header">
         <Link href="/" className="build-logo">
@@ -478,6 +472,6 @@ export default function BuildInPublicPage() {
 
       {/* Payment Popup */}
       <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-    </Providers>
+    </>
   );
 }
