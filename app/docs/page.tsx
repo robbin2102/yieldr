@@ -743,25 +743,25 @@ export default function DocsPage() {
               <div className="roadmap-dot"></div>
               <div className="roadmap-phase">Phase BETA</div>
               <h3 className="roadmap-title">Intelligence Layer</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Discover top traders, analyze alpha drivers, portfolio advice.<br /><strong>Traders:</strong> Benchmark vs top performers, performance insights.</p>
+              <p className="roadmap-desc"><strong>Investors:</strong> Discovery, analysis, advice, monitoring.<br /><strong>Traders:</strong> Benchmarking, risk & position management advice.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
               <div className="roadmap-phase">Phase V1.0</div>
               <h3 className="roadmap-title">Personalization</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Train your agent, personalized discovery, proactive alerts.<br /><strong>Traders:</strong> Verified track record, shareable profiles.</p>
+              <p className="roadmap-desc"><strong>Investors:</strong> Fine-tuned PM (portfolio manager) agents.<br /><strong>Traders:</strong> Fine-tuned trade execution agents.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
               <div className="roadmap-phase">Phase V2.0</div>
               <h3 className="roadmap-title">Trust Layer</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Copy trading execution, non-custodial deployment, risk controls.<br /><strong>Traders:</strong> Raise outside capital, earn performance fees, edge preservation.</p>
+              <p className="roadmap-desc"><strong>Investors:</strong> Semi-autonomous portfolio management.<br /><strong>Traders:</strong> Raise capital, fund management, earn fees.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
               <div className="roadmap-phase">Phase V3.0+</div>
               <h3 className="roadmap-title">Agent Economy</h3>
-              <p className="roadmap-desc">Autonomous agents, agent-to-agent trading, AI-managed funds, full marketplace.</p>
+              <p className="roadmap-desc"><strong>Investors:</strong> Autonomous portfolio management.<br /><strong>Traders:</strong> Agent-powered funds at scale.</p>
             </div>
 
             <h2>The Vision</h2>
