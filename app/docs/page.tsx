@@ -144,9 +144,9 @@ export default function DocsPage() {
               <p>A two-sided marketplace where investors discover top trading alpha while traders build track records and raise capital. AI agents power discovery, research & analysis, execution and portfolio management — becoming autonomous over time. Smart contracts enable trustless execution. Think of it as AI-powered asset management infrastructure for DeFi — accessible to everyone.</p>
             </div>
 
-            <h2>What You Get Today (Phase 1)</h2>
-            
-            <p>Phase 1 focuses on the <strong>Intelligence Layer</strong> — AI agents that deliver standalone value while we build toward the full platform:</p>
+            <h2>What You Get</h2>
+
+            <p><strong>Intelligence Layer</strong> — AI agents that deliver standalone value while we build toward the full platform:</p>
 
             <ul className="feature-list">
               <li><strong>Discover</strong> — Find top traders across Avantis, Hyperliquid, Aerodrome, Uniswap, and more</li>
@@ -167,22 +167,22 @@ export default function DocsPage() {
               </thead>
               <tbody>
                 <tr>
-                  <td><span className="stage-badge stage-now">MVP</span></td>
+                  <td><span className="stage-badge stage-now">BETA</span></td>
                   <td>Discovery, analysis, advice, monitoring</td>
                   <td>Benchmarking, risk & position management advice</td>
                 </tr>
                 <tr>
-                  <td><span className="stage-badge stage-beta">Beta</span></td>
+                  <td><span className="stage-badge stage-beta">V1.0</span></td>
                   <td>Fine-tuned PM (portfolio manager) agents</td>
                   <td>Fine-tuned trade execution agents</td>
                 </tr>
                 <tr>
-                  <td><span className="stage-badge stage-later">v1.0</span></td>
+                  <td><span className="stage-badge stage-later">V2.0</span></td>
                   <td>Semi-autonomous portfolio management</td>
                   <td>Raise capital, fund management, earn fees</td>
                 </tr>
                 <tr>
-                  <td><span className="stage-badge stage-later">v2.0+</span></td>
+                  <td><span className="stage-badge stage-later">V3.0+</span></td>
                   <td>Autonomous portfolio management</td>
                   <td>Agent-powered funds at scale</td>
                 </tr>
@@ -231,13 +231,13 @@ export default function DocsPage() {
             <h3>🔍 Discovery Problem</h3>
             <p>Finding top traders across DeFi protocols is fragmented and manual. There&apos;s no unified view of who&apos;s actually generating alpha across Avantis, Hyperliquid, Polymarket, Kalshi, Aerodrome, Uniswap, and other protocols.</p>
             <div className="solution-callout">
-              <p><strong>→ Solved by:</strong> AI agents discover and rank top traders across protocols <span className="stage-badge stage-now">MVP</span></p>
+              <p><strong>→ Solved by:</strong> AI agents discover and rank top traders across protocols <span className="stage-badge stage-now">BETA</span></p>
             </div>
 
             <h3>🤝 Trust Problem</h3>
             <p>Copy trading platforms exist, but there&apos;s no way to validate the performance they claim. Even when wallet addresses are provided, there&apos;s massive friction to pull transaction data and do true analysis. Without understanding what actually drives a trader&apos;s alpha, investing is blind guesswork.</p>
             <div className="solution-callout">
-              <p><strong>→ Solved by:</strong> AI analyzes on-chain transactions, explains alpha drivers <span className="stage-badge stage-now">MVP</span></p>
+              <p><strong>→ Solved by:</strong> AI analyzes on-chain transactions, explains alpha drivers <span className="stage-badge stage-now">BETA</span></p>
             </div>
 
             <h2>For Traders</h2>
@@ -246,13 +246,13 @@ export default function DocsPage() {
             <h3>✓ Validation Problem</h3>
             <p>No place to publicly validate performance in a verifiable way. No path from managing $200K personal capital to $2M+ with outside investors. You&apos;re stuck trading your own capital with no way to prove your edge to potential investors.</p>
             <div className="solution-callout blue">
-              <p><strong>→ Solved by:</strong> AI agent-driven onchain performance validation + Fund management <span className="stage-badge stage-beta">Beta</span> <span className="stage-badge stage-later">v1.0</span></p>
+              <p><strong>→ Solved by:</strong> AI agent-driven onchain performance validation + Fund management <span className="stage-badge stage-beta">V1.0</span> <span className="stage-badge stage-later">V2.0</span></p>
             </div>
 
             <h3>🔒 Edge Preservation Problem</h3>
             <p>Top traders don&apos;t want their wallet transactions parsed and strategies reverse-engineered. No incentive structure exists for them to let their alpha be accessible to investors. Why would they share their edge for free?</p>
             <div className="solution-callout blue">
-              <p><strong>→ Solved by:</strong> Transparency levels (performance-only vs full) + Compensation for alpha <span className="stage-badge stage-later">v1.0</span></p>
+              <p><strong>→ Solved by:</strong> Transparency levels (performance-only vs full) + Compensation for alpha <span className="stage-badge stage-later">V2.0</span></p>
             </div>
 
             <h2>Why Current Solutions Fail</h2>
@@ -382,17 +382,17 @@ export default function DocsPage() {
             <div className="cards-grid">
               <div className="card highlight">
                 <div className="card-icon">🧠</div>
-                <div className="card-title">Intelligence Layer <span className="stage-badge stage-now">Now</span></div>
+                <div className="card-title">Intelligence Layer <span className="stage-badge stage-now">BETA</span></div>
                 <p className="card-desc">AI agents that discover top traders, analyze alpha drivers, advise on positions, and monitor your portfolio. This is what makes institutional-grade intelligence accessible to everyone.</p>
               </div>
               <div className="card">
                 <div className="card-icon">🔐</div>
-                <div className="card-title">Trust Layer <span className="stage-badge stage-later">v1.0</span></div>
+                <div className="card-title">Trust Layer <span className="stage-badge stage-later">V1.0</span></div>
                 <p className="card-desc">Smart contracts that enable trustless execution — auto trading, fund management, risk controls, and compensation. This is what makes it safe for traders to share alpha and investors to deploy capital.</p>
               </div>
             </div>
 
-            <h2>Intelligence Layer (MVP)</h2>
+            <h2>Intelligence Layer (BETA)</h2>
 
             <p>The AI agent is your interface to DeFi&apos;s best traders & fund managers:</p>
 
@@ -419,7 +419,7 @@ export default function DocsPage() {
               </div>
             </div>
 
-            <h2>Trust Layer (v1.0)</h2>
+            <h2>Trust Layer (V1.0)</h2>
 
             <p>Smart contracts that make execution trustless for both sides:</p>
 
@@ -481,32 +481,32 @@ export default function DocsPage() {
                 <tr>
                   <td><strong>Discover</strong></td>
                   <td>Find top traders across protocols based on verified on-chain performance</td>
-                  <td><span className="stage-badge stage-now">Now</span></td>
+                  <td><span className="stage-badge stage-now">BETA</span></td>
                 </tr>
                 <tr>
                   <td><strong>Analyze</strong></td>
                   <td>Parses transactions to explain win rates, styles, risk profiles, alpha drivers</td>
-                  <td><span className="stage-badge stage-now">Now</span></td>
+                  <td><span className="stage-badge stage-now">BETA</span></td>
                 </tr>
                 <tr>
                   <td><strong>Advise</strong></td>
                   <td>Recommends actions on your positions based on data, not emotion</td>
-                  <td><span className="stage-badge stage-now">Now</span></td>
+                  <td><span className="stage-badge stage-now">BETA</span></td>
                 </tr>
                 <tr>
                   <td><strong>Monitor</strong></td>
                   <td>Tracks your positions and alerts you when something needs attention</td>
-                  <td><span className="stage-badge stage-now">Now</span></td>
+                  <td><span className="stage-badge stage-now">BETA</span></td>
                 </tr>
                 <tr>
                   <td><strong>Learn</strong></td>
                   <td>Trains from top traders, YOUR preferences and goals to become personalized PM & trading copilot</td>
-                  <td><span className="stage-badge stage-beta">Beta</span></td>
+                  <td><span className="stage-badge stage-beta">V1.0</span></td>
                 </tr>
                 <tr>
                   <td><strong>Execute</strong></td>
                   <td>Based on learning and risk/return goals set by user, trades and manages funds via smart contracts</td>
-                  <td><span className="stage-badge stage-later">v1.0</span></td>
+                  <td><span className="stage-badge stage-later">V1.0</span></td>
                 </tr>
               </tbody>
             </table>
@@ -615,7 +615,7 @@ export default function DocsPage() {
               <p><strong>Edge preservation:</strong> You control what&apos;s shared and get compensated for alpha.</p>
             </div>
 
-            <h2>Today: Benchmark & Improve <span className="stage-badge stage-now">MVP</span></h2>
+            <h2>Benchmark & Improve <span className="stage-badge stage-now">BETA</span></h2>
 
             <p>Your AI agent helps you understand and improve your trading:</p>
 
@@ -639,7 +639,7 @@ export default function DocsPage() {
               <p className="prompt-desc">Agent simulates your historical trades with tighter stops to show potential improvements.</p>
             </div>
 
-            <h2>Coming: Build Your Track Record <span className="stage-badge stage-beta">Beta</span></h2>
+            <h2>Coming: Build Your Track Record <span className="stage-badge stage-beta">V1.0</span></h2>
 
             <p>Your on-chain performance becomes your verified track record:</p>
             <ul className="feature-list">
@@ -649,7 +649,7 @@ export default function DocsPage() {
               <li>AI-generated performance reports</li>
             </ul>
 
-            <h2>Coming: Scale to Fund Management <span className="stage-badge stage-later">v1.0</span></h2>
+            <h2>Coming: Scale to Fund Management <span className="stage-badge stage-later">V2.0</span></h2>
 
             <p>Turn your edge into a business:</p>
             <ul className="feature-list">
@@ -741,25 +741,25 @@ export default function DocsPage() {
 
             <div className="roadmap-item current">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase 1 — Now</div>
-              <h3 className="roadmap-title">MVP: Intelligence Layer</h3>
+              <div className="roadmap-phase">Phase BETA</div>
+              <h3 className="roadmap-title">Intelligence Layer</h3>
               <p className="roadmap-desc"><strong>Investors:</strong> Discover top traders, analyze alpha drivers, portfolio advice.<br /><strong>Traders:</strong> Benchmark vs top performers, performance insights.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase 2 — Beta</div>
+              <div className="roadmap-phase">Phase V1.0</div>
               <h3 className="roadmap-title">Personalization</h3>
               <p className="roadmap-desc"><strong>Investors:</strong> Train your agent, personalized discovery, proactive alerts.<br /><strong>Traders:</strong> Verified track record, shareable profiles.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase 3 — v1.0</div>
+              <div className="roadmap-phase">Phase V2.0</div>
               <h3 className="roadmap-title">Trust Layer</h3>
               <p className="roadmap-desc"><strong>Investors:</strong> Copy trading execution, non-custodial deployment, risk controls.<br /><strong>Traders:</strong> Raise outside capital, earn performance fees, edge preservation.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase 4 — v2.0+</div>
+              <div className="roadmap-phase">Phase V3.0+</div>
               <h3 className="roadmap-title">Agent Economy</h3>
               <p className="roadmap-desc">Autonomous agents, agent-to-agent trading, AI-managed funds, full marketplace.</p>
             </div>
@@ -826,7 +826,7 @@ export default function DocsPage() {
 
             <div className="callout callout-info">
               <div className="callout-title">📅 TGE: Q1 2027</div>
-              <p>Token Generation Event with ICO and Tier-1 CEX listing (Coinbase). Early contributors receive YLDR allocations at TGE. Until then, contribute USDC to lock in your allocation at current tier pricing.</p>
+              <p>Token Generation Event with ICO and Tier-1 CEX listing (Coinbase, Bybit, OKX). Early contributors receive YLDR allocations at TGE. Until then, contribute USDC to lock in your allocation at current tier pricing.</p>
             </div>
 
             <h2>Key Properties</h2>
@@ -855,21 +855,22 @@ export default function DocsPage() {
 
             <h2>The Model</h2>
             <div className="architecture-diagram">
-<pre>{`   <span class="arch-highlight">NOW</span>                                              <span class="arch-highlight">TGE (Q1 2027)</span>
+<pre>{`
+<span class="arch-highlight">NOW</span>                                     <span class="arch-highlight">TGE (Q1 2027)</span>
 
-   ┌─────────────────┐                            ┌─────────────────────────┐
-   │                 │                            │                         │
-   │   Contribute    │       12-15 months         │   Token Generation      │
-   │   USDC          │ ─────────────────────────▶ │   + ICO                 │
-   │                 │                            │   + Tier-1 CEX Listing  │
-   │                 │                            │                         │
-   └─────────────────┘                            └─────────────────────────┘
+┌─────────────────┐                 ┌─────────────────────────┐
+│                 │                 │                         │
+│   Contribute    │   12-15 months  │   Token Generation      │
+│   USDC          │ ───────────────▶│   + ICO                 │
+│                 │                 │   + Tier-1 CEX Listing  │
+│                 │                 │                         │
+└─────────────────┘                 └─────────────────────────┘
 
-   You receive:                                   At TGE:
-   • Allocation locked at tier price              • YLDR distributed to wallet
-   • AI credits (immediate)                       • Trading begins
-   • Snapshot voting rights                       • Burn mechanism activates
-   • Monthly transparency reports                 • All allocations vest
+You receive:                        At TGE:
+• Allocation locked at tier price   • YLDR distributed to wallet
+• AI credits (immediate)             • Trading begins
+• Snapshot voting rights             • Burn mechanism activates
+• Monthly transparency reports       • All allocations vest
 `}</pre>
             </div>
 
@@ -900,12 +901,13 @@ export default function DocsPage() {
 
             <h2>How It Works <span className="tge-badge">At TGE</span></h2>
             <div className="architecture-diagram">
-<pre>{`┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
-│                 │      │                 │      │                 │
-│  <span class="arch-highlight">Acquire YLDR</span>   │─────▶│   <span class="arch-highlight">Burn YLDR</span>    │─────▶│    <span class="arch-highlight">Use AI</span>       │
-│  (CEX or DEX)   │      │  (Market Rate)  │      │  (Train Agent)  │
-│                 │      │                 │      │                 │
-└─────────────────┘      └─────────────────┘      └─────────────────┘
+<pre>{`
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│              │     │              │     │              │
+│ <span class="arch-highlight">Acquire YLDR</span> │────▶│ <span class="arch-highlight">Burn YLDR</span>    │────▶│ <span class="arch-highlight">Use AI</span>       │
+│ (CEX or DEX) │     │ (Market Rate)│     │ (Train Agent)│
+│              │     │              │     │              │
+└──────────────┘     └──────────────┘     └──────────────┘
 `}</pre>
             </div>
 
@@ -1172,29 +1174,30 @@ export default function DocsPage() {
 
             <h2>Contribution Flow</h2>
             <div className="architecture-diagram">
-<pre>{`┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
-│   1. <span class="arch-highlight">CONTRIBUTE</span>                                                        │
-│      • Send USDC to published treasury wallet (Base network)            │
-│      • Current tier pricing locked at time of contribution              │
-│                                                                         │
-│   2. <span class="arch-highlight">RECEIVE CONFIRMATION</span>                                              │
-│      • Wallet address recorded                                          │
-│      • Tier + allocation rate locked                                    │
-│      • Entry in public allocation table                                 │
-│      • AI credits added to your account                                 │
-│                                                                         │
-│   3. <span class="arch-highlight">USE PRODUCT</span>                                                       │
-│      • Access AI agent with credited balance                            │
-│      • Participate in Snapshot governance                               │
-│      • Receive monthly transparency updates                             │
-│                                                                         │
-│   4. <span class="arch-highlight">TGE (Q1 2027)</span>                                                     │
-│      • YLDR tokens distributed to your wallet                           │
-│      • Trading begins on Coinbase + tier-1 exchanges                    │
-│      • Burn mechanism activates                                         │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
+<pre>{`
+┌──────────────────────────────────────────────────────────────┐
+│                                                              │
+│   1. <span class="arch-highlight">CONTRIBUTE</span>                                             │
+│      • Send USDC to treasury wallet (Base network)           │
+│      • Current tier pricing locked at contribution           │
+│                                                              │
+│   2. <span class="arch-highlight">RECEIVE CONFIRMATION</span>                                   │
+│      • Wallet address recorded                               │
+│      • Tier + allocation rate locked                         │
+│      • Entry in public allocation table                      │
+│      • AI credits added to your account                      │
+│                                                              │
+│   3. <span class="arch-highlight">USE PRODUCT</span>                                            │
+│      • Access AI agent with credited balance                 │
+│      • Participate in Snapshot governance                    │
+│      • Receive monthly transparency updates                  │
+│                                                              │
+│   4. <span class="arch-highlight">TGE (Q1 2027)</span>                                          │
+│      • YLDR tokens distributed to your wallet                │
+│      • Trading begins on Coinbase, Bybit, OKX                │
+│      • Burn mechanism activates                              │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
 `}</pre>
             </div>
 
@@ -1245,7 +1248,7 @@ export default function DocsPage() {
               <div className="roadmap-dot"></div>
               <div className="roadmap-phase">Q1 2027</div>
               <h3 className="roadmap-title">TGE + Listing</h3>
-              <p className="roadmap-desc">Token generation event. YLDR distributed. ICO. Coinbase + tier-1 CEX listing. Trading begins.</p>
+              <p className="roadmap-desc">Token generation event. YLDR distributed. ICO. Coinbase, Bybit, OKX listing. Trading begins.</p>
             </div>
 
             <div className="callout callout-success">
@@ -1290,7 +1293,7 @@ export default function DocsPage() {
             <h2>Token & Participation</h2>
 
             <h3>When is the token launch?</h3>
-            <p>TGE (Token Generation Event) is planned for Q1 2027, coinciding with ICO and Tier-1 CEX listing on Coinbase. Until then, you can contribute USDC to lock in allocations at current tier pricing.</p>
+            <p>TGE (Token Generation Event) is planned for Q1 2027, coinciding with ICO and Tier-1 CEX listing (Coinbase, Bybit, OKX). Until then, you can contribute USDC to lock in allocations at current tier pricing.</p>
 
             <h3>Why is there no token yet?</h3>
             <p>No token until TGE means 100% focus on building the best AI agent. Early contributors are true believers who want the product, not speculators. When YLDR launches, it launches with real utility and proven product-market fit.</p>
