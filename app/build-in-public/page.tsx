@@ -13,7 +13,12 @@ export default function BuildInPublicPage() {
       {/* Header */}
       <header className="build-header">
         <Link href="/" className="build-logo">
-          <span className="build-logo-text">⚡ YIELDR</span>
+          <svg className="build-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
+            <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
+            <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
+          </svg>
+          <span className="build-logo-text">YIELDR</span>
         </Link>
         <nav className="build-nav-links">
           <Link href="/" className="build-nav-link">Home</Link>
@@ -133,77 +138,293 @@ export default function BuildInPublicPage() {
         <section className="build-timeline">
           <h2>Development Timeline</h2>
 
+          {/* December 2025 */}
           <div className="timeline-month">
             <div className="timeline-month-header">
               <h3>December 2025</h3>
-              <span className="timeline-status current">Current</span>
+              <div className="timeline-badges">
+                <span className="timeline-badge current">Current</span>
+                <span className="timeline-badge">Web3 Integration</span>
+                <span className="timeline-badge">Frontend Polish</span>
+              </div>
             </div>
-            <div className="timeline-items">
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Team page with human-AI collaboration showcase</span>
+
+            <div className="timeline-vision">
+              <h4>Product Vision</h4>
+              <p>Completing the pre-launch infrastructure with polished UI/UX, secure payment systems, and comprehensive documentation. Focus on user experience and transparent metrics for early community building.</p>
+            </div>
+
+            <div className="timeline-modules">
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Team Page & Human-AI Showcase</h5>
+                    <div className="module-tags">
+                      <span className="tag">Next.js</span>
+                      <span className="tag">React</span>
+                      <span className="tag">TypeScript</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>USDC payment infrastructure for YLDR token pre-sale</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>USDC Payment Infrastructure</h5>
+                    <div className="module-tags">
+                      <span className="tag protocol">Base</span>
+                      <span className="tag protocol">USDC</span>
+                      <span className="tag">Smart Contracts</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>MongoDB integration for contribution tracking</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>MongoDB Contribution Tracking</h5>
+                    <div className="module-tags">
+                      <span className="tag">MongoDB</span>
+                      <span className="tag">Database</span>
+                      <span className="tag">API</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item in-progress">
-                <span className="timeline-icon">●</span>
-                <span>Build-in-public page with full transparency metrics</span>
+
+              <div className="module-item in-progress">
+                <div className="module-header">
+                  <span className="module-icon in-progress">●</span>
+                  <div className="module-info">
+                    <h5>Build-in-Public Page</h5>
+                    <div className="module-tags">
+                      <span className="tag">Transparency</span>
+                      <span className="tag">Metrics</span>
+                      <span className="tag">UI/UX</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
+              </div>
+            </div>
+
+            <div className="trading-results-inline">
+              <h4>December Trading Results</h4>
+              <div className="results-grid">
+                <div className="result-stat">
+                  <span className="result-label">Trades</span>
+                  <span className="result-value">47</span>
+                </div>
+                <div className="result-stat">
+                  <span className="result-label">PnL</span>
+                  <span className="result-value positive">+$4,594</span>
+                </div>
+                <div className="result-stat">
+                  <span className="result-label">Win Rate</span>
+                  <span className="result-value">68.1%</span>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* November 2025 */}
           <div className="timeline-month">
             <div className="timeline-month-header">
               <h3>November 2025</h3>
-              <span className="timeline-status past">Completed</span>
+              <div className="timeline-badges">
+                <span className="timeline-badge completed">Completed</span>
+                <span className="timeline-badge">Wallet Integration</span>
+                <span className="timeline-badge">Competition Winner</span>
+              </div>
             </div>
-            <div className="timeline-items">
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Homepage redesign with animated chat demo</span>
+
+            <div className="timeline-vision">
+              <h4>Product Vision</h4>
+              <p>Major milestone month with complete wallet integration, redesigned homepage with live demo, comprehensive documentation system, and winning Base Batches 002 competition recognition.</p>
+            </div>
+
+            <div className="timeline-modules">
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Homepage Redesign & Chat Demo</h5>
+                    <div className="module-tags">
+                      <span className="tag">Animation</span>
+                      <span className="tag">UI/UX</span>
+                      <span className="tag">Interactive</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>RainbowKit + Wagmi wallet integration</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>RainbowKit + Wagmi Integration</h5>
+                    <div className="module-tags">
+                      <span className="tag protocol">RainbowKit</span>
+                      <span className="tag protocol">Wagmi</span>
+                      <span className="tag protocol">Base</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Documentation system with comprehensive guides</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Documentation System</h5>
+                    <div className="module-tags">
+                      <span className="tag">Docs</span>
+                      <span className="tag">Guides</span>
+                      <span className="tag">API Reference</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Won Base Batches 002 competition</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Base Batches 002 Competition</h5>
+                    <div className="module-tags">
+                      <span className="tag protocol">Base</span>
+                      <span className="tag">Winner</span>
+                      <span className="tag">$2.5K Prize</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
+              </div>
+            </div>
+
+            <div className="trading-results-inline">
+              <h4>November Trading Results</h4>
+              <div className="results-grid">
+                <div className="result-stat">
+                  <span className="result-label">Trades</span>
+                  <span className="result-value">67</span>
+                </div>
+                <div className="result-stat">
+                  <span className="result-label">PnL</span>
+                  <span className="result-value positive">+$6,891</span>
+                </div>
+                <div className="result-stat">
+                  <span className="result-label">Win Rate</span>
+                  <span className="result-value">70.1%</span>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* October 2025 */}
           <div className="timeline-month">
             <div className="timeline-month-header">
               <h3>October 2025</h3>
-              <span className="timeline-status past">Completed</span>
+              <div className="timeline-badges">
+                <span className="timeline-badge completed">Completed</span>
+                <span className="timeline-badge">Foundation</span>
+                <span className="timeline-badge">AI Agent Core</span>
+              </div>
             </div>
-            <div className="timeline-items">
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Project inception and architecture design</span>
+
+            <div className="timeline-vision">
+              <h4>Product Vision</h4>
+              <p>Project launch month focused on building solid technical foundations. Established Next.js 15 architecture, Base network integration, and core AI agent infrastructure for future trading capabilities.</p>
+            </div>
+
+            <div className="timeline-modules">
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Project Inception & Architecture</h5>
+                    <div className="module-tags">
+                      <span className="tag">Planning</span>
+                      <span className="tag">Design</span>
+                      <span className="tag">Strategy</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Next.js 15 setup with TypeScript</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Next.js 15 + TypeScript Setup</h5>
+                    <div className="module-tags">
+                      <span className="tag">Next.js 15</span>
+                      <span className="tag">TypeScript</span>
+                      <span className="tag">React</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Base network integration</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Base Network Integration</h5>
+                    <div className="module-tags">
+                      <span className="tag protocol">Base</span>
+                      <span className="tag protocol">Ethereum</span>
+                      <span className="tag">L2</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
               </div>
-              <div className="timeline-item complete">
-                <span className="timeline-icon">✓</span>
-                <span>Core AI agent infrastructure</span>
+
+              <div className="module-item complete">
+                <div className="module-header">
+                  <span className="module-icon">✓</span>
+                  <div className="module-info">
+                    <h5>Core AI Agent Infrastructure</h5>
+                    <div className="module-tags">
+                      <span className="tag">AI</span>
+                      <span className="tag">Claude</span>
+                      <span className="tag">Trading Logic</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="module-code">View Code →</a>
+              </div>
+            </div>
+
+            <div className="trading-results-inline">
+              <h4>October Trading Results</h4>
+              <div className="results-grid">
+                <div className="result-stat">
+                  <span className="result-label">Trades</span>
+                  <span className="result-value">42</span>
+                </div>
+                <div className="result-stat">
+                  <span className="result-label">PnL</span>
+                  <span className="result-value positive">+$3,247</span>
+                </div>
+                <div className="result-stat">
+                  <span className="result-label">Win Rate</span>
+                  <span className="result-value">64.3%</span>
+                </div>
               </div>
             </div>
           </div>
@@ -283,58 +504,65 @@ export default function BuildInPublicPage() {
 
         {/* Roadmap */}
         <section className="roadmap">
-          <h2>Roadmap Ahead</h2>
-          <div className="roadmap-grid">
-            <div className="roadmap-quarter">
-              <div className="roadmap-header">
-                <h3>Q1 2026</h3>
-                <span className="roadmap-tag">Jan - Mar</span>
-              </div>
-              <ul className="roadmap-items">
-                <li>Complete YLDR pre-TGE token sale</li>
-                <li>Deploy production multisig treasury</li>
-                <li>Launch AlphaHunter trading agent beta</li>
-                <li>Onboard first 100 users</li>
-              </ul>
-            </div>
+          <h2>What's Next</h2>
 
-            <div className="roadmap-quarter">
-              <div className="roadmap-header">
-                <h3>Q2 2026</h3>
-                <span className="roadmap-tag">Apr - Jun</span>
-              </div>
-              <ul className="roadmap-items">
-                <li>YLDR Token Generation Event (TGE)</li>
-                <li>Token distribution to early supporters</li>
-                <li>Portfolio dashboard with real-time analytics</li>
-                <li>Additional AI agent releases</li>
-              </ul>
+          <div className="roadmap-item">
+            <div className="roadmap-period">
+              <h3>January 2026</h3>
+              <span className="roadmap-tag">Next Month</span>
             </div>
-
-            <div className="roadmap-quarter">
-              <div className="roadmap-header">
-                <h3>Q3 2026</h3>
-                <span className="roadmap-tag">Jul - Sep</span>
+            <div className="roadmap-goals">
+              <div className="roadmap-goal">
+                <span className="goal-icon">🎯</span>
+                <div className="goal-content">
+                  <h4>Complete YLDR Pre-Sale</h4>
+                  <p>Finalize token allocation for early supporters with USDC payments</p>
+                </div>
               </div>
-              <ul className="roadmap-items">
-                <li>Cross-chain expansion beyond Base</li>
-                <li>Advanced trading strategies</li>
-                <li>Community governance launch</li>
-                <li>Strategic partnerships</li>
-              </ul>
+              <div className="roadmap-goal">
+                <span className="goal-icon">🔐</span>
+                <div className="goal-content">
+                  <h4>Deploy Production Treasury</h4>
+                  <p>Multi-sig wallet with transparent on-chain accounting</p>
+                </div>
+              </div>
+              <div className="roadmap-goal">
+                <span className="goal-icon">🤖</span>
+                <div className="goal-content">
+                  <h4>Launch AlphaHunter Beta</h4>
+                  <p>First AI trading agent available for early access users</p>
+                </div>
+              </div>
             </div>
+          </div>
 
-            <div className="roadmap-quarter">
-              <div className="roadmap-header">
-                <h3>Q4 2026</h3>
-                <span className="roadmap-tag">Oct - Dec</span>
+          <div className="roadmap-item">
+            <div className="roadmap-period">
+              <h3>February - April 2026</h3>
+              <span className="roadmap-tag">Q1 End</span>
+            </div>
+            <div className="roadmap-goals">
+              <div className="roadmap-goal">
+                <span className="goal-icon">💎</span>
+                <div className="goal-content">
+                  <h4>YLDR Token Generation Event</h4>
+                  <p>TGE launch with distribution to early supporters and liquidity provision</p>
+                </div>
               </div>
-              <ul className="roadmap-items">
-                <li>Mobile app release</li>
-                <li>Institutional features</li>
-                <li>Platform v2.0 architecture</li>
-                <li>Scale to 10K+ users</li>
-              </ul>
+              <div className="roadmap-goal">
+                <span className="goal-icon">📊</span>
+                <div className="goal-content">
+                  <h4>Portfolio Dashboard Launch</h4>
+                  <p>Real-time portfolio tracking, analytics, and AI-powered insights</p>
+                </div>
+              </div>
+              <div className="roadmap-goal">
+                <span className="goal-icon">👥</span>
+                <div className="goal-content">
+                  <h4>Onboard First 1000 Users</h4>
+                  <p>Scale platform infrastructure and community growth initiatives</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
