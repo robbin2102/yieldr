@@ -495,56 +495,60 @@ export default function BuildInPublicPage() {
             <h2 className="section-title">AI Trading Performance</h2>
           </div>
 
-          <div className="treasury-cards">
-            <div className="treasury-card-item">
-              <div className="treasury-card-label">Starting Capital</div>
-              <div className="treasury-card-value">$5,000</div>
+          <div className="treasury-summary">
+            <div className="treasury-card">
+              <div className="treasury-label">Starting Capital</div>
+              <div className="treasury-value">$5,000</div>
+              <div className="treasury-detail">Allocated Oct 2025</div>
             </div>
-            <div className="treasury-card-item">
-              <div className="treasury-card-label">Total PnL</div>
-              <div className="treasury-card-value positive">+$14,677</div>
+            <div className="treasury-card">
+              <div className="treasury-label">Total PnL</div>
+              <div className="treasury-value positive">+$14,677</div>
+              <div className="treasury-detail">+293% ROI</div>
             </div>
-            <div className="treasury-card-item">
-              <div className="treasury-card-label">Current Account Value</div>
-              <div className="treasury-card-value">$19,677</div>
+            <div className="treasury-card highlight">
+              <div className="treasury-label">Current Account Value</div>
+              <div className="treasury-value positive">$19,677</div>
+              <div className="treasury-detail">As of Dec 28, 2025</div>
             </div>
           </div>
 
           <div className="accounting-table">
             <div className="accounting-header">
-              <div className="accounting-cell">Month</div>
-              <div className="accounting-cell">PnL</div>
-              <div className="accounting-cell">Max DD</div>
-              <div className="accounting-cell">Balance</div>
+              <span>Month</span>
+              <span style={{textAlign:'right'}}>PnL</span>
+              <span style={{textAlign:'right'}}>Max DD</span>
+              <span style={{textAlign:'right'}}>Balance</span>
             </div>
             <div className="accounting-row">
-              <div className="accounting-cell">October 2025</div>
-              <div className="accounting-cell positive">+$531</div>
-              <div className="accounting-cell negative">-$1,200</div>
-              <div className="accounting-cell">$5,531</div>
+              <div className="category">October 2025</div>
+              <div className="amount positive">+$531</div>
+              <div className="amount negative">-$1,200</div>
+              <div className="amount">$5,531</div>
             </div>
             <div className="accounting-row">
-              <div className="accounting-cell">November 2025</div>
-              <div className="accounting-cell positive">+$11,847</div>
-              <div className="accounting-cell positive">$0</div>
-              <div className="accounting-cell">$17,378</div>
+              <div className="category">November 2025</div>
+              <div className="amount positive">+$11,847</div>
+              <div className="amount positive">$0</div>
+              <div className="amount">$17,378</div>
             </div>
             <div className="accounting-row">
-              <div className="accounting-cell">December 2025</div>
-              <div className="accounting-cell positive">+$2,830</div>
-              <div className="accounting-cell negative">-$450</div>
-              <div className="accounting-cell">$20,208</div>
+              <div className="category">December 2025 (to date)</div>
+              <div className="amount positive">+$2,830</div>
+              <div className="amount negative">-$450</div>
+              <div className="amount">$19,677</div>
             </div>
             <div className="accounting-row total">
-              <div className="accounting-cell">Total</div>
-              <div className="accounting-cell positive">+$15,208</div>
-              <div className="accounting-cell negative">-$1,200</div>
-              <div className="accounting-cell">$20,208</div>
+              <div className="category"><strong>Total</strong></div>
+              <div className="amount positive"><strong>+$14,677</strong></div>
+              <div className="amount negative">-$1,200</div>
+              <div className="amount positive"><strong>$19,677</strong></div>
             </div>
           </div>
 
           <div className="verification-note">
-            💡 All trades verified onchain: <a href="https://basescan.org/address/0x123" target="_blank" className="verify-link">View wallet →</a>
+            <span>🔍</span>
+            <span>All trades verifiable on-chain via Avantis (Base) • Wallet: <a href="https://basescan.org/address/0x780BB763e1463D2236FEC780b7BD6ADb40AAa120" target="_blank" className="verify-link">0x780BB763...Aa120</a></span>
           </div>
         </section>
 
@@ -555,154 +559,111 @@ export default function BuildInPublicPage() {
             <h2 className="section-title">Treasury Accounting</h2>
           </div>
 
-          <div className="treasury-cards">
-            <div className="treasury-card-item">
-              <div className="treasury-card-label">Opening Balance</div>
-              <div className="treasury-card-value">$0</div>
+          <div className="treasury-summary">
+            <div className="treasury-card">
+              <div className="treasury-label">Opening Balance (Oct '25)</div>
+              <div className="treasury-value">$0</div>
+              <div className="treasury-detail">Self-funded bootstrap</div>
             </div>
-            <div className="treasury-card-item">
-              <div className="treasury-card-label">Total Receipts</div>
-              <div className="treasury-card-value positive">+$2,500</div>
+            <div className="treasury-card">
+              <div className="treasury-label">Total Receipts</div>
+              <div className="treasury-value positive">+$5,000</div>
+              <div className="treasury-detail">Base Batches 002 Grant</div>
             </div>
-            <div className="treasury-card-item">
-              <div className="treasury-card-label">Current Balance</div>
-              <div className="treasury-card-value negative">-$1,172</div>
-            </div>
-          </div>
-
-          <div className="treasury-accounting-table">
-            <div className="treasury-accounting-header">
-              <div className="treasury-accounting-cell category">Category</div>
-              <div className="treasury-accounting-cell">Oct 2025</div>
-              <div className="treasury-accounting-cell">Nov 2025</div>
-              <div className="treasury-accounting-cell">Dec 2025</div>
-              <div className="treasury-accounting-cell">Total</div>
-            </div>
-
-            <div className="treasury-accounting-row receipts">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">📥</span>
-                <span>Receipts</span>
-              </div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell positive">+$2,500</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell positive">+$2,500</div>
-            </div>
-
-            <div className="treasury-accounting-subrow">
-              <div className="treasury-accounting-cell category">Base Batches 002 Grant</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell positive">+$2,500</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell positive">+$2,500</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">🤖</span>
-                <span>Claude Code</span>
-              </div>
-              <div className="treasury-accounting-cell negative">-$387</div>
-              <div className="treasury-accounting-cell negative">-$892</div>
-              <div className="treasury-accounting-cell negative">-$1,203</div>
-              <div className="treasury-accounting-cell negative">-$2,482</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">🗄️</span>
-                <span>Database</span>
-              </div>
-              <div className="treasury-accounting-cell negative">-$29</div>
-              <div className="treasury-accounting-cell negative">-$29</div>
-              <div className="treasury-accounting-cell negative">-$31</div>
-              <div className="treasury-accounting-cell negative">-$89</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">☁️</span>
-                <span>Servers</span>
-              </div>
-              <div className="treasury-accounting-cell negative">-$42</div>
-              <div className="treasury-accounting-cell negative">-$43</div>
-              <div className="treasury-accounting-cell negative">-$43</div>
-              <div className="treasury-accounting-cell negative">-$128</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">💻</span>
-                <span>Hardware</span>
-              </div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell negative">-$950</div>
-              <div className="treasury-accounting-cell negative">-$950</div>
-            </div>
-
-            <div className="treasury-accounting-subrow">
-              <div className="treasury-accounting-cell category">MacBook</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell negative">-$950</div>
-              <div className="treasury-accounting-cell negative">-$950</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">👤</span>
-                <span>Payroll</span>
-              </div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">$0</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">📢</span>
-                <span>Marketing</span>
-              </div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell">$0</div>
-            </div>
-
-            <div className="treasury-accounting-row expense">
-              <div className="treasury-accounting-cell category">
-                <span className="category-icon">🏢</span>
-                <span>Office & Utils</span>
-              </div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell negative">-$13</div>
-              <div className="treasury-accounting-cell">-</div>
-              <div className="treasury-accounting-cell negative">-$13</div>
-            </div>
-
-            <div className="treasury-accounting-row total-row">
-              <div className="treasury-accounting-cell category">Monthly Total</div>
-              <div className="treasury-accounting-cell negative">-$458</div>
-              <div className="treasury-accounting-cell positive">+$1,523</div>
-              <div className="treasury-accounting-cell negative">-$2,227</div>
-              <div className="treasury-accounting-cell negative">-$1,162</div>
-            </div>
-
-            <div className="treasury-accounting-row balance-row">
-              <div className="treasury-accounting-cell category">Running Balance</div>
-              <div className="treasury-accounting-cell negative">-$458</div>
-              <div className="treasury-accounting-cell positive">+$1,065</div>
-              <div className="treasury-accounting-cell negative">-$1,162</div>
-              <div className="treasury-accounting-cell negative">-$1,162</div>
+            <div className="treasury-card highlight">
+              <div className="treasury-label">Current Balance</div>
+              <div className="treasury-value positive">$3,255</div>
+              <div className="treasury-detail">As of Dec 28, 2025</div>
             </div>
           </div>
 
-          <div className="treasury-note">
-            * Negative balance covered by personal funds. Repayment pending trading profits allocation.
+          <div className="accounting-table">
+            <div className="accounting-header">
+              <span>Category</span>
+              <span style={{textAlign:'right'}}>Oct</span>
+              <span style={{textAlign:'right'}}>Nov</span>
+              <span style={{textAlign:'right'}}>Dec</span>
+            </div>
+
+            <div className="accounting-row">
+              <div className="category"><span className="icon">📥</span> Receipts</div>
+              <div className="amount">-</div>
+              <div className="amount">-</div>
+              <div className="amount positive">+$5,000</div>
+            </div>
+            <div className="accounting-row sub">
+              <div className="category">Base Batches 002 Grant</div>
+              <div className="amount">-</div>
+              <div className="amount">-</div>
+              <div className="amount">$5,000</div>
+            </div>
+
+            <div className="accounting-row">
+              <div className="category"><span className="icon">🤖</span> Claude Code</div>
+              <div className="amount negative">-$100</div>
+              <div className="amount negative">-$100</div>
+              <div className="amount negative">-$100</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">🗄️</span> Database</div>
+              <div className="amount negative">-$75</div>
+              <div className="amount negative">-$75</div>
+              <div className="amount negative">-$75</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">☁️</span> Servers</div>
+              <div className="amount negative">-$120</div>
+              <div className="amount negative">-$120</div>
+              <div className="amount negative">-$120</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">💻</span> Hardware</div>
+              <div className="amount">-</div>
+              <div className="amount negative">-$1,450</div>
+              <div className="amount">-</div>
+            </div>
+            <div className="accounting-row sub">
+              <div className="category">MacBook for development</div>
+              <div className="amount">-</div>
+              <div className="amount">$1,450</div>
+              <div className="amount">-</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">👤</span> Payroll</div>
+              <div className="amount">$0</div>
+              <div className="amount">$0</div>
+              <div className="amount">$0</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">📢</span> Marketing</div>
+              <div className="amount">$0</div>
+              <div className="amount">$0</div>
+              <div className="amount">$0</div>
+            </div>
+            <div className="accounting-row">
+              <div className="category"><span className="icon">🏢</span> Office & Utils</div>
+              <div className="amount">$0</div>
+              <div className="amount">$0</div>
+              <div className="amount">$0</div>
+            </div>
+
+            <div className="accounting-row total">
+              <div className="category"><strong>Monthly Total</strong></div>
+              <div className="amount negative">-$295</div>
+              <div className="amount negative">-$1,745</div>
+              <div className="amount positive">+$4,705</div>
+            </div>
+            <div className="accounting-row total">
+              <div className="category"><strong>Running Balance</strong></div>
+              <div className="amount negative">-$295</div>
+              <div className="amount negative">-$2,040</div>
+              <div className="amount positive">$3,255</div>
+            </div>
           </div>
+
+          <p style={{fontSize: '0.7rem', color: 'var(--text-tertiary)', marginTop: '1rem', textAlign: 'center'}}>
+            * Negative balance Oct-Nov covered by founder. Treasury funded by Base Batches grant in Dec '25.
+          </p>
         </section>
       </main>
 

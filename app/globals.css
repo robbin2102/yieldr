@@ -2981,36 +2981,37 @@ html {
 
 /* Commit Bar */
 .commit-bar {
-    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .commit-bar-visual {
-    display: flex;
-    height: 40px;
-    border-radius: 8px;
+    flex: 1;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 1rem;
+    display: flex;
 }
 
 .commit-bar-segment {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.9rem;
+    height: 100%;
 }
 
 .commit-bar-segment.oct {
-    background: rgba(155, 89, 182, 0.3);
+    width: 28%;
+    background: var(--primary);
 }
 
 .commit-bar-segment.nov {
-    background: rgba(0, 200, 5, 0.3);
+    width: 31%;
+    background: var(--accent-blue);
 }
 
 .commit-bar-segment.dec {
-    background: rgba(0, 136, 255, 0.3);
+    width: 41%;
+    background: var(--accent-purple);
 }
 
 .commit-bar-legend {
@@ -3424,6 +3425,50 @@ html {
     color: #FF4444;
 }
 
+/* Treasury Summary - matches HTML design */
+.treasury-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.treasury-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.treasury-card.highlight {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(0,200,5,0.05) 0%, transparent 100%);
+}
+
+.treasury-label {
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.treasury-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.treasury-value.positive {
+    color: var(--primary);
+}
+
+.treasury-detail {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    margin-top: 0.25rem;
+}
+
 /* Accounting Table */
 .accounting-table {
     background: var(--card-bg);
@@ -3458,16 +3503,63 @@ html {
     font-weight: 700;
 }
 
+.accounting-row.sub {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+}
+
+.accounting-row.sub .category {
+    padding-left: 1.5rem;
+}
+
 .accounting-cell {
     display: flex;
     align-items: center;
 }
 
+.accounting-row .category {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.accounting-row .icon {
+    font-size: 0.9rem;
+}
+
+.accounting-row .amount {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+}
+
+.accounting-row .amount.positive {
+    color: var(--primary);
+}
+
+.accounting-row .amount.negative {
+    color: #FF4444;
+}
+
 .verification-note {
-    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
-    text-align: center;
-    margin-top: 0.75rem;
+}
+
+.verification-note a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.verification-note a:hover {
+    text-decoration: underline;
 }
 
 .verify-link {
