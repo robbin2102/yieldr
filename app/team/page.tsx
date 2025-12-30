@@ -13,7 +13,12 @@ export default function TeamPage() {
       {/* Header */}
       <header className="team-header">
         <Link href="/" className="team-logo">
-          <span className="team-logo-text">⚡ YIELDR</span>
+          <svg className="team-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
+            <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
+            <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
+          </svg>
+          <span className="team-logo-text">YIELDR</span>
         </Link>
         <nav className="team-nav-links">
           <Link href="/" className="team-nav-link">Home</Link>
