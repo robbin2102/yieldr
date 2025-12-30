@@ -168,7 +168,7 @@ export default function BuildInPublicPage() {
                       <div className="module-tags">
                         <span className="module-tag polymarket">Polymarket</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/d3f0549" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export default function BuildInPublicPage() {
                         <span className="module-tag base">Base</span>
                         <span className="module-tag llm">LLM Tooling</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/b7c7986" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -195,7 +195,7 @@ export default function BuildInPublicPage() {
                     <div className="module-desc">Token purchase flow with wallet connect integration</div>
                     <div className="module-footer">
                       <div className="module-tags"></div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/948e8e2" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function BuildInPublicPage() {
                         <span className="module-tag avantis">Avantis</span>
                         <span className="module-tag hyperliquid">Hyperliquid</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/04b60e8" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -258,7 +258,7 @@ export default function BuildInPublicPage() {
                         <span className="module-tag avantis">Avantis</span>
                         <span className="module-tag hyperliquid">Hyperliquid</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/cb4b121" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -273,7 +273,7 @@ export default function BuildInPublicPage() {
                         <span className="module-tag uniswap">Uniswap</span>
                         <span className="module-tag aerodrome">Aerodrome</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/703251b" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export default function BuildInPublicPage() {
                     <div className="module-desc">Wallet connection with automatic scanning for perps and liquidity positions</div>
                     <div className="module-footer">
                       <div className="module-tags"></div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/516071e" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -346,7 +346,7 @@ export default function BuildInPublicPage() {
                         <span className="module-tag avantis">Avantis</span>
                         <span className="module-tag hyperliquid">Hyperliquid</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <a href="https://github.com/robbin2102/yieldr-app/commit/a729e9d" target="_blank" className="view-code">View Code →</a>
                     </div>
                   </div>
                 </div>
@@ -360,7 +360,10 @@ export default function BuildInPublicPage() {
                       <div className="module-tags">
                         <span className="module-tag base">GitHub</span>
                       </div>
-                      <a href="https://github.com/robbin2102/yieldr-app" target="_blank" className="view-code">View Code →</a>
+                      <div style={{display: 'flex', gap: '1rem'}}>
+                        <a href="https://github.com/robbin2102/yieldr-app/commit/50a4a07" target="_blank" className="view-code" style={{opacity: 1}}>View Code →</a>
+                        <a href="https://app.yieldr.org" target="_blank" className="view-code" style={{opacity: 1}}>View Legacy App →</a>
+                      </div>
                     </div>
                   </div>
                 </div>
