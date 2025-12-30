@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PaymentPopup } from '../components/PaymentPopup';
+import { Providers } from '../providers';
 
 export default function DocsPage() {
   const [activePage, setActivePage] = useState('what-is-yieldr');
@@ -48,7 +49,7 @@ export default function DocsPage() {
   };
 
   return (
-    <>
+    <Providers>
       {/* Sidebar Overlay for mobile */}
       <div className={'sidebar-overlay ' + (sidebarOpen ? 'visible' : '')} onClick={closeSidebar}></div>
 
@@ -1368,6 +1369,6 @@ export default function DocsPage() {
 
       {/* Payment Popup */}
       <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-    </>
+    </Providers>
   );
 }
