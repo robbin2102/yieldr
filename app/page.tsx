@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { PaymentPopup } from './components/PaymentPopup';
 import { Providers } from './providers';
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const demoStartedRef = useRef(false);
 
   useEffect(() => {
     // Background canvas animation
@@ -91,8 +93,14 @@ export default function HomePage() {
 
   // Animated chat demo - EXACT match to HTML design
   useEffect(() => {
+    if (demoStartedRef.current) return; // Prevent multiple runs
+
     const chatArea = document.getElementById('chatArea');
     if (!chatArea) return;
+
+    // Clear any existing content
+    chatArea.innerHTML = '';
+    demoStartedRef.current = true;
 
     function getTime() {
       const now = new Date();
@@ -201,10 +209,10 @@ export default function HomePage() {
                     <span class="position-label">⚡ BTC/USDC SHORT 20×</span>
                     <span class="platform-tag avantis">Avantis</span>
                   </div>
-                  <span class="value-positive">+$20,000</span>
+                  <span class="value-neutral">$200,000</span>
                 </div>
                 <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
-                  Entry $100K → Now $90K • Margin $10K • ROI <span class="value-positive">+200%</span>
+                  Entry $100K → Now $90K • Margin $10K • PnL <span class="value-positive">+$20K</span> • ROI <span class="value-positive">+200%</span>
                 </div>
 
                 <div class="position-row" style="margin-top: 0.5rem;">
@@ -533,7 +541,20 @@ export default function HomePage() {
           <Link href="/build-in-public" className="nav-link">Build Progress</Link>
           <button className="nav-cta" onClick={() => setShowPopup(true)}>Get Early Access</button>
         </div>
+        <button className="mobile-menu-btn" onClick={() => setShowMobileMenu(!showMobileMenu)}>☰</button>
       </nav>
+
+      {/* Mobile Menu */}
+      {showMobileMenu && (
+        <div className="mobile-menu-overlay" onClick={() => setShowMobileMenu(false)}>
+          <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <Link href="/docs" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Docs</Link>
+            <Link href="/team" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Team</Link>
+            <Link href="/build-in-public" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Build Progress</Link>
+            <button className="mobile-menu-cta" onClick={() => { setShowMobileMenu(false); setShowPopup(true); }}>Get Early Access</button>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="hero-section">

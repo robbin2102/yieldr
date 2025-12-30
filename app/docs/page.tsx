@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { PaymentPopup } from '../components/PaymentPopup';
 
 export default function DocsPage() {
   const [activePage, setActivePage] = useState('what-is-yieldr');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   // Check if mobile
   useEffect(() => {
@@ -58,16 +60,11 @@ export default function DocsPage() {
             <span className="logo-divider">|</span>
             <span className="logo-docs">Docs</span>
           </Link>
-          <div className="search-box">
-            <span className="search-icon">🔍</span>
-            <input type="text" className="search-input" placeholder="Search documentation..." />
-            <span className="search-shortcut">⌘K</span>
-          </div>
         </div>
         <div className="header-right">
           <Link href="/" className="header-link">Home</Link>
-          <Link href="https://discord.gg/yieldr" className="header-link" target="_blank">Discord</Link>
-          <Link href="https://app.yieldr.org" className="header-link primary" target="_blank">Launch App</Link>
+          <Link href="https://discord.com/channels/1426305214176165941/1426305389812646091" className="header-link" target="_blank">Discord</Link>
+          <button className="header-link primary" onClick={() => setShowPopup(true)}>Get Early Access</button>
           <button className="mobile-menu-btn" onClick={toggleSidebar}>☰</button>
         </div>
       </header>
@@ -1368,6 +1365,9 @@ export default function DocsPage() {
 
         </div>
       </main>
+
+      {/* Payment Popup */}
+      <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </>
   );
 }
