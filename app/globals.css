@@ -3691,6 +3691,648 @@ html {
     font-size: 1.1rem;
 }
 
+/* New Build-in-Public Styles */
+
+/* Page Title and Subtitle */
+.page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.section-icon {
+    font-size: 1.5rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Development Metrics */
+.dev-metrics {
+    margin-bottom: 4rem;
+}
+
+.dev-metrics-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.dev-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.metric-item {
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Commit Bar */
+.commit-bar {
+    margin-top: 2rem;
+}
+
+.commit-bar-visual {
+    display: flex;
+    height: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.commit-bar-segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.commit-bar-segment.oct {
+    background: rgba(155, 89, 182, 0.3);
+}
+
+.commit-bar-segment.nov {
+    background: rgba(0, 200, 5, 0.3);
+}
+
+.commit-bar-segment.dec {
+    background: rgba(0, 136, 255, 0.3);
+}
+
+.commit-bar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.oct {
+    background: rgba(155, 89, 182, 0.8);
+}
+
+.legend-dot.nov {
+    background: rgba(0, 200, 5, 0.8);
+}
+
+.legend-dot.dec {
+    background: rgba(0, 136, 255, 0.8);
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 3rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 2rem;
+    bottom: 2rem;
+    width: 2px;
+    background: var(--border-secondary);
+}
+
+.timeline-month {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -2.375rem;
+    top: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 3px solid var(--border-secondary);
+}
+
+.timeline-dot.current {
+    border-color: var(--primary);
+    background: var(--primary);
+    box-shadow: 0 0 0 4px rgba(0, 200, 5, 0.2);
+}
+
+/* Month Headers */
+.month-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.month-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.month-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.month-badge.complete {
+    background: rgba(0, 200, 5, 0.15);
+    color: var(--primary);
+}
+
+.month-badge.current {
+    background: rgba(0, 136, 255, 0.15);
+    color: #0088FF;
+}
+
+.month-badge.milestone {
+    background: rgba(255, 208, 0, 0.15);
+    color: #FFD000;
+}
+
+.month-badge.planned {
+    background: rgba(155, 89, 182, 0.15);
+    color: #9B59B6;
+}
+
+/* Month Vision */
+.month-vision {
+    background: rgba(0, 200, 5, 0.05);
+    border: 1px solid rgba(0, 200, 5, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.vision-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.vision-text {
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Modules Grid */
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.module-item {
+    display: flex;
+    gap: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+}
+
+.module-item:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.module-status {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.module-status.complete {
+    color: var(--primary);
+}
+
+.module-status.progress {
+    color: #0088FF;
+}
+
+.module-content {
+    flex: 1;
+}
+
+.module-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.module-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.module-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.module-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.module-tag {
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.module-tag.avantis {
+    background: rgba(0, 200, 5, 0.15);
+    color: var(--primary);
+}
+
+.module-tag.hyperliquid {
+    background: rgba(155, 89, 182, 0.15);
+    color: #9B59B6;
+}
+
+.module-tag.polymarket {
+    background: rgba(155, 89, 182, 0.15);
+    color: #9B59B6;
+}
+
+.module-tag.uniswap {
+    background: rgba(255, 0, 122, 0.15);
+    color: #FF007A;
+}
+
+.module-tag.aerodrome {
+    background: rgba(0, 136, 255, 0.15);
+    color: #0088FF;
+}
+
+.module-tag.base {
+    background: rgba(0, 82, 255, 0.15);
+    color: #0052FF;
+}
+
+.module-tag.ai {
+    background: rgba(255, 208, 0, 0.15);
+    color: #FFD000;
+}
+
+.module-tag.llm {
+    background: rgba(0, 200, 5, 0.15);
+    color: var(--primary);
+}
+
+.view-code {
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.view-code:hover {
+    opacity: 0.7;
+}
+
+/* Trading Result */
+.trading-result {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.trading-result .label {
+    color: var(--text-secondary);
+    margin-right: 0.25rem;
+}
+
+.trading-result .positive {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.trading-result .negative {
+    color: #FF4444;
+    font-weight: 600;
+}
+
+/* Roadmap Section */
+.roadmap-section {
+    margin-bottom: 4rem;
+}
+
+.roadmap-month {
+    margin-bottom: 3rem;
+}
+
+.roadmap-month-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.roadmap-month-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.roadmap-weeks {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.roadmap-week {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.roadmap-week-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.roadmap-week-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.roadmap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.roadmap-item .status {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.roadmap-item .status.planned {
+    color: #9B59B6;
+}
+
+/* Trading Section */
+.trading-section {
+    margin-bottom: 4rem;
+}
+
+.treasury-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.treasury-card-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.treasury-card-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.treasury-card-value {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.treasury-card-value.positive {
+    color: var(--primary);
+}
+
+.treasury-card-value.negative {
+    color: #FF4444;
+}
+
+/* Accounting Table */
+.accounting-table {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.accounting-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.accounting-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-secondary);
+}
+
+.accounting-row.total {
+    background: rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+}
+
+.accounting-cell {
+    display: flex;
+    align-items: center;
+}
+
+.verification-note {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.verify-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.verify-link:hover {
+    text-decoration: underline;
+}
+
+/* Treasury Section */
+.treasury-section {
+    margin-bottom: 4rem;
+}
+
+.treasury-accounting-table {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.treasury-accounting-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.treasury-accounting-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-secondary);
+}
+
+.treasury-accounting-row.receipts {
+    background: rgba(0, 200, 5, 0.05);
+}
+
+.treasury-accounting-row.expense {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.treasury-accounting-row.total-row {
+    background: rgba(0, 0, 0, 0.3);
+    font-weight: 700;
+}
+
+.treasury-accounting-row.balance-row {
+    background: rgba(0, 200, 5, 0.1);
+    font-weight: 700;
+}
+
+.treasury-accounting-subrow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem 0.75rem 3rem;
+    border-top: 1px solid var(--border-secondary);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.treasury-accounting-cell {
+    display: flex;
+    align-items: center;
+}
+
+.treasury-accounting-cell.category {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-icon {
+    font-size: 1.1rem;
+}
+
+.treasury-note {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    margin-top: 1rem;
+}
+
 /* Footer */
 .build-footer {
     border-top: 1px solid var(--border-primary);
