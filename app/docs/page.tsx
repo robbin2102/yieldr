@@ -855,22 +855,21 @@ export default function DocsPage() {
 
             <h2>The Model</h2>
             <div className="architecture-diagram">
-<pre>{`
-<span class="arch-highlight">NOW</span>                                     <span class="arch-highlight">TGE (Q1 2027)</span>
+<pre>{`   <span class="arch-highlight">NOW</span>                                              <span class="arch-highlight">TGE (Q1 2027)</span>
 
-┌─────────────────┐                 ┌─────────────────────────┐
-│                 │                 │                         │
-│   Contribute    │   12-15 months  │   Token Generation      │
-│   USDC          │ ───────────────▶│   + ICO                 │
-│                 │                 │   + Tier-1 CEX Listing  │
-│                 │                 │                         │
-└─────────────────┘                 └─────────────────────────┘
+   ┌─────────────────┐                            ┌─────────────────────────┐
+   │                 │                            │                         │
+   │   Contribute    │       12-15 months         │   Token Generation      │
+   │   USDC          │ ─────────────────────────▶ │   + ICO                 │
+   │                 │                            │   + Tier-1 CEX Listing  │
+   │                 │                            │                         │
+   └─────────────────┘                            └─────────────────────────┘
 
-You receive:                        At TGE:
-• Allocation locked at tier price   • YLDR distributed to wallet
-• AI credits (immediate)             • Trading begins
-• Snapshot voting rights             • Burn mechanism activates
-• Monthly transparency reports       • All allocations vest
+   You receive:                                   At TGE:
+   • Allocation locked at tier price              • YLDR distributed to wallet
+   • AI credits (immediate)                       • Trading begins
+   • Snapshot voting rights                       • Burn mechanism activates
+   • Monthly transparency reports                 • All allocations vest
 `}</pre>
             </div>
 
@@ -902,12 +901,12 @@ You receive:                        At TGE:
             <h2>How It Works <span className="tge-badge">At TGE</span></h2>
             <div className="architecture-diagram">
 <pre>{`
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│              │     │              │     │              │
-│ <span class="arch-highlight">Acquire YLDR</span> │────▶│ <span class="arch-highlight">Burn YLDR</span>    │────▶│ <span class="arch-highlight">Use AI</span>       │
-│ (CEX or DEX) │     │ (Market Rate)│     │ (Train Agent)│
-│              │     │              │     │              │
-└──────────────┘     └──────────────┘     └──────────────┘
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│                 │      │                 │      │                 │
+│  <span class="arch-highlight">Acquire YLDR</span>   │─────▶│   <span class="arch-highlight">Burn YLDR</span>    │─────▶│    <span class="arch-highlight">Use AI</span>       │
+│  (CEX or DEX)   │      │  (Market Rate)  │      │  (Train Agent)  │
+│                 │      │                 │      │                 │
+└─────────────────┘      └─────────────────┘      └─────────────────┘
 `}</pre>
             </div>
 
@@ -1175,29 +1174,29 @@ You receive:                        At TGE:
             <h2>Contribution Flow</h2>
             <div className="architecture-diagram">
 <pre>{`
-┌──────────────────────────────────────────────────────────────┐
-│                                                              │
-│   1. <span class="arch-highlight">CONTRIBUTE</span>                                             │
-│      • Send USDC to treasury wallet (Base network)           │
-│      • Current tier pricing locked at contribution           │
-│                                                              │
-│   2. <span class="arch-highlight">RECEIVE CONFIRMATION</span>                                   │
-│      • Wallet address recorded                               │
-│      • Tier + allocation rate locked                         │
-│      • Entry in public allocation table                      │
-│      • AI credits added to your account                      │
-│                                                              │
-│   3. <span class="arch-highlight">USE PRODUCT</span>                                            │
-│      • Access AI agent with credited balance                 │
-│      • Participate in Snapshot governance                    │
-│      • Receive monthly transparency updates                  │
-│                                                              │
-│   4. <span class="arch-highlight">TGE (Q1 2027)</span>                                          │
-│      • YLDR tokens distributed to your wallet                │
-│      • Trading begins on Coinbase, Bybit, OKX                │
-│      • Burn mechanism activates                              │
-│                                                              │
-└──────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│   1. <span class="arch-highlight">CONTRIBUTE</span>                                                        │
+│      • Send USDC to published treasury wallet (Base network)            │
+│      • Current tier pricing locked at time of contribution              │
+│                                                                         │
+│   2. <span class="arch-highlight">RECEIVE CONFIRMATION</span>                                              │
+│      • Wallet address recorded                                          │
+│      • Tier + allocation rate locked                                    │
+│      • Entry in public allocation table                                 │
+│      • AI credits added to your account                                 │
+│                                                                         │
+│   3. <span class="arch-highlight">USE PRODUCT</span>                                                       │
+│      • Access AI agent with credited balance                            │
+│      • Participate in Snapshot governance                               │
+│      • Receive monthly transparency updates                             │
+│                                                                         │
+│   4. <span class="arch-highlight">TGE (Q1 2027)</span>                                                     │
+│      • YLDR tokens distributed to your wallet                           │
+│      • Trading begins on Coinbase, Bybit, OKX                           │
+│      • Burn mechanism activates                                         │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
 `}</pre>
             </div>
 

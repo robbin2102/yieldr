@@ -2838,11 +2838,9 @@ html {
 }
 
 .page-subtitle {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 550px;
-    margin: 0 auto;
+    font-size: 1.1rem;
+    color: var(--text-tertiary);
+    margin-bottom: 2rem;
 }
 
 /* Progress Overview */
