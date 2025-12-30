@@ -10,6 +10,7 @@
     --text-primary: #FFFFFF;
     --text-secondary: #A0A0A0;
     --text-tertiary: #666666;
+    --primary: #00C805;
     --accent-green: #00C805;
     --accent-green-dim: rgba(0, 200, 5, 0.15);
     --accent-yellow: #FFD000;
@@ -2825,25 +2826,6 @@ html {
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
 }
-
-.build-hero h1 {
-    font-size: 4rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    line-height: 1.1;
-}
-
-.build-hero h1 span {
-    color: var(--primary);
-}
-
-.build-hero p {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 
 /* New Build-in-Public Styles */
 
