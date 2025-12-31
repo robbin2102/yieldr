@@ -45,206 +45,172 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
 
   const isValidAmount = usdcAmount >= MIN_CONTRIBUTION;
   const hasBalance = !isConnected || balance >= usdcAmount;
-
-  const getButtonText = () => {
-    if (isProcessing) return 'Processing...';
-    if (!isConnected) return 'Connect Wallet →';
-    if (!isValidAmount) return `Min $${MIN_CONTRIBUTION} USDC`;
-    if (!hasBalance) return 'Insufficient Balance';
-    return 'Contribute →';
-  };
-
   const isDisabled = isProcessing || (isConnected && (!isValidAmount || !hasBalance));
 
   if (!isOpen) return null;
 
-  const { currentTier, nextTier, tierProgress, usdcToNextTier, priceIncreaseAtNextTier } = tierInfo;
+  const { currentTier } = tierInfo;
+
+  // Calculate potential multiplier at different FDV scenarios
+  const fdvScenarios = [
+    { fdv: 150_000_000, label: '$150M FDV' },
+    { fdv: 300_000_000, label: '$300M FDV' },
+    { fdv: 500_000_000, label: '$500M FDV' },
+  ];
 
   return (
     <>
-      <div className="popup-overlay" onClick={onClose}>
-        <div className="popup-container" onClick={(e) => e.stopPropagation()}>
-          <button className="popup-close" onClick={onClose}>×</button>
-
-          <h2 className="popup-title">Get Early Access to YLDR</h2>
-
-          {/* Current Tier Display */}
-          <div className="tier-badge-section">
-            <div className="tier-badge">
-              <span className="tier-name">{currentTier.name.toUpperCase()}</span>
-              <span className="tier-fdv">FDV: {formatUsd(currentTier.fdv)}</span>
-            </div>
-            <div className="tier-price">
-              <span className="price-value">{formatPrice(currentTier.price)}</span>
-              <span className="price-label">/ YLDR</span>
-            </div>
+      <div className="popup-overlay active" onClick={onClose}>
+        <div className="popup-card" onClick={(e) => e.stopPropagation()}>
+          <div className="popup-header">
+            <span className="popup-title">Get Early Access to YLDR</span>
+            <button className="popup-close" onClick={onClose}>×</button>
           </div>
-
-          {/* Tier Progress */}
-          <div className="tier-progress-section">
-            <div className="tier-progress-bar">
-              <div
-                className="tier-progress-fill"
-                style={{ width: `${tierProgress}%` }}
-              />
-            </div>
-            <div className="tier-progress-info">
-              <span>{tierProgress.toFixed(1)}% filled</span>
-              {nextTier && (
-                <span className="next-tier-hint">
-                  {formatUsd(usdcToNextTier)} until {nextTier.name} (+{priceIncreaseAtNextTier.toFixed(0)}% price)
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* USDC Input */}
-          <div className="contribute-section">
-            <label className="contribute-label">Contribute USDC</label>
-            <div className="contribute-input-wrapper">
-              <span className="input-prefix">$</span>
-              <input
-                type="text"
-                className="contribute-input"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="1,000"
-              />
-              <button className="max-btn" onClick={handleMaxClick}>MAX</button>
-            </div>
-            {isConnected && (
-              <div className="balance-info">
-                Balance: {formatUsd(balance)} USDC on Base
-              </div>
-            )}
-          </div>
-
-          {/* Allocation Preview */}
-          <div className="allocation-preview">
-            <span className="allocation-label">You'll receive</span>
-            <div className="allocation-amount">
-              ~{formatNumber(allocation.yldrAmount)} YLDR
-            </div>
-            <span className="allocation-timing">at TGE (Q1 2027)</span>
-
-            {/* Show breakdown if spans multiple tiers */}
-            {allocation.breakdown.length > 1 && (
-              <div className="allocation-breakdown">
-                {allocation.breakdown.map((item, i) => (
-                  <div key={i} className="breakdown-item">
-                    <span>{formatNumber(item.tokens)} @ {formatPrice(item.price)}</span>
-                    <span className="breakdown-tier">{item.tier}</span>
+          <div className="popup-body">
+            {/* Allocation Section */}
+            <div className="popup-allocation">
+              <div className="popup-allocation-header">
+                <div className="popup-tier">
+                  <span className="tier-badge">{currentTier.name.toUpperCase()}</span>
+                  <span className="tier-fdv">FDV: {formatUsd(currentTier.fdv)}</span>
+                </div>
+                <div className="tier-price">
+                  <div className="price-value">{formatPrice(currentTier.price)} / YLDR</div>
+                  <div className="price-potential">
+                    {((150_000_000 / currentTier.fdv)).toFixed(1)}x potential at TGE
                   </div>
-                ))}
+                </div>
               </div>
-            )}
-          </div>
 
-          {/* Connect Wallet Button */}
-          {!isConnected ? (
-            <ConnectButton.Custom>
-              {({ openConnectModal }) => (
-                <button
-                  className="connect-wallet-btn"
-                  onClick={openConnectModal}
-                >
-                  Connect Wallet →
-                </button>
-              )}
-            </ConnectButton.Custom>
-          ) : (
-            <button
-              className="connect-wallet-btn"
-              onClick={initiatePayment}
-              disabled={isDisabled}
-            >
-              {isProcessing ? 'Processing...' : !isValidAmount ? `Min $${MIN_CONTRIBUTION} USDC` : !hasBalance ? 'Insufficient Balance' : 'Contribute →'}
-            </button>
-          )}
+              <div className="contribute-input">
+                <div className="contribute-label">Contribute USDC</div>
+                <div className="contribute-field">
+                  <input
+                    type="text"
+                    className="contribute-input-field"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="$ 1,000"
+                  />
+                  <button className="max-btn" onClick={handleMaxClick}>MAX</button>
+                </div>
+              </div>
 
-          {/* What YLDR is used for */}
-          <div className="utility-section">
-            <h3 className="utility-title">What YLDR is used for</h3>
+              <div className="receive-preview">
+                <div className="receive-label">You'll receive</div>
+                <div className="receive-amount">~{formatNumber(allocation.yldrAmount)} YLDR</div>
+                <div className="receive-timing">at TGE (Q1 2027)</div>
+              </div>
+            </div>
 
-            <div className="utility-grid">
-              <div className="utility-item">
-                <div className="utility-icon">⚡</div>
-                <div className="utility-content">
-                  <div className="utility-name">
-                    AI Compute Credits
-                    <span className="deflationary-badge">🔥 DEFLATIONARY</span>
+            {/* Utility Section */}
+            <div className="popup-utility">
+              <div className="utility-title">What YLDR is used for</div>
+              <div className="utility-grid">
+                <div className="utility-item">
+                  <div className="utility-icon">⚡</div>
+                  <div className="utility-content">
+                    <div className="utility-name">
+                      AI Compute Credits <span className="deflationary-badge">🔥 DEFLATIONARY</span>
+                    </div>
+                    <div className="utility-desc">
+                      YLDR tokens fuel your AI agent — consumed when chatting, analyzing trades, monitoring traders, and executing strategies. Every YLDR used is burned. Fixed supply.
+                    </div>
                   </div>
-                  <p className="utility-desc">
-                    YLDR tokens fuel your AI agent — consumed when chatting, analyzing trades,
-                    monitoring traders, and executing strategies. Every YLDR used is burned. Fixed supply.
-                  </p>
                 </div>
-              </div>
-
-              <div className="utility-item">
-                <div className="utility-icon">🔓</div>
-                <div className="utility-content">
-                  <div className="utility-name">Beta Access</div>
-                  <p className="utility-desc">
-                    Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026.
-                    Train and fine-tune your agent before public launch.
-                  </p>
+                <div className="utility-item">
+                  <div className="utility-icon">🔓</div>
+                  <div className="utility-content">
+                    <div className="utility-name">Beta Access</div>
+                    <div className="utility-desc">
+                      Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026. Train and fine-tune your agent before public launch.
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="utility-item">
-                <div className="utility-icon">💬</div>
-                <div className="utility-content">
-                  <div className="utility-name">Exclusive Community</div>
-                  <p className="utility-desc">
-                    Access private Discord with direct team interaction, product feedback sessions,
-                    and priority updates on development.
-                  </p>
+                <div className="utility-item">
+                  <div className="utility-icon">💬</div>
+                  <div className="utility-content">
+                    <div className="utility-name">Exclusive Community</div>
+                    <div className="utility-desc">
+                      Access private Discord with direct team interaction, product feedback sessions, and priority updates on development.
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="utility-item">
-                <div className="utility-icon">🗳️</div>
-                <div className="utility-content">
-                  <div className="utility-name">Governance Rights</div>
-                  <p className="utility-desc">
-                    Snapshot voting on protocol decisions, feature prioritization, and treasury allocations.
-                  </p>
+                <div className="utility-item">
+                  <div className="utility-icon">🗳️</div>
+                  <div className="utility-content">
+                    <div className="utility-name">Governance Rights</div>
+                    <div className="utility-desc">
+                      Snapshot voting on protocol decisions, feature prioritization, and treasury allocations.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Treasury Info */}
-          <div className="treasury-info">
-            <span>Treasury:</span>
-            <a
-              href={`${EXPLORER_URL}/address/${TREASURY_ADDRESS}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="treasury-address"
-            >
-              {TREASURY_ADDRESS.slice(0, 6)}...{TREASURY_ADDRESS.slice(-4)}
-            </a>
-            <span className="treasury-badge">multisig</span>
-            <span>|</span>
-            <a
-              href={`${EXPLORER_URL}/address/${TREASURY_ADDRESS}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on Basescan
-            </a>
-          </div>
+            {/* ROI Section */}
+            <div className="popup-roi">
+              <div className="roi-title">ROI Scenarios at TGE</div>
+              <div className="roi-grid">
+                {fdvScenarios.map((scenario, index) => {
+                  const tokensValue = allocation.yldrAmount * (scenario.fdv / 210_000_000);
+                  const multiple = tokensValue / usdcAmount;
+                  return (
+                    <div className="roi-item" key={index}>
+                      <div className="roi-fdv">{scenario.label}</div>
+                      <div className="roi-value">${tokensValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+                      <div className="roi-multiple">{multiple.toFixed(1)}x</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
-          <p className="popup-footer">
-            Tokens distributed at TGE. Read{' '}
-            <a href="https://yieldr.org/docs" target="_blank">docs</a>
-            {' '}to learn more about{' '}
-            <a href="https://yieldr.org/docs/product" target="_blank">product</a>
-            {' '}&{' '}
-            <a href="https://yieldr.org/docs/tokenomics" target="_blank">tokenomics</a>.
-          </p>
+            {!isConnected ? (
+              <ConnectButton.Custom>
+                {({ openConnectModal }) => (
+                  <button className="popup-cta" onClick={openConnectModal}>
+                    <span>Connect Wallet</span>
+                    <span>→</span>
+                  </button>
+                )}
+              </ConnectButton.Custom>
+            ) : (
+              <button
+                className="popup-cta"
+                onClick={initiatePayment}
+                disabled={isDisabled}
+              >
+                {isProcessing ? (
+                  <span>Processing...</span>
+                ) : !isValidAmount ? (
+                  <span>Min ${MIN_CONTRIBUTION} USDC</span>
+                ) : !hasBalance ? (
+                  <span>Insufficient Balance</span>
+                ) : (
+                  <>
+                    <span>Transfer USDC</span>
+                    <span>→</span>
+                  </>
+                )}
+              </button>
+            )}
+
+            <div className="popup-treasury">
+              <span>Treasury:</span>
+              <a href={`${EXPLORER_URL}/address/${TREASURY_ADDRESS}`} target="_blank" rel="noopener noreferrer">
+                {TREASURY_ADDRESS.slice(0, 6)}...{TREASURY_ADDRESS.slice(-4)}
+              </a>
+              <span>|</span>
+              <a href={`${EXPLORER_URL}/address/${TREASURY_ADDRESS}`} target="_blank" rel="noopener noreferrer">
+                View on Basescan
+              </a>
+            </div>
+
+            <p className="popup-note">
+              Tokens distributed at TGE. Read <a href="/docs" target="_blank">docs</a> to learn more about <a href="/docs" target="_blank">product</a> & <a href="/docs" target="_blank">tokenomics</a>.
+            </p>
+          </div>
         </div>
       </div>
 
