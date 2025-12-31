@@ -1,145 +1,165 @@
-// API route to handle YLDR token contributions
-import { NextResponse } from 'next/server';
-import { getContributionsCollection, getTiersCollection } from '@/lib/db/mongodb';
-import { Contribution, TierName } from '@/lib/types/contribution';
+// API Route: Record and Query Contributions
+import { NextRequest, NextResponse } from 'next/server';
+import connectDB from '@/lib/mongodb';
+import { Contribution } from '@/models/Contribution';
+import { RaiseStats } from '@/models/RaiseStats';
+import { calculateAllocation, getCurrentTier } from '@/lib/tierCalculations';
+import { API_AUTH_KEY } from '@/config/payment';
 
-// GET all contributions or by wallet address
-export async function GET(request: Request) {
+// Helper to verify API auth for internal calls
+function verifyApiAuth(request: NextRequest): boolean {
+  const authHeader = request.headers.get('x-api-key');
+  return authHeader === API_AUTH_KEY;
+}
+
+export async function POST(req: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const walletAddress = searchParams.get('wallet');
+    await connectDB();
 
-    const contributionsCollection = await getContributionsCollection();
+    const body = await req.json();
+    const {
+      wallet_address,
+      usdc_amount,
+      tx_hash,
+      network,
+      chain_id,
+    } = body;
 
-    if (walletAddress) {
-      // Get contributions for specific wallet
-      const contributions = await contributionsCollection
-        .find({ walletAddress: walletAddress.toLowerCase() })
-        .sort({ timestamp: -1 })
-        .toArray();
-
-      const totalYLDR = contributions.reduce(
-        (sum, c) => sum + c.yldrAllocated,
-        0
+    // Validate required fields
+    if (!wallet_address || !usdc_amount || !tx_hash || !network || !chain_id) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required fields' },
+        { status: 400 }
       );
-      const totalUSDC = contributions.reduce((sum, c) => sum + c.usdcAmount, 0);
+    }
 
-      return NextResponse.json({
-        success: true,
-        contributions,
-        totalYLDR,
-        totalUSDC,
+    // Check for duplicate tx_hash
+    const existing = await Contribution.findOne({ tx_hash });
+    if (existing) {
+      return NextResponse.json(
+        { success: false, error: 'Transaction already recorded' },
+        { status: 409 }
+      );
+    }
+
+    // Get current raise stats
+    let stats = await RaiseStats.findOne();
+    if (!stats) {
+      stats = await RaiseStats.create({
+        total_raised_usdc: 0,
+        total_yldr_allocated: 0,
+        current_tier: 'Genesis',
+        tier_raised_usdc: 0,
+        tier_yldr_remaining: 1_500_000,
+        contributor_count: 0,
       });
     }
 
-    // Get all contributions (admin view)
-    const contributions = await contributionsCollection
-      .find({})
-      .sort({ timestamp: -1 })
-      .toArray();
+    // Calculate allocation based on current tier
+    const allocation = calculateAllocation(usdc_amount, stats.total_raised_usdc);
+
+    // Create contribution record
+    const contribution = await Contribution.create({
+      wallet_address: wallet_address.toLowerCase(),
+      usdc_amount,
+      yldr_allocation: allocation.yldrAmount,
+      yldr_price: allocation.effectivePrice,
+      allocation_tier: allocation.tier,
+      fdv_at_purchase: allocation.fdv,
+      tx_hash,
+      network,
+      chain_id,
+      status: 'confirmed',
+      created_at: new Date(),
+      confirmed_at: new Date(),
+      ip_address: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip'),
+      user_agent: req.headers.get('user-agent'),
+    });
+
+    // Update raise stats
+    const newTotalRaised = stats.total_raised_usdc + usdc_amount;
+    const newTierInfo = getCurrentTier(newTotalRaised);
+
+    // Check if this is a new contributor
+    const existingContributor = await Contribution.findOne({
+      wallet_address: wallet_address.toLowerCase(),
+      _id: { $ne: contribution._id },
+    });
+
+    await RaiseStats.updateOne(
+      {},
+      {
+        $inc: {
+          total_raised_usdc: usdc_amount,
+          total_yldr_allocated: allocation.yldrAmount,
+          contributor_count: existingContributor ? 0 : 1,
+        },
+        $set: {
+          current_tier: newTierInfo.currentTier.name,
+          tier_yldr_remaining: newTierInfo.tokensRemainingInTier,
+          last_updated: new Date(),
+        },
+      }
+    );
 
     return NextResponse.json({
       success: true,
-      contributions,
-      total: contributions.length,
+      data: {
+        contribution_id: contribution._id,
+        yldr_allocation: allocation.yldrAmount,
+        yldr_price: allocation.effectivePrice,
+        tier: allocation.tier,
+        fdv: allocation.fdv,
+        breakdown: allocation.breakdown,
+      },
     });
   } catch (error) {
-    console.error('Error fetching contributions:', error);
+    console.error('Error recording contribution:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch contributions', success: false },
+      { success: false, error: 'Failed to record contribution' },
       { status: 500 }
     );
   }
 }
 
-// POST new contribution
-export async function POST(request: Request) {
+// Get contributions for a wallet
+export async function GET(req: NextRequest) {
   try {
-    const body = await request.json();
-    const {
-      walletAddress,
-      usdcAmount,
-      txHash,
-    }: {
-      walletAddress: string;
-      usdcAmount: number;
-      txHash: string;
-    } = body;
+    await connectDB();
 
-    // Validate inputs
-    if (!walletAddress || !usdcAmount || !txHash) {
+    const { searchParams } = new URL(req.url);
+    const wallet = searchParams.get('wallet');
+
+    if (!wallet) {
       return NextResponse.json(
-        { error: 'Missing required fields', success: false },
+        { success: false, error: 'Wallet address required' },
         { status: 400 }
       );
     }
 
-    // Get current tier
-    const tiersCollection = await getTiersCollection();
-    const tiers = await tiersCollection.find({}).toArray();
-    const currentTier = tiers.find(
-      (tier) => tier.tokensSold < tier.tokensAvailable
-    );
-
-    if (!currentTier) {
-      return NextResponse.json(
-        { error: 'All tiers sold out', success: false },
-        { status: 400 }
-      );
-    }
-
-    // Calculate YLDR allocation
-    const yldrAmount = usdcAmount / currentTier.pricePerToken;
-    const remainingInTier =
-      currentTier.tokensAvailable - currentTier.tokensSold;
-
-    if (yldrAmount > remainingInTier) {
-      return NextResponse.json(
-        {
-          error: `Only ${remainingInTier.toFixed(2)} YLDR remaining in ${currentTier.name} tier`,
-          success: false,
-        },
-        { status: 400 }
-      );
-    }
-
-    // Create contribution record
-    const contribution: Contribution = {
-      walletAddress: walletAddress.toLowerCase(),
-      usdcAmount,
-      yldrAllocated: yldrAmount,
-      tierAtPurchase: currentTier.name as TierName,
-      pricePerToken: currentTier.pricePerToken,
-      timestamp: new Date(),
-      txHash,
+    const contributions = await Contribution.find({
+      wallet_address: wallet.toLowerCase(),
       status: 'confirmed',
-    };
+    }).sort({ created_at: -1 });
 
-    const contributionsCollection = await getContributionsCollection();
-    const result = await contributionsCollection.insertOne(contribution);
-
-    // Update tier tokens sold
-    await tiersCollection.updateOne(
-      { name: currentTier.name },
-      { $inc: { tokensSold: yldrAmount } }
-    );
-
-    // Get updated tier info
-    const updatedTiers = await tiersCollection.find({}).toArray();
-    const newCurrentTier = updatedTiers.find(
-      (tier) => tier.tokensSold < tier.tokensAvailable
-    ) || updatedTiers[updatedTiers.length - 1];
+    const totalUsdc = contributions.reduce((sum, c) => sum + c.usdc_amount, 0);
+    const totalYldr = contributions.reduce((sum, c) => sum + c.yldr_allocation, 0);
 
     return NextResponse.json({
       success: true,
-      contribution: { ...contribution, _id: result.insertedId },
-      currentTier: newCurrentTier,
-      message: `Successfully allocated ${yldrAmount.toFixed(2)} YLDR at ${currentTier.name} tier price`,
+      data: {
+        contributions,
+        summary: {
+          totalUsdc,
+          totalYldr,
+          contributionCount: contributions.length,
+        },
+      },
     });
   } catch (error) {
-    console.error('Error creating contribution:', error);
+    console.error('Error fetching contributions:', error);
     return NextResponse.json(
-      { error: 'Failed to create contribution', success: false },
+      { success: false, error: 'Failed to fetch contributions' },
       { status: 500 }
     );
   }
