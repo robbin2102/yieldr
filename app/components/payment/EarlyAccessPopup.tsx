@@ -3,6 +3,7 @@
 // Early Access Popup: Main payment interface with tier display
 
 import { useState, useEffect } from 'react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { usePaymentFlow } from '@/hooks/usePaymentFlow';
 import { useRaiseStats, useAllocationPreview } from '@/hooks/useRaiseStats';
@@ -140,13 +141,26 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
           </div>
 
           {/* Connect Wallet Button */}
-          <button
-            className="connect-wallet-btn"
-            onClick={initiatePayment}
-            disabled={isDisabled}
-          >
-            {getButtonText()}
-          </button>
+          {!isConnected ? (
+            <ConnectButton.Custom>
+              {({ openConnectModal }) => (
+                <button
+                  className="connect-wallet-btn"
+                  onClick={openConnectModal}
+                >
+                  Connect Wallet →
+                </button>
+              )}
+            </ConnectButton.Custom>
+          ) : (
+            <button
+              className="connect-wallet-btn"
+              onClick={initiatePayment}
+              disabled={isDisabled}
+            >
+              {isProcessing ? 'Processing...' : !isValidAmount ? `Min $${MIN_CONTRIBUTION} USDC` : !hasBalance ? 'Insufficient Balance' : 'Contribute →'}
+            </button>
+          )}
 
           {/* What YLDR is used for */}
           <div className="utility-section">

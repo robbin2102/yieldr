@@ -94,10 +94,6 @@ export default function BuildInPublicPage() {
               <div className="progress-value">$14.7K</div>
               <div className="progress-label">Trading PnL</div>
             </div>
-            <div className="progress-card">
-              <div className="progress-value">$3.3K</div>
-              <div className="progress-label">Treasury Balance</div>
-            </div>
           </div>
         </section>
 

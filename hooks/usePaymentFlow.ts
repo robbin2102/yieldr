@@ -72,16 +72,13 @@ export function usePaymentFlow() {
 
   const initiatePayment = async () => {
     try {
-      // Step 1: Connect wallet if not connected
+      // Wallet should already be connected via RainbowKit
       if (!isConnected) {
-        const injectedConnector = connectors.find((c) => c.id === 'injected');
-        if (injectedConnector) {
-          connect({ connector: injectedConnector });
-        }
+        console.error('Wallet not connected');
         return;
       }
 
-      // Step 2: Switch to Base if needed
+      // Step 1: Switch to Base if needed
       if (chain?.id !== CHAIN_ID) {
         try {
           await switchChain({ chainId: CHAIN_ID });
@@ -92,13 +89,13 @@ export function usePaymentFlow() {
         }
       }
 
-      // Step 3: Check balance
+      // Step 2: Check balance
       if (balance < contributionAmount) {
         setStatus('error');
         return;
       }
 
-      // Step 4: Execute transfer
+      // Step 3: Execute transfer
       setStatus('processing');
       await transfer(contributionAmount);
     } catch (error) {
