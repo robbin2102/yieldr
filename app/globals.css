@@ -4411,3 +4411,40 @@ html {
     padding: 1.5rem;
   }
 }
+
+/* Wallet Status Display */
+.wallet-status {
+  background: #111;
+  border: 1px solid #1A1A1A;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.wallet-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.status-label {
+  color: #666;
+}
+
+.status-value {
+  color: #00C805;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.wallet-status-warning {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #FFC107;
+  text-align: center;
+}

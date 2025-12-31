@@ -1,7 +1,8 @@
-// Hook: Orchestrate Complete Payment Flow
+// Hook: Orchestrate Complete Payment Flow with RainbowKit
 
 import { useEffect } from 'react';
-import { useAccount, useConnect, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useUSDCBalance } from './useUSDCBalance';
 import { useUSDCTransfer } from './useUSDCTransfer';
 import { usePayment } from '@/app/context/PaymentContext';
@@ -9,7 +10,7 @@ import { CHAIN_ID, NETWORK_NAME } from '@/config/payment';
 
 export function usePaymentFlow() {
   const { address, isConnected, chain } = useAccount();
-  const { connectors, connect } = useConnect();
+  const { openConnectModal } = useConnectModal();
   const { switchChain } = useSwitchChain();
   const { balance, refetch: refetchBalance } = useUSDCBalance();
   const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
@@ -72,12 +73,9 @@ export function usePaymentFlow() {
 
   const initiatePayment = async () => {
     try {
-      // Step 1: Connect wallet if not connected
+      // Step 1: Connect wallet if not connected - Open RainbowKit modal
       if (!isConnected) {
-        const injectedConnector = connectors.find((c) => c.id === 'injected');
-        if (injectedConnector) {
-          connect({ connector: injectedConnector });
-        }
+        openConnectModal?.();
         return;
       }
 
@@ -85,6 +83,7 @@ export function usePaymentFlow() {
       if (chain?.id !== CHAIN_ID) {
         try {
           await switchChain({ chainId: CHAIN_ID });
+          return; // Wait for network switch before proceeding
         } catch (error) {
           console.error('Failed to switch network:', error);
           setStatus('error');
@@ -98,7 +97,7 @@ export function usePaymentFlow() {
         return;
       }
 
-      // Step 4: Execute transfer
+      // Step 4: Execute USDC transfer (this will trigger wallet approval)
       setStatus('processing');
       await transfer(contributionAmount);
     } catch (error) {
@@ -114,5 +113,7 @@ export function usePaymentFlow() {
     balance,
     isProcessing: isPending || isConfirming,
     txHash: hash,
+    chainId: chain?.id,
+    isCorrectNetwork: chain?.id === CHAIN_ID,
   };
 }

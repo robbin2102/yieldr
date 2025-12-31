@@ -19,8 +19,9 @@ interface EarlyAccessPopupProps {
 
 export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
   const [inputValue, setInputValue] = useState('1000');
+  const [shouldAutoTransfer, setShouldAutoTransfer] = useState(false);
   const { status, contributionAmount, setContributionAmount } = usePayment();
-  const { initiatePayment, isConnected, balance, isProcessing } = usePaymentFlow();
+  const { initiatePayment, isConnected, address, balance, isProcessing, chainId, isCorrectNetwork } = usePaymentFlow();
   const { totalRaised, tierInfo, isLoading: statsLoading } = useRaiseStats();
 
   const usdcAmount = parseFloat(inputValue) || 0;
@@ -30,6 +31,17 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
   useEffect(() => {
     setContributionAmount(usdcAmount);
   }, [usdcAmount, setContributionAmount]);
+
+  // Auto-trigger payment after wallet connects and network is correct
+  useEffect(() => {
+    if (isConnected && isCorrectNetwork && shouldAutoTransfer && !isProcessing) {
+      setShouldAutoTransfer(false);
+      // Small delay to ensure balance is loaded
+      setTimeout(() => {
+        initiatePayment();
+      }, 500);
+    }
+  }, [isConnected, isCorrectNetwork, shouldAutoTransfer, isProcessing]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9.]/g, '');
@@ -42,18 +54,27 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
     }
   };
 
+  const handleButtonClick = () => {
+    if (!isConnected) {
+      // Set flag to auto-transfer after connection
+      setShouldAutoTransfer(true);
+    }
+    initiatePayment();
+  };
+
   const isValidAmount = usdcAmount >= MIN_CONTRIBUTION;
   const hasBalance = !isConnected || balance >= usdcAmount;
 
   const getButtonText = () => {
     if (isProcessing) return 'Processing...';
     if (!isConnected) return 'Connect Wallet →';
+    if (isConnected && !isCorrectNetwork) return 'Switch to Base Network →';
     if (!isValidAmount) return `Min $${MIN_CONTRIBUTION} USDC`;
     if (!hasBalance) return 'Insufficient Balance';
     return 'Contribute →';
   };
 
-  const isDisabled = isProcessing || (isConnected && (!isValidAmount || !hasBalance));
+  const isDisabled = isProcessing || (isConnected && isCorrectNetwork && (!isValidAmount || !hasBalance));
 
   if (!isOpen) return null;
 
@@ -139,10 +160,25 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             )}
           </div>
 
-          {/* Connect Wallet Button */}
+          {/* Wallet Status */}
+          {isConnected && (
+            <div className="wallet-status">
+              <div className="wallet-status-item">
+                <span className="status-label">Connected:</span>
+                <span className="status-value">{address?.slice(0, 6)}...{address?.slice(-4)}</span>
+              </div>
+              {!isCorrectNetwork && (
+                <div className="wallet-status-warning">
+                  ⚠️ Please switch to Base network
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Connect Wallet / Contribute Button */}
           <button
             className="connect-wallet-btn"
-            onClick={initiatePayment}
+            onClick={handleButtonClick}
             disabled={isDisabled}
           >
             {getButtonText()}
