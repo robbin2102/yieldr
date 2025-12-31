@@ -7,11 +7,11 @@ import { USDC_ADDRESS, USDC_DECIMALS } from '@/config/payment';
 
 const USDC_ABI = [
   {
-    constant: true,
-    inputs: [{ name: '_owner', type: 'address' }],
-    name: 'balanceOf',
-    outputs: [{ name: 'balance', type: 'uint256' }],
     type: 'function',
+    name: 'balanceOf',
+    stateMutability: 'view',
+    inputs: [{ name: 'owner', type: 'address' }],
+    outputs: [{ name: '', type: 'uint256' }],
   },
 ] as const;
 

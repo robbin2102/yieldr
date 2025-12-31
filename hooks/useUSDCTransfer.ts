@@ -6,14 +6,14 @@ import { USDC_ADDRESS, USDC_DECIMALS, TREASURY_ADDRESS } from '@/config/payment'
 
 const USDC_ABI = [
   {
-    constant: false,
-    inputs: [
-      { name: '_to', type: 'address' },
-      { name: '_value', type: 'uint256' },
-    ],
-    name: 'transfer',
-    outputs: [{ name: '', type: 'bool' }],
     type: 'function',
+    name: 'transfer',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
   },
 ] as const;
 

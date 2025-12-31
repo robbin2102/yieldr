@@ -12,7 +12,8 @@ export const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '8453');
 export const NETWORK_NAME = 'Base';
 
 // Contribution Limits
-export const MIN_CONTRIBUTION = 100; // $100 USDC
+// export const MIN_CONTRIBUTION = 100; // $100 USDC
+export const MIN_CONTRIBUTION = 1; // $1 USDC (for testing - change to 100 for production)
 
 // Explorer
 export const EXPLORER_URL = 'https://basescan.org';

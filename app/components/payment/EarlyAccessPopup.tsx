@@ -43,6 +43,25 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
     }
   };
 
+  const handleConnectClick = (openModal: () => void) => {
+    if (usdcAmount < MIN_CONTRIBUTION) {
+      alert(`Minimum contribution is $${MIN_CONTRIBUTION} USDC. Please enter at least $${MIN_CONTRIBUTION}.`);
+      return;
+    }
+    openModal();
+  };
+
+  // Auto-trigger payment after wallet connects if amount is valid
+  useEffect(() => {
+    if (isConnected && usdcAmount >= MIN_CONTRIBUTION && balance >= usdcAmount && !isProcessing) {
+      // Small delay to ensure wallet is fully connected
+      const timer = setTimeout(() => {
+        initiatePayment();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isConnected]);
+
   const isValidAmount = usdcAmount >= MIN_CONTRIBUTION;
   const hasBalance = !isConnected || balance >= usdcAmount;
   const isDisabled = isProcessing || (isConnected && (!isValidAmount || !hasBalance));
@@ -50,6 +69,9 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
   if (!isOpen) return null;
 
   const { currentTier } = tierInfo;
+
+  // Debug: Log treasury address to verify correct import
+  console.log('Treasury Address:', TREASURY_ADDRESS);
 
   // Calculate potential multiplier at different FDV scenarios
   const fdvScenarios = [
@@ -114,7 +136,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                       AI Compute Credits <span className="deflationary-badge">🔥 DEFLATIONARY</span>
                     </div>
                     <div className="utility-desc">
-                      YLDR tokens fuel your AI agent — consumed when chatting, analyzing trades, monitoring traders, and executing strategies. Every YLDR used is burned. Fixed supply.
+                      YLDR fuels your AI agent. Every YLDR used is burned. Fixed supply.
                     </div>
                   </div>
                 </div>
@@ -123,7 +145,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                   <div className="utility-content">
                     <div className="utility-name">Beta Access</div>
                     <div className="utility-desc">
-                      Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026. Train and fine-tune your agent before public launch.
+                      Unlock agent capabilities as features roll out in 2026.
                     </div>
                   </div>
                 </div>
@@ -132,7 +154,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                   <div className="utility-content">
                     <div className="utility-name">Exclusive Community</div>
                     <div className="utility-desc">
-                      Access private Discord with direct team interaction, product feedback sessions, and priority updates on development.
+                      Private Discord with direct team interaction and updates.
                     </div>
                   </div>
                 </div>
@@ -141,7 +163,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                   <div className="utility-content">
                     <div className="utility-name">Governance Rights</div>
                     <div className="utility-desc">
-                      Snapshot voting on protocol decisions, feature prioritization, and treasury allocations.
+                      Snapshot voting on protocol decisions and treasury.
                     </div>
                   </div>
                 </div>
@@ -169,7 +191,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             {!isConnected ? (
               <ConnectButton.Custom>
                 {({ openConnectModal }) => (
-                  <button className="popup-cta" onClick={openConnectModal}>
+                  <button className="popup-cta" onClick={() => handleConnectClick(openConnectModal)}>
                     <span>Connect Wallet</span>
                     <span>→</span>
                   </button>
