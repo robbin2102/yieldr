@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { PaymentPopup } from '../components/PaymentPopup';
+import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
 
 export default function DocsPage() {
   const [activePage, setActivePage] = useState('what-is-yieldr');
@@ -1383,7 +1383,7 @@ export default function DocsPage() {
       </main>
 
       {/* Payment Popup */}
-      <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </>
   );
 }

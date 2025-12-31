@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { PaymentPopup } from '../components/PaymentPopup';
+import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
 
 export default function TeamPage() {
   const [showPopup, setShowPopup] = useState(false);
@@ -215,7 +215,7 @@ export default function TeamPage() {
       </footer>
 
       {/* Payment Popup */}
-      <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </>
   );
 }

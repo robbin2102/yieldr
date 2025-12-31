@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { PaymentPopup } from './components/PaymentPopup';
+import { EarlyAccessPopup } from './components/payment/EarlyAccessPopup';
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
@@ -726,7 +726,7 @@ export default function HomePage() {
       </footer>
 
       {/* Payment Popup */}
-      <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </>
   );
 }

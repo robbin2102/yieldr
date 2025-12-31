@@ -4,11 +4,11 @@
 export const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 export const USDC_DECIMALS = 6;
 
-// Treasury Wallet
-export const TREASURY_ADDRESS = '0xB56C6247F39A992dbcF172a4308386A23d0ea15C';
+// Treasury Wallet (from environment variable)
+export const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_TREASURY_WALLET || '0xB56C6247F39A992dbcF172a4308386A23d0ea15C';
 
-// Network
-export const CHAIN_ID = 8453; // Base
+// Network (from environment variable)
+export const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '8453');
 export const NETWORK_NAME = 'Base';
 
 // Contribution Limits
