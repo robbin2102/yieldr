@@ -47,11 +47,11 @@ export async function GET() {
   } catch (error) {
     console.error('\n❌ ERROR FETCHING PUBLIC CONTRIBUTIONS ❌');
     console.error('Error type:', error?.constructor?.name);
-    console.error('Error message:', error?.message);
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
     console.error('Full error:', error);
     console.error('=================================\n');
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch public contributions', details: error?.message },
+      { success: false, error: 'Failed to fetch public contributions', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
