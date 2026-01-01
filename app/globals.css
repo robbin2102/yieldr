@@ -3952,8 +3952,10 @@ html {
 
 .input-prefix {
   font-size: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
   color: #666;
   margin-right: 0.5rem;
+  line-height: 1;
 }
 
 .contribute-input {
@@ -3964,6 +3966,7 @@ html {
   font-family: 'JetBrains Mono', monospace;
   color: #fff;
   outline: none;
+  line-height: 1;
 }
 
 .contribute-input::placeholder {
