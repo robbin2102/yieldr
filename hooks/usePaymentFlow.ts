@@ -20,7 +20,17 @@ export function usePaymentFlow() {
 
   // Handle successful transaction
   useEffect(() => {
+    console.log('=== Transaction Status Check ===');
+    console.log('isConfirmed:', isConfirmed);
+    console.log('hash:', hash);
+    console.log('isPending:', isPending);
+    console.log('isConfirming:', isConfirming);
+    console.log('================================');
+
     if (isConfirmed && hash) {
+      console.log('🎉 Transaction confirmed! Hash:', hash);
+      console.log('Setting status to success and showing modal...');
+
       setTxHash(hash);
       setStatus('success');
 
@@ -31,16 +41,22 @@ export function usePaymentFlow() {
         breakdown: allocation.breakdown,
       });
 
+      console.log('Allocation data saved:', {
+        yldrAmount: allocation.yldrAmount,
+        effectivePrice: allocation.effectivePrice,
+        breakdownCount: allocation.breakdown.length,
+      });
+
       // Mark payment as completed
       setHasCompletedPayment(true);
 
-      // Record contribution to database
+      // Record contribution to database (non-blocking)
       recordContribution(hash);
 
       // Refetch balance after successful transfer
       refetchBalance();
     }
-  }, [isConfirmed, hash, allocation]);
+  }, [isConfirmed, hash, allocation, isPending, isConfirming]);
 
   // Handle errors
   useEffect(() => {
@@ -98,27 +114,38 @@ export function usePaymentFlow() {
 
   const recordContribution = async (txHash: string) => {
     try {
+      const payload = {
+        wallet_address: address,
+        usdc_amount: contributionAmount,
+        tx_hash: txHash,
+        network: NETWORK_NAME,
+        chain_id: CHAIN_ID,
+      };
+
+      console.log('=== Recording Contribution to API ===');
+      console.log('Payload:', JSON.stringify(payload, null, 2));
+      console.log('=====================================');
+
       const response = await fetch('/api/contributions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          wallet_address: address,
-          usdc_amount: contributionAmount,
-          tx_hash: txHash,
-          network: NETWORK_NAME,
-          chain_id: CHAIN_ID,
-        }),
+        body: JSON.stringify(payload),
       });
 
+      console.log('API Response Status:', response.status);
+
       const data = await response.json();
+      console.log('API Response Data:', data);
 
       if (!data.success) {
-        console.error('Failed to record contribution:', data.error);
+        console.error('❌ Failed to record contribution:', data.error);
+      } else {
+        console.log('✅ Contribution recorded successfully!', data.data);
       }
     } catch (error) {
-      console.error('Error recording contribution:', error);
+      console.error('❌ Error recording contribution:', error);
     }
   };
 
