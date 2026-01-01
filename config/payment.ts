@@ -12,7 +12,7 @@ export const CHAIN_ID = 8453; // Base
 export const NETWORK_NAME = 'Base';
 
 // Contribution Limits
-export const MIN_CONTRIBUTION = 100; // $100 USDC (for testing)
+export const MIN_CONTRIBUTION = 100; // $100 USDC minimum for production
 
 // Explorer
 export const EXPLORER_URL = 'https://basescan.org';
