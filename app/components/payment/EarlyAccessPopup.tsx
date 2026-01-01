@@ -79,21 +79,17 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             </div>
           </div>
 
-          {/* Tier Progress */}
-          <div className="tier-progress-section">
-            <div className="tier-progress-bar">
+          {/* Thin Tier Progress Bar */}
+          <div className="tier-capacity-bar">
+            <div className="tier-capacity-header">
+              <span className="tier-capacity-label">{currentTier.name} Tier</span>
+              <span className="tier-capacity-value">{formatUsd(usdcToNextTier)} remaining • {tierProgress.toFixed(1)}% filled</span>
+            </div>
+            <div className="tier-capacity-progress">
               <div
-                className="tier-progress-fill"
+                className="tier-capacity-fill"
                 style={{ width: `${tierProgress}%` }}
               />
-            </div>
-            <div className="tier-progress-info">
-              <span>{tierProgress.toFixed(1)}% filled</span>
-              {nextTier && (
-                <span className="next-tier-hint">
-                  {formatUsd(usdcToNextTier)} until {nextTier.name} (+{priceIncreaseAtNextTier.toFixed(0)}% price)
-                </span>
-              )}
             </div>
           </div>
 
@@ -116,32 +112,18 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                 Balance: {formatUsd(balance)} USDC on Base
               </div>
             )}
-
-            {/* Current Tier Progress */}
-            <div className="tier-capacity-bar">
-              <div className="tier-capacity-header">
-                <span className="tier-capacity-label">{currentTier.name} Tier</span>
-                <span className="tier-capacity-value">{formatUsd(usdcToNextTier)} remaining</span>
-              </div>
-              <div className="tier-capacity-progress">
-                <div
-                  className="tier-capacity-fill"
-                  style={{ width: `${tierProgress}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Next tier notification if input exceeds current tier */}
-            {nextTier && usdcAmount > usdcToNextTier && (
-              <div className="next-tier-alert">
-                <span className="alert-icon">💡</span>
-                <span>
-                  Part of your contribution will be allocated at {nextTier.name} tier ({formatPrice(nextTier.price)})
-                  {' '}— {priceIncreaseAtNextTier.toFixed(0)}% higher price
-                </span>
-              </div>
-            )}
           </div>
+
+          {/* Next tier notification - only shows if input exceeds current tier capacity */}
+          {nextTier && usdcAmount > usdcToNextTier && (
+            <div className="next-tier-alert">
+              <span className="alert-icon">💡</span>
+              <span>
+                Part of your contribution will be allocated at {nextTier.name} tier ({formatPrice(nextTier.price)})
+                {' '}— {priceIncreaseAtNextTier.toFixed(0)}% higher price
+              </span>
+            </div>
+          )}
 
           {/* Allocation Preview */}
           <div className="allocation-preview">
@@ -163,15 +145,6 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
               </div>
             )}
           </div>
-
-          {/* Connect Wallet Button */}
-          <button
-            className="connect-wallet-btn"
-            onClick={initiatePayment}
-            disabled={isDisabled}
-          >
-            {getButtonText()}
-          </button>
 
           {/* What YLDR is used for */}
           <div className="utility-section">
@@ -198,12 +171,21 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                   <div className="utility-name">Beta Access</div>
                   <p className="utility-desc">
                     Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026.
-                    Train and fine-tune your agent before public launch.
+                    Train and fine-tune your agent before public launch. Join exclusive discord after purchase.
                   </p>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Connect Wallet Button */}
+          <button
+            className="connect-wallet-btn"
+            onClick={initiatePayment}
+            disabled={isDisabled}
+          >
+            {getButtonText()}
+          </button>
 
           {/* Treasury Info */}
           <div className="treasury-info">
@@ -229,11 +211,11 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
 
           <p className="popup-footer">
             Tokens distributed at TGE. Read{' '}
-            <a href="https://yieldr.org/docs" target="_blank">docs</a>
+            <a href="/docs" target="_blank">docs</a>
             {' '}to learn more about{' '}
-            <a href="https://yieldr.org/docs/product" target="_blank">product</a>
+            <a href="/docs#what-is-yieldr" target="_blank">product</a>
             {' '}&{' '}
-            <a href="https://yieldr.org/docs/tokenomics" target="_blank">tokenomics</a>.
+            <a href="/docs#tokenomics" target="_blank">tokenomics</a>.
           </p>
         </div>
       </div>
