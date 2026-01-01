@@ -4,13 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
 import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
-import { MyAllocationModal } from '../components/payment/MyAllocationModal';
+import { UserProfile } from '../components/UserProfile';
 import { usePayment } from '../context/PaymentContext';
 
 export default function TeamPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showAllocationModal, setShowAllocationModal] = useState(false);
   const { hasCompletedPayment } = usePayment();
   const { isConnected } = useAccount();
 
@@ -43,13 +42,7 @@ export default function TeamPage() {
             </svg>
           </Link>
           {hasCompletedPayment && isConnected ? (
-            <button
-              className="team-nav-link primary allocation-btn"
-              onClick={() => setShowAllocationModal(true)}
-              title="View My Allocation"
-            >
-              My Allocation
-            </button>
+            <UserProfile />
           ) : (
             <button className="team-nav-link primary" onClick={() => setShowPopup(true)}>
               Get Early Access
@@ -80,15 +73,13 @@ export default function TeamPage() {
               <Link href="/team" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Team</Link>
               <Link href="/build-in-public" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Build Progress</Link>
               {hasCompletedPayment && isConnected ? (
-                <button
+                <Link
+                  href="/allocations"
                   className="mobile-menu-cta"
-                  onClick={() => {
-                    setShowMobileMenu(false);
-                    setShowAllocationModal(true);
-                  }}
+                  onClick={() => setShowMobileMenu(false)}
                 >
                   My Allocation
-                </button>
+                </Link>
               ) : (
                 <button
                   className="mobile-menu-cta"
@@ -254,9 +245,6 @@ export default function TeamPage() {
 
       {/* Payment Popup */}
       <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-
-      {/* My Allocation Modal */}
-      <MyAllocationModal isOpen={showAllocationModal} onClose={() => setShowAllocationModal(false)} />
     </>
   );
 }

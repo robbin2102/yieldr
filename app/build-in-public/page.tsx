@@ -3,13 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
-import { MyAllocationModal } from '../components/payment/MyAllocationModal';
+import { UserProfile } from '../components/UserProfile';
 import { usePayment } from '../context/PaymentContext';
 import { useAccount } from 'wagmi';
 
 export default function BuildInPublicPage() {
   const [showPopup, setShowPopup] = useState(false);
-  const [showAllocationModal, setShowAllocationModal] = useState(false);
   const { hasCompletedPayment } = usePayment();
   const { isConnected } = useAccount();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -43,13 +42,7 @@ export default function BuildInPublicPage() {
             </svg>
           </Link>
           {hasCompletedPayment && isConnected ? (
-            <button
-              className="team-nav-link primary allocation-btn"
-              onClick={() => setShowAllocationModal(true)}
-              title="View My Allocation"
-            >
-              My Allocation
-            </button>
+            <UserProfile />
           ) : (
             <button className="team-nav-link primary" onClick={() => setShowPopup(true)}>
               Get Early Access
@@ -79,7 +72,15 @@ export default function BuildInPublicPage() {
               <Link href="/docs" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Docs</Link>
               <Link href="/team" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Team</Link>
               <Link href="/build-in-public" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Build Progress</Link>
-              <button className="mobile-menu-cta" onClick={() => { setShowMobileMenu(false); setShowPopup(true); }}>Get Early Access</button>
+              {hasCompletedPayment && isConnected ? (
+                <Link href="/allocations" className="mobile-menu-cta" onClick={() => setShowMobileMenu(false)}>
+                  My Allocation
+                </Link>
+              ) : (
+                <button className="mobile-menu-cta" onClick={() => { setShowMobileMenu(false); setShowPopup(true); }}>
+                  Get Early Access
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -710,8 +711,6 @@ export default function BuildInPublicPage() {
 
       {/* Payment Popup */}
       <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-n      {/* My Allocation Modal */}
-      <MyAllocationModal isOpen={showAllocationModal} onClose={() => setShowAllocationModal(false)} />
     </>
   );
 }

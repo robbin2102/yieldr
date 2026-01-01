@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
-import { MyAllocationModal } from '../components/payment/MyAllocationModal';
+import { UserProfile } from '../components/UserProfile';
 import { usePayment } from '../context/PaymentContext';
 import { useAccount } from 'wagmi';
 
@@ -12,7 +12,6 @@ export default function DocsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [showAllocationModal, setShowAllocationModal] = useState(false);
   const { hasCompletedPayment } = usePayment();
   const { isConnected } = useAccount();
 
@@ -85,13 +84,7 @@ export default function DocsPage() {
             </svg>
           </Link>
           {hasCompletedPayment && isConnected ? (
-            <button
-              className="team-nav-link primary allocation-btn"
-              onClick={() => setShowAllocationModal(true)}
-              title="View My Allocation"
-            >
-              My Allocation
-            </button>
+            <UserProfile />
           ) : (
             <button className="team-nav-link primary" onClick={() => setShowPopup(true)}>
               Get Early Access
@@ -1402,8 +1395,6 @@ export default function DocsPage() {
 
       {/* Payment Popup */}
       <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-n      {/* My Allocation Modal */}
-      <MyAllocationModal isOpen={showAllocationModal} onClose={() => setShowAllocationModal(false)} />
     </>
   );
 }
