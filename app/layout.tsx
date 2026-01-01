@@ -6,6 +6,9 @@ import { ProvidersLayout } from './ProvidersLayout';
 export const metadata: Metadata = {
   title: 'Yieldr - AI for DeFi\'s Top 1%',
   description: 'AI-powered DeFi asset management. Agents that help you become better investors, traders & fund managers onchain.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
