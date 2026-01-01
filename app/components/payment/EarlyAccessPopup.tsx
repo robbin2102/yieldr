@@ -116,6 +116,31 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                 Balance: {formatUsd(balance)} USDC on Base
               </div>
             )}
+
+            {/* Current Tier Progress */}
+            <div className="tier-capacity-bar">
+              <div className="tier-capacity-header">
+                <span className="tier-capacity-label">{currentTier.name} Tier</span>
+                <span className="tier-capacity-value">{formatUsd(usdcToNextTier)} remaining</span>
+              </div>
+              <div className="tier-capacity-progress">
+                <div
+                  className="tier-capacity-fill"
+                  style={{ width: `${tierProgress}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Next tier notification if input exceeds current tier */}
+            {nextTier && usdcAmount > usdcToNextTier && (
+              <div className="next-tier-alert">
+                <span className="alert-icon">💡</span>
+                <span>
+                  Part of your contribution will be allocated at {nextTier.name} tier ({formatPrice(nextTier.price)})
+                  {' '}— {priceIncreaseAtNextTier.toFixed(0)}% higher price
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Allocation Preview */}

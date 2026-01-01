@@ -1,6 +1,6 @@
 'use client';
 
-// Success Modal: Show after successful payment
+// My Allocation Modal: Show user's allocation details
 
 import React from 'react';
 import { usePayment } from '@/app/context/PaymentContext';
@@ -9,20 +9,26 @@ import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 
 const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
 
-export function SuccessModal() {
-  const { txHash, contributionAmount, allocationData, reset } = usePayment();
+interface MyAllocationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-  if (!allocationData) return null;
+export function MyAllocationModal({ isOpen, onClose }: MyAllocationModalProps) {
+  const { txHash, contributionAmount, allocationData } = usePayment();
+
+  if (!isOpen || !allocationData) return null;
 
   const { yldrAmount, effectivePrice, breakdown } = allocationData;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container success-modal">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-container allocation-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="popup-close" onClick={onClose}>×</button>
+
         <div className="modal-content">
-          <div className="success-icon">🎉</div>
-          <h2 className="modal-title">Allocation Successful!</h2>
-          <p className="modal-subtitle">Welcome to YLDR Early Access</p>
+          <h2 className="modal-title">My Allocation</h2>
+          <p className="modal-subtitle">YLDR Early Access</p>
 
           {/* Main allocation display */}
           <div className="allocation-main">
@@ -69,29 +75,23 @@ export function SuccessModal() {
             </a>
           )}
 
-          {/* Discord CTA */}
-          <div className="discord-cta">
-            <div className="cta-icon">💬</div>
-            <h3>Claim Exclusive Beta Access</h3>
-            <p>Join our private Discord for direct team interaction, product updates, and priority support</p>
+          {/* Quick actions */}
+          <div className="quick-actions">
             <a
               href={DISCORD_INVITE}
               target="_blank"
               rel="noopener noreferrer"
-              className="discord-button"
+              className="action-button discord"
             >
-              Join Discord Community
+              💬 Join Discord
+            </a>
+            <a
+              href="/build-in-public"
+              className="action-button progress"
+            >
+              📊 View Progress
             </a>
           </div>
-
-          {/* Build progress link */}
-          <a href="/build-in-public" className="build-link">
-            View Build Progress →
-          </a>
-
-          <button className="modal-button-secondary" onClick={reset}>
-            Close
-          </button>
         </div>
       </div>
     </div>

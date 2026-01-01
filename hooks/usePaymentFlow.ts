@@ -5,6 +5,7 @@ import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { useUSDCBalance } from './useUSDCBalance';
 import { useUSDCTransfer } from './useUSDCTransfer';
 import { usePayment } from '@/app/context/PaymentContext';
+import { useRaiseStats, useAllocationPreview } from './useRaiseStats';
 import { CHAIN_ID, NETWORK_NAME } from '@/config/payment';
 
 export function usePaymentFlow() {
@@ -13,7 +14,9 @@ export function usePaymentFlow() {
   const { switchChain } = useSwitchChain();
   const { balance, refetch: refetchBalance } = useUSDCBalance();
   const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
-  const { contributionAmount, setStatus, setTxHash } = usePayment();
+  const { contributionAmount, setStatus, setTxHash, setAllocationData, setHasCompletedPayment } = usePayment();
+  const { totalRaised } = useRaiseStats();
+  const allocation = useAllocationPreview(contributionAmount, totalRaised);
 
   // Handle successful transaction
   useEffect(() => {
@@ -21,13 +24,23 @@ export function usePaymentFlow() {
       setTxHash(hash);
       setStatus('success');
 
+      // Save allocation data for display
+      setAllocationData({
+        yldrAmount: allocation.yldrAmount,
+        effectivePrice: allocation.effectivePrice,
+        breakdown: allocation.breakdown,
+      });
+
+      // Mark payment as completed
+      setHasCompletedPayment(true);
+
       // Record contribution to database
       recordContribution(hash);
 
       // Refetch balance after successful transfer
       refetchBalance();
     }
-  }, [isConfirmed, hash]);
+  }, [isConfirmed, hash, allocation]);
 
   // Handle errors
   useEffect(() => {
