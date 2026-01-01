@@ -1,6 +1,6 @@
 // Hook: Orchestrate Complete Payment Flow
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { useUSDCBalance } from './useUSDCBalance';
 import { useUSDCTransfer } from './useUSDCTransfer';
@@ -18,6 +18,9 @@ export function usePaymentFlow() {
   const { totalRaised } = useRaiseStats();
   const allocation = useAllocationPreview(contributionAmount, totalRaised);
 
+  // Track which transactions we've already recorded to prevent duplicates
+  const recordedTransactions = useRef<Set<string>>(new Set());
+
   // Handle successful transaction
   useEffect(() => {
     console.log('=== Transaction Status Check ===');
@@ -27,9 +30,12 @@ export function usePaymentFlow() {
     console.log('isConfirming:', isConfirming);
     console.log('================================');
 
-    if (isConfirmed && hash) {
+    if (isConfirmed && hash && !recordedTransactions.current.has(hash)) {
       console.log('🎉 Transaction confirmed! Hash:', hash);
       console.log('Setting status to success and showing modal...');
+
+      // Mark this transaction as recorded immediately to prevent duplicates
+      recordedTransactions.current.add(hash);
 
       setTxHash(hash);
       setStatus('success');
@@ -50,13 +56,13 @@ export function usePaymentFlow() {
       // Mark payment as completed
       setHasCompletedPayment(true);
 
-      // Record contribution to database (non-blocking)
+      // Record contribution to database (non-blocking, only once)
       recordContribution(hash);
 
       // Refetch balance after successful transfer
       refetchBalance();
     }
-  }, [isConfirmed, hash, allocation, isPending, isConfirming]);
+  }, [isConfirmed, hash]);
 
   // Handle errors
   useEffect(() => {

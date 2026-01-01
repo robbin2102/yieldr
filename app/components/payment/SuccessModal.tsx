@@ -10,14 +10,20 @@ import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
 
 export function SuccessModal() {
-  const { txHash, contributionAmount, allocationData, reset } = usePayment();
+  const { txHash, contributionAmount, allocationData, reset, status } = usePayment();
 
-  if (!allocationData) return null;
+  // Only show when status is success and we have allocation data
+  if (status !== 'success' || !allocationData) return null;
 
   const { yldrAmount, effectivePrice, breakdown } = allocationData;
 
+  const handleClose = () => {
+    console.log('✅ Closing success modal');
+    reset();
+  };
+
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && handleClose()}>
       <div className="modal-container success-modal">
         <div className="modal-content">
           <div className="success-icon">🎉</div>
@@ -89,7 +95,7 @@ export function SuccessModal() {
             View Build Progress →
           </a>
 
-          <button className="modal-button-secondary" onClick={reset}>
+          <button className="modal-button-secondary" onClick={handleClose}>
             Close
           </button>
         </div>

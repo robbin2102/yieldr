@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAccount } from 'wagmi';
 import { EarlyAccessPopup } from './components/payment/EarlyAccessPopup';
 import { MyAllocationModal } from './components/payment/MyAllocationModal';
+import { UserProfile } from './components/UserProfile';
 import { usePayment } from './context/PaymentContext';
 
 export default function HomePage() {
@@ -567,13 +568,7 @@ export default function HomePage() {
             </svg>
           </Link>
           {hasCompletedPayment && isConnected ? (
-            <button
-              className="team-nav-link primary allocation-btn"
-              onClick={() => setShowAllocationModal(true)}
-              title="View My Allocation"
-            >
-              My Allocation
-            </button>
+            <UserProfile onViewAllocation={() => setShowAllocationModal(true)} />
           ) : (
             <button className="team-nav-link primary" onClick={() => setShowPopup(true)}>
               Get Early Access
