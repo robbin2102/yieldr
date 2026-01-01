@@ -4,11 +4,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useAccount } from 'wagmi';
+import { useRouter } from 'next/navigation';
 import { useUSDCBalance } from '@/hooks/useUSDCBalance';
 import { formatUsd } from '@/lib/tierCalculations';
 
 interface UserProfileProps {
-  onViewAllocation: () => void;
+  onViewAllocation?: () => void; // Optional - defaults to navigating to /allocations
 }
 
 // Generate consistent random avatar based on wallet address
@@ -21,6 +22,7 @@ function getAvatarForAddress(address: string): string {
 export function UserProfile({ onViewAllocation }: UserProfileProps) {
   const { address } = useAccount();
   const { balance } = useUSDCBalance();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +76,11 @@ export function UserProfile({ onViewAllocation }: UserProfileProps) {
             className="profile-menu-item"
             onClick={() => {
               setIsOpen(false);
-              onViewAllocation();
+              if (onViewAllocation) {
+                onViewAllocation();
+              } else {
+                router.push('/allocations');
+              }
             }}
           >
             <span className="menu-item-icon">📊</span>

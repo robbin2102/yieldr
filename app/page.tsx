@@ -568,7 +568,7 @@ export default function HomePage() {
             </svg>
           </Link>
           {hasCompletedPayment && isConnected ? (
-            <UserProfile onViewAllocation={() => setShowAllocationModal(true)} />
+            <UserProfile />
           ) : (
             <button className="team-nav-link primary" onClick={() => setShowPopup(true)}>
               Get Early Access
