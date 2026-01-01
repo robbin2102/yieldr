@@ -6,6 +6,7 @@ import { useAccount } from 'wagmi';
 import { usePayment } from '../context/PaymentContext';
 import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 import { UserProfile } from '../components/UserProfile';
+import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
 import { EXPLORER_URL, DISCORD_INVITE } from '@/config/payment';
 
 interface Contribution {
@@ -38,6 +39,7 @@ export default function AllocationsPage() {
   const [discordInvite, setDiscordInvite] = useState<string | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     if (!address) return;
@@ -254,7 +256,7 @@ export default function AllocationsPage() {
 
             <div className="allocation-cta-subtle">
               <p className="cta-text">Want to increase your allocation?</p>
-              <Link href="/" className="cta-btn-subtle">Get More Allocation →</Link>
+              <button onClick={() => setShowPopup(true)} className="cta-btn-subtle">Get More Allocation →</button>
             </div>
           </div>
 
@@ -376,6 +378,9 @@ export default function AllocationsPage() {
         </div>
         <p>Built different. <a href="https://yieldr.org">yieldr.org</a></p>
       </footer>
+
+      {/* Early Access Popup for increasing allocation */}
+      <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </div>
   );
 }

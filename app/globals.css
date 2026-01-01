@@ -5283,6 +5283,11 @@ html {
   font-size: 0.875rem;
   font-weight: 600;
   transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
 }
 
 .cta-btn-subtle:hover {
