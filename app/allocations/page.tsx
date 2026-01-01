@@ -31,7 +31,7 @@ const ITEMS_PER_PAGE = 10;
 
 export default function AllocationsPage() {
   const { address, isConnected } = useAccount();
-  const { hasCompletedPayment, allocationData, txHash } = usePayment();
+  const { hasCompletedPayment, allocationData, txHash, status, reset } = usePayment();
   const [userStats, setUserStats] = useState<AllocationStats | null>(null);
   const [publicContributions, setPublicContributions] = useState<Contribution[]>([]);
   const [loading, setLoading] = useState(true);
