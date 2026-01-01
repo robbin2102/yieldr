@@ -202,27 +202,6 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                   </p>
                 </div>
               </div>
-
-              <div className="utility-item">
-                <div className="utility-icon">💬</div>
-                <div className="utility-content">
-                  <div className="utility-name">Exclusive Community</div>
-                  <p className="utility-desc">
-                    Access private Discord with direct team interaction, product feedback sessions,
-                    and priority updates on development.
-                  </p>
-                </div>
-              </div>
-
-              <div className="utility-item">
-                <div className="utility-icon">🗳️</div>
-                <div className="utility-content">
-                  <div className="utility-name">Governance Rights</div>
-                  <p className="utility-desc">
-                    Snapshot voting on protocol decisions, feature prioritization, and treasury allocations.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
 
