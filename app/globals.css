@@ -3938,7 +3938,7 @@ html {
 
 .contribute-input-wrapper {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   background: #111;
   border: 1px solid #252525;
   border-radius: 8px;
@@ -3955,7 +3955,9 @@ html {
   font-family: 'JetBrains Mono', monospace;
   color: #666;
   margin-right: 0.5rem;
-  line-height: 1;
+  line-height: 1.25rem;
+  padding: 0;
+  display: inline-block;
 }
 
 .contribute-input {
@@ -3966,7 +3968,9 @@ html {
   font-family: 'JetBrains Mono', monospace;
   color: #fff;
   outline: none;
-  line-height: 1;
+  line-height: 1.25rem;
+  padding: 0;
+  vertical-align: baseline;
 }
 
 .contribute-input::placeholder {
