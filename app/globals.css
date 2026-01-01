@@ -5592,3 +5592,336 @@ html {
     gap: 1rem;
   }
 }
+
+/* ============================================
+   TIER PROGRESS COMPONENT
+   ============================================ */
+
+.tier-progress-card {
+  background: linear-gradient(135deg, rgba(0, 200, 5, 0.05) 0%, rgba(0, 200, 5, 0.01) 100%);
+  border: 1px solid rgba(0, 200, 5, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.tier-progress-card.medium {
+  border-color: rgba(255, 165, 0, 0.4);
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.05) 0%, rgba(255, 165, 0, 0.01) 100%);
+}
+
+.tier-progress-card.high {
+  border-color: rgba(255, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.08) 0%, rgba(255, 0, 0, 0.02) 100%);
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgba(255, 0, 0, 0.5);
+    box-shadow: 0 0 0 rgba(255, 0, 0, 0);
+  }
+  50% {
+    border-color: rgba(255, 0, 0, 0.8);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  }
+}
+
+.tier-progress-header {
+  margin-bottom: 1rem;
+}
+
+.tier-progress-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #00C805;
+  margin: 0;
+}
+
+.tier-progress-card.medium .tier-progress-title {
+  color: #FFA500;
+}
+
+.tier-progress-card.high .tier-progress-title {
+  color: #FF4444;
+}
+
+.tier-progress-bar-container {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.tier-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00C805, #00FF00);
+  border-radius: 6px;
+  transition: width 1s ease-out;
+  animation: progress-fill 1.5s ease-out;
+}
+
+.tier-progress-bar-fill.medium {
+  background: linear-gradient(90deg, #FF8C00, #FFA500);
+}
+
+.tier-progress-bar-fill.high {
+  background: linear-gradient(90deg, #FF0000, #FF4444);
+  animation: progress-pulse 2s ease-in-out infinite;
+}
+
+@keyframes progress-fill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes progress-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.tier-progress-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.tier-progress-stat {
+  font-size: 0.9rem;
+  color: #888;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tier-price-info {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tier-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tier-price-row:last-child {
+  margin-bottom: 0;
+}
+
+.tier-price-label {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.tier-price-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tier-price-value.highlight {
+  color: #00C805;
+}
+
+.price-increase {
+  font-size: 0.75rem;
+  color: #FFA500;
+  margin-left: 0.5rem;
+}
+
+.tier-urgency-warning,
+.tier-urgency-message {
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #FFA500;
+  text-align: center;
+}
+
+.tier-urgency-warning {
+  background: rgba(255, 0, 0, 0.1);
+  border-color: rgba(255, 0, 0, 0.4);
+  color: #FF4444;
+  font-weight: 600;
+}
+
+.tier-progress-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.tier-cta-primary {
+  flex: 1;
+  background: linear-gradient(135deg, #00C805 0%, #00FF00 100%);
+  color: #000;
+  font-weight: 700;
+  padding: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tier-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 200, 5, 0.4);
+}
+
+.tier-cta-primary.pulse {
+  animation: cta-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(0, 200, 5, 0);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 200, 5, 0.6);
+  }
+}
+
+.tier-cta-secondary {
+  flex: 0 0 auto;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: 1px solid #00C805;
+  color: #00C805;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tier-cta-secondary:hover {
+  background: rgba(0, 200, 5, 0.1);
+  transform: translateY(-2px);
+}
+
+.tier-progress-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+/* Compact version */
+.tier-progress-card.compact {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tier-progress-card.compact .tier-progress-title {
+  font-size: 0.95rem;
+}
+
+.tier-progress-card.compact .tier-progress-bar-container {
+  height: 8px;
+}
+
+.tier-progress-card.compact .tier-price-info {
+  padding: 0.75rem;
+}
+
+/* ============================================
+   CONVERSION PAGE STYLES
+   ============================================ */
+
+.allocation-card.conversion {
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.stat-value.zero {
+  color: #666;
+  opacity: 0.6;
+}
+
+.conversion-message {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 100, 0, 0.1);
+  border: 1px solid rgba(255, 100, 0, 0.3);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.conversion-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.conversion-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFA500;
+  margin: 0;
+}
+
+.discord-card-compact.grayed-out {
+  opacity: 0.5;
+  filter: grayscale(80%);
+  cursor: not-allowed;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+.discord-locked {
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.discord-card-compact.grayed-out .discord-join-btn-compact:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.tracker-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .tier-progress-actions {
+    flex-direction: column;
+  }
+
+  .tier-cta-secondary {
+    flex: 1;
+  }
+
+  .tier-price-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .tier-price-value {
+    font-size: 0.9rem;
+  }
+}
