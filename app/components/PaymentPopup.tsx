@@ -27,11 +27,11 @@ interface PaymentPopupProps {
 // Default Genesis tier (fallback if API fails)
 const DEFAULT_TIER = {
   name: 'Genesis',
-  tokensAvailable: 1500000,
+  tokensAvailable: 2000000,
   tokensSold: 0,
-  pricePerToken: 0.057,
-  fdv: 12000000,
-  targetRaise: 85500,
+  pricePerToken: 0.043,
+  fdv: 9000000,
+  targetRaise: 86000,
 };
 
 export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {

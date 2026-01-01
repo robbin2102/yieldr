@@ -209,18 +209,18 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             <div className="roi-grid">
               <div className="roi-item">
                 <div className="roi-fdv">$150M FDV</div>
-                <div className="roi-return">$12,500</div>
-                <div className="roi-multiple">12.5x</div>
+                <div className="roi-return">$16,600</div>
+                <div className="roi-multiple">16.6x</div>
               </div>
               <div className="roi-item">
                 <div className="roi-fdv">$300M FDV</div>
-                <div className="roi-return">$25,000</div>
-                <div className="roi-multiple">25x</div>
+                <div className="roi-return">$33,200</div>
+                <div className="roi-multiple">33.2x</div>
               </div>
               <div className="roi-item">
                 <div className="roi-fdv">$500M FDV</div>
-                <div className="roi-return">$41,666</div>
-                <div className="roi-multiple">42x</div>
+                <div className="roi-return">$55,400</div>
+                <div className="roi-multiple">55.4x</div>
               </div>
             </div>
           </div>

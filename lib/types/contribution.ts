@@ -35,48 +35,48 @@ export interface TierConfig {
 export const TIER_CONFIG: TierConfig = {
   Genesis: {
     name: 'Genesis',
-    tokensAvailable: 1500000,
+    tokensAvailable: 2000000,
     tokensSold: 0,
-    pricePerToken: 0.057,
-    fdv: 12000000,
-    targetRaise: 85500,
+    pricePerToken: 0.043,
+    fdv: 9000000,
+    targetRaise: 86000,
   },
   'Pre-Seed': {
     name: 'Pre-Seed',
-    tokensAvailable: 2000000,
+    tokensAvailable: 2500000,
     tokensSold: 0,
-    pricePerToken: 0.10,
-    fdv: 21000000,
-    targetRaise: 200000,
+    pricePerToken: 0.075,
+    fdv: 15750000,
+    targetRaise: 187500,
   },
   Seed: {
     name: 'Seed',
-    tokensAvailable: 3000000,
+    tokensAvailable: 4000000,
     tokensSold: 0,
-    pricePerToken: 0.20,
-    fdv: 42000000,
+    pricePerToken: 0.15,
+    fdv: 31500000,
     targetRaise: 600000,
   },
   Growth: {
     name: 'Growth',
-    tokensAvailable: 4500000,
+    tokensAvailable: 6000000,
     tokensSold: 0,
-    pricePerToken: 0.30,
-    fdv: 63000000,
+    pricePerToken: 0.225,
+    fdv: 47250000,
     targetRaise: 1350000,
   },
   Scale: {
     name: 'Scale',
-    tokensAvailable: 8000000,
+    tokensAvailable: 10500000,
     tokensSold: 0,
-    pricePerToken: 0.357,
-    fdv: 75000000,
-    targetRaise: 2856000,
+    pricePerToken: 0.27,
+    fdv: 56700000,
+    targetRaise: 2835000,
   },
 };
 
 // Constants
-export const TOTAL_PUBLIC_ALLOCATION = 19000000; // 19M YLDR (9.05%)
-export const TOTAL_TARGET_RAISE = 5091500; // ~$5.09M
+export const TOTAL_PUBLIC_ALLOCATION = 25000000; // 25M YLDR (11.9%)
+export const TOTAL_TARGET_RAISE = 5058500; // ~$5.06M
 export const TREASURY_WALLET = process.env.NEXT_PUBLIC_TREASURY_WALLET || '0xB56C6247F39A992dbcF172a4308386A23d0ea15C'; // Correct treasury multisig
 export const USDC_TOKEN_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'; // Base USDC

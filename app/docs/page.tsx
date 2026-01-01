@@ -821,11 +821,11 @@ export default function DocsPage() {
                   <div className="token-stat-label">Total Supply</div>
                 </div>
                 <div className="token-stat">
-                  <div className="token-stat-value">9.05%</div>
+                  <div className="token-stat-value">11.9%</div>
                   <div className="token-stat-label">Public Allocation</div>
                 </div>
                 <div className="token-stat">
-                  <div className="token-stat-value">~$5M</div>
+                  <div className="token-stat-value">~$5.06M</div>
                   <div className="token-stat-label">Target Raise</div>
                 </div>
                 <div className="token-stat">
@@ -1027,14 +1027,14 @@ export default function DocsPage() {
                 </tr>
                 <tr>
                   <td><strong>Public Allocation</strong></td>
-                  <td>19,000,000 YLDR</td>
-                  <td>9.05%</td>
+                  <td>25,000,000 YLDR</td>
+                  <td>11.9%</td>
                   <td>Contribution tiers open</td>
                 </tr>
                 <tr>
                   <td><strong>Remaining</strong></td>
-                  <td>191,000,000 YLDR</td>
-                  <td>90.95%</td>
+                  <td>185,000,000 YLDR</td>
+                  <td>88.1%</td>
                   <td>Allocated at TGE</td>
                 </tr>
               </tbody>
@@ -1057,49 +1057,49 @@ export default function DocsPage() {
               <tbody>
                 <tr>
                   <td className="stage-name">Genesis</td>
-                  <td>1.5M</td>
-                  <td>0.71%</td>
-                  <td className="tokens">$0.057</td>
-                  <td>$12M</td>
-                  <td>$85.5K</td>
+                  <td>2.0M</td>
+                  <td>0.95%</td>
+                  <td className="tokens">$0.043</td>
+                  <td>$9M</td>
+                  <td>$86K</td>
                 </tr>
                 <tr>
                   <td className="stage-name">Pre-Seed</td>
-                  <td>2.0M</td>
-                  <td>0.95%</td>
-                  <td className="tokens">$0.10</td>
-                  <td>$21M</td>
-                  <td>$200K</td>
+                  <td>2.5M</td>
+                  <td>1.19%</td>
+                  <td className="tokens">$0.075</td>
+                  <td>$15.75M</td>
+                  <td>$187K</td>
                 </tr>
                 <tr>
                   <td className="stage-name">Seed</td>
-                  <td>3.0M</td>
-                  <td>1.43%</td>
-                  <td className="tokens">$0.20</td>
-                  <td>$42M</td>
+                  <td>4.0M</td>
+                  <td>1.90%</td>
+                  <td className="tokens">$0.15</td>
+                  <td>$31.5M</td>
                   <td>$600K</td>
                 </tr>
                 <tr>
                   <td className="stage-name">Growth</td>
-                  <td>4.5M</td>
-                  <td>2.14%</td>
-                  <td className="tokens">$0.30</td>
-                  <td>$63M</td>
+                  <td>6.0M</td>
+                  <td>2.86%</td>
+                  <td className="tokens">$0.225</td>
+                  <td>$47.25M</td>
                   <td>$1.35M</td>
                 </tr>
                 <tr>
                   <td className="stage-name">Scale</td>
-                  <td>8.0M</td>
-                  <td>3.81%</td>
-                  <td className="tokens">$0.357</td>
-                  <td>$75M</td>
-                  <td>$2.86M</td>
+                  <td>10.5M</td>
+                  <td>5.0%</td>
+                  <td className="tokens">$0.27</td>
+                  <td>$56.7M</td>
+                  <td>$2.84M</td>
                 </tr>
               </tbody>
             </table>
 
             <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-              <strong>Total:</strong> 19M YLDR (9.05%) &nbsp;|&nbsp; <strong>Target Raise:</strong> ~$5.09M
+              <strong>Total:</strong> 25M YLDR (11.9%) &nbsp;|&nbsp; <strong>Target Raise:</strong> ~$5.06M
             </p>
 
             <h2>Early Contributor ROI</h2>
@@ -1115,40 +1115,40 @@ export default function DocsPage() {
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Genesis</strong> ($0.057)</td>
-                  <td><span className="check">12.5x</span></td>
-                  <td><span className="check">25x</span></td>
-                  <td><span className="check">42x</span></td>
+                  <td><strong>Genesis</strong> ($0.043)</td>
+                  <td><span className="check">16.7x</span></td>
+                  <td><span className="check">33x</span></td>
+                  <td><span className="check">56x</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Pre-Seed</strong> ($0.10)</td>
-                  <td><span className="check">7.1x</span></td>
-                  <td><span className="check">14x</span></td>
-                  <td><span className="check">24x</span></td>
+                  <td><strong>Pre-Seed</strong> ($0.075)</td>
+                  <td><span className="check">9.5x</span></td>
+                  <td><span className="check">19x</span></td>
+                  <td><span className="check">32x</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Seed</strong> ($0.20)</td>
-                  <td><span className="check">3.6x</span></td>
-                  <td><span className="check">7x</span></td>
-                  <td><span className="check">12x</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Growth</strong> ($0.30)</td>
-                  <td><span className="check">2.4x</span></td>
+                  <td><strong>Seed</strong> ($0.15)</td>
                   <td><span className="check">4.8x</span></td>
-                  <td><span className="check">8x</span></td>
+                  <td><span className="check">9.5x</span></td>
+                  <td><span className="check">16x</span></td>
                 </tr>
                 <tr>
-                  <td><strong>Scale</strong> ($0.357)</td>
-                  <td><span className="check">2x</span></td>
-                  <td><span className="check">4x</span></td>
-                  <td><span className="check">6.7x</span></td>
+                  <td><strong>Growth</strong> ($0.225)</td>
+                  <td><span className="check">3.2x</span></td>
+                  <td><span className="check">6.3x</span></td>
+                  <td><span className="check">11x</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Scale</strong> ($0.27)</td>
+                  <td><span className="check">2.6x</span></td>
+                  <td><span className="check">5.3x</span></td>
+                  <td><span className="check">8.8x</span></td>
                 </tr>
               </tbody>
             </table>
 
             <h2>Remaining Supply</h2>
-            <p>The 90.95% remaining supply will be allocated at TGE to:</p>
+            <p>The 88.1% remaining supply will be allocated at TGE to:</p>
             <ul>
               <li><strong>Team & Contributors</strong> — 1yr cliff + 3yr monthly vesting</li>
               <li><strong>Treasury & Operations</strong> — Protocol development and growth</li>
@@ -1216,7 +1216,7 @@ export default function DocsPage() {
               <div className="card">
                 <div className="card-icon">🎯</div>
                 <div className="card-title">Locked-In Allocation</div>
-                <p className="card-desc">Price fixed at contribution tier. Genesis at $0.057 vs potential $0.50+ at TGE.</p>
+                <p className="card-desc">Price fixed at contribution tier. Genesis at $0.043 vs potential $0.50+ at TGE.</p>
               </div>
               <div className="card">
                 <div className="card-icon">🤖</div>
@@ -1240,7 +1240,7 @@ export default function DocsPage() {
               <div className="roadmap-dot"></div>
               <div className="roadmap-phase">Now</div>
               <h3 className="roadmap-title">Genesis Tier Open</h3>
-              <p className="roadmap-desc">Contribute USDC at $12M FDV. Earliest access, lowest price, highest conviction required.</p>
+              <p className="roadmap-desc">Contribute USDC at $9M FDV. Earliest access, lowest price, highest conviction required.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
