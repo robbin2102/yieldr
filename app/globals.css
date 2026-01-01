@@ -4620,20 +4620,6 @@ html {
   color: #00C805;
 }
 
-.allocations-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
-}
-
-.allocations-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
 /* User Stats Card */
 .allocations-user-stats {
   margin-bottom: 3rem;
@@ -5181,7 +5167,7 @@ html {
 .allocations-container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: calc(56px + 2rem) 1.5rem 4rem;
 }
 
 .allocations-title {
@@ -5570,7 +5556,7 @@ html {
   }
 
   .allocations-container {
-    padding: 1.5rem 1rem 3rem;
+    padding: calc(56px + 1.5rem) 1rem 3rem;
   }
 
   .allocations-title {
