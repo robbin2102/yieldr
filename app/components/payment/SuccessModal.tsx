@@ -2,7 +2,8 @@
 
 // Success Modal: Show after successful payment
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { usePayment } from '@/app/context/PaymentContext';
 import { EXPLORER_URL } from '@/config/payment';
 import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
@@ -10,16 +11,37 @@ import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
 
 export function SuccessModal() {
+  const router = useRouter();
   const { txHash, contributionAmount, allocationData, reset, status } = usePayment();
+  const [countdown, setCountdown] = useState(3);
 
   // Only show when status is success and we have allocation data
   if (status !== 'success' || !allocationData) return null;
 
   const { yldrAmount, effectivePrice, breakdown } = allocationData;
 
+  // Auto-redirect to allocations page after 3 seconds
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval);
+          console.log('⏰ Auto-redirecting to allocations page...');
+          reset();
+          router.push('/allocations');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [router, reset]);
+
   const handleClose = () => {
-    console.log('✅ Closing success modal');
+    console.log('✅ Closing success modal and redirecting to allocations...');
     reset();
+    router.push('/allocations');
   };
 
   return (
@@ -95,8 +117,16 @@ export function SuccessModal() {
             View Build Progress →
           </a>
 
+          {/* Auto-redirect countdown */}
+          <div className="modal-redirect-notice">
+            <span className="redirect-icon">↗️</span>
+            <span className="redirect-text">
+              Redirecting to your allocations page in <strong>{countdown}s</strong>
+            </span>
+          </div>
+
           <button className="modal-button-secondary" onClick={handleClose}>
-            Close
+            View My Allocations Now →
           </button>
         </div>
       </div>
