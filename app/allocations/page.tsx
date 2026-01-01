@@ -99,6 +99,12 @@ export default function AllocationsPage() {
   // Determine if user has actually made a payment (not just connected)
   const hasPaidAmount = userStats && userStats.totalUsdc > 0;
 
+  // Pagination calculations (needed for all pages that show public contributions)
+  const totalPages = Math.ceil(publicContributions.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentContributions = publicContributions.slice(startIndex, endIndex);
+
   // Not connected - show access restricted
   if (!isConnected) {
     return (
@@ -412,12 +418,7 @@ export default function AllocationsPage() {
     );
   }
 
-  // Pagination
-  const totalPages = Math.ceil(publicContributions.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentContributions = publicContributions.slice(startIndex, endIndex);
-
+  // User has paid - show full allocation experience
   return (
     <div className="allocations-page">
       {/* Header */}
