@@ -12,7 +12,11 @@ export const CHAIN_ID = 8453; // Base
 export const NETWORK_NAME = 'Base';
 
 // Contribution Limits
+<<<<<<< HEAD
 export const MIN_CONTRIBUTION = 1; // $1 USDC minimum
+=======
+export const MIN_CONTRIBUTION = 1; // $1 USDC (for testing)
+>>>>>>> claude/review-payment-fixes-MeFMk
 
 // Explorer
 export const EXPLORER_URL = 'https://basescan.org';
