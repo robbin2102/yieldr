@@ -12,9 +12,9 @@ interface UserProfileProps {
   onViewAllocation?: () => void; // Optional - defaults to navigating to /allocations
 }
 
-// Generate consistent random avatar based on wallet address
+// Generate consistent crypto-friendly avatar based on wallet address
 function getAvatarForAddress(address: string): string {
-  const avatars = ['👤', '🧑', '👨', '👩', '🧔', '👱', '🧑‍🦰', '👨‍🦱', '👩‍🦳', '🧑‍🦲'];
+  const avatars = ['💎', '🪙', '💰', '🔷', '⚡', '🌟', '🔶', '🟢', '🔵', '🟣'];
   const index = parseInt(address.slice(2, 4), 16) % avatars.length;
   return avatars[index];
 }

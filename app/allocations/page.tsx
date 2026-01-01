@@ -84,6 +84,44 @@ export default function AllocationsPage() {
     setDiscordInviteUsed(inviteUsed === 'true');
   }, [address, allocationData]);
 
+  // Close popup and refetch data when new payment is detected
+  useEffect(() => {
+    if (txHash && hasCompletedPayment) {
+      console.log('🔄 New payment detected, closing popup and refreshing data...');
+      setShowPopup(false); // Close the early access popup
+
+      // Refetch data after a short delay to ensure backend has processed
+      const timer = setTimeout(async () => {
+        if (!address) return;
+
+        try {
+          const userRes = await fetch(`/api/contributions?wallet=${address}`);
+          const userData = await userRes.json();
+
+          if (userData.success) {
+            setUserStats(userData.data.summary);
+            if (userData.data.discord_invite) {
+              setDiscordInvite(userData.data.discord_invite);
+            }
+          }
+
+          const publicRes = await fetch('/api/contributions/public');
+          const publicData = await publicRes.json();
+
+          if (publicData.success) {
+            setPublicContributions(publicData.data.contributions);
+          }
+
+          console.log('✅ Data refreshed successfully');
+        } catch (error) {
+          console.error('Error refreshing data:', error);
+        }
+      }, 1000); // Wait 1 second for backend to process
+
+      return () => clearTimeout(timer);
+    }
+  }, [txHash, hasCompletedPayment, address]);
+
   const handleJoinDiscord = () => {
     if (address) {
       localStorage.setItem(`yldr_discord_invite_used_${address}`, 'true');
