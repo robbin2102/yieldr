@@ -18,7 +18,7 @@ export const MIN_CONTRIBUTION = 1; // $1 USDC (for testing - change to 100 for p
 export const EXPLORER_URL = 'https://basescan.org';
 
 // Discord
-export const DISCORD_INVITE = 'https://discord.gg/MPESzWps';
+export const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
 
 // API Authentication
 export const API_AUTH_KEY = process.env.API_AUTH_KEY || '';

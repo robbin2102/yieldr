@@ -205,6 +205,7 @@ export async function GET(req: NextRequest) {
 
     const totalUsdc = contributions.reduce((sum, c) => sum + c.usdc_amount, 0);
     const totalYldr = contributions.reduce((sum, c) => sum + c.yldr_allocation, 0);
+    const avgPrice = totalYldr > 0 ? totalUsdc / totalYldr : 0;
 
     const responseData = {
       success: true,
@@ -213,6 +214,7 @@ export async function GET(req: NextRequest) {
         summary: {
           totalUsdc,
           totalYldr,
+          avgPrice,
           contributionCount: contributions.length,
         },
       },
@@ -221,6 +223,7 @@ export async function GET(req: NextRequest) {
     console.log('📊 Summary:', {
       totalUsdc,
       totalYldr,
+      avgPrice,
       count: contributions.length,
     });
     console.log('=================================\n');
