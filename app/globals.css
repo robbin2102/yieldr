@@ -5175,3 +5175,422 @@ html {
     min-width: 600px;
   }
 }
+
+/* ============================================
+   ALLOCATIONS PAGE - REDESIGNED COMPACT
+   ============================================ */
+
+/* Remove old styles and replace with new compact design */
+.allocations-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #E0E0E0;
+}
+
+.allocations-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.allocations-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Two Column Grid */
+.allocations-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* Allocation Card (Left) */
+.allocation-card {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 200, 5, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.allocation-card h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+
+.allocation-stats {
+  margin-bottom: 1.5rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+.stat-row .stat-label {
+  color: #888;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.stat-row .stat-value {
+  color: #E0E0E0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+}
+
+.stat-row .stat-value.highlight {
+  color: #00C805;
+  font-size: 1rem;
+}
+
+.tx-link-compact {
+  color: #00C805;
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-family: 'Fira Code', monospace;
+  transition: color 0.2s;
+}
+
+.tx-link-compact:hover {
+  color: #00E006;
+}
+
+/* Subtle CTA within card */
+.allocation-cta-subtle {
+  background: rgba(0, 200, 5, 0.08);
+  border: 1px solid rgba(0, 200, 5, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.cta-text {
+  color: #A0A0A0;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.cta-btn-subtle {
+  display: inline-block;
+  color: #00C805;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.cta-btn-subtle:hover {
+  color: #00E006;
+}
+
+/* Discord Card (Right) */
+.discord-card-compact {
+  background: rgba(88, 101, 242, 0.08);
+  border: 1px solid rgba(88, 101, 242, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.discord-icon-compact {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.discord-card-compact h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.discord-warning-compact {
+  background: rgba(255, 193, 7, 0.15);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  border-radius: 6px;
+  padding: 0.625rem;
+  margin-bottom: 0.875rem;
+  color: #FFC107;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.discord-desc-compact {
+  color: #A0A0A0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.discord-join-btn-compact {
+  background: #5865F2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.discord-join-btn-compact:hover {
+  background: #4752C4;
+  transform: translateY(-1px);
+}
+
+.discord-claimed-compact {
+  color: #00C805;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.discord-rejoin-btn-compact {
+  color: #5865F2;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.discord-rejoin-btn-compact:hover {
+  color: #4752C4;
+}
+
+/* Public Tracker Section */
+.tracker-section {
+  margin-top: 3rem;
+}
+
+.tracker-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.tracker-loading {
+  text-align: center;
+  color: #888;
+  padding: 2rem;
+  font-size: 0.9375rem;
+}
+
+.tracker-table-wrapper {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 200, 5, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.tracker-table-compact {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tracker-table-compact thead {
+  background: rgba(0, 200, 5, 0.1);
+}
+
+.tracker-table-compact th {
+  color: #00C805;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.875rem 1rem;
+  letter-spacing: 0.5px;
+}
+
+.tracker-table-compact tbody tr {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+.tracker-table-compact tbody tr:hover {
+  background: rgba(0, 200, 5, 0.05);
+}
+
+.tracker-table-compact td {
+  padding: 0.875rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.wallet-cell {
+  color: #E0E0E0;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+}
+
+.num-cell {
+  color: #E0E0E0;
+  font-family: 'Fira Code', monospace;
+  font-weight: 500;
+}
+
+.tier-badge-compact {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: 10px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.tier-badge-compact.genesis {
+  background: rgba(0, 200, 5, 0.2);
+  color: #00C805;
+}
+
+.tier-badge-compact.pre-seed {
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196F3;
+}
+
+.tier-badge-compact.seed {
+  background: rgba(255, 193, 7, 0.2);
+  color: #FFC107;
+}
+
+.tier-badge-compact.growth {
+  background: rgba(255, 152, 0, 0.2);
+  color: #FF9800;
+}
+
+.tier-badge-compact.scale {
+  background: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+}
+
+.date-cell {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.pagination-btn {
+  background: rgba(0, 200, 5, 0.1);
+  border: 1px solid rgba(0, 200, 5, 0.3);
+  color: #00C805;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: rgba(0, 200, 5, 0.2);
+  border-color: rgba(0, 200, 5, 0.5);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  color: #A0A0A0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Not Connected State */
+.allocations-not-connected {
+  text-align: center;
+  padding: 4rem 2rem;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.allocations-not-connected h1 {
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.allocations-not-connected p {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.allocations-cta-link {
+  display: inline-block;
+  background: #00C805;
+  color: #000;
+  text-decoration: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+.allocations-cta-link:hover {
+  background: #00E006;
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .allocations-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .allocations-container {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .allocations-title {
+    font-size: 1.5rem;
+  }
+
+  .tracker-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .tracker-table-compact {
+    min-width: 600px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
