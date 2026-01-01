@@ -113,7 +113,7 @@ export default function BuildInPublicPage() {
               <div className="progress-label">Trading PnL</div>
             </div>
             <div className="progress-card">
-              <div className="progress-value">$3.3K</div>
+              <div className="progress-value">$675</div>
               <div className="progress-label">Treasury Balance</div>
             </div>
           </div>
@@ -169,12 +169,74 @@ export default function BuildInPublicPage() {
           </div>
 
           <div className="timeline">
-            {/* December 2025 */}
+            {/* January 2026 */}
             <div className="timeline-month">
               <div className="timeline-dot current"></div>
               <div className="month-header">
-                <span className="month-name">December 2025</span>
+                <span className="month-name">January 2026</span>
                 <span className="month-badge current">● In Progress</span>
+              </div>
+              <div className="modules-grid">
+                <div className="module-item">
+                  <div className="module-status progress">●</div>
+                  <div className="module-content">
+                    <div className="module-name">UI Design for Agent Launch</div>
+                    <div className="module-desc">UI design for agent launch & user onboarding</div>
+                    <div className="module-footer">
+                      <div className="module-tags">
+                        <span className="module-tag base">Design</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="module-item">
+                  <div className="module-status progress">●</div>
+                  <div className="module-content">
+                    <div className="module-name">Top Wallets Swap Monitoring</div>
+                    <div className="module-desc">Top 1.5K wallets on Base - real-time swap monitoring</div>
+                    <div className="module-footer">
+                      <div className="module-tags">
+                        <span className="module-tag base">Base</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="module-item">
+                  <div className="module-status progress">●</div>
+                  <div className="module-content">
+                    <div className="module-name">Wallet Performance Metrics</div>
+                    <div className="module-desc">Performance metrics service for wallet tracking</div>
+                    <div className="module-footer">
+                      <div className="module-tags">
+                        <span className="module-tag base">Analytics</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="module-item">
+                  <div className="module-status progress">●</div>
+                  <div className="module-content">
+                    <div className="module-name">Market Data Context Services</div>
+                    <div className="module-desc">CEX data feeds, technical indicators, and DEX pool data for LLM tooling</div>
+                    <div className="module-footer">
+                      <div className="module-tags">
+                        <span className="module-tag llm">LLM Tooling</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* December 2025 */}
+            <div className="timeline-month">
+              <div className="timeline-dot"></div>
+              <div className="month-header">
+                <span className="month-name">December 2025</span>
+                <span className="month-badge complete">✓ Complete</span>
               </div>
               <div className="modules-grid">
                 <div className="module-item">
@@ -413,67 +475,6 @@ export default function BuildInPublicPage() {
           <div className="section-header">
             <div className="section-icon">📅</div>
             <h2 className="section-title">Development Roadmap</h2>
-          </div>
-
-          <div className="roadmap-month">
-            <div className="roadmap-month-header">
-              <span className="roadmap-month-title">January 2026</span>
-              <span className="month-badge planned">Planned</span>
-            </div>
-            <div className="roadmap-weeks">
-              <div className="roadmap-week">
-                <div className="roadmap-week-header">
-                  <span>📆</span>
-                  <span>Week 1: Jan 6-12</span>
-                </div>
-                <div className="roadmap-week-items">
-                  <div className="build-roadmap-item">
-                    <span className="status planned">○</span>
-                    <span>UI design for agent launch & user onboarding</span>
-                  </div>
-                </div>
-              </div>
-              <div className="roadmap-week">
-                <div className="roadmap-week-header">
-                  <span>📆</span>
-                  <span>Week 2: Jan 13-20</span>
-                </div>
-                <div className="roadmap-week-items">
-                  <div className="build-roadmap-item">
-                    <span className="status planned">○</span>
-                    <span>Top 1.5K wallets on Base - real-time swap monitoring</span>
-                  </div>
-                  <div className="build-roadmap-item">
-                    <span className="status planned">○</span>
-                    <span>Wallet performance metrics service</span>
-                  </div>
-                </div>
-              </div>
-              <div className="roadmap-week">
-                <div className="roadmap-week-header">
-                  <span>📆</span>
-                  <span>Week 3: Jan 21-28</span>
-                </div>
-                <div className="roadmap-week-items">
-                  <div className="build-roadmap-item">
-                    <span className="status planned">○</span>
-                    <span>Market data context services for LLM tooling:</span>
-                  </div>
-                  <div className="build-roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
-                    <span className="status planned">○</span>
-                    <span>Tier-1 CEX data feeds (OI, Funding rates, Volume, Orderflow)</span>
-                  </div>
-                  <div className="build-roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
-                    <span className="status planned">○</span>
-                    <span>Technical indicators (RSI, MACD, BBANDS, EMA 20D/50D, ATR)</span>
-                  </div>
-                  <div className="build-roadmap-item" style={{ paddingLeft: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
-                    <span className="status planned">○</span>
-                    <span>DEX pool data (Liquidity depth, Volume, Price impact)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="roadmap-month">
