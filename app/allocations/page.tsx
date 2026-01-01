@@ -7,7 +7,6 @@ import { usePayment } from '../context/PaymentContext';
 import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 import { UserProfile } from '../components/UserProfile';
 import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
-import { TierProgress } from '../components/TierProgress';
 import { EXPLORER_URL, DISCORD_INVITE } from '@/config/payment';
 
 interface Contribution {
@@ -96,17 +95,7 @@ export default function AllocationsPage() {
     }
   };
 
-  // Determine if user has actually made a payment (not just connected)
-  const hasPaidAmount = userStats && userStats.totalUsdc > 0;
-
-  // Pagination calculations (needed for all pages that show public contributions)
-  const totalPages = Math.ceil(publicContributions.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentContributions = publicContributions.slice(startIndex, endIndex);
-
-  // Not connected - show access restricted
-  if (!isConnected) {
+  if (!isConnected || !hasCompletedPayment) {
     return (
       <div className="allocations-page">
         <header className="team-header">
@@ -143,7 +132,7 @@ export default function AllocationsPage() {
 
         <div className="allocations-not-connected">
           <h1>Access Restricted</h1>
-          <p>Connect your wallet to view your allocations.</p>
+          <p>Connect your wallet and complete a payment to view your allocations.</p>
           <Link href="/" className="allocations-cta-link">
             Go to Homepage →
           </Link>
@@ -167,258 +156,12 @@ export default function AllocationsPage() {
     );
   }
 
-  // Loading state - wait for data to determine which page to show
-  if (isConnected && loading) {
-    return (
-      <div className="allocations-page">
-        <header className="team-header">
-          <Link href="/" className="team-logo">
-            <svg className="team-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
-              <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
-              <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
-            </svg>
-            <span className="team-logo-text">YIELDR</span>
-          </Link>
-          <nav className="team-nav-links">
-            <Link href="/" className="team-nav-link">Home</Link>
-            <Link href="/docs" className="team-nav-link">Docs</Link>
-            <Link href="/team" className="team-nav-link">Team</Link>
-            <Link href="/build-in-public" className="team-nav-link">Build Progress</Link>
-            <div className="team-nav-divider"></div>
-            <UserProfile />
-          </nav>
-          <button className="mobile-menu-btn" onClick={() => setShowMobileMenu(!showMobileMenu)}>☰</button>
-        </header>
+  // Pagination
+  const totalPages = Math.ceil(publicContributions.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentContributions = publicContributions.slice(startIndex, endIndex);
 
-        <div className="allocations-container">
-          <div className="tracker-loading">Loading your allocation data...</div>
-        </div>
-
-        <footer className="team-footer">
-          <div className="footer-links">
-            <a href="https://discord.com/channels/1426305214176165941/1426305389812646091" target="_blank" rel="noopener noreferrer" className="footer-social">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-            </a>
-            <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" className="footer-social">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            </a>
-            <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" className="footer-social">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-          </div>
-          <p>Built different. <a href="https://yieldr.org">yieldr.org</a></p>
-        </footer>
-      </div>
-    );
-  }
-
-  // Connected but not paid - show conversion page
-  if (isConnected && !hasPaidAmount) {
-    return (
-      <div className="allocations-page">
-        <header className="team-header">
-          <Link href="/" className="team-logo">
-            <svg className="team-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
-              <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
-              <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
-            </svg>
-            <span className="team-logo-text">YIELDR</span>
-          </Link>
-          <nav className="team-nav-links">
-            <Link href="/" className="team-nav-link">Home</Link>
-            <Link href="/docs" className="team-nav-link">Docs</Link>
-            <Link href="/team" className="team-nav-link">Team</Link>
-            <Link href="/build-in-public" className="team-nav-link">Build Progress</Link>
-            <div className="team-nav-divider"></div>
-            <Link href="https://discord.com/channels/1426305214176165941/1426305389812646091" target="_blank" className="team-nav-icon discord">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-              </svg>
-            </Link>
-            <Link href="https://github.com/robbin2102/yieldr-app" target="_blank" className="team-nav-icon github">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-            </Link>
-            <UserProfile />
-          </nav>
-          <button className="mobile-menu-btn" onClick={() => setShowMobileMenu(!showMobileMenu)}>☰</button>
-        </header>
-
-        {/* Mobile Menu */}
-        {showMobileMenu && (
-          <div className="mobile-menu-overlay" onClick={() => setShowMobileMenu(false)}>
-            <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
-              <div className="mobile-menu-header">
-                <div className="mobile-menu-logo">
-                  <svg className="mobile-menu-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
-                    <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
-                    <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
-                  </svg>
-                  <span className="mobile-menu-logo-text">YIELDR</span>
-                </div>
-                <button className="mobile-menu-close" onClick={() => setShowMobileMenu(false)}>✕</button>
-              </div>
-              <div className="mobile-menu-content">
-                <Link href="/" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Home</Link>
-                <Link href="/docs" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Docs</Link>
-                <Link href="/team" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Team</Link>
-                <Link href="/build-in-public" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Build Progress</Link>
-                <Link href="/allocations" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>My Allocation</Link>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Conversion Page Content */}
-        <div className="allocations-container">
-          <h1 className="allocations-title">My YLDR Allocation</h1>
-
-          {/* Zero Allocation Card */}
-          <div className="allocation-card conversion">
-            <h2>Your Allocation</h2>
-            <div className="allocation-stats">
-              <div className="stat-row">
-                <span className="stat-label">Contribution</span>
-                <span className="stat-value zero">$0 USDC</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">YLDR Allocation</span>
-                <span className="stat-value zero highlight">0 YLDR</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Average Price</span>
-                <span className="stat-value zero">$0.000/YLDR</span>
-              </div>
-            </div>
-
-            <div className="conversion-message">
-              <div className="conversion-icon">🔥</div>
-              <p className="conversion-text">You haven't secured your allocation yet</p>
-            </div>
-          </div>
-
-          {/* Tier Progress with CTA */}
-          <TierProgress showCTA={true} onGetAllocation={() => setShowPopup(true)} />
-
-          {/* Discord Card - Grayed Out */}
-          <div className="discord-card-compact grayed-out">
-            <div className="discord-icon-compact">💬</div>
-            <h3>Exclusive Beta Access</h3>
-            <p className="discord-locked">🔒 Pay to unlock Discord access</p>
-            <p className="discord-desc-compact">
-              Join our private Discord for direct team access and priority updates.
-            </p>
-            <button className="discord-join-btn-compact" disabled>
-              Locked - Get Allocation First
-            </button>
-          </div>
-
-          {/* Public Tracker - Show FOMO */}
-          <div className="tracker-section">
-            <h2 className="tracker-title">Public Allocation Tracker</h2>
-            <p className="tracker-subtitle">See what other early supporters are securing</p>
-
-            {loading ? (
-              <div className="tracker-loading">Loading...</div>
-            ) : (
-              <>
-                <div className="tracker-table-wrapper">
-                  <table className="tracker-table-compact">
-                    <thead>
-                      <tr>
-                        <th>Wallet</th>
-                        <th>USDC</th>
-                        <th>YLDR</th>
-                        <th>Price</th>
-                        <th>Tier</th>
-                        <th>Date</th>
-                        <th>TX</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentContributions.map((contribution, i) => (
-                        <tr key={i}>
-                          <td className="wallet-cell">{contribution.wallet_address.slice(0, 6)}...{contribution.wallet_address.slice(-4)}</td>
-                          <td className="num-cell">{formatUsd(contribution.usdc_amount)}</td>
-                          <td className="num-cell">{formatNumber(contribution.yldr_allocation)}</td>
-                          <td className="num-cell">{formatPrice(contribution.yldr_price)}</td>
-                          <td>
-                            <span className={`tier-badge-compact ${contribution.allocation_tier.toLowerCase()}`}>
-                              {contribution.allocation_tier}
-                            </span>
-                          </td>
-                          <td className="date-cell">{new Date(contribution.created_at).toLocaleDateString()}</td>
-                          <td>
-                            <a href={`${EXPLORER_URL}/tx/${contribution.tx_hash}`} target="_blank" rel="noopener noreferrer" className="tx-link-compact">
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="pagination">
-                    <button
-                      className="pagination-btn"
-                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                    >
-                      ← Previous
-                    </button>
-                    <span className="pagination-info">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <button
-                      className="pagination-btn"
-                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next →
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <footer className="team-footer">
-          <div className="footer-links">
-            <a href="https://discord.com/channels/1426305214176165941/1426305389812646091" target="_blank" rel="noopener noreferrer" className="footer-social" title="Discord">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-              </svg>
-            </a>
-            <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" className="footer-social" title="GitHub">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-            </a>
-            <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" className="footer-social" title="Twitter/X">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </a>
-          </div>
-          <p>Built different. <a href="https://yieldr.org">yieldr.org</a></p>
-        </footer>
-
-        {/* Early Access Popup */}
-        <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-      </div>
-    );
-  }
-
-  // User has paid - show full allocation experience
   return (
     <div className="allocations-page">
       {/* Header */}
