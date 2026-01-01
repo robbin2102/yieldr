@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
-import { PaymentPopup } from '../components/PaymentPopup';
+import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
 import { MyAllocationModal } from '../components/payment/MyAllocationModal';
 import { usePayment } from '../context/PaymentContext';
 
@@ -253,7 +253,7 @@ export default function TeamPage() {
       </footer>
 
       {/* Payment Popup */}
-      <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
 
       {/* My Allocation Modal */}
       <MyAllocationModal isOpen={showAllocationModal} onClose={() => setShowAllocationModal(false)} />
