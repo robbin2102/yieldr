@@ -130,6 +130,17 @@ export function usePaymentFlow() {
         console.error('❌ Failed to record contribution:', data.error);
       } else {
         console.log('✅ Contribution recorded successfully!', data.data);
+
+        // Update allocation data with Discord invite if available
+        if (data.data.discord_invite) {
+          console.log('🎫 Discord invite received:', data.data.discord_invite);
+          setAllocationData({
+            yldrAmount: allocation.yldrAmount,
+            effectivePrice: allocation.effectivePrice,
+            breakdown: allocation.breakdown,
+            discord_invite: data.data.discord_invite,
+          });
+        }
       }
     } catch (error) {
       console.error('❌ Error recording contribution:', error);

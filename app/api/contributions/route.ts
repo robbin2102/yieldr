@@ -5,6 +5,7 @@ import { Contribution } from '@/models/Contribution';
 import { RaiseStats } from '@/models/RaiseStats';
 import { calculateAllocation, getCurrentTier } from '@/lib/tierCalculations';
 import { API_AUTH_KEY } from '@/config/payment';
+import { createExclusiveInvite } from '@/lib/discord';
 
 // Helper to verify API auth for internal calls
 function verifyApiAuth(request: NextRequest): boolean {
@@ -115,6 +116,22 @@ export async function POST(req: NextRequest) {
     const contribution = await Contribution.create(contributionData);
     console.log('✅ Contribution saved to MongoDB! ID:', contribution._id);
 
+    // Generate Discord invite
+    let discordInvite: string | null = null;
+    try {
+      console.log('🎫 Generating exclusive Discord invite...');
+      discordInvite = await createExclusiveInvite();
+      console.log('✅ Discord invite created:', discordInvite);
+
+      // Save the invite to the contribution
+      contribution.discord_invite = discordInvite;
+      await contribution.save();
+      console.log('✅ Discord invite saved to contribution');
+    } catch (discordError) {
+      console.error('⚠️  Failed to create Discord invite:', discordError);
+      // Continue without Discord invite - don't fail the entire transaction
+    }
+
     // Update raise stats
     const newTotalRaised = stats.total_raised_usdc + usdc_amount;
     const newTierInfo = getCurrentTier(newTotalRaised);
@@ -154,6 +171,7 @@ export async function POST(req: NextRequest) {
         tier: allocation.tier,
         fdv: allocation.fdv,
         breakdown: allocation.breakdown,
+        discord_invite: discordInvite,
       },
     };
 
@@ -207,6 +225,9 @@ export async function GET(req: NextRequest) {
     const totalYldr = contributions.reduce((sum, c) => sum + c.yldr_allocation, 0);
     const avgPrice = totalYldr > 0 ? totalUsdc / totalYldr : 0;
 
+    // Get Discord invite from the most recent contribution (if available)
+    const discordInvite = contributions[0]?.discord_invite || null;
+
     const responseData = {
       success: true,
       data: {
@@ -217,6 +238,7 @@ export async function GET(req: NextRequest) {
           avgPrice,
           contributionCount: contributions.length,
         },
+        discord_invite: discordInvite,
       },
     };
 

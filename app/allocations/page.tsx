@@ -35,11 +35,17 @@ export default function AllocationsPage() {
   const [publicContributions, setPublicContributions] = useState<Contribution[]>([]);
   const [loading, setLoading] = useState(true);
   const [discordInviteUsed, setDiscordInviteUsed] = useState(false);
+  const [discordInvite, setDiscordInvite] = useState<string | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (!address) return;
+
+    // Check if we have discord_invite from allocationData (just after payment)
+    if (allocationData?.discord_invite) {
+      setDiscordInvite(allocationData.discord_invite);
+    }
 
     async function fetchData() {
       try {
@@ -49,6 +55,10 @@ export default function AllocationsPage() {
 
         if (userData.success) {
           setUserStats(userData.data.summary);
+          // Get Discord invite from API response
+          if (userData.data.discord_invite) {
+            setDiscordInvite(userData.data.discord_invite);
+          }
         }
 
         // Fetch public contributions (last 100)
@@ -70,13 +80,16 @@ export default function AllocationsPage() {
     // Check if Discord invite was already used
     const inviteUsed = localStorage.getItem(`yldr_discord_invite_used_${address}`);
     setDiscordInviteUsed(inviteUsed === 'true');
-  }, [address]);
+  }, [address, allocationData]);
 
   const handleJoinDiscord = () => {
     if (address) {
       localStorage.setItem(`yldr_discord_invite_used_${address}`, 'true');
       setDiscordInviteUsed(true);
-      window.open(DISCORD_INVITE, '_blank');
+      // Use the unique Discord invite if available, otherwise fall back to default
+      const inviteUrl = discordInvite || DISCORD_INVITE;
+      window.open(inviteUrl, '_blank');
+      console.log('🎫 Opening Discord invite:', inviteUrl);
     }
   };
 

@@ -21,6 +21,7 @@ export interface IContribution extends Document {
   user_agent?: string;
   referral_code?: string;
   notes?: string;
+  discord_invite?: string;
 }
 
 const ContributionSchema = new Schema<IContribution>(
@@ -106,6 +107,9 @@ const ContributionSchema = new Schema<IContribution>(
       index: true,
     },
     notes: {
+      type: String,
+    },
+    discord_invite: {
       type: String,
     },
   },

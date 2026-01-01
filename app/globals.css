@@ -4361,6 +4361,13 @@ html {
   margin-bottom: 0.75rem;
 }
 
+.discord-warning {
+  font-size: 0.75rem;
+  color: #FFA500;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
 .discord-button {
   display: inline-block;
   background: #5865F2;

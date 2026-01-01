@@ -15,6 +15,7 @@ interface AllocationData {
     price: number;
     usdc: number;
   }[];
+  discord_invite?: string | null;
 }
 
 interface PaymentContextType {

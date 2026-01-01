@@ -18,7 +18,7 @@ export function SuccessModal() {
   // Only show when status is success and we have allocation data
   if (status !== 'success' || !allocationData) return null;
 
-  const { yldrAmount, effectivePrice, breakdown } = allocationData;
+  const { yldrAmount, effectivePrice, breakdown, discord_invite } = allocationData;
 
   // Auto-redirect to allocations page after 3 seconds
   useEffect(() => {
@@ -102,8 +102,9 @@ export function SuccessModal() {
             <div className="cta-icon">💬</div>
             <h3>Claim Exclusive Beta Access</h3>
             <p>Join our private Discord for direct team interaction, product updates, and priority support</p>
+            <p className="discord-warning">⚠️ This is a one-time invite. Do not share.</p>
             <a
-              href={DISCORD_INVITE}
+              href={discord_invite || DISCORD_INVITE}
               target="_blank"
               rel="noopener noreferrer"
               className="discord-button"
