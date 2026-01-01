@@ -20,13 +20,14 @@ type CachedConnection = {
  * during API Route usage.
  */
 declare global {
-  var mongoose: CachedConnection | undefined;
+  // eslint-disable-next-line no-var
+  var mongooseCache: CachedConnection | undefined;
 }
 
-let cached: CachedConnection = global.mongoose || { conn: null, promise: null };
+let cached: CachedConnection = global.mongooseCache || { conn: null, promise: null };
 
-if (!global.mongoose) {
-  global.mongoose = cached;
+if (!global.mongooseCache) {
+  global.mongooseCache = cached;
 }
 
 async function connectDB(): Promise<MongooseConnection> {
