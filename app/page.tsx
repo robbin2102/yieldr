@@ -4,14 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
 import { EarlyAccessPopup } from './components/payment/EarlyAccessPopup';
-import { MyAllocationModal } from './components/payment/MyAllocationModal';
 import { UserProfile } from './components/UserProfile';
 import { usePayment } from './context/PaymentContext';
 
 export default function HomePage() {
   const [showPopup, setShowPopup] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showAllocationModal, setShowAllocationModal] = useState(false);
   const demoStartedRef = useRef(false);
   const { hasCompletedPayment } = usePayment();
   const { isConnected } = useAccount();
@@ -598,17 +596,10 @@ export default function HomePage() {
               <Link href="/docs" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Docs</Link>
               <Link href="/team" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Team</Link>
               <Link href="/build-in-public" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Build Progress</Link>
-              {hasCompletedPayment && isConnected ? (
-                <button
-                  className="mobile-menu-cta"
-                  onClick={() => {
-                    setShowMobileMenu(false);
-                    setShowAllocationModal(true);
-                  }}
-                >
-                  My Allocation
-                </button>
-              ) : (
+              {hasCompletedPayment && isConnected && (
+                <Link href="/allocations" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>My Allocation</Link>
+              )}
+              {!hasCompletedPayment && (
                 <button
                   className="mobile-menu-cta"
                   onClick={() => {
@@ -760,9 +751,6 @@ export default function HomePage() {
 
       {/* Payment Popup */}
       <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
-
-      {/* My Allocation Modal */}
-      <MyAllocationModal isOpen={showAllocationModal} onClose={() => setShowAllocationModal(false)} />
     </>
   );
 }
