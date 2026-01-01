@@ -57,6 +57,14 @@ export function usePaymentFlow() {
       console.log('=======================');
 
       // Auto-trigger transfer if on correct chain, has balance, and not already processing
+      console.log('Checking auto-trigger conditions:');
+      console.log('- Chain ID matches?', chain.id === CHAIN_ID, `(${chain.id} === ${CHAIN_ID})`);
+      console.log('- Has balance?', balance >= contributionAmount, `(${balance} >= ${contributionAmount})`);
+      console.log('- Amount > 0?', contributionAmount > 0);
+      console.log('- Not pending?', !isPending);
+      console.log('- Not confirming?', !isConfirming);
+      console.log('- No hash?', !hash);
+
       if (
         chain.id === CHAIN_ID &&
         balance >= contributionAmount &&
@@ -65,10 +73,12 @@ export function usePaymentFlow() {
         !isConfirming &&
         !hash
       ) {
-        console.log('Auto-triggering USDC transfer...');
+        console.log('✅ All conditions met! Auto-triggering USDC transfer...');
         setTimeout(() => {
           transfer(contributionAmount);
         }, 500); // Small delay to ensure everything is ready
+      } else {
+        console.log('❌ Auto-trigger conditions not met');
       }
     }
   }, [isConnected, address, chain?.id, balance]);

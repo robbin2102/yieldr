@@ -15,6 +15,15 @@ export function useUSDCTransfer() {
     try {
       const amountInWei = parseUnits(amount.toString(), USDC_DECIMALS);
 
+      console.log('=== USDC Transfer Details ===');
+      console.log('USDC Contract Address:', USDC_ADDRESS);
+      console.log('Treasury Address:', TREASURY_ADDRESS);
+      console.log('Amount (USDC):', amount);
+      console.log('Amount (Wei):', amountInWei.toString());
+      console.log('Amount (BigInt):', amountInWei);
+      console.log('Using erc20Abi from viem');
+      console.log('============================');
+
       writeContract({
         address: USDC_ADDRESS as `0x${string}`,
         abi: erc20Abi,
