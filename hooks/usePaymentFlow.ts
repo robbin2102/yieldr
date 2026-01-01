@@ -1,7 +1,8 @@
 // Hook: Orchestrate Complete Payment Flow
 
 import { useEffect, useRef } from 'react';
-import { useAccount, useConnect, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useUSDCBalance } from './useUSDCBalance';
 import { useUSDCTransfer } from './useUSDCTransfer';
 import { usePayment } from '@/app/context/PaymentContext';
@@ -10,7 +11,7 @@ import { CHAIN_ID, NETWORK_NAME } from '@/config/payment';
 
 export function usePaymentFlow() {
   const { address, isConnected, chain } = useAccount();
-  const { connectors, connect } = useConnect();
+  const { openConnectModal } = useConnectModal();
   const { switchChain } = useSwitchChain();
   const { balance, refetch: refetchBalance } = useUSDCBalance();
   const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
@@ -156,15 +157,11 @@ export function usePaymentFlow() {
 
       // Step 1: Connect wallet if not connected
       if (!isConnected) {
-        console.log('Wallet not connected, attempting to connect...');
-        const injectedConnector = connectors.find((c) => c.id === 'injected');
-        console.log('Available connectors:', connectors.map(c => ({ id: c.id, name: c.name })));
-        console.log('Injected connector:', injectedConnector);
-        if (injectedConnector) {
-          console.log('Calling connect with injected connector...');
-          connect({ connector: injectedConnector });
+        console.log('Wallet not connected, opening RainbowKit modal...');
+        if (openConnectModal) {
+          openConnectModal();
         } else {
-          console.error('No injected connector found');
+          console.error('openConnectModal is not available');
         }
         return;
       }
