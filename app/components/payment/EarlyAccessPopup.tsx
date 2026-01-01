@@ -80,16 +80,20 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
           </div>
 
           {/* Thin Tier Progress Bar */}
-          <div className="tier-capacity-bar">
-            <div className="tier-capacity-header">
-              <span className="tier-capacity-label">{currentTier.name} Tier</span>
-              <span className="tier-capacity-value">{formatUsd(usdcToNextTier)} remaining • {tierProgress.toFixed(1)}% filled</span>
-            </div>
-            <div className="tier-capacity-progress">
+          <div className="tier-progress-section">
+            <div className="tier-progress-bar">
               <div
-                className="tier-capacity-fill"
+                className="tier-progress-fill"
                 style={{ width: `${tierProgress}%` }}
               />
+            </div>
+            <div className="tier-progress-info">
+              <span>{tierProgress.toFixed(1)}% filled</span>
+              {nextTier && (
+                <span className="next-tier-hint">
+                  {formatUsd(usdcToNextTier)} until {nextTier.name} (+{priceIncreaseAtNextTier.toFixed(0)}% price)
+                </span>
+              )}
             </div>
           </div>
 
@@ -113,17 +117,6 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
               </div>
             )}
           </div>
-
-          {/* Next tier notification - only shows if input exceeds current tier capacity */}
-          {nextTier && usdcAmount > usdcToNextTier && (
-            <div className="next-tier-alert">
-              <span className="alert-icon">💡</span>
-              <span>
-                Part of your contribution will be allocated at {nextTier.name} tier ({formatPrice(nextTier.price)})
-                {' '}— {priceIncreaseAtNextTier.toFixed(0)}% higher price
-              </span>
-            </div>
-          )}
 
           {/* Allocation Preview */}
           <div className="allocation-preview">
@@ -171,9 +164,52 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                   <div className="utility-name">Beta Access</div>
                   <p className="utility-desc">
                     Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026.
-                    Train and fine-tune your agent before public launch. Join exclusive discord after purchase.
+                    Train and fine-tune your agent before public launch.
                   </p>
                 </div>
+              </div>
+
+              <div className="utility-item">
+                <div className="utility-icon">💬</div>
+                <div className="utility-content">
+                  <div className="utility-name">Exclusive Community</div>
+                  <p className="utility-desc">
+                    Access private Discord with direct team interaction, product feedback sessions,
+                    and priority updates on development.
+                  </p>
+                </div>
+              </div>
+
+              <div className="utility-item">
+                <div className="utility-icon">🗳️</div>
+                <div className="utility-content">
+                  <div className="utility-name">Governance Rights</div>
+                  <p className="utility-desc">
+                    Snapshot voting on protocol decisions, feature prioritization, and treasury allocations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ROI Scenarios at TGE */}
+          <div className="roi-section">
+            <h3 className="roi-title">ROI Scenarios at TGE</h3>
+            <div className="roi-grid">
+              <div className="roi-item">
+                <div className="roi-fdv">$150M FDV</div>
+                <div className="roi-return">$12,500</div>
+                <div className="roi-multiple">12.5x</div>
+              </div>
+              <div className="roi-item">
+                <div className="roi-fdv">$300M FDV</div>
+                <div className="roi-return">$25,000</div>
+                <div className="roi-multiple">25x</div>
+              </div>
+              <div className="roi-item">
+                <div className="roi-fdv">$500M FDV</div>
+                <div className="roi-return">$41,666</div>
+                <div className="roi-multiple">42x</div>
               </div>
             </div>
           </div>
