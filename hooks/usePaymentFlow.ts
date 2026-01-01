@@ -73,42 +73,17 @@ export function usePaymentFlow() {
     }
   }, [isPending, isConfirming]);
 
-  // Auto-trigger transfer after wallet connects and switches to correct chain
+  // Log wallet connection status (no auto-trigger for security)
   useEffect(() => {
     if (isConnected && address && chain) {
-      // Log wallet connection details
       console.log('=== Wallet Connected ===');
       console.log('Address:', address);
       console.log('Chain ID:', chain.id);
       console.log('Chain Name:', chain.name);
       console.log('USDC Balance:', balance);
       console.log('Contribution Amount:', contributionAmount);
+      console.log('Ready for payment?', chain.id === CHAIN_ID && balance >= contributionAmount);
       console.log('=======================');
-
-      // Auto-trigger transfer if on correct chain, has balance, and not already processing
-      console.log('Checking auto-trigger conditions:');
-      console.log('- Chain ID matches?', chain.id === CHAIN_ID, `(${chain.id} === ${CHAIN_ID})`);
-      console.log('- Has balance?', balance >= contributionAmount, `(${balance} >= ${contributionAmount})`);
-      console.log('- Amount > 0?', contributionAmount > 0);
-      console.log('- Not pending?', !isPending);
-      console.log('- Not confirming?', !isConfirming);
-      console.log('- No hash?', !hash);
-
-      if (
-        chain.id === CHAIN_ID &&
-        balance >= contributionAmount &&
-        contributionAmount > 0 &&
-        !isPending &&
-        !isConfirming &&
-        !hash
-      ) {
-        console.log('✅ All conditions met! Auto-triggering USDC transfer...');
-        setTimeout(() => {
-          transfer(contributionAmount);
-        }, 500); // Small delay to ensure everything is ready
-      } else {
-        console.log('❌ Auto-trigger conditions not met');
-      }
     }
   }, [isConnected, address, chain?.id, balance]);
 

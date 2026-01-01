@@ -34,11 +34,46 @@ interface PaymentContextType {
 const PaymentContext = createContext<PaymentContextType | undefined>(undefined);
 
 export function PaymentProvider({ children }: { children: ReactNode }) {
+  // Initialize from localStorage if available
   const [status, setStatus] = useState<PaymentStatus>('idle');
   const [contributionAmount, setContributionAmount] = useState<number>(1000);
   const [txHash, setTxHash] = useState<string | null>(null);
-  const [allocationData, setAllocationData] = useState<AllocationData | null>(null);
-  const [hasCompletedPayment, setHasCompletedPayment] = useState<boolean>(false);
+  const [allocationData, setAllocationData] = useState<AllocationData | null>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('yldr_allocation_data');
+      return saved ? JSON.parse(saved) : null;
+    }
+    return null;
+  });
+  const [hasCompletedPayment, setHasCompletedPayment] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('yldr_has_completed_payment') === 'true';
+    }
+    return false;
+  });
+
+  // Persist to localStorage when these values change
+  const setAllocationDataPersistent = (data: AllocationData | null) => {
+    setAllocationData(data);
+    if (typeof window !== 'undefined') {
+      if (data) {
+        localStorage.setItem('yldr_allocation_data', JSON.stringify(data));
+      } else {
+        localStorage.removeItem('yldr_allocation_data');
+      }
+    }
+  };
+
+  const setHasCompletedPaymentPersistent = (completed: boolean) => {
+    setHasCompletedPayment(completed);
+    if (typeof window !== 'undefined') {
+      if (completed) {
+        localStorage.setItem('yldr_has_completed_payment', 'true');
+      } else {
+        localStorage.removeItem('yldr_has_completed_payment');
+      }
+    }
+  };
 
   const reset = () => {
     setStatus('idle');
@@ -56,9 +91,9 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
         txHash,
         setTxHash,
         allocationData,
-        setAllocationData,
+        setAllocationData: setAllocationDataPersistent,
         hasCompletedPayment,
-        setHasCompletedPayment,
+        setHasCompletedPayment: setHasCompletedPaymentPersistent,
         reset,
       }}
     >
