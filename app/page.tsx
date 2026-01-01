@@ -1,0 +1,732 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { PaymentPopup } from './components/PaymentPopup';
+
+export default function HomePage() {
+  const [showPopup, setShowPopup] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const demoStartedRef = useRef(false);
+
+  useEffect(() => {
+    // Background canvas animation
+    const canvas = document.getElementById('bgCanvas') as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.25;
+        this.vy = (Math.random() - 0.5) * 0.25;
+        this.radius = Math.random() * 1.5 + 0.5;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx!.beginPath();
+        ctx!.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx!.fillStyle = 'rgba(0, 200, 5, 0.35)';
+        ctx!.fill();
+      }
+    }
+
+    const particles = Array.from({ length: 50 }, () => new Particle());
+
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx!.beginPath();
+            ctx!.moveTo(particles[i].x, particles[i].y);
+            ctx!.lineTo(particles[j].x, particles[j].y);
+            ctx!.strokeStyle = `rgba(0, 200, 5, ${0.08 * (1 - dist / 100)})`;
+            ctx!.lineWidth = 0.5;
+            ctx!.stroke();
+          }
+        }
+      }
+    }
+
+    function animateBg() {
+      ctx!.clearRect(0, 0, canvas.width, canvas.height);
+      drawConnections();
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateBg);
+    }
+    animateBg();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, []);
+
+  // Animated chat demo - EXACT match to HTML design
+  useEffect(() => {
+    if (demoStartedRef.current) return; // Prevent multiple runs
+
+    // Wait for chatArea to be available (due to dynamic Providers import)
+    const initDemo = () => {
+      const chatArea = document.getElementById('chatArea');
+      if (!chatArea) {
+        // Retry after a short delay
+        setTimeout(initDemo, 100);
+        return;
+      }
+
+      // Clear any existing content
+      chatArea.innerHTML = '';
+      demoStartedRef.current = true;
+
+    function getTime() {
+      const now = new Date();
+      return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    }
+
+    function addMessage(html: string, delay = 0): Promise<void> {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const element = div.firstElementChild;
+          if (element && chatArea) {
+            chatArea.appendChild(element);
+            // Smooth scroll with small delay
+            setTimeout(() => {
+              chatArea.scrollTo({
+                top: chatArea.scrollHeight,
+                behavior: 'smooth'
+              });
+            }, 50);
+          }
+          resolve();
+        }, delay);
+      });
+    }
+
+    function addLog(text: string, isComplete = false, delay = 0): Promise<HTMLElement | null> {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const log = document.createElement('div');
+          log.className = 'agent-log';
+          log.innerHTML = isComplete
+            ? `<span class="log-check">✓</span><span>${text}</span>`
+            : `<div class="log-spinner"></div><span>${text}</span>`;
+          if (chatArea) {
+            chatArea.appendChild(log);
+            // Smooth scroll with small delay
+            setTimeout(() => {
+              chatArea.scrollTo({
+                top: chatArea.scrollHeight,
+                behavior: 'smooth'
+              });
+            }, 50);
+          }
+          resolve(log);
+        }, delay);
+      });
+    }
+
+    function removeElement(el: HTMLElement | null) {
+      if (el && el.parentNode) el.remove();
+    }
+
+    async function runDemo() {
+      const time = getTime();
+
+      // Step 1: Agent scans wallet
+      let log1 = await addLog('Connecting to wallet 0x7a3f...9c2e...', false, 800);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(log1);
+      await addLog('Wallet connected', true);
+
+      let log2 = await addLog('Scanning token holdings...', false, 600);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(log2);
+      await addLog('Found 3 tokens', true);
+
+      let log3 = await addLog('Scanning perpetual positions...', false, 600);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(log3);
+      await addLog('Found 1 position on Avantis', true);
+
+      let log4 = await addLog('Scanning LP positions...', false, 600);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(log4);
+      await addLog('Found 1 LP on Aerodrome', true);
+
+      await new Promise(r => setTimeout(r, 800));
+
+      // Agent shows portfolio summary
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p>👋 <strong>Hey! I've scanned your wallet. Here's your portfolio:</strong></p>
+
+              <div class="position-summary">
+                <div class="position-row">
+                  <span class="position-label">💰 Tokens</span>
+                  <span class="value-neutral">$87,340</span>
+                </div>
+                <div class="summary-line">
+                  <span class="token-tag"><span class="token-symbol" style="color:#FF0420;">OP</span> <span class="token-amount">4,827</span></span>
+                  <span class="token-tag"><span class="token-symbol" style="color:#8B5CF6;">JESSE</span> <span class="token-amount">7,193</span></span>
+                  <span class="token-tag"><span class="token-symbol" style="color:#627EEA;">WETH</span> <span class="token-amount">16.42</span></span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem;">
+                  <div class="position-left">
+                    <span class="position-label">⚡ BTC/USDC SHORT 20×</span>
+                    <span class="platform-tag avantis">Avantis</span>
+                  </div>
+                  <span class="value-neutral">$200,000</span>
+                </div>
+                <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
+                  Entry $100K → Now $90K • Margin $10K • PnL <span class="value-positive">+$20K</span> • ROI <span class="value-positive">+200%</span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem;">
+                  <div class="position-left">
+                    <span class="position-label">💧 cbBTC/USDC LP</span>
+                    <span class="platform-tag aerodrome">Aerodrome</span>
+                  </div>
+                  <span class="value-neutral">$250,000</span>
+                </div>
+                <div class="summary-line" style="font-size: 0.75rem; color: var(--text-tertiary);">
+                  184.5% APR • Fees <span class="value-positive">+$5,790</span> • IL <span class="value-negative">-$12,908</span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
+                  <span class="position-label">💵 Idle USDC</span>
+                  <span class="value-neutral">$50,000</span>
+                </div>
+
+                <div class="position-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-primary);">
+                  <span class="position-label"><strong>📊 Total Portfolio</strong></span>
+                  <span class="value-positive" style="font-size: 1rem;"><strong>$587,340</strong></span>
+                </div>
+              </div>
+
+              <p style="margin-top: 0.75rem;">I'm now monitoring your positions. What would you like to optimize?</p>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3500));
+
+      // User Q1: BTC Short
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">Should I take profits on my BTC short? It's up 2000%</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logA1 = await addLog('Analyzing BTC market sentiment...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logA1);
+      let logA2 = await addLog('Checking what top traders are doing...', false);
+      await new Promise(r => setTimeout(r, 1400));
+      removeElement(logA2);
+      await addLog('67% of top traders closing shorts', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>✅ Yes, take partial profits.</strong></p>
+              <div class="summary-line">
+                Your <span class="value-positive">+$20K</span> gain is exceptional. <strong>67% of top traders</strong> are closing BTC shorts here.
+              </div>
+              <div class="position-summary" style="margin-top: 0.5rem;">
+                <div class="position-row">
+                  <span class="position-label">Recommendation</span>
+                  <span class="value-positive">Close 50% → Lock $10K</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Stop-loss on rest</span>
+                  <span class="value-neutral">$95,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3000));
+
+      // User Q2: LP Hedge
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">How do I reduce the impermanent loss on my cbBTC LP?</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logB1 = await addLog('Calculating LP delta exposure...', false);
+      await new Promise(r => setTimeout(r, 1300));
+      removeElement(logB1);
+      let logB2 = await addLog('Finding optimal hedge ratio...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logB2);
+      await addLog('Delta-neutral strategy identified', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>🛡️ Delta-Neutral Hedge Strategy</strong></p>
+              <div class="summary-line">
+                Current IL: <span class="value-negative">-$12,908</span> (BTC moved +15% since entry)
+              </div>
+              <div class="position-summary" style="margin-top: 0.5rem;">
+                <div class="position-row">
+                  <span class="position-label">Open BTC SHORT on</span>
+                  <span class="platform-tag avantis">Avantis</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Size: 0.65 BTC @ 5×</span>
+                  <span class="value-neutral">$12K margin</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Expected IL reduction</span>
+                  <span class="value-positive">-65%</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Net APR after hedge</span>
+                  <span class="value-positive">~142%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3000));
+
+      // User Q3: ETH Long
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">Fed rate cut next week. Should I open an ETH long?</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logC1 = await addLog('Fetching macro news & Fed expectations...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logC1);
+      let logC2 = await addLog('Analyzing ETH OI & funding rates...', false);
+      await new Promise(r => setTimeout(r, 1300));
+      removeElement(logC2);
+      let logC3 = await addLog('Checking top trader ETH positions...', false);
+      await new Promise(r => setTimeout(r, 1100));
+      removeElement(logC3);
+      await addLog('73% of top traders are long ETH', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>🎯 ETH Long Setup Looks Good</strong></p>
+              <div class="summary-line">
+                <strong>73%</strong> of top traders are long • Funding: <span class="value-positive">-0.01%</span> (favorable)
+              </div>
+              <div class="position-summary" style="margin-top: 0.5rem;">
+                <div class="position-row">
+                  <span class="position-label">Entry Zone</span>
+                  <span class="value-neutral">$3,450 - $3,500</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Stop Loss</span>
+                  <span class="value-negative">$3,280 (-5%)</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Target</span>
+                  <span class="value-positive">$4,100 (+18%)</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Suggested size (from idle)</span>
+                  <span class="value-neutral">$15,000</span>
+                </div>
+                <div class="position-row">
+                  <span class="position-label">Risk/Reward</span>
+                  <span class="value-positive">3.2:1 ✓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 3000));
+
+      // User Q4: Allocate idle USDC
+      await addMessage(`
+        <div class="message message-user">
+          <div class="bubble">Allocate my remaining 50K USDC across top 10 traders in perps, predictions, and LPs. Max 20% drawdown.</div>
+        </div>
+      `);
+
+      await new Promise(r => setTimeout(r, 600));
+      let logD1 = await addLog('Discovering traders across protocols...', false);
+      await new Promise(r => setTimeout(r, 1500));
+      removeElement(logD1);
+      let logD2 = await addLog('Analyzing 847 traders...', false);
+      await new Promise(r => setTimeout(r, 1400));
+      removeElement(logD2);
+      let logD3 = await addLog('Filtering by drawdown < 20%...', false);
+      await new Promise(r => setTimeout(r, 1200));
+      removeElement(logD3);
+      let logD4 = await addLog('Optimizing allocation for Sharpe ratio...', false);
+      await new Promise(r => setTimeout(r, 1300));
+      removeElement(logD4);
+      await addLog('30 traders meet criteria', true);
+
+      await new Promise(r => setTimeout(r, 600));
+
+      await addMessage(`
+        <div class="message message-agent">
+          <div class="message-avatar agent">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">AlphaHunter</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-text">
+              <p><strong>🔍 Discovery Complete</strong> — 847 traders scanned → 30 meet criteria</p>
+
+              <div class="allocation-card">
+                <div class="allocation-header">
+                  <span>📊</span>
+                  <span class="allocation-title">Optimized Allocation</span>
+                </div>
+
+                <div class="allocation-bars">
+                  <div class="alloc-bar">
+                    <div class="alloc-label">⚡ Perpetuals</div>
+                    <div class="alloc-track">
+                      <div class="alloc-fill perps" style="width: 40%;">40%</div>
+                    </div>
+                    <span class="alloc-amount">$20,000</span>
+                  </div>
+                  <div class="alloc-bar">
+                    <div class="alloc-label">🎯 Prediction</div>
+                    <div class="alloc-track">
+                      <div class="alloc-fill pred" style="width: 30%;">30%</div>
+                    </div>
+                    <span class="alloc-amount">$15,000</span>
+                  </div>
+                  <div class="alloc-bar">
+                    <div class="alloc-label">💧 Liquidity</div>
+                    <div class="alloc-track">
+                      <div class="alloc-fill lp" style="width: 30%;">30%</div>
+                    </div>
+                    <span class="alloc-amount">$15,000</span>
+                  </div>
+                </div>
+
+                <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-bottom: 0.5rem;">TOP PICKS</div>
+                <div class="picks-row">
+                  <div class="pick-chip">
+                    <div class="pick-name">perp_alpha</div>
+                    <div class="pick-platform">Avantis</div>
+                    <div class="pick-roi">+47%</div>
+                  </div>
+                  <div class="pick-chip">
+                    <div class="pick-name">poly_og</div>
+                    <div class="pick-platform">Polymarket</div>
+                    <div class="pick-roi">+52%</div>
+                  </div>
+                  <div class="pick-chip">
+                    <div class="pick-name">aero_whale</div>
+                    <div class="pick-platform">Aerodrome</div>
+                    <div class="pick-roi">+38%</div>
+                  </div>
+                </div>
+
+                <div class="summary-stats">
+                  <div class="stat-item">
+                    <div class="stat-value">42-67%</div>
+                    <div class="stat-label">Est. Return</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">18.3% ✓</div>
+                    <div class="stat-label">Max Drawdown</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">30</div>
+                    <div class="stat-label">Traders</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+      // Start demo after 1.2s
+      setTimeout(runDemo, 1200);
+    };
+
+    // Initialize demo (will retry if chatArea not ready)
+    initDemo();
+  }, []);
+
+  return (
+    <>
+      <canvas className="bg-canvas" id="bgCanvas" />
+
+      {/* Navigation */}
+      <header className="team-header">
+        <Link href="/" className="team-logo">
+          <svg className="team-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
+            <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
+            <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
+          </svg>
+          <span className="team-logo-text">YIELDR</span>
+        </Link>
+        <nav className="team-nav-links">
+          <Link href="/" className="team-nav-link active">Home</Link>
+          <Link href="/docs" className="team-nav-link">Docs</Link>
+          <Link href="/team" className="team-nav-link">Team</Link>
+          <Link href="/build-in-public" className="team-nav-link">Build Progress</Link>
+          <div className="team-nav-divider"></div>
+          <Link href="https://discord.com/channels/1426305214176165941/1426305389812646091" target="_blank" className="team-nav-icon discord" title="Discord">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+          </Link>
+          <Link href="https://github.com/robbin2102/yieldr-app" target="_blank" className="team-nav-icon github" title="GitHub">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </Link>
+          <button className="team-nav-link primary" onClick={() => setShowPopup(true)}>Get Early Access</button>
+        </nav>
+        <button className="mobile-menu-btn" onClick={() => setShowMobileMenu(!showMobileMenu)}>☰</button>
+      </header>
+
+      {/* Mobile Menu */}
+      {showMobileMenu && (
+        <div className="mobile-menu-overlay">
+          <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <div className="mobile-menu-header">
+              <div className="mobile-menu-logo">
+                <svg className="mobile-menu-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
+                  <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
+                  <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
+                </svg>
+                <span className="mobile-menu-logo-text">YIELDR</span>
+              </div>
+              <button className="mobile-menu-close" onClick={() => setShowMobileMenu(false)}>✕</button>
+            </div>
+            <div className="mobile-menu-content">
+              <Link href="/" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Home</Link>
+              <Link href="/docs" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Docs</Link>
+              <Link href="/team" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Team</Link>
+              <Link href="/build-in-public" className="mobile-menu-link" onClick={() => setShowMobileMenu(false)}>Build Progress</Link>
+              <button className="mobile-menu-cta" onClick={() => { setShowMobileMenu(false); setShowPopup(true); }}>Get Early Access</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-header">
+          <h1 className="hero-title">AI for DeFi's <span className="accent">Top 1%</span></h1>
+          <p className="hero-subtitle">Agents that level up traders, investors & fund managers onchain.</p>
+        </div>
+
+        {/* Demo Container */}
+        <div className="demo-container">
+          <div className="demo-header">
+            <div className="demo-header-left">
+              <div className="agent-avatar">🤖</div>
+              <div className="agent-info">
+                <h3>AlphaHunter</h3>
+                <div className="agent-status">
+                  <span className="status-dot"></span>
+                  <span>AI Trading Agent</span>
+                </div>
+              </div>
+            </div>
+            <div className="demo-header-right">
+              <div className="live-badge">
+                <span className="live-dot"></span>
+                <span>Live Demo</span>
+              </div>
+              <div className="wallet-chip">0x7a3f...9c2e</div>
+            </div>
+          </div>
+
+          <div className="chat-area" id="chatArea"></div>
+
+          <div className="chat-input-area">
+            <div className="input-wrapper">
+              <input
+                type="text"
+                className="chat-input"
+                id="chatInput"
+                placeholder="Try asking about positions, traders, or strategies..."
+                onClick={() => setShowPopup(true)}
+                readOnly
+              />
+              <button className="send-btn" onClick={() => setShowPopup(true)}>➤</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Below Fold */}
+      <section className="below-fold">
+        {/* Base Batches Recognition */}
+        <div className="batches-section">
+          <div className="batches-card">
+            <div className="batches-badge">
+              <span>🏆</span>
+              <span>BASE BATCHES 002 WINNER</span>
+            </div>
+            <h2 className="batches-title">Selected by Base Ecosystem</h2>
+            <p className="batches-subtitle">Yieldr was chosen as one of the winners of Base Batches 002, recognized for building innovative DeFi infrastructure on Base.</p>
+          </div>
+        </div>
+
+        {/* Trust Section */}
+        <div className="trust-section">
+          <div className="trust-header">
+            <h2 className="trust-title">Built Different</h2>
+            <p className="trust-subtitle">Transparency, security, and performance at the core.</p>
+          </div>
+          <div className="trust-grid">
+            <Link href="/build-in-public" className="trust-card">
+              <div className="trust-icon">🔐</div>
+              <h4>Treasury Public</h4>
+              <p>All funds in multisig. Usage reported monthly. Full transparency.</p>
+            </Link>
+            <Link href="/build-in-public" className="trust-card">
+              <div className="trust-icon">📊</div>
+              <h4>Build in Public</h4>
+              <p>Weekly updates on progress, code shipped, and milestones hit.</p>
+            </Link>
+            <Link href="/team" className="trust-card">
+              <div className="trust-icon">👤</div>
+              <h4>Based Builder</h4>
+              <p>2x founder. Ex-KPMG, BCG, CA/CFA turned vibe coder.</p>
+            </Link>
+          </div>
+        </div>
+
+        {/* Partners Section */}
+        <div className="partners-section">
+          <div className="partners-label">Building with</div>
+          <div className="partners-logos">
+            <div className="partner-logo">
+              <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730551690x161831425309488800/_base-square%20%282%29.svg" alt="Base" />
+            </div>
+            <div className="partner-logo">
+              <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760735602576x626366481309788300/Avantis%20White%20Logo%20-%20Vertical.png" alt="Avantis" />
+            </div>
+            <div className="partner-logo">
+              <img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760731058931x165828739392198200/aero.png" alt="Aerodrome" />
+            </div>
+            <div className="partner-logo">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Uniswap_Logo.svg/1200px-Uniswap_Logo.svg.png" alt="Uniswap" />
+            </div>
+            <div className="partner-logo">
+              <img src="https://nftevening.com/wp-content/uploads/2025/03/hyperliquid-logo.png" alt="Hyperliquid" />
+            </div>
+            <div className="partner-logo">
+              <img src="https://avatars.githubusercontent.com/u/31669764?s=280&v=4" alt="Polymarket" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="team-footer">
+        <div className="footer-links">
+          <a href="https://discord.com/channels/1426305214176165941/1426305389812646091" target="_blank" rel="noopener noreferrer" className="footer-social" title="Discord">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" className="footer-social" title="GitHub">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+          <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" className="footer-social" title="Twitter/X">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+        </div>
+        <p>Built different. <a href="https://yieldr.org">yieldr.org</a></p>
+      </footer>
+
+      {/* Payment Popup */}
+      <PaymentPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+    </>
+  );
+}
