@@ -84,11 +84,13 @@ export default function AllocationsPage() {
     setDiscordInviteUsed(inviteUsed === 'true');
   }, [address, allocationData]);
 
-  // Close popup and refetch data when new payment is detected
+  // Close popup and refetch data when coming from successful payment
   useEffect(() => {
-    if (txHash && hasCompletedPayment) {
-      console.log('🔄 New payment detected, closing popup and refreshing data...');
-      setShowPopup(false); // Close the early access popup
+    if (status === 'success' && hasCompletedPayment) {
+      console.log('🔄 Payment success detected, closing popup and refreshing data...');
+
+      // Close the early access popup immediately
+      setShowPopup(false);
 
       // Refetch data after a short delay to ensure backend has processed
       const timer = setTimeout(async () => {
@@ -113,14 +115,17 @@ export default function AllocationsPage() {
           }
 
           console.log('✅ Data refreshed successfully');
+
+          // Reset payment state after handling (only in allocations page)
+          reset();
         } catch (error) {
           console.error('Error refreshing data:', error);
         }
-      }, 1000); // Wait 1 second for backend to process
+      }, 1500); // Wait 1.5 seconds for backend to process
 
       return () => clearTimeout(timer);
     }
-  }, [txHash, hasCompletedPayment, address]);
+  }, [status, hasCompletedPayment, address, reset]);
 
   const handleJoinDiscord = () => {
     if (address) {

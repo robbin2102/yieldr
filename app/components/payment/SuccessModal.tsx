@@ -20,27 +20,27 @@ export function SuccessModal() {
 
   const { yldrAmount, effectivePrice, breakdown, discord_invite } = allocationData;
 
-  // Auto-redirect to allocations page after 3 seconds
+  // Countdown timer (just updates the number)
   useEffect(() => {
     const countdownInterval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval);
-          console.log('⏰ Auto-redirecting to allocations page...');
-          reset();
-          router.push('/allocations');
-          return 0;
-        }
-        return prev - 1;
-      });
+      setCountdown((prev) => Math.max(0, prev - 1));
     }, 1000);
 
     return () => clearInterval(countdownInterval);
-  }, [router, reset]);
+  }, []);
+
+  // Redirect when countdown reaches 0
+  useEffect(() => {
+    if (countdown === 0) {
+      console.log('⏰ Auto-redirecting to allocations page...');
+      // Don't call reset() - let allocations page handle the refresh
+      router.push('/allocations');
+    }
+  }, [countdown, router]);
 
   const handleClose = () => {
     console.log('✅ Closing success modal and redirecting to allocations...');
-    reset();
+    // Don't call reset() - let allocations page handle the refresh
     router.push('/allocations');
   };
 
