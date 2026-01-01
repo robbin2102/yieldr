@@ -149,11 +149,22 @@ export function usePaymentFlow() {
 
   const initiatePayment = async () => {
     try {
+      console.log('=== initiatePayment called ===');
+      console.log('isConnected:', isConnected);
+      console.log('contributionAmount:', contributionAmount);
+      console.log('balance:', balance);
+
       // Step 1: Connect wallet if not connected
       if (!isConnected) {
+        console.log('Wallet not connected, attempting to connect...');
         const injectedConnector = connectors.find((c) => c.id === 'injected');
+        console.log('Available connectors:', connectors.map(c => ({ id: c.id, name: c.name })));
+        console.log('Injected connector:', injectedConnector);
         if (injectedConnector) {
+          console.log('Calling connect with injected connector...');
           connect({ connector: injectedConnector });
+        } else {
+          console.error('No injected connector found');
         }
         return;
       }

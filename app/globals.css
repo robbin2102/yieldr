@@ -838,22 +838,6 @@ html {
     gap: 0.5rem;
 }
 
-.tier-badge {
-    background: var(--accent-green);
-    color: #000;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    font-weight: 700;
-}
-
-.tier-fdv { font-size: 0.75rem; color: var(--text-secondary); }
-
-.tier-price { text-align: right; }
-
-.price-value { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 700; }
-.price-potential { font-size: 0.7rem; color: var(--accent-green); }
-
 .contribute-input { margin-bottom: 0.75rem; }
 
 .contribute-label { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.35rem; }

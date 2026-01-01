@@ -45,6 +45,15 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
   const isValidAmount = usdcAmount >= MIN_CONTRIBUTION;
   const hasBalance = !isConnected || balance >= usdcAmount;
 
+  const handlePaymentClick = () => {
+    console.log('=== Payment button clicked ===');
+    console.log('isConnected:', isConnected);
+    console.log('isValidAmount:', isValidAmount);
+    console.log('hasBalance:', hasBalance);
+    console.log('isDisabled:', isDisabled);
+    initiatePayment();
+  };
+
   const getButtonText = () => {
     if (isProcessing) return 'Processing...';
     if (!isConnected) return 'Connect Wallet →';
@@ -217,7 +226,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
           {/* Connect Wallet Button */}
           <button
             className="connect-wallet-btn"
-            onClick={initiatePayment}
+            onClick={handlePaymentClick}
             disabled={isDisabled}
           >
             {getButtonText()}
