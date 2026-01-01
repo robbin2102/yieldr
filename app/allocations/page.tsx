@@ -95,7 +95,7 @@ export default function AllocationsPage() {
     }
   };
 
-  if (!isConnected || !hasCompletedPayment) {
+  if (!isConnected) {
     return (
       <div className="allocations-page">
         <header className="team-header">
@@ -132,7 +132,7 @@ export default function AllocationsPage() {
 
         <div className="allocations-not-connected">
           <h1>Access Restricted</h1>
-          <p>Connect your wallet and complete a payment to view your allocations.</p>
+          <p>Connect your wallet to view your allocations.</p>
           <Link href="/" className="allocations-cta-link">
             Go to Homepage →
           </Link>
