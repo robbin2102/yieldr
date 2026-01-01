@@ -203,7 +203,9 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
 
           {/* ROI Scenarios at TGE */}
           <div className="roi-section">
-            <h3 className="roi-title">ROI Scenarios at TGE</h3>
+            <h3 className="roi-title">
+              ROI Scenarios at TGE <span className="roi-subtitle">(assuming 1k USDC purchase)</span>
+            </h3>
             <div className="roi-grid">
               <div className="roi-item">
                 <div className="roi-fdv">$150M FDV</div>

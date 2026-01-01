@@ -952,6 +952,15 @@ html {
     margin-bottom: 0.5rem;
 }
 
+.roi-subtitle {
+    font-size: 0.6rem;
+    color: var(--text-tertiary);
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    opacity: 0.7;
+}
+
 .roi-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
