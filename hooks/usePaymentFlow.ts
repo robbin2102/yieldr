@@ -124,6 +124,12 @@ export function usePaymentFlow() {
 
       console.log('=== Recording Contribution to API ===');
       console.log('Payload:', JSON.stringify(payload, null, 2));
+      console.log('Validating payload fields:');
+      console.log('  - wallet_address:', payload.wallet_address);
+      console.log('  - usdc_amount:', payload.usdc_amount);
+      console.log('  - tx_hash:', payload.tx_hash);
+      console.log('  - network:', payload.network);
+      console.log('  - chain_id:', payload.chain_id);
       console.log('=====================================');
 
       const response = await fetch('/api/contributions', {
