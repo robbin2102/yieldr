@@ -309,7 +309,6 @@ export default function AllocationsPage() {
             <h3>Exclusive Beta Access</h3>
             {!discordInviteUsed ? (
               <>
-                <p className="discord-warning-compact">⚠️ One-time invite. Do not share.</p>
                 <p className="discord-desc-compact">
                   Join our private Discord for direct team access and priority updates.
                 </p>
