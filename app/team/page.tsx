@@ -133,9 +133,7 @@ export default function TeamPage() {
               <div className="credentials">
                 <span className="credential"><span className="icon">🏢</span> Ex-KPMG</span>
                 <span className="credential"><span className="icon">🏢</span> Ex-BCG</span>
-                <span className="credential"><span className="icon">📜</span> CPA</span>
-                <span className="credential"><span className="icon">📜</span> CA</span>
-                <span className="credential"><span className="icon">📜</span> CFA</span>
+                <span className="credential"><span className="icon">📜</span> CA/CPA</span>
               </div>
 
               <div className="roles-title">Responsibilities</div>
