@@ -258,7 +258,7 @@ export default function HomePage() {
       // User Q1: BTC Short
       await addMessage(`
         <div class="message message-user">
-          <div class="bubble">Should I take profits on my BTC short? It's up 2000%</div>
+          <div class="bubble">Should I take profits on my BTC short? It's up 200%</div>
         </div>
       `);
 
