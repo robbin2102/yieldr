@@ -161,6 +161,39 @@ html {
     max-height: 720px;
 }
 
+.mobile-hero-cta {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-hero-cta {
+        display: block;
+        width: 100%;
+        max-width: 400px;
+        margin: 1.5rem auto 2rem;
+        padding: 0 1rem;
+    }
+
+    .mobile-hero-cta button {
+        width: 100%;
+        background: var(--accent-green);
+        color: #000;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .mobile-hero-cta button:hover {
+        background: #00E006;
+        box-shadow: 0 6px 24px rgba(0, 200, 5, 0.4);
+        transform: translateY(-2px);
+    }
+}
+
 /* Demo Header */
 .demo-header {
     display: flex;
@@ -1165,7 +1198,7 @@ html {
     .hero-title { font-size: 2rem; }
     .hero-subtitle { font-size: 0.95rem; }
     .hero-section { padding-top: 8rem; }
-    .demo-container { margin: 0 -0.5rem; border-radius: 12px; }
+    .demo-container { margin: 0 -0.5rem; border-radius: 12px; height: 600px; max-height: 600px; }
     .trust-grid { grid-template-columns: 1fr; }
     .nav-links { gap: 1rem; }
     .nav-link { display: none !important; }
@@ -1173,6 +1206,8 @@ html {
     .mobile-menu-btn { display: block !important; }
     .partners-logos { gap: 1.5rem; }
     .roi-grid { grid-template-columns: 1fr; }
+    .live-badge { display: none; }
+    .wallet-chip { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
 }
 
 
@@ -2220,6 +2255,33 @@ html {
     height: 24px;
     background: var(--border-primary);
     margin: 0 0.5rem;
+}
+
+.team-nav-mobile-cta {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .team-nav-mobile-cta {
+        display: block;
+    }
+
+    .team-nav-mobile-cta button {
+        background: var(--accent-green);
+        color: #000;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .team-nav-mobile-cta button:hover {
+        background: #00E006;
+        box-shadow: 0 4px 20px rgba(0, 200, 5, 0.4);
+    }
 }
 
 /* Main Content */
@@ -4058,6 +4120,7 @@ html {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  margin-top: 1.25rem;
   margin-bottom: 1.5rem;
 }
 
@@ -4416,6 +4479,70 @@ html {
 
   .modal-container {
     padding: 1.5rem;
+  }
+
+  /* Simplify tier display on mobile */
+  .tier-badge-section .tier-badge,
+  .tier-badge-section .tier-price {
+    display: none;
+  }
+
+  .tier-badge-section {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-badge-section::after {
+    content: attr(data-next-tier-text);
+    font-size: 0.85rem;
+    color: #00C805;
+    font-weight: 600;
+  }
+
+  /* Hide progress bar on mobile */
+  .tier-progress-section {
+    display: none;
+  }
+
+  /* Compact ROI section on mobile */
+  .roi-section {
+    margin-bottom: 0.75rem;
+  }
+
+  .roi-title {
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .roi-subtitle {
+    display: block;
+    margin-top: 0.25rem;
+  }
+
+  .roi-grid {
+    gap: 0.4rem;
+  }
+
+  .roi-item {
+    padding: 0.5rem;
+  }
+
+  .roi-fdv {
+    font-size: 0.6rem;
+  }
+
+  .roi-return {
+    font-size: 0.9rem;
+  }
+
+  .roi-multiple {
+    font-size: 0.65rem;
+  }
+
+  /* Add spacing above Connect Wallet button */
+  .connect-wallet-btn {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
   }
 }
 

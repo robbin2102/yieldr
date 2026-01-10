@@ -90,6 +90,11 @@ export default function DocsPage() {
               Get Early Access
             </button>
           )}
+          <div className="team-nav-mobile-cta">
+            {!hasCompletedPayment && (
+              <button onClick={() => setShowPopup(true)}>Get Early Access</button>
+            )}
+          </div>
           <button className="mobile-menu-btn" onClick={toggleSidebar}>☰</button>
         </nav>
       </header>
