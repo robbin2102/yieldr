@@ -161,39 +161,6 @@ html {
     max-height: 720px;
 }
 
-.mobile-hero-cta {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .mobile-hero-cta {
-        display: block;
-        width: 100%;
-        max-width: 400px;
-        margin: 1.5rem auto 2rem;
-        padding: 0 1rem;
-    }
-
-    .mobile-hero-cta button {
-        width: 100%;
-        background: var(--accent-green);
-        color: #000;
-        padding: 1rem 2rem;
-        border-radius: 12px;
-        border: none;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .mobile-hero-cta button:hover {
-        background: #00E006;
-        box-shadow: 0 6px 24px rgba(0, 200, 5, 0.4);
-        transform: translateY(-2px);
-    }
-}
-
 /* Demo Header */
 .demo-header {
     display: flex;
@@ -2257,6 +2224,12 @@ html {
     margin: 0 0.5rem;
 }
 
+.team-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .team-nav-mobile-cta {
     display: none;
 }
@@ -2276,6 +2249,7 @@ html {
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s;
+        white-space: nowrap;
     }
 
     .team-nav-mobile-cta button:hover {
