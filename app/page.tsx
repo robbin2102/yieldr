@@ -660,6 +660,11 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Mobile CTA Button */}
+        <div className="mobile-hero-cta">
+          <button onClick={() => setShowPopup(true)}>Get Early Access</button>
+        </div>
       </section>
 
       {/* Below Fold */}

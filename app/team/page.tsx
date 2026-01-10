@@ -49,6 +49,11 @@ export default function TeamPage() {
             </button>
           )}
         </nav>
+        <div className="team-nav-mobile-cta">
+          {!hasCompletedPayment && (
+            <button onClick={() => setShowPopup(true)}>Get Early Access</button>
+          )}
+        </div>
         <button className="mobile-menu-btn" onClick={() => setShowMobileMenu(!showMobileMenu)}>☰</button>
       </header>
 

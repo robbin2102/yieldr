@@ -77,7 +77,10 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
           <h2 className="popup-title">Get Early Access to YLDR</h2>
 
           {/* Current Tier Display */}
-          <div className="tier-badge-section">
+          <div
+            className="tier-badge-section"
+            data-next-tier-text={nextTier ? `${formatUsd(usdcToNextTier)} until ${nextTier.name} (+${priceIncreaseAtNextTier.toFixed(0)}% price)` : `${currentTier.name} tier`}
+          >
             <div className="tier-badge">
               <span className="tier-name">{currentTier.name.toUpperCase()}</span>
               <span className="tier-fdv">FDV: {formatUsd(currentTier.fdv)}</span>
