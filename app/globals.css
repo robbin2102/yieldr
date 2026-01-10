@@ -4455,22 +4455,38 @@ html {
     padding: 1.5rem;
   }
 
-  /* Simplify tier display on mobile */
-  .tier-badge-section .tier-badge,
-  .tier-badge-section .tier-price {
-    display: none;
-  }
-
+  /* Mobile tier display - keep badge and add next tier info */
   .tier-badge-section {
     padding: 0.75rem;
     margin-bottom: 0.5rem;
+    flex-direction: column;
+    text-align: center;
   }
 
   .tier-badge-section::after {
     content: attr(data-next-tier-text);
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #00C805;
     font-weight: 600;
+    margin-top: 0.75rem;
+    display: block;
+  }
+
+  .tier-name {
+    font-size: 0.7rem;
+  }
+
+  .tier-fdv {
+    font-size: 0.65rem;
+  }
+
+  .tier-price {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .price-value {
+    font-size: 1.1rem;
   }
 
   /* Hide progress bar on mobile */
