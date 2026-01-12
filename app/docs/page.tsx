@@ -52,10 +52,102 @@ export default function DocsPage() {
     setSidebarOpen(false);
   };
 
+  const navigateAndClose = (pageId: string) => {
+    showPage(pageId);
+    setSidebarOpen(false);
+  };
+
   return (
     <>
       {/* Sidebar Overlay for mobile */}
       <div className={'sidebar-overlay ' + (sidebarOpen ? 'visible' : '')} onClick={closeSidebar}></div>
+
+      {/* Mobile Menu Overlay */}
+      {sidebarOpen && isMobileView && (
+        <div className="mobile-menu-overlay" onClick={closeSidebar}>
+          <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <div className="mobile-menu-header">
+              <div className="mobile-menu-logo">
+                <svg className="mobile-menu-logo-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
+                  <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000000" opacity="0.3"/>
+                  <circle cx="50" cy="60" r="8" fill="#FFFFFF" opacity="0.9"/>
+                </svg>
+                <span className="mobile-menu-logo-text">YIELDR</span>
+              </div>
+              <button className="mobile-menu-close" onClick={closeSidebar}>✕</button>
+            </div>
+            <div className="mobile-menu-content">
+              {/* Main Site Navigation */}
+              <div className="mobile-menu-section">
+                <Link href="/" className="mobile-menu-link" onClick={closeSidebar}>Home</Link>
+                <Link href="/docs" className="mobile-menu-link active" onClick={closeSidebar}>Docs</Link>
+                <Link href="/team" className="mobile-menu-link" onClick={closeSidebar}>Team</Link>
+                <Link href="/build-in-public" className="mobile-menu-link" onClick={closeSidebar}>Build Progress</Link>
+              </div>
+
+              <div className="mobile-menu-divider"></div>
+
+              {/* Docs Sub-Navigation */}
+              <div className="mobile-menu-section">
+                <div className="mobile-menu-section-title">📖 Getting Started</div>
+                <a className={'mobile-menu-sublink ' + (activePage === 'what-is-yieldr' ? 'active' : '')} onClick={() => navigateAndClose('what-is-yieldr')}>What is Yieldr?</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'the-problem' ? 'active' : '')} onClick={() => navigateAndClose('the-problem')}>The Problem</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'quick-start' ? 'active' : '')} onClick={() => navigateAndClose('quick-start')}>Quick Start</a>
+              </div>
+
+              <div className="mobile-menu-section">
+                <div className="mobile-menu-section-title">🤖 Product</div>
+                <a className={'mobile-menu-sublink ' + (activePage === 'how-it-works' ? 'active' : '')} onClick={() => navigateAndClose('how-it-works')}>How It Works</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'ai-agents' ? 'active' : '')} onClick={() => navigateAndClose('ai-agents')}>AI Agents</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'for-investors' ? 'active' : '')} onClick={() => navigateAndClose('for-investors')}>For Investors</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'for-traders' ? 'active' : '')} onClick={() => navigateAndClose('for-traders')}>For Traders</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'for-lps' ? 'active' : '')} onClick={() => navigateAndClose('for-lps')}>For LPs</a>
+              </div>
+
+              <div className="mobile-menu-section">
+                <div className="mobile-menu-section-title">🗺️ Platform</div>
+                <a className={'mobile-menu-sublink ' + (activePage === 'roadmap' ? 'active' : '')} onClick={() => navigateAndClose('roadmap')}>Roadmap</a>
+              </div>
+
+              <div className="mobile-menu-section">
+                <div className="mobile-menu-section-title">🪙 YLDR Token</div>
+                <a className={'mobile-menu-sublink ' + (activePage === 'token-overview' ? 'active' : '')} onClick={() => navigateAndClose('token-overview')}>Token Overview</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'token-utility' ? 'active' : '')} onClick={() => navigateAndClose('token-utility')}>Utility</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'tokenomics' ? 'active' : '')} onClick={() => navigateAndClose('tokenomics')}>Tokenomics</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'how-to-participate' ? 'active' : '')} onClick={() => navigateAndClose('how-to-participate')}>How to Participate</a>
+              </div>
+
+              <div className="mobile-menu-section">
+                <div className="mobile-menu-section-title">📚 Resources</div>
+                <a className={'mobile-menu-sublink ' + (activePage === 'faq' ? 'active' : '')} onClick={() => navigateAndClose('faq')}>FAQ</a>
+                <a className={'mobile-menu-sublink ' + (activePage === 'glossary' ? 'active' : '')} onClick={() => navigateAndClose('glossary')}>Glossary</a>
+              </div>
+
+              {/* Get Early Access CTA */}
+              {hasCompletedPayment && isConnected ? (
+                <Link
+                  href="/allocations"
+                  className="mobile-menu-cta"
+                  onClick={closeSidebar}
+                >
+                  My Allocation
+                </Link>
+              ) : (
+                <button
+                  className="mobile-menu-cta"
+                  onClick={() => {
+                    closeSidebar();
+                    setShowPopup(true);
+                  }}
+                >
+                  Get Early Access
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <header className="team-header">
@@ -91,14 +183,7 @@ export default function DocsPage() {
             </button>
           )}
         </nav>
-        <div className="team-nav-right">
-          <div className="team-nav-mobile-cta">
-            {!hasCompletedPayment && (
-              <button onClick={() => setShowPopup(true)}>Get Early Access</button>
-            )}
-          </div>
-          <button className="mobile-menu-btn" onClick={toggleSidebar}>☰</button>
-        </div>
+        <button className="mobile-menu-btn" onClick={toggleSidebar}>☰</button>
       </header>
 
       {/* Sidebar */}

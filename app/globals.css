@@ -1160,6 +1160,61 @@ html {
     transform: translateY(-2px);
 }
 
+.mobile-menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.mobile-menu-section-title {
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1.25rem;
+    margin-top: 0.5rem;
+}
+
+.mobile-menu-sublink {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem 0.75rem 2.5rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    text-align: left;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.mobile-menu-sublink:hover,
+.mobile-menu-sublink:active {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border-color: var(--border-secondary);
+}
+
+.mobile-menu-sublink.active {
+    color: var(--accent-green);
+    background: rgba(0, 200, 5, 0.1);
+    border-color: rgba(0, 200, 5, 0.3);
+}
+
+.mobile-menu-divider {
+    height: 1px;
+    background: var(--border-primary);
+    margin: 1rem 1.25rem;
+}
+
+.mobile-menu-link.active {
+    color: var(--accent-green);
+    background: rgba(0, 200, 5, 0.1);
+    border-color: rgba(0, 200, 5, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero-title { font-size: 2rem; }
@@ -4455,22 +4510,38 @@ html {
     padding: 1.5rem;
   }
 
-  /* Simplify tier display on mobile */
-  .tier-badge-section .tier-badge,
-  .tier-badge-section .tier-price {
-    display: none;
-  }
-
+  /* Mobile tier display - keep badge and add next tier info */
   .tier-badge-section {
     padding: 0.75rem;
     margin-bottom: 0.5rem;
+    flex-direction: column;
+    text-align: center;
   }
 
   .tier-badge-section::after {
     content: attr(data-next-tier-text);
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #00C805;
     font-weight: 600;
+    margin-top: 0.75rem;
+    display: block;
+  }
+
+  .tier-name {
+    font-size: 0.7rem;
+  }
+
+  .tier-fdv {
+    font-size: 0.65rem;
+  }
+
+  .tier-price {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .price-value {
+    font-size: 1.1rem;
   }
 
   /* Hide progress bar on mobile */
