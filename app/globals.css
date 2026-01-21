@@ -4516,16 +4516,23 @@ html {
 
 /* Mobile Responsive - Optimized for no-scroll popup */
 @media (max-width: 480px) {
+  .popup-overlay {
+    padding: 1rem; /* Add padding around overlay */
+  }
+
   .popup-container {
-    padding: 1rem;
-    margin: 0.5rem;
+    padding: 1rem 1rem 0.75rem 1rem;
+    margin: 0;
     max-height: 95vh;
+    overflow-y: auto;
+    position: relative;
   }
 
   .popup-title {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin-bottom: 0.75rem;
     padding-right: 2.5rem; /* Space for close button */
+    margin-top: 0;
   }
 
   .popup-close {
@@ -4533,6 +4540,9 @@ html {
     top: 1rem;
     right: 1rem;
     z-index: 100; /* Ensure close button is always on top */
+    width: 28px;
+    height: 28px;
+    font-size: 1.25rem;
   }
 
   /* Show mobile tier, hide desktop tier */
@@ -4692,11 +4702,20 @@ html {
 
   /* Compact ROI section - single scenario on mobile */
   .roi-section {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    text-align: center;
   }
 
   .roi-title {
-    display: none;
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+    color: #999;
+  }
+
+  .roi-subtitle {
+    font-size: 0.65rem;
+    color: #666;
+    font-weight: 400;
   }
 
   /* Show mobile grid (1 scenario), hide desktop grid (3 scenarios) */
@@ -4711,27 +4730,29 @@ html {
   }
 
   .roi-item {
-    padding: 0.6rem 0.75rem;
-    min-width: 120px;
+    padding: 0.5rem 0.75rem;
     text-align: center;
   }
 
   .roi-fdv {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.2rem;
   }
 
   .roi-return {
-    font-size: 0.85rem;
+    display: none; /* Hide dollar amount on mobile */
   }
 
   .roi-multiple {
-    font-size: 0.65rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00C805;
   }
 
   /* CTA button spacing */
   .connect-wallet-btn {
     margin-top: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     padding: 0.9rem;
     font-size: 0.95rem;
   }
@@ -4739,13 +4760,15 @@ html {
   /* Compact footer */
   .treasury-info {
     font-size: 0.65rem;
-    flex-direction: column;
-    gap: 0.2rem;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
   }
 
   .popup-footer {
     font-size: 0.65rem;
-    margin-top: 0.5rem;
+    margin-top: 0;
+    line-height: 1.3;
   }
 
   .modal-container {
