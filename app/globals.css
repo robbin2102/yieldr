@@ -1118,6 +1118,9 @@ html {
     flex-direction: column;
     padding: 2rem 1.5rem;
     gap: 0.75rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-menu-link {
@@ -4226,6 +4229,14 @@ html {
   line-height: 1.4;
 }
 
+.utility-desc-mobile {
+  display: none;
+}
+
+.utility-desc-full {
+  display: block;
+}
+
 /* Treasury Info */
 .treasury-info {
   display: flex;
@@ -4476,72 +4487,65 @@ html {
   background: #4752C4;
 }
 
-/* Mobile Responsive */
+/* Tier section desktop/mobile toggle */
+.tier-badge-section-mobile {
+  display: none;
+}
+
+.tier-badge-section-desktop {
+  display: block;
+}
+
+/* Mobile Responsive - Optimized for no-scroll popup */
 @media (max-width: 480px) {
   .popup-container {
-    padding: 1.25rem;
+    padding: 1rem;
     margin: 0.5rem;
+    max-height: 95vh;
   }
 
-  .tier-badge-section {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.75rem;
+  .popup-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
   }
 
-  .tier-price {
-    text-align: center;
-  }
-
-  .price-value {
-    font-size: 1.25rem;
-  }
-
-  .allocation-amount {
-    font-size: 1.5rem;
-  }
-
-  .treasury-info {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .modal-container {
-    padding: 1.5rem;
-  }
-
-  /* Mobile tier display - keep badge and add next tier info */
-  .tier-badge-section {
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .tier-badge-section::after {
-    content: attr(data-next-tier-text);
-    font-size: 0.75rem;
-    color: #00C805;
-    font-weight: 600;
-    margin-top: 0.75rem;
+  /* Show mobile tier, hide desktop tier */
+  .tier-badge-section-mobile {
     display: block;
+    background: linear-gradient(135deg, rgba(0, 200, 5, 0.1) 0%, rgba(0, 200, 5, 0.02) 100%);
+    border: 1px solid rgba(0, 200, 5, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
   }
 
-  .tier-name {
+  .tier-badge-section-desktop {
+    display: none;
+  }
+
+  .tier-compact-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .tier-separator {
+    color: #666;
+  }
+
+  .tier-price-inline {
+    color: #00C805;
+  }
+
+  .tier-next-info {
     font-size: 0.7rem;
-  }
-
-  .tier-fdv {
-    font-size: 0.65rem;
-  }
-
-  .tier-price {
+    color: #00C805;
     text-align: center;
-    margin-top: 0.5rem;
-  }
-
-  .price-value {
-    font-size: 1.1rem;
+    margin-top: 0.25rem;
   }
 
   /* Hide progress bar on mobile */
@@ -4549,19 +4553,93 @@ html {
     display: none;
   }
 
-  /* Compact ROI section on mobile */
-  .roi-section {
+  /* Compact input section */
+  .contribute-section {
     margin-bottom: 0.75rem;
   }
 
-  .roi-title {
+  .contribute-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .balance-info {
     font-size: 0.7rem;
+    margin-top: 0.4rem;
+  }
+
+  /* Compact allocation preview */
+  .allocation-preview {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .allocation-label {
+    font-size: 0.7rem;
+  }
+
+  .allocation-amount {
+    font-size: 1.4rem;
+  }
+
+  .allocation-timing {
+    font-size: 0.65rem;
+  }
+
+  /* Compact utility section */
+  .utility-section {
+    margin-bottom: 0.75rem;
+  }
+
+  .utility-title {
+    font-size: 0.75rem;
     margin-bottom: 0.5rem;
   }
 
-  .roi-subtitle {
+  .utility-grid {
+    gap: 0.5rem;
+  }
+
+  .utility-item {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .utility-icon {
+    font-size: 0.9rem;
+  }
+
+  .utility-name {
+    font-size: 0.75rem;
+  }
+
+  .utility-desc-full {
+    display: none;
+  }
+
+  .utility-desc-mobile {
     display: block;
-    margin-top: 0.25rem;
+    font-size: 0.65rem;
+    color: #666;
+    line-height: 1.3;
+  }
+
+  .utility-desktop-only {
+    display: none;
+  }
+
+  .deflationary-badge {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  /* Compact ROI section - no title */
+  .roi-section {
+    margin-bottom: 0.5rem;
+  }
+
+  .roi-title {
+    display: none;
   }
 
   .roi-grid {
@@ -4569,7 +4647,7 @@ html {
   }
 
   .roi-item {
-    padding: 0.5rem;
+    padding: 0.4rem;
   }
 
   .roi-fdv {
@@ -4577,17 +4655,35 @@ html {
   }
 
   .roi-return {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .roi-multiple {
     font-size: 0.65rem;
   }
 
-  /* Add spacing above Connect Wallet button */
+  /* CTA button spacing */
   .connect-wallet-btn {
-    margin-top: 1rem;
-    margin-bottom: 1.25rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  /* Compact footer */
+  .treasury-info {
+    font-size: 0.65rem;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .popup-footer {
+    font-size: 0.65rem;
+    margin-top: 0.5rem;
+  }
+
+  .modal-container {
+    padding: 1.5rem;
   }
 }
 

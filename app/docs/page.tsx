@@ -78,17 +78,7 @@ export default function DocsPage() {
               <button className="mobile-menu-close" onClick={closeSidebar}>✕</button>
             </div>
             <div className="mobile-menu-content">
-              {/* Main Site Navigation */}
-              <div className="mobile-menu-section">
-                <Link href="/" className="mobile-menu-link" onClick={closeSidebar}>Home</Link>
-                <Link href="/docs" className="mobile-menu-link active" onClick={closeSidebar}>Docs</Link>
-                <Link href="/team" className="mobile-menu-link" onClick={closeSidebar}>Team</Link>
-                <Link href="/build-in-public" className="mobile-menu-link" onClick={closeSidebar}>Build Progress</Link>
-              </div>
-
-              <div className="mobile-menu-divider"></div>
-
-              {/* Docs Sub-Navigation */}
+              {/* Docs Navigation */}
               <div className="mobile-menu-section">
                 <div className="mobile-menu-section-title">📖 Getting Started</div>
                 <a className={'mobile-menu-sublink ' + (activePage === 'what-is-yieldr' ? 'active' : '')} onClick={() => navigateAndClose('what-is-yieldr')}>What is Yieldr?</a>
