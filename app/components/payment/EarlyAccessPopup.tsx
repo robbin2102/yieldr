@@ -19,6 +19,7 @@ interface EarlyAccessPopupProps {
 
 export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
   const [inputValue, setInputValue] = useState('1000');
+  const [utilityExpanded, setUtilityExpanded] = useState(false);
   const { status, contributionAmount, setContributionAmount } = usePayment();
   const { initiatePayment, isConnected, balance, isProcessing } = usePaymentFlow();
   const { totalRaised, tierInfo, isLoading: statsLoading } = useRaiseStats();
@@ -162,11 +163,18 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             )}
           </div>
 
-          {/* What YLDR is used for */}
+          {/* What YLDR is used for - Collapsible */}
           <div className="utility-section">
-            <h3 className="utility-title">What YLDR is used for</h3>
+            <button
+              className="utility-toggle"
+              onClick={() => setUtilityExpanded(!utilityExpanded)}
+            >
+              <span className="utility-toggle-text">What YLDR is used for</span>
+              <span className="utility-toggle-icon">{utilityExpanded ? '▼' : '▶'}</span>
+            </button>
 
-            <div className="utility-grid">
+            {utilityExpanded && (
+              <div className="utility-grid">
               <div className="utility-item utility-mobile-show">
                 <div className="utility-icon">⚡</div>
                 <div className="utility-content">
@@ -219,14 +227,26 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                 </div>
               </div>
             </div>
+            )}
           </div>
 
-          {/* ROI Scenarios at TGE */}
+          {/* ROI Scenarios at TGE - Mobile shows 1, Desktop shows 3 */}
           <div className="roi-section">
             <h3 className="roi-title">
               ROI Scenarios at TGE <span className="roi-subtitle">(assuming 1k USDC purchase)</span>
             </h3>
-            <div className="roi-grid">
+
+            {/* Mobile: Single scenario */}
+            <div className="roi-grid roi-grid-mobile">
+              <div className="roi-item">
+                <div className="roi-fdv">$300M FDV</div>
+                <div className="roi-return">$33,200</div>
+                <div className="roi-multiple">33.2x</div>
+              </div>
+            </div>
+
+            {/* Desktop: All scenarios */}
+            <div className="roi-grid roi-grid-desktop">
               <div className="roi-item">
                 <div className="roi-fdv">$150M FDV</div>
                 <div className="roi-return">$16,600</div>
