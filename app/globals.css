@@ -4525,6 +4525,14 @@ html {
   .popup-title {
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
+    padding-right: 2.5rem; /* Space for close button */
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100; /* Ensure close button is always on top */
   }
 
   /* Show mobile tier, hide desktop tier */
@@ -4642,6 +4650,11 @@ html {
   .utility-grid {
     gap: 0.5rem;
     margin-top: 0.5rem;
+    display: none; /* Hidden by default on mobile */
+  }
+
+  .utility-grid.expanded {
+    display: grid; /* Show when expanded */
   }
 
   .utility-item {
