@@ -1056,6 +1056,8 @@ html {
     display: flex;
     flex-direction: column;
     animation: slideDown 0.3s ease;
+    overflow: hidden;
+    max-height: 100vh;
 }
 
 @keyframes slideDown {
@@ -4172,6 +4174,22 @@ html {
   margin-bottom: 1.25rem;
 }
 
+/* Hide toggle on desktop, show all utilities */
+.utility-toggle {
+  display: none;
+}
+
+/* ROI grids - desktop shows 3, mobile shows 1 */
+.roi-grid-mobile {
+  display: none;
+}
+
+.roi-grid-desktop {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
 .utility-title {
   font-size: 0.8rem;
   color: #666;
@@ -4586,18 +4604,44 @@ html {
     font-size: 0.65rem;
   }
 
-  /* Compact utility section */
+  /* Compact utility section - Collapsible */
   .utility-section {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
-  .utility-title {
-    font-size: 0.75rem;
+  .utility-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 200, 5, 0.05);
+    border: 1px solid rgba(0, 200, 5, 0.2);
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
     margin-bottom: 0.5rem;
+  }
+
+  .utility-toggle:hover {
+    background: rgba(0, 200, 5, 0.1);
+    border-color: rgba(0, 200, 5, 0.3);
+  }
+
+  .utility-toggle-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .utility-toggle-icon {
+    font-size: 0.7rem;
+    color: #00C805;
   }
 
   .utility-grid {
     gap: 0.5rem;
+    margin-top: 0.5rem;
   }
 
   .utility-item {
@@ -4633,7 +4677,7 @@ html {
     padding: 0.1rem 0.3rem;
   }
 
-  /* Compact ROI section - no title */
+  /* Compact ROI section - single scenario on mobile */
   .roi-section {
     margin-bottom: 0.5rem;
   }
@@ -4642,12 +4686,21 @@ html {
     display: none;
   }
 
-  .roi-grid {
+  /* Show mobile grid (1 scenario), hide desktop grid (3 scenarios) */
+  .roi-grid-mobile {
+    display: flex;
+    justify-content: center;
     gap: 0.4rem;
   }
 
+  .roi-grid-desktop {
+    display: none;
+  }
+
   .roi-item {
-    padding: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    min-width: 120px;
+    text-align: center;
   }
 
   .roi-fdv {
