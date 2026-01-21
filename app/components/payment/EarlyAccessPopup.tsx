@@ -163,7 +163,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             )}
           </div>
 
-          {/* What YLDR is used for - Collapsible */}
+          {/* What YLDR is used for - Collapsible on mobile only */}
           <div className="utility-section">
             <button
               className="utility-toggle"
@@ -173,8 +173,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
               <span className="utility-toggle-icon">{utilityExpanded ? '▼' : '▶'}</span>
             </button>
 
-            {utilityExpanded && (
-              <div className="utility-grid">
+            <div className={`utility-grid ${utilityExpanded ? 'expanded' : ''}`}>
               <div className="utility-item utility-mobile-show">
                 <div className="utility-icon">⚡</div>
                 <div className="utility-content">
@@ -227,7 +226,6 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                 </div>
               </div>
             </div>
-            )}
           </div>
 
           {/* ROI Scenarios at TGE - Mobile shows 1, Desktop shows 3 */}
