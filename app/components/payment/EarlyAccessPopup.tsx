@@ -76,11 +76,22 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
 
           <h2 className="popup-title">Get Early Access to YLDR</h2>
 
-          {/* Current Tier Display */}
-          <div
-            className="tier-badge-section"
-            data-next-tier-text={nextTier ? `${formatUsd(usdcToNextTier)} until ${nextTier.name} (+${priceIncreaseAtNextTier.toFixed(0)}% price)` : `${currentTier.name} tier`}
-          >
+          {/* Current Tier Display - Compact */}
+          <div className="tier-badge-section-mobile">
+            <div className="tier-compact-line">
+              <span className="tier-name">{currentTier.name.toUpperCase()}</span>
+              <span className="tier-separator">•</span>
+              <span className="tier-price-inline">{formatPrice(currentTier.price)}</span>
+            </div>
+            {nextTier && (
+              <div className="tier-next-info">
+                {formatUsd(usdcToNextTier)} left → {nextTier.name} (+{priceIncreaseAtNextTier.toFixed(0)}%)
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Tier Display */}
+          <div className="tier-badge-section-desktop">
             <div className="tier-badge">
               <span className="tier-name">{currentTier.name.toUpperCase()}</span>
               <span className="tier-fdv">FDV: {formatUsd(currentTier.fdv)}</span>
@@ -156,32 +167,38 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             <h3 className="utility-title">What YLDR is used for</h3>
 
             <div className="utility-grid">
-              <div className="utility-item">
+              <div className="utility-item utility-mobile-show">
                 <div className="utility-icon">⚡</div>
                 <div className="utility-content">
                   <div className="utility-name">
                     AI Compute Credits
                     <span className="deflationary-badge">🔥 DEFLATIONARY</span>
                   </div>
-                  <p className="utility-desc">
+                  <p className="utility-desc utility-desc-full">
                     YLDR tokens fuel your AI agent — consumed when chatting, analyzing trades,
                     monitoring traders, and executing strategies. Every YLDR used is burned. Fixed supply.
                   </p>
-                </div>
-              </div>
-
-              <div className="utility-item">
-                <div className="utility-icon">🔓</div>
-                <div className="utility-content">
-                  <div className="utility-name">Beta Access</div>
-                  <p className="utility-desc">
-                    Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026.
-                    Train and fine-tune your agent before public launch.
+                  <p className="utility-desc utility-desc-mobile">
+                    Consumed & burned per use
                   </p>
                 </div>
               </div>
 
-              <div className="utility-item">
+              <div className="utility-item utility-mobile-show">
+                <div className="utility-icon">🔓</div>
+                <div className="utility-content">
+                  <div className="utility-name">Beta Access</div>
+                  <p className="utility-desc utility-desc-full">
+                    Pre-TGE holders unlock full agent capabilities as features roll out each quarter of 2026.
+                    Train and fine-tune your agent before public launch.
+                  </p>
+                  <p className="utility-desc utility-desc-mobile">
+                    Unlock full agent capabilities
+                  </p>
+                </div>
+              </div>
+
+              <div className="utility-item utility-desktop-only">
                 <div className="utility-icon">💬</div>
                 <div className="utility-content">
                   <div className="utility-name">Exclusive Community</div>
@@ -192,7 +209,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
                 </div>
               </div>
 
-              <div className="utility-item">
+              <div className="utility-item utility-desktop-only">
                 <div className="utility-icon">🗳️</div>
                 <div className="utility-content">
                   <div className="utility-name">Governance Rights</div>
