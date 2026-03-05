@@ -4,8 +4,8 @@ import type { Metadata } from 'next';
 import { ProvidersLayout } from './ProvidersLayout';
 
 export const metadata: Metadata = {
-  title: 'Yieldr - AI for DeFi\'s Top 1%',
-  description: 'AI-powered DeFi asset management. Agents that help you become better investors, traders & fund managers onchain.',
+  title: 'Yieldr - Every Trader Gets a Quant',
+  description: 'Every DeFi trader gets a personal AI quant. Discover alpha, monitor positions 24/7, and pre-empt moves before they happen.',
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
