@@ -1,5 +1,23 @@
 import Link from 'next/link';
 
+const DISCORD = 'https://discord.gg/KhZW5qgC';
+const GITHUB  = 'https://github.com/robbin2102/yieldr-app';
+const TWITTER = 'https://x.com/yieldrdotorg';
+
+const NavSocials = () => (
+  <div className="snav-soc">
+    <a href={TWITTER} target="_blank" rel="noopener noreferrer" title="X / Twitter">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href={DISCORD} target="_blank" rel="noopener noreferrer" title="Discord">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419s.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419s.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+    </a>
+    <a href={GITHUB} target="_blank" rel="noopener noreferrer" title="GitHub">
+      <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z"/></svg>
+    </a>
+  </div>
+);
+
 export default function BuildInPublicPage() {
   return (
     <>
@@ -38,30 +56,7 @@ export default function BuildInPublicPage() {
         .bip-wrap ::-webkit-scrollbar { width: 3px; }
         .bip-wrap ::-webkit-scrollbar-thumb { background: var(--bg5); border-radius: 2px; }
 
-        /* NAV */
-        .bip-nav {
-          height: 44px; background: var(--bg1); border-bottom: 1px solid var(--border);
-          display: flex; align-items: center; padding: 0 20px;
-          position: sticky; top: 0; z-index: 100;
-        }
-        .bip-logo {
-          font-family: var(--fm); font-size: 0.78rem; font-weight: 700;
-          color: var(--green); letter-spacing: 0.14em;
-          padding-right: 16px; margin-right: 8px;
-          border-right: 1px solid var(--border); flex-shrink: 0;
-          text-decoration: none;
-        }
-        .bip-nav-links { display: flex; gap: 0; margin-left: 4px; }
-        .bip-nav-link {
-          font-size: 0.68rem; color: var(--t3); text-decoration: none;
-          padding: 0 12px; height: 44px; display: flex; align-items: center;
-          font-family: var(--fs); border-bottom: 2px solid transparent;
-          transition: all 0.15s; letter-spacing: 0.01em;
-        }
-        .bip-nav-link:hover { color: var(--t2); text-decoration: none; }
-        .bip-nav-link.active { color: var(--t1); border-bottom-color: var(--green); }
-        .bip-nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-        .bip-nav-date { font-family: var(--fm); font-size: 0.57rem; color: var(--t4); }
+        /* NAV — uses .snav from globals.css */
 
         /* HERO */
         .bip-hero {
@@ -291,17 +286,25 @@ export default function BuildInPublicPage() {
       `}</style>
 
       <div className="bip-wrap">
-        {/* ── Nav ── */}
-        <nav className="bip-nav">
-          <Link href="/" className="bip-logo">YLDR</Link>
-          <div className="bip-nav-links">
-            <Link href="/" className="bip-nav-link">Home</Link>
-            <Link href="/docs" className="bip-nav-link">Docs</Link>
-            <Link href="/team" className="bip-nav-link">Team</Link>
-            <Link href="/build-in-public" className="bip-nav-link active">Build Progress</Link>
+        {/* ── Nav (shared style) ── */}
+        <nav className="snav">
+          <Link href="/" className="snav-logo-link">
+            <svg className="snav-logo-svg" viewBox="0 0 100 120">
+              <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
+              <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000" opacity=".3"/>
+              <circle cx="50" cy="60" r="8" fill="#FFF" opacity=".9"/>
+            </svg>
+            <span className="snav-brand">YIELDR</span>
+          </Link>
+          <div className="snav-links">
+            <Link href="/">Home</Link>
+            <Link href="/docs">Docs</Link>
+            <Link href="/team">Team</Link>
+            <Link href="/build-in-public" className="snav-active">Build Progress</Link>
           </div>
-          <div className="bip-nav-right">
-            <span className="bip-nav-date">Mar 7, 2026</span>
+          <div className="snav-right">
+            <NavSocials />
+            <a href="https://app.yieldr.org/demo" className="snav-cta">Launch Your Quant</a>
           </div>
         </nav>
 
@@ -771,15 +774,20 @@ export default function BuildInPublicPage() {
         </div>{/* /main */}
 
         {/* ── Footer ── */}
-        <footer className="bip-footer">
-          <div className="bip-footer-row">DEED LABS CORP &nbsp;·&nbsp; DELAWARE C-CORP &nbsp;·&nbsp; BUILDING ON BASE</div>
-          <div className="bip-footer-row">
-            <a href="/">yieldr.xyz</a> &nbsp;·&nbsp;
-            <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">@yieldrdotorg</a> &nbsp;·&nbsp;
-            <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer">GitHub</a> &nbsp;·&nbsp;
-            <a href="https://discord.gg/k4XReWBT" target="_blank" rel="noopener noreferrer">Discord</a>
+        <footer className="sfooter">
+          <div className="sfooter-soc">
+            <a href={TWITTER} target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href={DISCORD} target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419s.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419s.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            </a>
+            <a href={GITHUB} target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            </a>
           </div>
-          <div className="bip-footer-note">Updated monthly. All figures real. No sanitisation.</div>
+          <div className="sfooter-txt">Built different.</div>
+          <div className="sfooter-sub">Updated monthly. All figures real. No sanitisation.</div>
         </footer>
       </div>
     </>
