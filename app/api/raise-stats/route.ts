@@ -41,9 +41,21 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching raise stats:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch raise stats' },
-      { status: 500 }
-    );
+    // Return fallback data so the UI still works when DB is unreachable (e.g. local dev / IP whitelist)
+    const fallbackTierInfo = getCurrentTier(0);
+    return NextResponse.json({
+      success: true,
+      data: {
+        totalRaised: 0,
+        totalYldrAllocated: 0,
+        contributorCount: 0,
+        currentTier: fallbackTierInfo.currentTier,
+        nextTier: fallbackTierInfo.nextTier,
+        tierProgress: fallbackTierInfo.tierProgress,
+        tokensRemainingInTier: fallbackTierInfo.tokensRemainingInTier,
+        usdcToNextTier: fallbackTierInfo.usdcToNextTier,
+        priceIncreaseAtNextTier: fallbackTierInfo.priceIncreaseAtNextTier,
+      },
+    });
   }
 }

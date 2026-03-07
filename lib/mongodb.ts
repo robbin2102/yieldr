@@ -39,6 +39,8 @@ async function connectDB(): Promise<MongooseConnection> {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 5000, // fail fast locally instead of 30s default
+      connectTimeoutMS: 5000,
     };
 
     console.log('🔌 Establishing new MongoDB connection...');
