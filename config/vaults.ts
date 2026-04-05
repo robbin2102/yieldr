@@ -1,12 +1,3 @@
-// Vault wallet addresses — set via env when monitoring service deploys
-// VAULT_WALLET_GEO, VAULT_WALLET_NBA, VAULT_WALLET_SOCCER
-
-export const VAULT_WALLETS = {
-  geo:    process.env.VAULT_WALLET_GEO    || '',
-  nba:    process.env.VAULT_WALLET_NBA    || '',
-  soccer: process.env.VAULT_WALLET_SOCCER || '',
-} as const;
-
 export type VaultId = 'geo' | 'nba' | 'soccer';
 
 export const VAULT_META: Record<VaultId, {

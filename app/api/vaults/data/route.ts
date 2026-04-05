@@ -4,7 +4,7 @@ import VaultStats from '@/models/VaultStats';
 import VaultTrade from '@/models/VaultTrade';
 import VaultOpenPosition from '@/models/VaultOpenPosition';
 import VaultDailySnapshot from '@/models/VaultDailySnapshot';
-import { VAULT_WALLETS, VAULT_META, type VaultId } from '@/config/vaults';
+import { VAULT_META, type VaultId } from '@/config/vaults';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,21 +54,39 @@ export async function GET() {
     await connectDB();
 
     const vaultIds: VaultId[] = ['geo', 'nba', 'soccer'];
+
+    // Fetch all vault stat docs — map by traderLabel to vault ID
+    const allStats = await VaultStats.find({}).lean() as unknown as Array<{
+      wallet: string;
+      traderLabel: string;
+      initial_capital_usdc: number;
+      vault_size_usdc: number;
+      totalPnlAllTime: number;
+      win_rate: number;
+      total_trades: number;
+      sortino_ratio: number;
+      last_polled_activity_ts: number;
+    }>;
+
+    // Build a map: traderLabel → doc
+    const statsByLabel = new Map(allStats.map((d) => [d.traderLabel?.toLowerCase(), d]));
+
     const result: Record<string, unknown> = {};
 
     await Promise.all(
       vaultIds.map(async (id) => {
-        const wallet = VAULT_WALLETS[id];
-        const meta   = VAULT_META[id];
+        const statsDoc = statsByLabel.get(id);
+        const meta = VAULT_META[id];
 
-        if (!wallet) {
-          result[id] = null; // no wallet configured → page uses fallback
+        if (!statsDoc) {
+          result[id] = null; // no data yet → page uses fallback
           return;
         }
 
-        // ── Fetch all data for this vault concurrently ──────────────────
-        const [statsDoc, posDoc, trades, snapshots] = await Promise.all([
-          VaultStats.findOne({ wallet }).lean(),
+        const wallet = statsDoc.wallet;
+
+        // ── Fetch related data concurrently ──────────────────────────────
+        const [posDoc, trades, snapshots] = await Promise.all([
           VaultOpenPosition.findOne({ wallet }).lean(),
           VaultTrade.find({ wallet, status: { $in: ['win', 'loss'] } })
             .sort({ opened_at: -1 })
@@ -80,24 +98,7 @@ export async function GET() {
             .lean(),
         ]);
 
-        if (!statsDoc) {
-          result[id] = null; // no data yet → page uses fallback
-          return;
-        }
-
-        const s = statsDoc as unknown as {
-          traderLabel: string;
-          initial_capital_usdc: number;
-          vault_size_usdc: number;
-          totalPnlAllTime: number;
-          win_rate: number;
-          total_trades: number;
-          sortino_ratio: number;
-          last_polled_activity_ts: number;
-          insiderSignalScore: number;
-        };
-
-        const capital = s.initial_capital_usdc || 1;
+        const capital = statsDoc.initial_capital_usdc || 1;
 
         // ── ROI from daily snapshots ────────────────────────────────────
         const snaps = snapshots as unknown as { daily_pnl_usdc: number; cumulative_pnl_usdc: number }[];
@@ -113,14 +114,14 @@ export async function GET() {
 
         // ── Stats ───────────────────────────────────────────────────────
         const stats = {
-          totalPnl:  s.totalPnlAllTime,
+          totalPnl:  statsDoc.totalPnlAllTime,
           roi7d,
           roi30d,
-          vaultSize: s.vault_size_usdc,
-          winRate:   parseFloat(s.win_rate.toFixed(1)),
-          sortino:   parseFloat((s.sortino_ratio ?? 0).toFixed(2)),
-          trades:    s.total_trades,
-          lastTradeTs: s.last_polled_activity_ts ?? 0,
+          vaultSize: statsDoc.vault_size_usdc,
+          winRate:   parseFloat(statsDoc.win_rate.toFixed(1)),
+          sortino:   parseFloat((statsDoc.sortino_ratio ?? 0).toFixed(2)),
+          trades:    statsDoc.total_trades,
+          lastTradeTs: statsDoc.last_polled_activity_ts ?? 0,
         };
 
         // ── Open positions ──────────────────────────────────────────────
@@ -162,19 +163,11 @@ export async function GET() {
     );
 
     // ── Global stats (status bar / page header) ─────────────────────────
-    const allWallets = Object.values(VAULT_WALLETS).filter(Boolean);
-    const vaultDocs  = await VaultStats.find({ wallet: { $in: allWallets } }).lean() as unknown as Array<{
-      vault_size_usdc: number;
-      totalPnlAllTime: number;
-      initial_capital_usdc: number;
-      last_polled_activity_ts: number;
-    }>;
-
-    if (vaultDocs.length) {
-      const totalPnl     = vaultDocs.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
-      const totalCapital = vaultDocs.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
-      const totalInitial = vaultDocs.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
-      const latestTs     = Math.max(...vaultDocs.map((v) => v.last_polled_activity_ts ?? 0));
+    if (allStats.length) {
+      const totalPnl     = allStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
+      const totalCapital = allStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
+      const totalInitial = allStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
+      const latestTs     = Math.max(...allStats.map((v) => v.last_polled_activity_ts ?? 0));
 
       result._global = {
         totalPnl,
