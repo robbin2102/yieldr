@@ -84,6 +84,7 @@ function VaultsPageInner() {
   ]);
   const [chatInput, setChatInput] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatInitRef = useRef(true);
 
   // ── Fetch live data ────────────────────────────────────────────────────
   useEffect(() => {
@@ -142,8 +143,9 @@ function VaultsPageInner() {
     return () => clearInterval(t);
   }, [deadline]);
 
-  // ── Auto-scroll chat ───────────────────────────────────────────────────
+  // ── Auto-scroll chat (skip initial render) ────────────────────────────
   useEffect(() => {
+    if (chatInitRef.current) { chatInitRef.current = false; return; }
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 

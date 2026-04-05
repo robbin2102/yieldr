@@ -71,8 +71,17 @@ export async function GET() {
     // Debug: log what traderLabels exist in DB
     console.log('[vaults/data] traderLabels in DB:', allStats.map(d => `${d.traderLabel} (wallet: ${d.wallet?.slice(0,8)}...)`));
 
-    // Build a map: traderLabel → doc
-    const statsByLabel = new Map(allStats.map((d) => [d.traderLabel?.toLowerCase(), d]));
+    // Map traderLabel → vault ID
+    const LABEL_TO_ID: Record<string, VaultId> = {
+      'geopolitics vault': 'geo',
+      'nba edge vault':    'nba',
+      'nhl edge vault':    'soccer',
+    };
+
+    // Build a map: vaultId → doc
+    const statsByLabel = new Map(
+      allStats.map((d) => [LABEL_TO_ID[d.traderLabel?.toLowerCase()] ?? d.traderLabel?.toLowerCase(), d])
+    );
 
     const result: Record<string, unknown> = {};
 
