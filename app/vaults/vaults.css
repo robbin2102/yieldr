@@ -330,6 +330,23 @@
 .vp-footer-txt a { color: var(--t3); text-decoration: none; }
 .vp-footer-txt a:hover { color: var(--t1); }
 
+/* ── Skeleton loading ── */
+@keyframes vp-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.vp-skel {
+  display: inline-block;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--b1) 25%, var(--b2) 50%, var(--b1) 75%);
+  background-size: 800px 100%;
+  animation: vp-shimmer 1.4s infinite linear;
+}
+.vp-skel-sm  { width: 60px;  height: .75em; }
+.vp-skel-md  { width: 90px;  height: .85em; }
+.vp-skel-lg  { width: 120px; height: 1.1em; }
+.vp-skel-xl  { width: 150px; height: 1.6em; }
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .vp-vault-detail { grid-template-columns: 1fr; }

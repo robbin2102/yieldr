@@ -27,6 +27,11 @@ type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number
 
 const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer'];
 
+// ── Skeleton helper ────────────────────────────────────────────────────────
+function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
+  return <span className={`vp-skel vp-skel-${size}`} />;
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 function fmtUsd(n: number): string {
   return '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -200,13 +205,13 @@ function VaultsPageInner() {
       <div className="vp-status-bar">
         <div className="vp-sb-left">
           <div className="vp-sb-live"><span className="vp-sb-dot" /> 3 Vaults Testing</div>
-          <span>Last trade: <span className="vp-sb-val">{isLoading ? '—' : global.lastTradeAt}</span></span>
+          <span>Last trade: <span className="vp-sb-val">{isLoading ? <Skel size="sm" /> : global.lastTradeAt}</span></span>
           <span>Human + Agent</span>
         </div>
         <div className="vp-sb-right">
-          <span>Capital: <span className="vp-sb-val">{isLoading ? '—' : fmtUsd(global.totalCapital)}</span></span>
+          <span>Capital: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtUsd(global.totalCapital)}</span></span>
           <span>Subscribers: <span className="vp-sb-val">842</span></span>
-          <span>All-time PnL: <span className="vp-sb-val">{isLoading ? '—' : fmtPnl(global.totalPnl)}</span></span>
+          <span>All-time PnL: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtPnl(global.totalPnl)}</span></span>
         </div>
       </div>
 
@@ -220,11 +225,11 @@ function VaultsPageInner() {
           </div>
           <div className="vp-ph-right">
             <div className="vp-ph-stat">
-              <div className="vp-ph-stat-v">{isLoading ? '—' : fmtPnl(global.totalPnl)}</div>
+              <div className="vp-ph-stat-v">{isLoading ? <Skel size="xl" /> : fmtPnl(global.totalPnl)}</div>
               <div className="vp-ph-stat-l">Total PnL</div>
             </div>
             <div className="vp-ph-stat">
-              <div className="vp-ph-stat-v">{isLoading ? '—' : `+${global.combinedRoi.toFixed(1)}%`}</div>
+              <div className="vp-ph-stat-v">{isLoading ? <Skel size="lg" /> : `+${global.combinedRoi.toFixed(1)}%`}</div>
               <div className="vp-ph-stat-l">Combined ROI</div>
             </div>
           </div>
@@ -276,19 +281,19 @@ function VaultsPageInner() {
                       <p>{m.description}</p>
                     </div>
                     <div className="vp-vd-pnl">
-                      <div className="vp-vd-pnl-v">{isLoading ? '—' : fmtPnl(d.stats.totalPnl)}</div>
+                      <div className="vp-vd-pnl-v">{isLoading ? <Skel size="xl" /> : fmtPnl(d.stats.totalPnl)}</div>
                       <div className="vp-vd-pnl-l">Total PnL</div>
                     </div>
                   </div>
 
                   {/* Stats row */}
                   <div className="vp-vd-stats">
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? '—' : `+${d.stats.roi30d}%`}</div><div className="vp-vd-stat-l">30D ROI</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? '—' : `+${d.stats.roi7d}%`}</div><div className="vp-vd-stat-l">7D ROI</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? '—' : fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? '—' : `${d.stats.winRate}%`}</div><div className="vp-vd-stat-l">Win Rate</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? '—' : d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? '—' : d.stats.trades}</div><div className="vp-vd-stat-l">Trades</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `+${d.stats.roi30d}%`}</div><div className="vp-vd-stat-l">30D ROI</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `+${d.stats.roi7d}%`}</div><div className="vp-vd-stat-l">7D ROI</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="md" /> : fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}</div><div className="vp-vd-stat-l">Win Rate</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.trades}</div><div className="vp-vd-stat-l">Trades</div></div>
                   </div>
 
                   {/* PnL Chart */}

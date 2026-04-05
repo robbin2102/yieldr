@@ -69,9 +69,6 @@ export async function GET() {
       last_polled_activity_ts: number;
     }>;
 
-    // Debug: log what traderLabels exist in DB
-    console.log('[vaults/data] traderLabels in DB:', allStats.map(d => `${d.traderLabel} (wallet: ${d.wallet?.slice(0,8)}...)`));
-
     // Map traderLabel → vault ID
     const LABEL_TO_ID: Record<string, VaultId> = {
       'geopolitics vault': 'geo',
