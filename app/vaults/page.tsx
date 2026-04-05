@@ -22,6 +22,7 @@ type VaultState = {
   chartPath: { line: string; fill: string };
   positions: Position[];
   closedTrades: Trade[];
+  wallet?: string;
 };
 type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string };
 
@@ -112,6 +113,7 @@ function VaultsPageInner() {
                   chartPath:   d.chartPath    ?? prev[id].chartPath,
                   positions:   d.openPositions ?? prev[id].positions,
                   closedTrades: d.closedTrades ?? prev[id].closedTrades,
+                  wallet:      d.wallet,
                 };
               }
               return next;
@@ -197,7 +199,7 @@ function VaultsPageInner() {
             <Link href="/build-in-public">Build Log</Link>
             <Link href="/docs">Docs</Link>
           </nav>
-          <a href="#buy" className="vp-nav-cta">Early Access ↗</a>
+          <Link href="/buy" className="vp-nav-cta">Early Access ↗</Link>
         </div>
       </nav>
 
@@ -245,7 +247,6 @@ function VaultsPageInner() {
           <div className="vp-trust-item"><span className="vp-trust-icon">👥</span> <span className="vp-trust-val">842</span> vault subscribers</div>
           <div className="vp-trust-item"><span className="vp-trust-icon">💬</span> <span className="vp-trust-val">2.4K</span> Telegram members</div>
           <div className="vp-trust-item"><span className="vp-trust-icon">🔒</span> Multisig treasury</div>
-          <div className="vp-trust-item"><span className="vp-trust-icon">🏛️</span> Delaware C-Corp</div>
         </div>
 
         {/* ── Vault Tabs ── */}
@@ -423,14 +424,14 @@ function VaultsPageInner() {
             <div className="vp-trust-box">
               <div className="vp-tb-title">Trust &amp; Security</div>
               {[
-                { lbl: 'Base Batches',         val: '002 Winner ✓', green: true  },
-                { lbl: 'Founder Track Record', val: '$5K→$20K ✓',   green: true  },
-                { lbl: 'Treasury',             val: 'Multisig',      green: false },
-                { lbl: 'Legal Entity',         val: 'Delaware C-Corp', green: false },
-                { lbl: 'Build Log',            val: 'Public ✓',      green: true  },
-                { lbl: 'Vault Subscribers',    val: '842',           green: false },
-                { lbl: 'Telegram',             val: '2,400 members', green: false },
-                { lbl: 'Onchain Proof',        val: 'defirobbin.base.eth ✓', green: true },
+                { lbl: 'Base Batches',      val: '002 Winner ✓', green: true  },
+                { lbl: 'Treasury',          val: 'Multisig',      green: false },
+                { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
+                { lbl: 'Vault Subscribers', val: '842',           green: false },
+                { lbl: 'Telegram',          val: '2,400 members', green: false },
+                { lbl: 'Onchain Proof',     val: vaultData[activeVault].wallet
+                    ? `${vaultData[activeVault].wallet!.slice(0,6)}…${vaultData[activeVault].wallet!.slice(-4)} ✓`
+                    : 'Verifiable ✓',        green: true },
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>

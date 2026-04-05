@@ -169,7 +169,7 @@ export async function GET() {
             }))
           : null;
 
-        result[id] = { stats, chartPath, openPositions, closedTrades };
+        result[id] = { stats, chartPath, openPositions, closedTrades, wallet: statsDoc.wallet };
       })
     );
 
