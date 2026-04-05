@@ -23,7 +23,7 @@ const VAULT_OPTS: { id: VaultId; icon: string; name: string; roi: string }[] = [
 ];
 
 const PRESET_AMOUNTS = [100, 500, 1000, 5000];
-const MIN_AMOUNT = 100;
+const MIN_AMOUNT = 1;
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function calcSplit(amount: number) {
@@ -289,7 +289,7 @@ export default function BuyPage() {
               {btnLabel()}
             </button>
             <div className="bp-fine">
-              Min $100 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE Q1 2027 • Performance data from live testing, not guaranteed
+              Min $1 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE Q1 2027 • Performance data from live testing, not guaranteed
             </div>
           </div>
 
