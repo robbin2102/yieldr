@@ -68,6 +68,9 @@ export async function GET() {
       last_polled_activity_ts: number;
     }>;
 
+    // Debug: log what traderLabels exist in DB
+    console.log('[vaults/data] traderLabels in DB:', allStats.map(d => `${d.traderLabel} (wallet: ${d.wallet?.slice(0,8)}...)`));
+
     // Build a map: traderLabel → doc
     const statsByLabel = new Map(allStats.map((d) => [d.traderLabel?.toLowerCase(), d]));
 
