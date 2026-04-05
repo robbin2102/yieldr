@@ -63,8 +63,9 @@ export async function GET() {
       vault_size_usdc: number;
       totalPnlAllTime: number;
       win_rate: number;
-      total_trades: number;
-      sortino_ratio: number;
+      win_rate_sample_size: number;
+      tradingConsistency: { sortinoRatio: number };
+      timeframePnL: Record<string, { pnl: number; roce: number }>;
       last_polled_activity_ts: number;
     }>;
 
@@ -112,12 +113,13 @@ export async function GET() {
 
         const capital = statsDoc.initial_capital_usdc || 1;
 
-        // ── ROI from daily snapshots ────────────────────────────────────
-        const snaps = snapshots as unknown as { daily_pnl_usdc: number; cumulative_pnl_usdc: number }[];
-        const roi30d = roiFromSnapshots(snaps, 30, capital);
-        const roi7d  = roiFromSnapshots(snaps, 7,  capital);
+        // ── ROI from timeframePnL (authoritative from DB) ───────────────
+        const tf = statsDoc.timeframePnL ?? {};
+        const roi7d  = parseFloat(((tf['7d']?.pnl  ?? 0) / capital * 100).toFixed(1));
+        const roi30d = parseFloat(((tf['30d']?.pnl ?? 0) / capital * 100).toFixed(1));
 
-        // ── Chart path from cumulative_pnl_usdc ────────────────────────
+        // ── Chart from daily snapshots (cumulative curve) ───────────────
+        const snaps = snapshots as unknown as { daily_pnl_usdc: number; cumulative_pnl_usdc: number }[];
         const cumSeries = snaps.map((d) => d.cumulative_pnl_usdc ?? 0);
         const chartPath = computeChartPath(cumSeries) ?? {
           line: meta.fallback.chartPath,
@@ -129,10 +131,10 @@ export async function GET() {
           totalPnl:  statsDoc.totalPnlAllTime,
           roi7d,
           roi30d,
-          vaultSize: statsDoc.vault_size_usdc,
-          winRate:   parseFloat(statsDoc.win_rate.toFixed(1)),
-          sortino:   parseFloat((statsDoc.sortino_ratio ?? 0).toFixed(2)),
-          trades:    statsDoc.total_trades,
+          vaultSize:  statsDoc.vault_size_usdc,
+          winRate:    parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          sortino:    parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
+          trades:     statsDoc.win_rate_sample_size ?? 0,
           lastTradeTs: statsDoc.last_polled_activity_ts ?? 0,
         };
 
