@@ -36,7 +36,7 @@ const ContributionSchema = new Schema<IContribution>(
     usdc_amount: {
       type: Number,
       required: true,
-      min: 100, // Minimum $100 USDC for production
+      min: 1, // Minimum $1 USDC for testing
     },
     yldr_allocation: {
       type: Number,
