@@ -72,8 +72,9 @@ function VaultsPageInner() {
   const [activeVault, setActiveVault] = useState<VaultId>(
     vaultParam && VAULT_IDS.includes(vaultParam) ? vaultParam : 'geo'
   );
+  const [isLoading, setIsLoading]     = useState(true);
   const [vaultData, setVaultData]     = useState<Record<VaultId, VaultState>>(buildFallbackState);
-  const [global, setGlobal]           = useState<GlobalState>({ totalPnl: 34200, totalCapital: 100000, combinedRoi: 34.2, lastTradeAt: '4m ago' });
+  const [global, setGlobal]           = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—' });
   const [spotsLeft, setSpotsLeft]     = useState(127);
   const [deadline, setDeadline]       = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 14); return d; });
   const [countdown, setCountdown]     = useState('');
@@ -122,6 +123,8 @@ function VaultsPageInner() {
         }
       } catch {
         // silently use fallback data
+      } finally {
+        setIsLoading(false);
       }
     }
     load();
@@ -197,13 +200,13 @@ function VaultsPageInner() {
       <div className="vp-status-bar">
         <div className="vp-sb-left">
           <div className="vp-sb-live"><span className="vp-sb-dot" /> 3 Vaults Testing</div>
-          <span>Last trade: <span className="vp-sb-val">{global.lastTradeAt}</span></span>
+          <span>Last trade: <span className="vp-sb-val">{isLoading ? '—' : global.lastTradeAt}</span></span>
           <span>Human + Agent</span>
         </div>
         <div className="vp-sb-right">
-          <span>Capital: <span className="vp-sb-val">{fmtUsd(global.totalCapital)}</span></span>
+          <span>Capital: <span className="vp-sb-val">{isLoading ? '—' : fmtUsd(global.totalCapital)}</span></span>
           <span>Subscribers: <span className="vp-sb-val">842</span></span>
-          <span>All-time PnL: <span className="vp-sb-val">{fmtPnl(global.totalPnl)}</span></span>
+          <span>All-time PnL: <span className="vp-sb-val">{isLoading ? '—' : fmtPnl(global.totalPnl)}</span></span>
         </div>
       </div>
 
@@ -217,11 +220,11 @@ function VaultsPageInner() {
           </div>
           <div className="vp-ph-right">
             <div className="vp-ph-stat">
-              <div className="vp-ph-stat-v">{fmtPnl(global.totalPnl)}</div>
+              <div className="vp-ph-stat-v">{isLoading ? '—' : fmtPnl(global.totalPnl)}</div>
               <div className="vp-ph-stat-l">Total PnL</div>
             </div>
             <div className="vp-ph-stat">
-              <div className="vp-ph-stat-v">+{global.combinedRoi.toFixed(1)}%</div>
+              <div className="vp-ph-stat-v">{isLoading ? '—' : `+${global.combinedRoi.toFixed(1)}%`}</div>
               <div className="vp-ph-stat-l">Combined ROI</div>
             </div>
           </div>
@@ -273,19 +276,19 @@ function VaultsPageInner() {
                       <p>{m.description}</p>
                     </div>
                     <div className="vp-vd-pnl">
-                      <div className="vp-vd-pnl-v">{fmtPnl(d.stats.totalPnl)}</div>
+                      <div className="vp-vd-pnl-v">{isLoading ? '—' : fmtPnl(d.stats.totalPnl)}</div>
                       <div className="vp-vd-pnl-l">Total PnL</div>
                     </div>
                   </div>
 
                   {/* Stats row */}
                   <div className="vp-vd-stats">
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">+{d.stats.roi30d}%</div><div className="vp-vd-stat-l">30D ROI</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">+{d.stats.roi7d}%</div><div className="vp-vd-stat-l">7D ROI</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{d.stats.winRate}%</div><div className="vp-vd-stat-l">Win Rate</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{d.stats.trades}</div><div className="vp-vd-stat-l">Trades</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? '—' : `+${d.stats.roi30d}%`}</div><div className="vp-vd-stat-l">30D ROI</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? '—' : `+${d.stats.roi7d}%`}</div><div className="vp-vd-stat-l">7D ROI</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? '—' : fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? '—' : `${d.stats.winRate}%`}</div><div className="vp-vd-stat-l">Win Rate</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? '—' : d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? '—' : d.stats.trades}</div><div className="vp-vd-stat-l">Trades</div></div>
                   </div>
 
                   {/* PnL Chart */}
