@@ -194,7 +194,7 @@ export default function HomePage() {
           <div className="lp-vp-grid">
             {[
               {
-                href: '/vaults#nba',
+                href: '/vaults?vault=nba',
                 name: '🏀 NBA Edge Vault',
                 desc: 'Agent discovers & ranks top NBA prediction market traders by statistical edge, then mirrors highest-conviction positions.',
                 stats: [
@@ -205,7 +205,7 @@ export default function HomePage() {
                 ],
               },
               {
-                href: '/vaults#soccer',
+                href: '/vaults?vault=soccer',
                 name: '⚽ Soccer Alpha Vault',
                 desc: 'Agent scans soccer markets for traders with statistically impossible edge (p<0.0001), enters near their price levels.',
                 stats: [
@@ -216,7 +216,7 @@ export default function HomePage() {
                 ],
               },
               {
-                href: '/vaults#geo',
+                href: '/vaults?vault=geo',
                 name: '🌐 Geopolitics Vault',
                 desc: 'Agent identifies insider wallets with abnormal win rates vs implied probability and takes positions on geopolitical events.',
                 stats: [

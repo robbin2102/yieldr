@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import './vaults.css';
 import {
@@ -65,8 +66,12 @@ function buildFallbackState(): Record<VaultId, VaultState> {
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
-export default function VaultsPage() {
-  const [activeVault, setActiveVault] = useState<VaultId>('geo');
+function VaultsPageInner() {
+  const searchParams = useSearchParams();
+  const vaultParam = searchParams.get('vault') as VaultId | null;
+  const [activeVault, setActiveVault] = useState<VaultId>(
+    vaultParam && VAULT_IDS.includes(vaultParam) ? vaultParam : 'geo'
+  );
   const [vaultData, setVaultData]     = useState<Record<VaultId, VaultState>>(buildFallbackState);
   const [global, setGlobal]           = useState<GlobalState>({ totalPnl: 34200, totalCapital: 100000, combinedRoi: 34.2, lastTradeAt: '4m ago' });
   const [spotsLeft, setSpotsLeft]     = useState(127);
@@ -466,5 +471,13 @@ export default function VaultsPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function VaultsPage() {
+  return (
+    <Suspense fallback={null}>
+      <VaultsPageInner />
+    </Suspense>
   );
 }

@@ -3,33 +3,50 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IVaultStats extends Document {
   wallet: string;
   status: string;
+  traderLabel: string;
+  initial_capital_usdc: number;
+  vault_size_usdc: number;
   totalPnlAllTime: number;
-  totalCapitalDeployed: number;
+  totalRealizedPnl: number;
+  totalUnrealizedPnl: number;
   win_rate: number;
-  win_rate_sample_size: number;
-  timeframePnL: {
-    '7d'?: { roce?: number };
-    '30d'?: { roce?: number };
-  };
-  tradingConsistency?: {
-    sortinoRatio?: number | null;
-  };
-  last_trade_at?: Date;
-  last_updated: Date;
+  total_trades: number;
+  sortino_ratio: number;
+  avg_trade_size_usdc: number;
+  avg_hold_days: number;
+  kelly_fraction: number;
+  avg_entry_odds: number;
+  avg_profit_per_winner: number;
+  avg_loss_per_loser: number;
+  insiderSignalScore: number;
+  signals: Record<string, boolean>;
+  last_polled_activity_ts: number; // unix seconds
+  profiledAt: Date;
 }
 
 const VaultStatsSchema = new Schema(
   {
     wallet:               { type: String, required: true, unique: true },
     status:               { type: String, default: 'active' },
+    traderLabel:          { type: String, default: '' },
+    initial_capital_usdc: { type: Number, default: 0 },
+    vault_size_usdc:      { type: Number, default: 0 },
     totalPnlAllTime:      { type: Number, default: 0 },
-    totalCapitalDeployed: { type: Number, default: 0 },
+    totalRealizedPnl:     { type: Number, default: 0 },
+    totalUnrealizedPnl:   { type: Number, default: 0 },
     win_rate:             { type: Number, default: 0 },
-    win_rate_sample_size: { type: Number, default: 0 },
-    timeframePnL:         { type: Schema.Types.Mixed, default: {} },
-    tradingConsistency:   { type: Schema.Types.Mixed, default: {} },
-    last_trade_at:        { type: Date },
-    last_updated:         { type: Date, default: Date.now },
+    total_trades:         { type: Number, default: 0 },
+    sortino_ratio:        { type: Number, default: 0 },
+    avg_trade_size_usdc:  { type: Number, default: 0 },
+    avg_hold_days:        { type: Number, default: 0 },
+    kelly_fraction:       { type: Number, default: 0 },
+    avg_entry_odds:       { type: Number, default: 0 },
+    avg_profit_per_winner:{ type: Number, default: 0 },
+    avg_loss_per_loser:   { type: Number, default: 0 },
+    insiderSignalScore:   { type: Number, default: 0 },
+    signals:              { type: Schema.Types.Mixed, default: {} },
+    last_polled_activity_ts: { type: Number, default: 0 },
+    profiledAt:           { type: Date },
   },
   { collection: 'vaults' }
 );
