@@ -29,10 +29,10 @@ const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function fmtUsd(n: number): string {
-  return '$' + Math.abs(n).toLocaleString();
+  return '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 function fmtPnl(n: number): string {
-  return (n >= 0 ? '+$' : '-$') + Math.abs(n).toLocaleString();
+  return (n >= 0 ? '+$' : '-$') + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 function totalUnrealisedPnl(positions: Position[]): { text: string; positive: boolean } {
   const total = positions.reduce((s, p) => {
