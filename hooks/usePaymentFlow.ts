@@ -15,7 +15,7 @@ export function usePaymentFlow() {
   const { switchChain } = useSwitchChain();
   const { balance, refetch: refetchBalance } = useUSDCBalance();
   const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
-  const { contributionAmount, setStatus, setTxHash, setAllocationData, setHasCompletedPayment } = usePayment();
+  const { contributionAmount, selectedVault, setStatus, setTxHash, setAllocationData, setHasCompletedPayment } = usePayment();
   const { totalRaised } = useRaiseStats();
   const allocation = useAllocationPreview(contributionAmount, totalRaised);
 
@@ -102,6 +102,7 @@ export function usePaymentFlow() {
         tx_hash: txHash,
         network: NETWORK_NAME,
         chain_id: CHAIN_ID,
+        selected_vault: selectedVault ?? undefined,
       };
 
       console.log('=== Recording Contribution to API ===');

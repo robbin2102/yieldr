@@ -41,7 +41,7 @@ function fmtNum(n: number) {
 export default function BuyPage() {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { setContributionAmount, status, setStatus } = usePayment();
+  const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus } = usePayment();
   const { initiatePayment, isProcessing, txHash } = usePaymentFlow();
   const { balance } = useUSDCBalance();
 
@@ -118,6 +118,7 @@ export default function BuyPage() {
     if (!selectedVault) return;
     if (amount < MIN_AMOUNT) { setStatus('error'); return; }
     setContributionAmount(amount);
+    setCtxVault(selectedVault);
     await initiatePayment();
   }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus]);
 

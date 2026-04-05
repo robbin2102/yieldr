@@ -3,8 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Contribution } from '@/models/Contribution';
 import { RaiseStats } from '@/models/RaiseStats';
+import VaultDeposit from '@/models/VaultDeposit';
 import { calculateAllocation, getCurrentTier } from '@/lib/tierCalculations';
-import { API_AUTH_KEY } from '@/config/payment';
+import { API_AUTH_KEY, TREASURY_ADDRESS } from '@/config/payment';
 import { createExclusiveInvite } from '@/lib/discord';
 
 // Helper to verify API auth for internal calls
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
       wallet_address,
       usdc_amount,
       tx_hash,
+      selected_vault,
       network,
       chain_id,
     } = body;
@@ -115,6 +117,37 @@ export async function POST(req: NextRequest) {
 
     const contribution = await Contribution.create(contributionData);
     console.log('✅ Contribution saved to MongoDB! ID:', contribution._id);
+
+    // Save vault deposit breakdown record
+    try {
+      const half = usdc_amount / 2;
+      await VaultDeposit.create({
+        wallet_address: wallet_address.toLowerCase(),
+        tx_hash,
+        total_usdc:           usdc_amount,
+        usdc_vault_amount:    half,
+        usdc_vault_apy:       4.5,
+        selected_vault:       selected_vault ?? null,
+        vault_migration_target: 'Q3 2026',
+        yldr_token_amount:    allocation.yldrAmount,
+        yldr_usdc_value:      half,
+        yldr_price_per_token: allocation.effectivePrice,
+        yldr_fdv:             allocation.fdv,
+        yldr_tier:            allocation.tier,
+        yldr_tge_date:        'Q1 2027',
+        yldr_vest_months:     12,
+        network,
+        chain_id,
+        treasury_address:     TREASURY_ADDRESS,
+        status:               'confirmed',
+        deposited_at:         new Date(),
+        ip_address:           req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '',
+      });
+      console.log('✅ Vault deposit record saved');
+    } catch (vdErr) {
+      console.error('⚠️  Failed to save vault deposit record:', vdErr);
+      // Non-blocking — contribution already recorded
+    }
 
     // Generate Discord invite
     let discordInvite: string | null = null;

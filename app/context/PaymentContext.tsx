@@ -23,6 +23,8 @@ interface PaymentContextType {
   setStatus: (status: PaymentStatus) => void;
   contributionAmount: number;
   setContributionAmount: (amount: number) => void;
+  selectedVault: string | null;
+  setSelectedVault: (vault: string | null) => void;
   txHash: string | null;
   setTxHash: (hash: string | null) => void;
   allocationData: AllocationData | null;
@@ -38,6 +40,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
   // Initialize from localStorage if available
   const [status, setStatus] = useState<PaymentStatus>('idle');
   const [contributionAmount, setContributionAmount] = useState<number>(1000);
+  const [selectedVault, setSelectedVault] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [allocationData, setAllocationData] = useState<AllocationData | null>(() => {
     if (typeof window !== 'undefined') {
@@ -89,6 +92,8 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
         setStatus,
         contributionAmount,
         setContributionAmount,
+        selectedVault,
+        setSelectedVault,
         txHash,
         setTxHash,
         allocationData,
