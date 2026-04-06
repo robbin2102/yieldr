@@ -69,7 +69,7 @@ export default function BuyPage() {
       if (!data) return;
       const rois: Partial<Record<VaultId, string>> = {};
       let best = -Infinity;
-      for (const id of ['geo','nba','soccer'] as VaultId[]) {
+      for (const id of ['geo','nba','soccerAlpha'] as VaultId[]) {
         const roi = data[id]?.stats?.roi30d;
         if (typeof roi === 'number') {
           rois[id] = `+${roi.toFixed(1)}%`;

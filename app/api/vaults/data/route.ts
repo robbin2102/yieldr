@@ -95,7 +95,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer', 'soccerAlpha']; // esports: hidden, indexing in background
+    const vaultIds: VaultId[] = ['geo', 'nba', 'soccerAlpha']; // hockey hidden, esports hidden
 
     // Fetch all vault stat docs — map by traderLabel to vault ID
     const allStats = await VaultStats.find({}).lean() as unknown as Array<{
@@ -107,6 +107,7 @@ export async function GET() {
       win_rate: number;
       win_rate_sample_size: number;
       profitFactor: number;
+      subscribers: number;
       tradingConsistency: { sortinoRatio: number };
       timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number }>;
       last_polled_activity_ts: number;
@@ -235,14 +236,16 @@ export async function GET() {
       .filter((d): d is typeof allStats[0] => d != null);
 
     if (displayedStats.length) {
-      const totalPnl     = displayedStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
-      const totalCapital = displayedStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
-      const totalInitial = displayedStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
-      const latestTs     = Math.max(...displayedStats.map((v) => v.last_polled_activity_ts ?? 0));
+      const totalPnl       = displayedStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
+      const totalCapital   = displayedStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
+      const totalInitial   = displayedStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
+      const totalSubscribers = displayedStats.reduce((s, v) => s + (v.subscribers ?? 0), 0);
+      const latestTs       = Math.max(...displayedStats.map((v) => v.last_polled_activity_ts ?? 0));
 
       result._global = {
         totalPnl,
         totalCapital,
+        totalSubscribers,
         combinedRoi: parseFloat(((totalPnl / Math.max(totalInitial, 1)) * 100).toFixed(1)),
         lastTradeAt: latestTs ? formatTimeAgo(latestTs) : '—',
       };
