@@ -438,19 +438,28 @@ function VaultsPageInner() {
               ))}
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
-                {activeVault === 'geo' ? (
-                  <a
-                    href="https://polygonscan.com/address/0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="val green"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    0xcb51…359d ✓
-                  </a>
-                ) : (
-                  <span className="val green">Verifiable ✓</span>
-                )}
+                {(() => {
+                  const wallets: Record<string, { full: string; short: string }> = {
+                    geo:         { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
+                    nba:         { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
+                    soccerAlpha: { full: '0x1ba1bb6aa2490adbbbbb314bc07ff21a8cc71ce4', short: '0x1ba1…1ce4' },
+                  };
+                  const w = wallets[activeVault];
+                  const href = activeVault === 'geo'
+                    ? `https://polygonscan.com/address/${w.full}`
+                    : undefined;
+                  return w ? (
+                    href ? (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className="val green" style={{ textDecoration: 'none' }}>
+                        {w.short} ✓
+                      </a>
+                    ) : (
+                      <span className="val green">{w.short} ✓</span>
+                    )
+                  ) : (
+                    <span className="val green">Verifiable ✓</span>
+                  );
+                })()}
               </div>
             </div>
 
