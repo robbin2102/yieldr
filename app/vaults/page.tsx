@@ -16,8 +16,8 @@ type Position = { market: string; side: string; size: string; entry: string; pnl
 type Trade    = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; roi7d: number; roi30d: number; vaultSize: number;
-    winRate: number; sortino: number; trades: number;
+    totalPnl: number; roi30d: number; vaultSize: number;
+    winRate: number; sortino: number; profitFactor: number; trades: number;
   };
   chartPath: { line: string; fill: string };
   positions: Position[];
@@ -55,13 +55,13 @@ function buildFallbackState(): Record<VaultId, VaultState> {
     const m = VAULT_META[id];
     out[id] = {
       stats: {
-        totalPnl:  m.fallback.totalPnl,
-        roi7d:     m.fallback.roi7d,
-        roi30d:    m.fallback.roi30d,
-        vaultSize: m.fallback.vaultSize,
-        winRate:   m.fallback.winRate,
-        sortino:   m.fallback.sortino,
-        trades:    m.fallback.trades,
+        totalPnl:     m.fallback.totalPnl,
+        roi30d:       m.fallback.roi30d,
+        vaultSize:    m.fallback.vaultSize,
+        winRate:      m.fallback.winRate,
+        sortino:      m.fallback.sortino,
+        profitFactor: m.fallback.profitFactor,
+        trades:       m.fallback.trades,
       },
       chartPath: { line: m.fallback.chartPath, fill: m.fallback.chartFill },
       positions: FALLBACK_POSITIONS[id],
@@ -293,6 +293,7 @@ function VaultsPageInner() {
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="md" /> : fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}</div><div className="vp-vd-stat-l">Win Rate</div></div>
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
+                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : `${d.stats.profitFactor}x`}</div><div className="vp-vd-stat-l">Profit Factor</div></div>
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.trades}</div><div className="vp-vd-stat-l">Trades</div></div>
                   </div>
 

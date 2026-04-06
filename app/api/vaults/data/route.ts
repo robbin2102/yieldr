@@ -64,8 +64,9 @@ export async function GET() {
       totalPnlAllTime: number;
       win_rate: number;
       win_rate_sample_size: number;
+      profitFactor: number;
       tradingConsistency: { sortinoRatio: number };
-      timeframePnL: Record<string, { pnl: number; roce: number }>;
+      timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number }>;
       last_polled_activity_ts: number;
     }>;
 
@@ -125,15 +126,21 @@ export async function GET() {
         };
 
         // ── Stats ───────────────────────────────────────────────────────
+        // Vault size = current value of open positions on Polymarket
+        const openPosArr = posDoc?.topOpenPositions as Array<{ currentValue: number }> | undefined;
+        const vaultSize = openPosArr?.length
+          ? openPosArr.reduce((s, p) => s + (p.currentValue ?? 0), 0)
+          : statsDoc.vault_size_usdc;
+
         const stats = {
-          totalPnl:  statsDoc.totalPnlAllTime,
-          roi7d,
+          totalPnl:     statsDoc.totalPnlAllTime,
           roi30d,
-          vaultSize:  statsDoc.vault_size_usdc,
-          winRate:    parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          sortino:    parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
-          trades:     statsDoc.win_rate_sample_size ?? 0,
-          lastTradeTs: statsDoc.last_polled_activity_ts ?? 0,
+          vaultSize,
+          winRate:      parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          sortino:      parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
+          profitFactor: parseFloat((statsDoc.profitFactor ?? 0).toFixed(2)),
+          trades:       statsDoc.win_rate_sample_size ?? 0,
+          lastTradeTs:  statsDoc.last_polled_activity_ts ?? 0,
         };
 
         // ── Open positions ──────────────────────────────────────────────

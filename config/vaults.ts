@@ -7,11 +7,11 @@ export const VAULT_META: Record<VaultId, {
   description: string;
   fallback: {
     totalPnl: number;
-    roi7d: number;
     roi30d: number;
     vaultSize: number;
     winRate: number;
     sortino: number;
+    profitFactor: number;
     trades: number;
     chartPath: string;
     chartFill: string;
@@ -24,13 +24,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Human-curated thesis on geopolitical events. Agents scan prediction markets for insider wallets with abnormal win rates vs implied probability, then execute positions within trader-defined risk parameters.',
     fallback: {
-      totalPnl:  24768,
-      roi7d:     12.3,
-      roi30d:    41.8,
-      vaultSize: 59200,
-      winRate:   82,
-      sortino:   3.1,
-      trades:    67,
+      totalPnl:     24768,
+      roi30d:       41.8,
+      vaultSize:    59200,
+      winRate:      82,
+      sortino:      3.1,
+      profitFactor: 2.8,
+      trades:       67,
       chartPath: 'M0,130 L30,125 60,120 90,115 120,105 150,100 180,108 210,95 240,88 270,80 300,75 330,70 360,65 390,58 420,52 450,48 480,55 510,45 540,38 570,35 600,30 630,28 660,22 690,18 720,15 750,12 780,8 800,5',
       chartFill: 'M0,130 L30,125 60,120 90,115 120,105 150,100 180,108 210,95 240,88 270,80 300,75 330,70 360,65 390,58 420,52 450,48 480,55 510,45 540,38 570,35 600,30 630,28 660,22 690,18 720,15 750,12 780,8 800,5 L800,140 L0,140Z',
     },
@@ -42,13 +42,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Trader-designed strategy: agents discover and rank top NBA prediction market traders by statistical edge, profile their betting patterns, and execute positions at the highest-conviction price levels within human-set rules.',
     fallback: {
-      totalPnl:  4190,
-      roi7d:     18.7,
-      roi30d:    22.4,
-      vaultSize: 22400,
-      winRate:   74,
-      sortino:   2.4,
-      trades:    143,
+      totalPnl:     4190,
+      roi30d:       22.4,
+      vaultSize:    22400,
+      winRate:      74,
+      sortino:      2.4,
+      profitFactor: 1.9,
+      trades:       143,
       chartPath: 'M0,135 L40,130 80,122 120,118 160,110 200,105 240,112 280,100 320,92 360,85 400,78 440,72 480,68 520,74 560,65 600,55 640,48 680,42 720,35 760,30 800,25',
       chartFill: 'M0,135 L40,130 80,122 120,118 160,110 200,105 240,112 280,100 320,92 360,85 400,78 440,72 480,68 520,74 560,65 600,55 640,48 680,42 720,35 760,30 800,25 L800,140 L0,140Z',
     },
@@ -60,13 +60,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Agents scan soccer prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
     fallback: {
-      totalPnl:  2312,
-      roi7d:     12.4,
-      roi30d:    15.8,
-      vaultSize: 18600,
-      winRate:   69,
-      sortino:   1.9,
-      trades:    89,
+      totalPnl:     2312,
+      roi30d:       15.8,
+      vaultSize:    18600,
+      winRate:      69,
+      sortino:      1.9,
+      profitFactor: 1.6,
+      trades:       89,
       chartPath: 'M0,130 L50,128 100,125 150,120 200,122 250,115 300,108 350,112 400,105 450,98 500,90 550,85 600,80 650,72 700,68 750,62 800,55',
       chartFill: 'M0,130 L50,128 100,125 150,120 200,122 250,115 300,108 350,112 400,105 450,98 500,90 550,85 600,80 650,72 700,68 750,62 800,55 L800,140 L0,140Z',
     },
