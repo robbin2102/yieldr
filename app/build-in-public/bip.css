@@ -51,7 +51,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* OVERVIEW STATS */
 .overview{padding:2rem 2.5rem;max-width:1200px;margin:0 auto}
 .ov-label{font-size:.55rem;text-transform:uppercase;letter-spacing:3px;color:var(--t3);margin-bottom:1rem}
-.ov-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1)}
+.ov-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1)}
 .ov-card{background:var(--bg2);padding:1.2rem 1rem;text-align:center}
 .ov-v{font-family:var(--fd);font-size:1.2rem;font-weight:700;color:var(--g);margin-bottom:.15rem}
 .ov-v.white{color:var(--t1)}
@@ -60,7 +60,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
 /* DEV METRICS */
 .dev-metrics{padding:1.5rem 2.5rem;max-width:1200px;margin:0 auto}
-.dm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1)}
+.dm-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1)}
 .dm-card{background:var(--bg2);padding:1rem .6rem;text-align:center}
 .dm-v{font-family:var(--fd);font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:.15rem}
 .dm-l{font-size:.45rem;color:var(--t3);text-transform:uppercase;letter-spacing:1px}

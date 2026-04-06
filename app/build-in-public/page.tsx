@@ -70,7 +70,6 @@ export default function BuildInPublicPage() {
             <Link href="/">Home</Link>
             <Link href="/vaults">Vaults</Link>
             <Link href="/build-in-public" className="active">Build Log</Link>
-            <Link href="/docs">Docs</Link>
           </div>
           <div className="nav-soc">
             <a href={TWITTER} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
@@ -103,10 +102,8 @@ export default function BuildInPublicPage() {
           <div className="ov-grid">
             <div className="ov-card"><div className="ov-v white">6</div><div className="ov-l">Months Building</div></div>
             <div className="ov-card"><div className="ov-v">+62.5K</div><div className="ov-l">Lines of Code</div><div className="ov-sub">from +28.7K in Dec</div></div>
-            <div className="ov-card"><div className="ov-v">+$14.1K</div><div className="ov-l">Trading PnL</div><div className="ov-sub">Oct 25 – Feb 26</div></div>
-            <div className="ov-card"><div className="ov-v white">$5,000</div><div className="ov-l">Base Grant</div><div className="ov-sub">Batches 002</div></div>
+            <div className="ov-card"><div className="ov-v white">$10K</div><div className="ov-l">Base Grant</div><div className="ov-sub">Batches 002</div></div>
             <div className="ov-card"><div className="ov-v white">3</div><div className="ov-l">Vaults in Testing</div><div className="ov-sub">$100K capital</div></div>
-            <div className="ov-card"><div className="ov-v white">7</div><div className="ov-l">Railway Services</div><div className="ov-sub">Live in production</div></div>
           </div>
         </div>
 
@@ -120,7 +117,6 @@ export default function BuildInPublicPage() {
             <div className="dm-card"><div className="dm-v">631</div><div className="dm-l">Files</div></div>
             <div className="dm-card"><div className="dm-v">394</div><div className="dm-l">Source Files</div></div>
             <div className="dm-card"><div className="dm-v">2</div><div className="dm-l">Contributors</div></div>
-            <div className="dm-card"><div className="dm-v">7</div><div className="dm-l">Services</div></div>
           </div>
         </div>
 
