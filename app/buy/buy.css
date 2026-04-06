@@ -206,5 +206,8 @@
   .bp-live-strip { grid-template-columns: repeat(2,1fr); }
   .bp-amount-row { flex-wrap: wrap; }
   .bp-amount-btn { min-width: calc(50% - .2rem); }
-  .bp-vault-grid { grid-template-columns: 1fr; }
+  .bp-vault-grid { grid-template-columns: repeat(3,1fr); gap: .3rem; }
+  .bp-vault-opt  { padding: .6rem .3rem; }
+  .bp-vault-icon { font-size: 1rem; }
+  .bp-vault-name { font-size: .58rem; }
 }

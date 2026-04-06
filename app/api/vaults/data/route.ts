@@ -229,12 +229,16 @@ export async function GET() {
       })
     );
 
-    // ── Global stats (status bar / page header) ─────────────────────────
-    if (allStats.length) {
-      const totalPnl     = allStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
-      const totalCapital = allStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
-      const totalInitial = allStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
-      const latestTs     = Math.max(...allStats.map((v) => v.last_polled_activity_ts ?? 0));
+    // ── Global stats — only displayed vaults, not hidden ones ──────────
+    const displayedStats = vaultIds
+      .map((id) => statsByLabel.get(id))
+      .filter((d): d is typeof allStats[0] => d != null);
+
+    if (displayedStats.length) {
+      const totalPnl     = displayedStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
+      const totalCapital = displayedStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
+      const totalInitial = displayedStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
+      const latestTs     = Math.max(...displayedStats.map((v) => v.last_polled_activity_ts ?? 0));
 
       result._global = {
         totalPnl,
@@ -243,7 +247,7 @@ export async function GET() {
         lastTradeAt: latestTs ? formatTimeAgo(latestTs) : '—',
       };
     } else {
-      result._global = null; // page uses fallback
+      result._global = null;
     }
 
     return NextResponse.json({ ok: true, data: result });
