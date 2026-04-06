@@ -337,13 +337,15 @@ export default function BuildInPublicPage() {
           </Link>
           <div className="snav-links">
             <Link href="/">Home</Link>
-            <Link href="/docs">Docs</Link>
-            <Link href="/team">Team</Link>
-            <Link href="/build-in-public" className="snav-active">Build Progress</Link>
+            <Link href="/vaults">Vaults</Link>
+            <Link href="/build-in-public" className="snav-active">Build Log</Link>
           </div>
           <div className="snav-right">
-            <NavSocials />
-            <a href="https://app.yieldr.org/demo" className="snav-cta">Launch Your Quant</a>
+            <div className="bip-nav-soc">
+              <a href={TWITTER} target="_blank" rel="noopener noreferrer"><IconX /></a>
+              <a href={GITHUB} target="_blank" rel="noopener noreferrer"><IconGH /></a>
+            </div>
+            <Link href="/vaults" className="snav-cta">Enter Vaults ↗</Link>
           </div>
         </nav>
 
