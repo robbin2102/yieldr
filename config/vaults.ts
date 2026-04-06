@@ -112,13 +112,7 @@ export const FALLBACK_POSITIONS: Record<VaultId, Array<{
     { market: 'Suns vs Pacers Apr 7',      side: 'PHX', size: '$600', entry: '$0.44', pnl: '+$15',  pnlPositive: true,  time: '12h ago' },
   ],
   esports: [],
-  soccer: [
-    { market: 'Liverpool vs Man City Apr 6',        side: 'LIV', size: '$600', entry: '$0.42', pnl: '+$80',  pnlPositive: true,  time: '4h ago' },
-    { market: 'Arsenal vs Chelsea Apr 6',           side: 'ARS', size: '$550', entry: '$0.55', pnl: '+$45',  pnlPositive: true,  time: '6h ago' },
-    { market: 'Real Madrid vs Barcelona Apr 7',     side: 'BAR', size: '$700', entry: '$0.38', pnl: '-$30',  pnlPositive: false, time: '1d ago' },
-    { market: 'Bayern vs Leipzig Apr 7',            side: 'BAY', size: '$500', entry: '$0.62', pnl: '+$25',  pnlPositive: true,  time: '1d ago' },
-    { market: 'Inter vs Juventus Apr 8',            side: 'INT', size: '$600', entry: '$0.54', pnl: '+$15',  pnlPositive: true,  time: '2d ago' },
-  ],
+  soccer: [],
 };
 
 // Fallback closed trades
@@ -160,22 +154,6 @@ export const FALLBACK_TRADES: Record<VaultId, Array<{
     { market: 'Celtics vs Sixers Mar 20',   entry: 'BOS @ $0.61', size: '$900',   pnl: '+$450', status: 'win',  time: '3d ago'  },
     { market: 'Wolves vs Suns Mar 19',      entry: 'MIN @ $0.44', size: '$650',   pnl: '+$510', status: 'win',  time: '4d ago'  },
   ],
-  soccer: [
-    { market: 'Man City vs Arsenal Apr 1',          entry: 'ARS @ $0.35', size: '$650', pnl: '+$480', status: 'win',  time: '12m ago' },
-    { market: 'Barcelona vs Real Madrid Mar 30',    entry: 'BAR @ $0.42', size: '$800', pnl: '+$560', status: 'win',  time: '1h ago'  },
-    { market: 'Liverpool vs Chelsea Mar 28',        entry: 'LIV @ $0.58', size: '$550', pnl: '+$190', status: 'win',  time: '3h ago'  },
-    { market: 'Bayern vs Dortmund Mar 27',          entry: 'BVB @ $0.31', size: '$400', pnl: '-$220', status: 'loss', time: '7h ago'  },
-    { market: 'PSG vs Marseille Mar 26',            entry: 'PSG @ $0.72', size: '$700', pnl: '+$120', status: 'win',  time: '11h ago' },
-    { market: 'Inter vs Napoli Mar 25',             entry: 'NAP @ $0.38', size: '$500', pnl: '+$390', status: 'win',  time: '16h ago' },
-    { market: 'Tottenham vs Man Utd Mar 24',        entry: 'TOT @ $0.45', size: '$600', pnl: '+$310', status: 'win',  time: '22h ago' },
-    { market: 'Real Madrid vs Atletico Mar 23',     entry: 'ATL @ $0.28', size: '$450', pnl: '-$180', status: 'loss', time: '1d ago'  },
-    { market: 'Arsenal vs Newcastle Mar 22',        entry: 'ARS @ $0.61', size: '$750', pnl: '+$240', status: 'win',  time: '2d ago'  },
-    { market: 'Juventus vs AC Milan Mar 21',        entry: 'JUV @ $0.52', size: '$550', pnl: '+$170', status: 'win',  time: '2d ago'  },
-    { market: 'Chelsea vs Liverpool Mar 20',        entry: 'LIV @ $0.48', size: '$600', pnl: '+$350', status: 'win',  time: '3d ago'  },
-    { market: 'Man City vs Tottenham Mar 19',       entry: 'MCI @ $0.65', size: '$800', pnl: '-$140', status: 'loss', time: '4d ago'  },
-    { market: 'Dortmund vs Leipzig Mar 18',         entry: 'BVB @ $0.44', size: '$500', pnl: '+$280', status: 'win',  time: '5d ago'  },
-    { market: 'Barcelona vs Sevilla Mar 17',        entry: 'BAR @ $0.71', size: '$650', pnl: '+$130', status: 'win',  time: '6d ago'  },
-    { market: 'PSG vs Lyon Mar 16',                 entry: 'PSG @ $0.68', size: '$700', pnl: '+$90',  status: 'win',  time: '7d ago'  },
-  ],
+  soccer:  [],
   esports: [],
 };

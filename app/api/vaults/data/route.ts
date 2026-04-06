@@ -158,24 +158,6 @@ export async function GET() {
           fill: meta.fallback.chartFill,
         };
 
-        // ── Stats ───────────────────────────────────────────────────────
-        // Vault size = initial capital + all-time PnL (current equity)
-        const vaultSize = (statsDoc.initial_capital_usdc ?? 0) + (statsDoc.totalPnlAllTime ?? 0);
-
-        // openPositionsValue computed after filtering (done below after filteredPositions)
-
-        const stats = {
-          totalPnl:          statsDoc.totalPnlAllTime,
-          roi30d,
-          vaultSize,
-          openPositionsValue,
-          winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          sortino:           parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
-          profitFactor:      parseFloat((statsDoc.profitFactor ?? 0).toFixed(2)),
-          trades:            statsDoc.win_rate_sample_size ?? 0,
-          lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
-        };
-
         // ── Open positions (filtered to sport-relevant markets only) ────
         const rawPositions = posDoc?.topOpenPositions as Array<{
           title: string; outcome: string; size: number;
@@ -186,6 +168,22 @@ export async function GET() {
         const filteredPositions = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
 
         const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
+
+        // ── Stats ───────────────────────────────────────────────────────
+        // Vault size = initial capital + all-time PnL (current equity)
+        const vaultSize = (statsDoc.initial_capital_usdc ?? 0) + (statsDoc.totalPnlAllTime ?? 0);
+
+        const stats = {
+          totalPnl:          statsDoc.totalPnlAllTime ?? 0,
+          roi30d,
+          vaultSize,
+          openPositionsValue,
+          winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          sortino:           parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
+          profitFactor:      parseFloat((statsDoc.profitFactor ?? 0).toFixed(2)),
+          trades:            statsDoc.win_rate_sample_size ?? 0,
+          lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
+        };
 
         const openPositions = filteredPositions.length
           ? filteredPositions.map((p) => ({
