@@ -26,7 +26,7 @@ type VaultState = {
 };
 type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string };
 
-const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer', 'soccerAlpha'];
+const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccerAlpha', 'soccer'];
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
@@ -432,15 +432,9 @@ function VaultsPageInner() {
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
                 {vaultData[activeVault].wallet ? (
-                  <a
-                    href={`https://polygonscan.com/address/${vaultData[activeVault].wallet}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="val green"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    {vaultData[activeVault].wallet!.slice(0,6)}…{vaultData[activeVault].wallet!.slice(-4)} ↗
-                  </a>
+                  <span className="val green">
+                    {vaultData[activeVault].wallet!.slice(0,6)}…{vaultData[activeVault].wallet!.slice(-4)} ✓
+                  </span>
                 ) : (
                   <span className="val green">Verifiable ✓</span>
                 )}

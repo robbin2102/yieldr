@@ -10,16 +10,17 @@ import { usePaymentFlow } from '@/hooks/usePaymentFlow';
 import { useUSDCBalance } from '@/hooks/useUSDCBalance';
 
 // ── Constants ──────────────────────────────────────────────────────────────
-type VaultId = 'geo' | 'nba' | 'soccer';
+type VaultId = 'geo' | 'nba' | 'soccerAlpha' | 'soccer';
 const TOTAL_SUPPLY  = 210_000_000;
 const CURRENT_FDV   = 12_000_000;
 const TGE_FDV       = 75_000_000;
 const TOKENS_PER_USD = TOTAL_SUPPLY / CURRENT_FDV; // 17.5
 
 const VAULT_OPTS: { id: VaultId; icon: string; name: string; roi: string }[] = [
-  { id: 'geo',    icon: '🌐', name: 'Geopolitics', roi: '' },
-  { id: 'nba',    icon: '🏀', name: 'NBA Edge',     roi: '' },
-  { id: 'soccer', icon: '⚽', name: 'Soccer Alpha',  roi: '' },
+  { id: 'geo',         icon: '🌐', name: 'Geopolitics',  roi: '' },
+  { id: 'nba',         icon: '🏀', name: 'NBA Edge',      roi: '' },
+  { id: 'soccerAlpha', icon: '⚽', name: 'Soccer Alpha',  roi: '' },
+  { id: 'soccer',      icon: '🏒', name: 'NHL Alpha',     roi: '' },
 ];
 
 const PRESET_AMOUNTS = [100, 500, 1000, 5000];
