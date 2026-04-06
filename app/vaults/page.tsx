@@ -290,7 +290,6 @@ function VaultsPageInner() {
                   {/* Stats row */}
                   <div className="vp-vd-stats">
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `+${d.stats.roi30d}%`}</div><div className="vp-vd-stat-l">30D ROI</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `+${d.stats.roi7d}%`}</div><div className="vp-vd-stat-l">7D ROI</div></div>
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="md" /> : fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}</div><div className="vp-vd-stat-l">Win Rate</div></div>
                     <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
@@ -439,7 +438,7 @@ function VaultsPageInner() {
                 <span className="lbl">Onchain Proof</span>
                 {vaultData[activeVault].wallet ? (
                   <a
-                    href={`https://basescan.org/address/${vaultData[activeVault].wallet}`}
+                    href={`https://polygonscan.com/address/${vaultData[activeVault].wallet}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="val green"
