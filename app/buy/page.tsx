@@ -52,7 +52,7 @@ export default function BuyPage() {
   const [spotsLeft, setSpotsLeft]         = useState<number | null>(null);
   const [countdown, setCountdown]         = useState('');
   const [deadline, setDeadline]           = useState<Date>(() => {
-    const d = new Date(); d.setDate(d.getDate() + 14); return d;
+    const d = new Date(); d.setDate(d.getDate() + 90); return d;
   });
   const [vaultRois, setVaultRois]         = useState<Partial<Record<VaultId, string>>>({});
   const [bestRoi, setBestRoi]             = useState<string | null>(null);

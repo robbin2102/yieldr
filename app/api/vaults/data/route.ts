@@ -110,10 +110,10 @@ export async function GET() {
 
         const capital = statsDoc.initial_capital_usdc || 1;
 
-        // ── ROI from timeframePnL (authoritative from DB) ───────────────
+        // ── ROI: use roce from timeframePnL (pnl/capital_deployed, pre-computed) ──
         const tf = statsDoc.timeframePnL ?? {};
-        const roi7d  = parseFloat(((tf['7d']?.pnl  ?? 0) / capital * 100).toFixed(1));
-        const roi30d = parseFloat(((tf['30d']?.pnl ?? 0) / capital * 100).toFixed(1));
+        const roi7d  = parseFloat((tf['7d']?.roce  ?? 0).toFixed(1));
+        const roi30d = parseFloat((tf['30d']?.roce ?? 0).toFixed(1));
 
         // ── Chart from daily snapshots (cumulative curve) ───────────────
         const snaps = snapshots as unknown as { daily_pnl_usdc: number; cumulative_pnl_usdc: number }[];

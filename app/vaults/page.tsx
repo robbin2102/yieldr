@@ -82,7 +82,7 @@ function VaultsPageInner() {
   const [vaultData, setVaultData]     = useState<Record<VaultId, VaultState>>(buildFallbackState);
   const [global, setGlobal]           = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—' });
   const [spotsLeft, setSpotsLeft]     = useState(127);
-  const [deadline, setDeadline]       = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 14); return d; });
+  const [deadline, setDeadline]       = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 90); return d; });
   const [countdown, setCountdown]     = useState('');
   const [selectedVault, setSelectedVault] = useState<VaultId | null>(null);
   const [chatMessages, setChatMessages]   = useState<Array<{ type: 'agent' | 'user' | 'system'; text: string }>>([
@@ -429,15 +429,28 @@ function VaultsPageInner() {
                 { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
                 { lbl: 'Vault Subscribers', val: '842',           green: false },
                 { lbl: 'Telegram',          val: '2,400 members', green: false },
-                { lbl: 'Onchain Proof',     val: vaultData[activeVault].wallet
-                    ? `${vaultData[activeVault].wallet!.slice(0,6)}…${vaultData[activeVault].wallet!.slice(-4)} ✓`
-                    : 'Verifiable ✓',        green: true },
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>
                   <span className={`val${item.green ? ' green' : ''}`}>{item.val}</span>
                 </div>
               ))}
+              <div className="vp-tb-item">
+                <span className="lbl">Onchain Proof</span>
+                {vaultData[activeVault].wallet ? (
+                  <a
+                    href={`https://basescan.org/address/${vaultData[activeVault].wallet}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="val green"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {vaultData[activeVault].wallet!.slice(0,6)}…{vaultData[activeVault].wallet!.slice(-4)} ↗
+                  </a>
+                ) : (
+                  <span className="val green">Verifiable ✓</span>
+                )}
+              </div>
             </div>
 
             {/* Agent Chat */}
