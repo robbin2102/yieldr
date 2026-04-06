@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './buy.css';
 import { useAccount } from 'wagmi';
@@ -39,6 +40,7 @@ function fmtNum(n: number) {
 
 // ── Component ──────────────────────────────────────────────────────────────
 export default function BuyPage() {
+  const router = useRouter();
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus } = usePayment();
@@ -56,6 +58,14 @@ export default function BuyPage() {
   });
   const [vaultRois, setVaultRois]         = useState<Partial<Record<VaultId, string>>>({});
   const [bestRoi, setBestRoi]             = useState<string | null>(null);
+
+  // ── Redirect to allocations after successful payment ─────────────────────
+  useEffect(() => {
+    if (status === 'success' && txHash) {
+      const t = setTimeout(() => router.push('/allocations'), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [status, txHash, router]);
 
   // ── Fetch live stats ─────────────────────────────────────────────────────
   useEffect(() => {
