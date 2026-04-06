@@ -26,7 +26,7 @@ type VaultState = {
 };
 type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string };
 
-const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer', 'esports'];
+const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer', 'esports', 'soccerAlpha'];
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
@@ -246,7 +246,7 @@ function VaultsPageInner() {
               className={`vp-vtab${activeVault === id ? ' active' : ''}`}
               onClick={() => setActiveVault(id)}
             >
-              {VAULT_META[id].emoji} {id === 'esports' ? 'E-Sports Ninja' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
+              {VAULT_META[id].emoji} {id === 'esports' ? 'E-Sports Ninja' : id === 'soccerAlpha' ? 'Soccer Alpha' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
             </button>
           ))}
         </div>

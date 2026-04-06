@@ -1,4 +1,4 @@
-export type VaultId = 'geo' | 'nba' | 'soccer' | 'esports';
+export type VaultId = 'geo' | 'nba' | 'soccer' | 'esports' | 'soccerAlpha';
 
 export const VAULT_META: Record<VaultId, {
   id: VaultId;
@@ -89,6 +89,24 @@ export const VAULT_META: Record<VaultId, {
       chartFill: 'M0,135 L800,135 L800,140 L0,140Z',
     },
   },
+  soccerAlpha: {
+    id: 'soccerAlpha',
+    name: 'Soccer Alpha Vault',
+    emoji: '⚽',
+    description:
+      'Agents scan soccer prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
+    fallback: {
+      totalPnl:     0,
+      roi30d:       0,
+      vaultSize:    6000,
+      winRate:      0,
+      sortino:      0,
+      profitFactor: 0,
+      trades:       0,
+      chartPath: 'M0,135 L800,135',
+      chartFill: 'M0,135 L800,135 L800,140 L0,140Z',
+    },
+  },
 };
 
 // Fallback open positions (shown until monitoring service populates DB)
@@ -111,8 +129,9 @@ export const FALLBACK_POSITIONS: Record<VaultId, Array<{
     { market: 'Thunder vs Cavs Apr 7',     side: 'OKC', size: '$750', entry: '$0.58', pnl: '+$30',  pnlPositive: true,  time: '10h ago' },
     { market: 'Suns vs Pacers Apr 7',      side: 'PHX', size: '$600', entry: '$0.44', pnl: '+$15',  pnlPositive: true,  time: '12h ago' },
   ],
-  esports: [],
-  soccer: [],
+  esports:     [],
+  soccer:      [],
+  soccerAlpha: [],
 };
 
 // Fallback closed trades
@@ -154,6 +173,7 @@ export const FALLBACK_TRADES: Record<VaultId, Array<{
     { market: 'Celtics vs Sixers Mar 20',   entry: 'BOS @ $0.61', size: '$900',   pnl: '+$450', status: 'win',  time: '3d ago'  },
     { market: 'Wolves vs Suns Mar 19',      entry: 'MIN @ $0.44', size: '$650',   pnl: '+$510', status: 'win',  time: '4d ago'  },
   ],
-  soccer:  [],
-  esports: [],
+  soccer:      [],
+  esports:     [],
+  soccerAlpha: [],
 };
