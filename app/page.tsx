@@ -49,7 +49,7 @@ export default function HomePage() {
         <div className="lp-nav-r">
           <nav className="lp-nav-links">
             <a href="#how">How It Works</a>
-            <a href="#vaults">Vaults</a>
+            <Link href="/vaults">Vaults</Link>
             <Link href="/build-in-public">Build Log</Link>
           </nav>
 

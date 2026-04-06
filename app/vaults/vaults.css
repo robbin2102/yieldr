@@ -66,6 +66,10 @@
   text-transform: uppercase; transition: all .2s; text-decoration: none;
 }
 .vp-nav-cta:hover { background: #00ff88; box-shadow: 0 0 20px rgba(0,232,123,.3); }
+.vp-nav-soc { display: flex; gap: .6rem; }
+.vp-nav-soc a { display: flex; align-items: center; }
+.vp-nav-soc svg { width: 14px; height: 14px; fill: var(--t3); transition: fill .2s; }
+.vp-nav-soc a:hover svg { fill: var(--t1); }
 
 /* ── Status Bar ── */
 .vp-status-bar {
