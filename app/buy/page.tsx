@@ -13,7 +13,7 @@ import { useUSDCBalance } from '@/hooks/useUSDCBalance';
 // ── Constants ──────────────────────────────────────────────────────────────
 type VaultId = 'geo' | 'nba' | 'soccerAlpha';
 const TOTAL_SUPPLY  = 210_000_000;
-const CURRENT_FDV   = 12_000_000;
+const CURRENT_FDV   = 9_000_000;
 const TGE_FDV       = 75_000_000;
 const TOKENS_PER_USD = TOTAL_SUPPLY / CURRENT_FDV; // 17.5
 
@@ -176,7 +176,7 @@ export default function BuyPage() {
               <div className="bp-ls-l">Best Vault 30D</div>
             </div>
             <div className="bp-ls-item">
-              <div className="bp-ls-v">$12M</div>
+              <div className="bp-ls-v">$9M</div>
               <div className="bp-ls-l">Current FDV</div>
             </div>
             <div className="bp-ls-item">
@@ -274,7 +274,7 @@ export default function BuyPage() {
               </div>
               <div className="bp-split-row">
                 <span className="bp-split-lbl">
-                  🪙 YLDR Token @ $12M FDV
+                  🪙 YLDR Token @ $9M FDV
                   <span className="bp-split-sub">12-month linear vest from TGE</span>
                 </span>
                 <span className="bp-split-val">${fmtNum(half)}</span>

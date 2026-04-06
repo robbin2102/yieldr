@@ -28,7 +28,7 @@ interface AllocationStats {
 
 const ITEMS_PER_PAGE = 10;
 const TGE_FDV = 75_000_000;
-const CURRENT_FDV = 12_000_000;
+const CURRENT_FDV = 9_000_000;
 const TWITTER = 'https://x.com/yieldrdotorg';
 const GITHUB  = 'https://github.com/robbin2102/yieldr-app';
 
@@ -180,7 +180,7 @@ export default function AllocationsPage() {
                 <div className="ap-how-label">How Early Access Works</div>
                 <div className="ap-how-text">
                   Every <strong>$100</strong> deposited = <strong>$50</strong> into a Base USDC vault earning <span className="green">4.5% APY</span> from day one
-                  (migrates to your chosen agent trading vault at Q3 2026 launch) + <strong>$50</strong> in <span className="green">YLDR token allocation</span> at $12M FDV.
+                  (migrates to your chosen agent trading vault at Q3 2026 launch) + <strong>$50</strong> in <span className="green">YLDR token allocation</span> at $9M FDV.
                 </div>
               </div>
 

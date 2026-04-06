@@ -167,7 +167,7 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">YLDR Token Sale — Early Access</div>
-                <div className="tl-item-p">Tier 1 early access at $12M FDV. 50% into Base USDC vault earning 4.5% APY, 50% YLDR allocation. Token consumed by agent cycles — deflationary by design.</div>
+                <div className="tl-item-p">Tier 1 early access at $9M FDV. 50% into Base USDC vault earning 4.5% APY, 50% YLDR allocation. Token consumed by agent cycles — deflationary by design.</div>
                 <div className="tl-tags"><span className="tl-tag green">Token</span><span className="tl-tag">Live</span></div>
               </div>
             </div>
@@ -327,7 +327,7 @@ export default function BuildInPublicPage() {
             <div className="rm-card">
               <div className="rm-status active">&#9679; Active</div>
               <div className="rm-h">YLDR Early Access</div>
-              <div className="rm-p">Token sale at $12M FDV. 50% USDC vault (4.5% APY), 50% YLDR allocation. Burn-for-access utility model. TGE Q1 2027.</div>
+              <div className="rm-p">Token sale at $9M FDV. 50% USDC vault (4.5% APY), 50% YLDR allocation. Burn-for-access utility model. TGE Q1 2027.</div>
             </div>
             <div className="rm-card">
               <div className="rm-status planned">&#9675; Planned</div>

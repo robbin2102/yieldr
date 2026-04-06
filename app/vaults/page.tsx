@@ -383,7 +383,7 @@ function VaultsPageInner() {
             <div className="vp-cta-box" id="buy">
               <div className="vp-cta-h">Get Early Access</div>
               <div className="vp-cta-sub">
-                Every $100 deposited = $50 into a Base USDC vault earning 4.5% APY from day one (migrates to your chosen agent trading vault at Q3 2026 launch) + $50 in YLDR token allocation at $12M FDV.
+                Every $100 deposited = $50 into a Base USDC vault earning 4.5% APY from day one (migrates to your chosen agent trading vault at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV.
               </div>
               <div className="vp-cta-split">
                 <div className="vp-cta-split-item">
@@ -392,26 +392,10 @@ function VaultsPageInner() {
                 </div>
                 <div className="vp-cta-split-item">
                   <div className="vp-cta-split-v">50%</div>
-                  <div className="vp-cta-split-l">YLDR @ $12M FDV</div>
+                  <div className="vp-cta-split-l">YLDR @ $9M FDV</div>
                 </div>
               </div>
               <div className="vp-cta-note">⚡ USDC earning from day 1 → moves to agent vault at Q3 launch</div>
-
-              <div className="vp-vault-select">
-                <div className="vp-vault-select-label">Choose your vault for launch</div>
-                <div className="vp-vault-select-opts">
-                  {VAULT_IDS.map((id) => (
-                    <button
-                      key={id}
-                      className={`vp-vault-opt${selectedVault === id ? ' selected' : ''}`}
-                      onClick={() => setSelectedVault(id)}
-                    >
-                      <span className="vp-vault-opt-icon">{VAULT_META[id].emoji}</span>
-                      {id === 'geo' ? 'Geopolitics' : id === 'nba' ? 'NBA' : 'Soccer'}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               <Link href="/buy" className="vp-cta-btn">
                 Buy YLDR — Early Access ↗

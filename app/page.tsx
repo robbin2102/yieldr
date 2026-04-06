@@ -25,7 +25,7 @@ export default function HomePage() {
     { label: 'SOCCER VAULT', value: '+12.4% 7D', up: true },
     { label: 'USDC YIELD', value: '4.5% APY', up: true },
     { label: 'YLDR TGE', value: 'Q1 2027', up: true },
-    { label: 'EARLY ACCESS', value: '$12M FDV', up: true },
+    { label: 'EARLY ACCESS', value: '$9M FDV', up: true },
     { label: '842 SUBSCRIBERS', value: null, up: false },
     { label: 'VAULTS LAUNCH', value: 'Q3 2026', up: true },
   ];
@@ -346,7 +346,7 @@ export default function HomePage() {
             </p>
             <div className="lp-token-grid">
               <div className="lp-token-stat">
-                <div className="lp-token-stat-v">$12M</div>
+                <div className="lp-token-stat-v">$9M</div>
                 <div className="lp-token-stat-l">FDV</div>
               </div>
               <div className="lp-token-stat">
@@ -361,7 +361,7 @@ export default function HomePage() {
             <div className="lp-token-offer">
               <strong>Early Access Offer:</strong> Every $100 deposited = $50 into a Base USDC
               vault earning <strong>4.5% APY</strong> from day one (migrates to agent trading
-              vaults at Q3 2026 launch) + $50 in YLDR token allocation at $12M FDV
+              vaults at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV
             </div>
             <div className="lp-token-note">
               ⚡ You choose which vault your capital enters on launch:{' '}
