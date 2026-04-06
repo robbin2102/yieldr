@@ -26,7 +26,7 @@ type VaultState = {
 };
 type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string };
 
-const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer'];
+const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer', 'esports'];
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
@@ -238,18 +238,6 @@ function VaultsPageInner() {
           </div>
         </div>
 
-        {/* ── Trust Bar ── */}
-        <div className="vp-trust-bar">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <div className="vp-trust-item">
-            <img className="vp-base-logo" src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730551690x161831425309488800/_base-square%20%282%29.svg" alt="Base" />
-            Base Batches 002 Winner
-          </div>
-          <div className="vp-trust-item"><span className="vp-trust-icon">👥</span> <span className="vp-trust-val">842</span> vault subscribers</div>
-          <div className="vp-trust-item"><span className="vp-trust-icon">💬</span> <span className="vp-trust-val">2.4K</span> Telegram members</div>
-          <div className="vp-trust-item"><span className="vp-trust-icon">🔒</span> Multisig treasury</div>
-        </div>
-
         {/* ── Vault Tabs ── */}
         <div className="vp-vault-tabs">
           {VAULT_IDS.map((id) => (
@@ -258,7 +246,7 @@ function VaultsPageInner() {
               className={`vp-vtab${activeVault === id ? ' active' : ''}`}
               onClick={() => setActiveVault(id)}
             >
-              {VAULT_META[id].emoji} {VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
+              {VAULT_META[id].emoji} {id === 'esports' ? 'E-Sports Ninja' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
             </button>
           ))}
         </div>

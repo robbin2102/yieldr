@@ -1,4 +1,4 @@
-export type VaultId = 'geo' | 'nba' | 'soccer';
+export type VaultId = 'geo' | 'nba' | 'soccer' | 'esports';
 
 export const VAULT_META: Record<VaultId, {
   id: VaultId;
@@ -71,6 +71,24 @@ export const VAULT_META: Record<VaultId, {
       chartFill: 'M0,130 L50,128 100,125 150,120 200,122 250,115 300,108 350,112 400,105 450,98 500,90 550,85 600,80 650,72 700,68 750,62 800,55 L800,140 L0,140Z',
     },
   },
+  esports: {
+    id: 'esports',
+    name: 'E-Sports Ninja Vault',
+    emoji: '🎮',
+    description:
+      'Agents scan e-sports prediction markets for traders with exceptional win rates on CS:GO, Valorant, and League of Legends markets. Human trader sets risk rules; agents execute near top-trader price levels with automated controls.',
+    fallback: {
+      totalPnl:     0,
+      roi30d:       0,
+      vaultSize:    5000,
+      winRate:      0,
+      sortino:      0,
+      profitFactor: 0,
+      trades:       0,
+      chartPath: 'M0,135 L800,135',
+      chartFill: 'M0,135 L800,135 L800,140 L0,140Z',
+    },
+  },
 };
 
 // Fallback open positions (shown until monitoring service populates DB)
@@ -93,6 +111,7 @@ export const FALLBACK_POSITIONS: Record<VaultId, Array<{
     { market: 'Thunder vs Cavs Apr 7',     side: 'OKC', size: '$750', entry: '$0.58', pnl: '+$30',  pnlPositive: true,  time: '10h ago' },
     { market: 'Suns vs Pacers Apr 7',      side: 'PHX', size: '$600', entry: '$0.44', pnl: '+$15',  pnlPositive: true,  time: '12h ago' },
   ],
+  esports: [],
   soccer: [
     { market: 'Liverpool vs Man City Apr 6',        side: 'LIV', size: '$600', entry: '$0.42', pnl: '+$80',  pnlPositive: true,  time: '4h ago' },
     { market: 'Arsenal vs Chelsea Apr 6',           side: 'ARS', size: '$550', entry: '$0.55', pnl: '+$45',  pnlPositive: true,  time: '6h ago' },
@@ -158,4 +177,5 @@ export const FALLBACK_TRADES: Record<VaultId, Array<{
     { market: 'Barcelona vs Sevilla Mar 17',        entry: 'BAR @ $0.71', size: '$650', pnl: '+$130', status: 'win',  time: '6d ago'  },
     { market: 'PSG vs Lyon Mar 16',                 entry: 'PSG @ $0.68', size: '$700', pnl: '+$90',  status: 'win',  time: '7d ago'  },
   ],
+  esports: [],
 };

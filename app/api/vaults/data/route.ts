@@ -49,7 +49,13 @@ function roiFromSnapshots(snapshots: { daily_pnl_usdc: number }[], days: number,
 
 // ── Sport keyword filters ──────────────────────────────────────────────────
 const SPORT_KEYWORDS: Record<VaultId, string[]> = {
-  geo: [], // no filter — geopolitics accepts all markets
+  geo:     [], // no filter — geopolitics accepts all markets
+  esports: [
+    'esports', 'e-sports', 'cs2', 'csgo', 'cs:go', 'valorant', 'league of legends', 'lol',
+    'dota', 'overwatch', 'fortnite', 'apex', 'rocket league', 'starcraft', 'counter-strike',
+    'major', 'blast', 'esl', 'faceit', 'pgl', 'iem', 'navi', 'faze', 'astralis', 'vitality',
+    'team liquid', 'g2', 'nip', 'heroic', 'fnatic', 'mibr',
+  ],
   nba: [
     'nba', 'basketball', 'lakers', 'celtics', 'warriors', 'bulls', 'heat', 'nets', 'knicks',
     'bucks', 'suns', 'nuggets', 'clippers', 'hawks', 'sixers', '76ers', 'raptors', 'cavaliers',
@@ -79,7 +85,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer'];
+    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer', 'esports'];
 
     // Fetch all vault stat docs — map by traderLabel to vault ID
     const allStats = await VaultStats.find({}).lean() as unknown as Array<{
@@ -98,9 +104,10 @@ export async function GET() {
 
     // Map traderLabel → vault ID
     const LABEL_TO_ID: Record<string, VaultId> = {
-      'geopolitics vault': 'geo',
-      'nba edge vault':    'nba',
-      'nhl edge vault':    'soccer',
+      'geopolitics vault':    'geo',
+      'nba edge vault':       'nba',
+      'nhl edge vault':       'soccer',
+      'e-sports ninja vault': 'esports',
     };
 
     // Build a map: vaultId → doc
