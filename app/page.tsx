@@ -51,7 +51,6 @@ export default function HomePage() {
             <a href="#how">How It Works</a>
             <a href="#vaults">Vaults</a>
             <Link href="/build-in-public">Build Log</Link>
-            <Link href="/docs">Docs</Link>
           </nav>
 
           <div className="lp-nav-soc">

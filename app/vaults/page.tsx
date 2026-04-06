@@ -198,7 +198,6 @@ function VaultsPageInner() {
             <Link href="/">Home</Link>
             <Link href="/vaults" className="active">Vaults</Link>
             <Link href="/build-in-public">Build Log</Link>
-            <Link href="/docs">Docs</Link>
           </nav>
           <Link href="/buy" className="vp-nav-cta">Early Access ↗</Link>
         </div>
