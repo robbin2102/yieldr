@@ -375,7 +375,7 @@ function VaultsPageInner() {
             {/* Urgency bar */}
             <div className="vp-urgency-bar">
               <div className="vp-ub-text">
-                ⏳ Tier 1 pricing ends April 30 — <strong>{spotsLeft} spots left</strong> · Next tier is 2x FDV
+                ⏳ Tier 1 pricing ends April 30 · Next tier is 2x FDV
               </div>
             </div>
 
