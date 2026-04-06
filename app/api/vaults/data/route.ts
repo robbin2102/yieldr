@@ -95,7 +95,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer', 'esports', 'soccerAlpha'];
+    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer', 'soccerAlpha']; // esports: hidden, indexing in background
 
     // Fetch all vault stat docs — map by traderLabel to vault ID
     const allStats = await VaultStats.find({}).lean() as unknown as Array<{

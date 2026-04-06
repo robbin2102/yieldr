@@ -26,7 +26,7 @@ type VaultState = {
 };
 type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string };
 
-const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer', 'esports', 'soccerAlpha'];
+const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer', 'soccerAlpha'];
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
