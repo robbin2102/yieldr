@@ -55,10 +55,10 @@ export const VAULT_META: Record<VaultId, {
   },
   soccer: {
     id: 'soccer',
-    name: 'Soccer Alpha Vault',
-    emoji: '⚽',
+    name: 'NHL Alpha Vault',
+    emoji: '🏒',
     description:
-      'Agents scan soccer prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
+      'Agents scan NHL prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
     fallback: {
       totalPnl:     2312,
       roi30d:       15.8,

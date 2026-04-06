@@ -47,6 +47,32 @@ function roiFromSnapshots(snapshots: { daily_pnl_usdc: number }[], days: number,
   return parseFloat(((sum / capital) * 100).toFixed(1));
 }
 
+// ── Sport keyword filters ──────────────────────────────────────────────────
+const SPORT_KEYWORDS: Record<VaultId, string[]> = {
+  geo: [], // no filter — geopolitics accepts all markets
+  nba: [
+    'nba', 'basketball', 'lakers', 'celtics', 'warriors', 'bulls', 'heat', 'nets', 'knicks',
+    'bucks', 'suns', 'nuggets', 'clippers', 'hawks', 'sixers', '76ers', 'raptors', 'cavaliers',
+    'cavs', 'pacers', 'hornets', 'grizzlies', 'pelicans', 'spurs', 'thunder', 'blazers',
+    'rockets', 'jazz', 'kings', 'timberwolves', 'wolves', 'mavericks', 'mavs', 'magic',
+    'pistons', 'wizards', 'playoffs', 'finals', 'nba mvp',
+  ],
+  soccer: [
+    'nhl', 'hockey', 'stanley cup', 'bruins', 'maple leafs', 'rangers', 'blackhawks',
+    'penguins', 'canadiens', 'red wings', 'kings', 'sharks', 'ducks', 'flyers', 'capitals',
+    'lightning', 'avalanche', 'oilers', 'flames', 'canucks', 'senators', 'sabres', 'panthers',
+    'coyotes', 'blues', 'predators', 'stars', 'wild', 'blue jackets', 'jets', 'hurricanes',
+    'islanders', 'devils', 'golden knights', 'kraken',
+  ],
+};
+
+function isRelevantPosition(title: string, vaultId: VaultId): boolean {
+  const keywords = SPORT_KEYWORDS[vaultId];
+  if (!keywords.length) return true; // geo: keep all
+  const t = title.toLowerCase();
+  return keywords.some((k) => t.includes(k));
+}
+
 // ── Main handler ───────────────────────────────────────────────────────────
 
 export async function GET() {
@@ -129,11 +155,7 @@ export async function GET() {
         // Vault size = initial capital + all-time PnL (current equity)
         const vaultSize = (statsDoc.initial_capital_usdc ?? 0) + (statsDoc.totalPnlAllTime ?? 0);
 
-        // Open positions total current value (for display in positions section)
-        const openPosArr = posDoc?.topOpenPositions as Array<{ currentValue: number }> | undefined;
-        const openPositionsValue = openPosArr?.length
-          ? openPosArr.reduce((s, p) => s + (p.currentValue ?? 0), 0)
-          : 0;
+        // openPositionsValue computed after filtering (done below after filteredPositions)
 
         const stats = {
           totalPnl:          statsDoc.totalPnlAllTime,
@@ -147,13 +169,19 @@ export async function GET() {
           lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
         };
 
-        // ── Open positions ──────────────────────────────────────────────
-        const openPositions = posDoc?.topOpenPositions?.length
-          ? (posDoc.topOpenPositions as Array<{
-              title: string; outcome: string; size: number;
-              avgPrice: number; curPrice: number;
-              currentValue: number; cashPnl: number; percentPnl: number;
-            }>).map((p) => ({
+        // ── Open positions (filtered to sport-relevant markets only) ────
+        const rawPositions = posDoc?.topOpenPositions as Array<{
+          title: string; outcome: string; size: number;
+          avgPrice: number; curPrice: number;
+          currentValue: number; cashPnl: number; percentPnl: number;
+        }> | undefined;
+
+        const filteredPositions = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
+
+        const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
+
+        const openPositions = filteredPositions.length
+          ? filteredPositions.map((p) => ({
               market:      p.title,
               side:        p.outcome,
               size:        `$${(p.currentValue ?? 0).toFixed(2)}`,
