@@ -175,6 +175,7 @@
 .vp-op-title { font-size: .6rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--y); display: flex; align-items: center; gap: .4rem; }
 .vp-op-dot { width: 6px; height: 6px; background: var(--y); border-radius: 50%; animation: vpPulse 2s ease infinite; }
 .vp-op-count { font-size: .55rem; color: var(--t3); }
+.vp-op-val   { color: var(--g); }
 .vp-op-cols {
   display: grid; grid-template-columns: 2fr 1fr .7fr .7fr .8fr .8fr;
   padding: .4rem 1rem; border-bottom: 1px solid var(--b1);

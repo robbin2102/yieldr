@@ -126,21 +126,25 @@ export async function GET() {
         };
 
         // ── Stats ───────────────────────────────────────────────────────
-        // Vault size = current value of open positions on Polymarket
+        // Vault size = initial capital + all-time PnL (current equity)
+        const vaultSize = (statsDoc.initial_capital_usdc ?? 0) + (statsDoc.totalPnlAllTime ?? 0);
+
+        // Open positions total current value (for display in positions section)
         const openPosArr = posDoc?.topOpenPositions as Array<{ currentValue: number }> | undefined;
-        const vaultSize = openPosArr?.length
+        const openPositionsValue = openPosArr?.length
           ? openPosArr.reduce((s, p) => s + (p.currentValue ?? 0), 0)
-          : statsDoc.vault_size_usdc;
+          : 0;
 
         const stats = {
-          totalPnl:     statsDoc.totalPnlAllTime,
+          totalPnl:          statsDoc.totalPnlAllTime,
           roi30d,
           vaultSize,
-          winRate:      parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          sortino:      parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
-          profitFactor: parseFloat((statsDoc.profitFactor ?? 0).toFixed(2)),
-          trades:       statsDoc.win_rate_sample_size ?? 0,
-          lastTradeTs:  statsDoc.last_polled_activity_ts ?? 0,
+          openPositionsValue,
+          winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          sortino:           parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
+          profitFactor:      parseFloat((statsDoc.profitFactor ?? 0).toFixed(2)),
+          trades:            statsDoc.win_rate_sample_size ?? 0,
+          lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
         };
 
         // ── Open positions ──────────────────────────────────────────────

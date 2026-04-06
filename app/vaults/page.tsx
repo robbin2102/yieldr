@@ -16,7 +16,7 @@ type Position = { market: string; side: string; size: string; entry: string; pnl
 type Trade    = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; roi30d: number; vaultSize: number;
+    totalPnl: number; roi30d: number; vaultSize: number; openPositionsValue: number;
     winRate: number; sortino: number; profitFactor: number; trades: number;
   };
   chartPath: { line: string; fill: string };
@@ -55,13 +55,14 @@ function buildFallbackState(): Record<VaultId, VaultState> {
     const m = VAULT_META[id];
     out[id] = {
       stats: {
-        totalPnl:     m.fallback.totalPnl,
-        roi30d:       m.fallback.roi30d,
-        vaultSize:    m.fallback.vaultSize,
-        winRate:      m.fallback.winRate,
-        sortino:      m.fallback.sortino,
-        profitFactor: m.fallback.profitFactor,
-        trades:       m.fallback.trades,
+        totalPnl:          m.fallback.totalPnl,
+        roi30d:            m.fallback.roi30d,
+        vaultSize:         m.fallback.vaultSize,
+        openPositionsValue: 0,
+        winRate:           m.fallback.winRate,
+        sortino:           m.fallback.sortino,
+        profitFactor:      m.fallback.profitFactor,
+        trades:            m.fallback.trades,
       },
       chartPath: { line: m.fallback.chartPath, fill: m.fallback.chartFill },
       positions: FALLBACK_POSITIONS[id],
@@ -318,7 +319,12 @@ function VaultsPageInner() {
                   <div className="vp-open-positions">
                     <div className="vp-op-head">
                       <span className="vp-op-title"><span className="vp-op-dot" /> Open Positions</span>
-                      <span className="vp-op-count">{d.positions.length} active</span>
+                      <span className="vp-op-count">
+                        {d.positions.length} active
+                        {d.stats.openPositionsValue > 0 && (
+                          <> · <span className="vp-op-val">{fmtUsd(d.stats.openPositionsValue)}</span> deployed</>
+                        )}
+                      </span>
                     </div>
                     <div className="vp-op-cols">
                       <span>Market</span><span>Position</span><span>Size</span>
