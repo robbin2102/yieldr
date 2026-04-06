@@ -438,15 +438,15 @@ function VaultsPageInner() {
               ))}
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
-                {activeVault === 'geo' && vaultData[activeVault].wallet ? (
+                {activeVault === 'geo' ? (
                   <a
-                    href={`https://polygonscan.com/address/${vaultData[activeVault].wallet}`}
+                    href="https://polygonscan.com/address/0xcb51c48A1488c9A9f381C072594FD0c2c5ab359d"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="val green"
                     style={{ textDecoration: 'none' }}
                   >
-                    {vaultData[activeVault].wallet!.slice(0,6)}…{vaultData[activeVault].wallet!.slice(-4)} ✓
+                    0xcb51…359d ✓
                   </a>
                 ) : (
                   <span className="val green">Verifiable ✓</span>
