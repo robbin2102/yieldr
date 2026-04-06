@@ -110,10 +110,11 @@ export async function GET() {
 
         const capital = statsDoc.initial_capital_usdc || 1;
 
-        // ── ROI: use roce from timeframePnL (pnl/capital_deployed, pre-computed) ──
+        // ── ROI: use roce but only when trades exist in the period ─────────────
+        // If tradeCount=0, roce reflects only unrealized PnL which is misleading
         const tf = statsDoc.timeframePnL ?? {};
-        const roi7d  = parseFloat((tf['7d']?.roce  ?? 0).toFixed(1));
-        const roi30d = parseFloat((tf['30d']?.roce ?? 0).toFixed(1));
+        const roi7d  = (tf['7d']?.tradeCount  ?? 0) > 0 ? parseFloat((tf['7d']?.roce  ?? 0).toFixed(1)) : 0;
+        const roi30d = (tf['30d']?.tradeCount ?? 0) > 0 ? parseFloat((tf['30d']?.roce ?? 0).toFixed(1)) : 0;
 
         // ── Chart from daily snapshots (cumulative curve) ───────────────
         const snaps = snapshots as unknown as { daily_pnl_usdc: number; cumulative_pnl_usdc: number }[];
