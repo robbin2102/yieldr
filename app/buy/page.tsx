@@ -191,7 +191,7 @@ export default function BuyPage() {
 
           {/* Urgency */}
           <div className="bp-urgency">
-            ⏳ Early access closes in <strong>{countdown || '—'}</strong> — Next round at <strong>$25M FDV</strong>
+            ⏳ Tier 1 pricing ends April 30 · Next tier is 2x FDV
           </div>
 
           {/* Status messages */}
