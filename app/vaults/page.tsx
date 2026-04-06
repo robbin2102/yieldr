@@ -440,7 +440,7 @@ function VaultsPageInner() {
                 <span className="lbl">Onchain Proof</span>
                 {activeVault === 'geo' ? (
                   <a
-                    href="https://polygonscan.com/address/0xcb51c48A1488c9A9f381C072594FD0c2c5ab359d"
+                    href="https://polygonscan.com/address/0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="val green"
