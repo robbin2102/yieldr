@@ -122,16 +122,30 @@ export default function BuyPage() {
     if (amount < MIN_AMOUNT) { setStatus('error'); return; }
     setContributionAmount(amount);
     setCtxVault(selectedVault);
+
+    // If insufficient balance on current chain but funds on another, switch chain first
+    if (bestOtherChain) {
+      switchChain({ chainId: bestOtherChain.chainId });
+      setSelectedToken(bestOtherChain.token);
+      return;
+    }
+
     await initiatePayment();
-  }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus]);
+  }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus, bestOtherChain, switchChain, setSelectedToken]);
 
   const { half, tokens, tgeValue } = calcSplit(amount);
+
+  // Find the best other-chain balance that can cover the amount
+  const bestOtherChain = scanDone && balance < amount && otherBalances.length > 0
+    ? otherBalances.reduce((best, ob) => ob.balance > best.balance ? ob : best, otherBalances[0])
+    : null;
 
   const btnLabel = () => {
     if (!selectedVault) return 'Select a vault above to continue';
     if (isProcessing)   return 'Processing…';
     if (!isConnected)   return `Connect Wallet & Pay — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} Vault ↗`;
     if (!isSupported)   return 'Switch to a supported network';
+    if (bestOtherChain) return `Switch to ${bestOtherChain.chainName} & Pay $${fmtNum(amount)} ${bestOtherChain.token} ↗`;
     return `Deposit $${fmtNum(amount)} ${selectedToken} on ${chainName} — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} ↗`;
   };
 
