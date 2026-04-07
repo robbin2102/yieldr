@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { usePayment } from '../context/PaymentContext';
-import { EXPLORER_URL, DISCORD_INVITE } from '@/config/payment';
+import { getExplorerUrl, DISCORD_INVITE } from '@/config/payment';
 import './allocations.css';
 
 interface Contribution {
@@ -17,6 +17,9 @@ interface Contribution {
   fdv_at_purchase: number;
   tx_hash: string;
   created_at: string;
+  chain_id?: number;
+  network?: string;
+  token?: string;
 }
 
 interface AllocationStats {
@@ -245,8 +248,8 @@ export default function AllocationsPage() {
 
                   {contributions.length > 0 && (
                     <div className="ap-tx-link">
-                      Last tx:{' '}
-                      <a href={`${EXPLORER_URL}/tx/${contributions[0].tx_hash}`} target="_blank" rel="noopener noreferrer">
+                      Last tx ({contributions[0].network ?? 'Base'}):{' '}
+                      <a href={`${getExplorerUrl(contributions[0].chain_id ?? 8453)}/tx/${contributions[0].tx_hash}`} target="_blank" rel="noopener noreferrer">
                         {contributions[0].tx_hash.slice(0,10)}...{contributions[0].tx_hash.slice(-8)} &#8599;
                       </a>
                     </div>
@@ -304,6 +307,7 @@ export default function AllocationsPage() {
                         <th>USDC Vault</th>
                         <th>YLDR Tokens</th>
                         <th>Price/YLDR</th>
+                        <th>Chain</th>
                         <th>Tier</th>
                         <th>When</th>
                         <th>TX</th>
@@ -317,17 +321,18 @@ export default function AllocationsPage() {
                           <td className="green">${fmt(c.usdc_amount / 2)}</td>
                           <td className="green">{fmtInt(c.yldr_allocation)}</td>
                           <td>${fmt(c.yldr_price, 4)}</td>
+                          <td>{c.network ?? 'Base'}</td>
                           <td>{c.allocation_tier}</td>
                           <td>{timeAgo(c.created_at)}</td>
                           <td>
-                            <a href={`${EXPLORER_URL}/tx/${c.tx_hash}`} target="_blank" rel="noopener noreferrer">
+                            <a href={`${getExplorerUrl(c.chain_id ?? 8453)}/tx/${c.tx_hash}`} target="_blank" rel="noopener noreferrer">
                               {c.tx_hash.slice(0,6)}... &#8599;
                             </a>
                           </td>
                         </tr>
                       ))}
                       {pageItems.length === 0 && !loading && (
-                        <tr><td colSpan={8} style={{textAlign:'center',padding:'2rem',color:'var(--t3)'}}>No deposits yet.</td></tr>
+                        <tr><td colSpan={9} style={{textAlign:'center',padding:'2rem',color:'var(--t3)'}}>No deposits yet.</td></tr>
                       )}
                     </tbody>
                   </table>

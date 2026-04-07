@@ -17,7 +17,7 @@ export async function GET() {
     })
       .sort({ created_at: -1 })
       .limit(100)
-      .select('wallet_address usdc_amount yldr_allocation yldr_price allocation_tier fdv_at_purchase tx_hash created_at');
+      .select('wallet_address usdc_amount yldr_allocation yldr_price allocation_tier fdv_at_purchase tx_hash created_at chain_id network token');
 
     console.log(`✅ Found ${contributions.length} public contributions`);
 
