@@ -10,6 +10,7 @@ export interface IContribution extends Document {
   allocation_tier: string;
   fdv_at_purchase: number;
   tx_hash: string;
+  token: string;
   network: string;
   chain_id: number;
   status: 'pending' | 'confirmed' | 'failed';
