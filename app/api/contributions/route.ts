@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
       selected_vault,
       network,
       chain_id,
+      token,
     } = body;
 
     // Validate required fields
@@ -105,6 +106,7 @@ export async function POST(req: NextRequest) {
       allocation_tier: allocation.tier,
       fdv_at_purchase: allocation.fdv,
       tx_hash,
+      token: token || 'USDC',
       network,
       chain_id,
       status: 'confirmed',

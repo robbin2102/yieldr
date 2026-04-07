@@ -1,66 +1,43 @@
-// Hook: Orchestrate Complete Payment Flow
+// Hook: Orchestrate Complete Payment Flow (multi-chain, multi-token)
 
 import { useEffect, useRef } from 'react';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useUSDCBalance } from './useUSDCBalance';
 import { useUSDCTransfer } from './useUSDCTransfer';
 import { usePayment } from '@/app/context/PaymentContext';
 import { useRaiseStats, useAllocationPreview } from './useRaiseStats';
-import { CHAIN_ID, NETWORK_NAME } from '@/config/payment';
+import { SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
 
-export function usePaymentFlow() {
+export function usePaymentFlow(selectedToken: TokenId = 'USDC') {
   const { address, isConnected, chain } = useAccount();
+  const chainId = useChainId();
   const { openConnectModal } = useConnectModal();
-  const { switchChain } = useSwitchChain();
-  const { balance, refetch: refetchBalance } = useUSDCBalance();
+  const { balance, refetch: refetchBalance } = useUSDCBalance(selectedToken);
   const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
   const { contributionAmount, selectedVault, setStatus, setTxHash, setAllocationData, setHasCompletedPayment } = usePayment();
   const { totalRaised } = useRaiseStats();
   const allocation = useAllocationPreview(contributionAmount, totalRaised);
 
-  // Track which transactions we've already recorded to prevent duplicates
   const recordedTransactions = useRef<Set<string>>(new Set());
+
+  const chainConfig = SUPPORTED_CHAINS[chainId];
+  const tokenConfig = chainConfig?.tokens[selectedToken];
+  const isSupported = !!chainConfig;
 
   // Handle successful transaction
   useEffect(() => {
-    console.log('=== Transaction Status Check ===');
-    console.log('isConfirmed:', isConfirmed);
-    console.log('hash:', hash);
-    console.log('isPending:', isPending);
-    console.log('isConfirming:', isConfirming);
-    console.log('================================');
-
     if (isConfirmed && hash && !recordedTransactions.current.has(hash)) {
-      console.log('🎉 Transaction confirmed! Hash:', hash);
-      console.log('Setting status to success and showing modal...');
-
-      // Mark this transaction as recorded immediately to prevent duplicates
       recordedTransactions.current.add(hash);
-
       setTxHash(hash);
       setStatus('success');
-
-      // Save allocation data for display
       setAllocationData({
         yldrAmount: allocation.yldrAmount,
         effectivePrice: allocation.effectivePrice,
         breakdown: allocation.breakdown,
       });
-
-      console.log('Allocation data saved:', {
-        yldrAmount: allocation.yldrAmount,
-        effectivePrice: allocation.effectivePrice,
-        breakdownCount: allocation.breakdown.length,
-      });
-
-      // Mark payment as completed
       setHasCompletedPayment(true);
-
-      // Record contribution to database (non-blocking, only once)
       recordContribution(hash);
-
-      // Refetch balance after successful transfer
       refetchBalance();
     }
   }, [isConfirmed, hash]);
@@ -80,113 +57,57 @@ export function usePaymentFlow() {
     }
   }, [isPending, isConfirming]);
 
-  // Log wallet connection status (no auto-trigger for security)
-  useEffect(() => {
-    if (isConnected && address && chain) {
-      console.log('=== Wallet Connected ===');
-      console.log('Address:', address);
-      console.log('Chain ID:', chain.id);
-      console.log('Chain Name:', chain.name);
-      console.log('USDC Balance:', balance);
-      console.log('Contribution Amount:', contributionAmount);
-      console.log('Ready for payment?', chain.id === CHAIN_ID && balance >= contributionAmount);
-      console.log('=======================');
-    }
-  }, [isConnected, address, chain?.id, balance]);
-
   const recordContribution = async (txHash: string) => {
     try {
       const payload = {
         wallet_address: address,
         usdc_amount: contributionAmount,
         tx_hash: txHash,
-        network: NETWORK_NAME,
-        chain_id: CHAIN_ID,
+        network: chainConfig?.name ?? 'Base',
+        chain_id: chainId,
+        token: selectedToken,
         selected_vault: selectedVault ?? undefined,
       };
 
-      console.log('=== Recording Contribution to API ===');
-      console.log('Payload:', JSON.stringify(payload, null, 2));
-      console.log('Validating payload fields:');
-      console.log('  - wallet_address:', payload.wallet_address);
-      console.log('  - usdc_amount:', payload.usdc_amount);
-      console.log('  - tx_hash:', payload.tx_hash);
-      console.log('  - network:', payload.network);
-      console.log('  - chain_id:', payload.chain_id);
-      console.log('=====================================');
-
       const response = await fetch('/api/contributions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      console.log('API Response Status:', response.status);
-
       const data = await response.json();
-      console.log('API Response Data:', data);
-
-      if (!data.success) {
-        console.error('❌ Failed to record contribution:', data.error);
-      } else {
-        console.log('✅ Contribution recorded successfully!', data.data);
-
-        // Update allocation data with Discord invite if available
-        if (data.data.discord_invite) {
-          console.log('🎫 Discord invite received:', data.data.discord_invite);
-          setAllocationData({
-            yldrAmount: allocation.yldrAmount,
-            effectivePrice: allocation.effectivePrice,
-            breakdown: allocation.breakdown,
-            discord_invite: data.data.discord_invite,
-          });
-        }
+      if (data.success && data.data.discord_invite) {
+        setAllocationData({
+          yldrAmount: allocation.yldrAmount,
+          effectivePrice: allocation.effectivePrice,
+          breakdown: allocation.breakdown,
+          discord_invite: data.data.discord_invite,
+        });
       }
     } catch (error) {
-      console.error('❌ Error recording contribution:', error);
+      console.error('Error recording contribution:', error);
     }
   };
 
   const initiatePayment = async () => {
     try {
-      console.log('=== initiatePayment called ===');
-      console.log('isConnected:', isConnected);
-      console.log('contributionAmount:', contributionAmount);
-      console.log('balance:', balance);
-
-      // Step 1: Connect wallet if not connected
       if (!isConnected) {
-        console.log('Wallet not connected, opening RainbowKit modal...');
-        if (openConnectModal) {
-          openConnectModal();
-        } else {
-          console.error('openConnectModal is not available');
-        }
+        if (openConnectModal) openConnectModal();
         return;
       }
 
-      // Step 2: Switch to Base if needed
-      if (chain?.id !== CHAIN_ID) {
-        try {
-          await switchChain({ chainId: CHAIN_ID });
-        } catch (error) {
-          console.error('Failed to switch network:', error);
-          setStatus('error');
-          return;
-        }
+      if (!isSupported || !tokenConfig) {
+        setStatus('error');
+        return;
       }
 
-      // Step 3: Check balance
       if (balance < contributionAmount) {
         setStatus('error');
         return;
       }
 
-      // Step 4: Execute transfer
       setStatus('processing');
-      await transfer(contributionAmount);
+      await transfer(contributionAmount, tokenConfig);
     } catch (error) {
       console.error('Payment initiation error:', error);
       setStatus('error');
@@ -200,5 +121,9 @@ export function usePaymentFlow() {
     balance,
     isProcessing: isPending || isConfirming,
     txHash: hash,
+    chainId,
+    chainName: chainConfig?.name,
+    isSupported,
+    tokenConfig,
   };
 }

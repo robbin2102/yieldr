@@ -63,10 +63,15 @@ const ContributionSchema = new Schema<IContribution>(
       unique: true,
       index: true,
     },
+    token: {
+      type: String,
+      default: 'USDC',
+      enum: ['USDC', 'USDT'],
+    },
     network: {
       type: String,
       required: true,
-      enum: ['Base', 'Ethereum', 'Arbitrum', 'Polygon', 'BNB'],
+      enum: ['Base', 'Ethereum', 'Arbitrum', 'Polygon', 'BNB Chain', 'BNB'],
     },
     chain_id: {
       type: Number,

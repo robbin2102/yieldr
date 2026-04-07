@@ -1,32 +1,36 @@
-// Hook: Check USDC Balance on Base
+// Hook: Read stablecoin balance on current chain
 
 import { useState, useEffect } from 'react';
-import { useAccount, useReadContract } from 'wagmi';
-import { formatUnits, erc20Abi } from 'viem';
-import { USDC_ADDRESS, USDC_DECIMALS } from '@/config/payment';
+import { useAccount, useReadContract, useChainId } from 'wagmi';
+import { formatUnits } from 'viem';
+import { SUPPORTED_CHAINS, ERC20_ABI, type TokenId } from '@/config/payment';
 
-export function useUSDCBalance() {
+export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
   const { address, isConnected } = useAccount();
+  const chainId = useChainId();
   const [balance, setBalance] = useState(0);
 
+  const chainConfig = SUPPORTED_CHAINS[chainId];
+  const tokenConfig = chainConfig?.tokens[selectedToken];
+
   const { data, isLoading, refetch } = useReadContract({
-    address: USDC_ADDRESS as `0x${string}`,
-    abi: erc20Abi,
+    address: tokenConfig?.address,
+    abi: ERC20_ABI,
     functionName: 'balanceOf',
     args: address ? [address] : undefined,
     query: {
-      enabled: !!address && isConnected,
+      enabled: !!address && isConnected && !!tokenConfig,
     },
   });
 
   useEffect(() => {
-    if (data) {
-      const balanceInUsdc = parseFloat(formatUnits(data as bigint, USDC_DECIMALS));
-      setBalance(balanceInUsdc);
+    if (data && tokenConfig) {
+      const bal = parseFloat(formatUnits(data as bigint, tokenConfig.decimals));
+      setBalance(bal);
     } else {
       setBalance(0);
     }
-  }, [data]);
+  }, [data, tokenConfig?.decimals]);
 
   return {
     balance,

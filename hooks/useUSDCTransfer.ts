@@ -1,8 +1,8 @@
-// Hook: Execute USDC Transfer to Treasury
+// Hook: Execute stablecoin transfer to Treasury (multi-chain, multi-token)
 
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { parseUnits, erc20Abi } from 'viem';
-import { USDC_ADDRESS, USDC_DECIMALS, TREASURY_ADDRESS } from '@/config/payment';
+import { parseUnits } from 'viem';
+import { TREASURY_ADDRESS, type TokenConfig } from '@/config/payment';
 
 export function useUSDCTransfer() {
   const { data: hash, writeContract, error: writeError, isPending } = useWriteContract();
@@ -11,22 +11,20 @@ export function useUSDCTransfer() {
     hash,
   });
 
-  const transfer = async (amount: number) => {
+  const transfer = async (amount: number, tokenConfig: TokenConfig) => {
     try {
-      const amountInWei = parseUnits(amount.toString(), USDC_DECIMALS);
+      const amountInWei = parseUnits(amount.toString(), tokenConfig.decimals);
 
-      console.log('=== USDC Transfer Details ===');
-      console.log('USDC Contract Address:', USDC_ADDRESS);
-      console.log('Treasury Address:', TREASURY_ADDRESS);
-      console.log('Amount (USDC):', amount);
-      console.log('Amount (Wei):', amountInWei.toString());
-      console.log('Amount (BigInt):', amountInWei);
-      console.log('Using erc20Abi from viem');
-      console.log('============================');
+      console.log('=== Stablecoin Transfer ===');
+      console.log('Token:', tokenConfig.address);
+      console.log('Treasury:', TREASURY_ADDRESS);
+      console.log('Amount:', amount, '| Decimals:', tokenConfig.decimals);
+      console.log('Wei:', amountInWei.toString());
+      console.log('===========================');
 
       writeContract({
-        address: USDC_ADDRESS as `0x${string}`,
-        abi: erc20Abi,
+        address: tokenConfig.address,
+        abi: tokenConfig.abi,
         functionName: 'transfer',
         args: [TREASURY_ADDRESS as `0x${string}`, amountInWei],
       });

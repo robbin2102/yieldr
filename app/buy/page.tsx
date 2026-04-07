@@ -4,18 +4,19 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './buy.css';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { usePaymentFlow } from '@/hooks/usePaymentFlow';
 import { useUSDCBalance } from '@/hooks/useUSDCBalance';
+import { SUPPORTED_CHAINS, getExplorerUrl, type TokenId } from '@/config/payment';
 
 // ── Constants ──────────────────────────────────────────────────────────────
 type VaultId = 'geo' | 'nba' | 'soccerAlpha';
 const TOTAL_SUPPLY  = 210_000_000;
 const CURRENT_FDV   = 9_000_000;
 const TGE_FDV       = 75_000_000;
-const TOKENS_PER_USD = TOTAL_SUPPLY / CURRENT_FDV; // 17.5
+const TOKENS_PER_USD = TOTAL_SUPPLY / CURRENT_FDV;
 
 const VAULT_OPTS: { id: VaultId; icon: string; name: string; roi: string }[] = [
   { id: 'geo',         icon: '🌐', name: 'Geopolitics',  roi: '' },
@@ -42,22 +43,30 @@ function fmtNum(n: number) {
 export default function BuyPage() {
   const router = useRouter();
   const { isConnected } = useAccount();
+  const chainId = useChainId();
+  const { switchChain } = useSwitchChain();
   const { openConnectModal } = useConnectModal();
   const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus } = usePayment();
-  const { initiatePayment, isProcessing, txHash } = usePaymentFlow();
-  const { balance } = useUSDCBalance();
 
   const [selectedVault, setSelectedVault] = useState<VaultId | null>(null);
+  const [selectedToken, setSelectedToken] = useState<TokenId>('USDC');
   const [amount, setAmount]               = useState(1000);
   const [customInput, setCustomInput]     = useState('1,000');
   const [activePreset, setActivePreset]   = useState<number | null>(1000);
   const [spotsLeft, setSpotsLeft]         = useState<number | null>(null);
-  const [countdown, setCountdown]         = useState('');
-  const [deadline, setDeadline]           = useState<Date>(() => {
-    const d = new Date(); d.setDate(d.getDate() + 90); return d;
-  });
   const [vaultRois, setVaultRois]         = useState<Partial<Record<VaultId, string>>>({});
   const [bestRoi, setBestRoi]             = useState<string | null>(null);
+
+  const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported } = usePaymentFlow(selectedToken);
+  const chainConfig = SUPPORTED_CHAINS[chainId];
+  const availableTokens = chainConfig ? Object.keys(chainConfig.tokens) as TokenId[] : [];
+
+  // Auto-select first available token when chain changes
+  useEffect(() => {
+    if (availableTokens.length > 0 && !availableTokens.includes(selectedToken)) {
+      setSelectedToken(availableTokens[0]);
+    }
+  }, [chainId]);
 
   // ── Redirect to allocations after successful payment ─────────────────────
   useEffect(() => {
@@ -72,7 +81,6 @@ export default function BuyPage() {
     fetch('/api/site-config').then(r => r.json()).then(({ data }) => {
       if (!data) return;
       setSpotsLeft(data.spots_remaining ?? null);
-      if (data.deadline) setDeadline(new Date(data.deadline));
     }).catch(() => {});
 
     fetch('/api/vaults/data').then(r => r.json()).then(({ data }) => {
@@ -89,20 +97,6 @@ export default function BuyPage() {
       setVaultRois(rois);
     }).catch(() => {});
   }, []);
-
-  // ── Countdown ─────────────────────────────────────────────────────────────
-  useEffect(() => {
-    function tick() {
-      const diff = deadline.getTime() - Date.now();
-      if (diff <= 0) { setCountdown('Closed'); return; }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      setCountdown(`${d} days ${h}h`);
-    }
-    tick();
-    const t = setInterval(tick, 60000);
-    return () => clearInterval(t);
-  }, [deadline]);
 
   // ── Sync amount to PaymentContext ────────────────────────────────────────
   useEffect(() => {
@@ -137,11 +131,14 @@ export default function BuyPage() {
   const btnLabel = () => {
     if (!selectedVault) return 'Select a vault above to continue';
     if (isProcessing)   return 'Processing…';
-    if (!isConnected)   return `Connect Wallet & Buy — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} Vault ↗`;
-    return `Deposit $${fmtNum(amount)} USDC — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} Vault ↗`;
+    if (!isConnected)   return `Connect Wallet & Pay — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} Vault ↗`;
+    if (!isSupported)   return 'Switch to a supported network';
+    return `Deposit $${fmtNum(amount)} ${selectedToken} on ${chainName} — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} ↗`;
   };
 
-  const btnDisabled = !selectedVault || isProcessing || amount < MIN_AMOUNT;
+  const btnDisabled = !selectedVault || isProcessing || amount < MIN_AMOUNT || (isConnected && !isSupported);
+
+  const explorerUrl = getExplorerUrl(chainId);
 
   return (
     <div className="bp-root">
@@ -157,7 +154,7 @@ export default function BuyPage() {
           </svg>
           <span className="bp-nav-brand">YIELDR</span>
         </div>
-        <Link href="/vaults" className="bp-nav-back">← Back to Vaults</Link>
+        <Link href="/vaults" className="bp-nav-back">&#8592; Back to Vaults</Link>
       </nav>
 
       <main className="bp-main">
@@ -166,7 +163,7 @@ export default function BuyPage() {
           {/* Head */}
           <div className="bp-head">
             <h1>Early Access — YLDR</h1>
-            <p>Choose your vault, deposit USDC. Half starts earning 4.5% APY today and migrates to your chosen agent vault at Q3 2026 launch. Half is your YLDR token allocation at the lowest valuation.</p>
+            <p>Choose your vault, deposit USDC or USDT. Half starts earning 4.5% APY today and migrates to your chosen agent vault at Q3 2026 launch. Half is your YLDR token allocation at the lowest valuation.</p>
           </div>
 
           {/* Live strip */}
@@ -200,18 +197,20 @@ export default function BuyPage() {
           )}
           {status === 'success' && txHash && (
             <div className="bp-status success">
-              ✓ Payment confirmed!{' '}
-              <a href={`https://basescan.org/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
-                View on Basescan ↗
+              &#10003; Payment confirmed! Redirecting to your allocation…{' '}
+              <a href={`${explorerUrl}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
+                View on {chainName ?? 'Explorer'} &#8599;
               </a>
             </div>
           )}
           {status === 'error' && (
             <div className="bp-status error">
               {amount < MIN_AMOUNT
-                ? `Minimum contribution is $${MIN_AMOUNT} USDC`
+                ? `Minimum contribution is $${MIN_AMOUNT}`
+                : isConnected && !isSupported
+                ? 'Please switch to Base, Ethereum, Polygon, or BNB Chain'
                 : balance < amount
-                ? `Insufficient USDC balance (have $${balance.toFixed(2)})`
+                ? `Insufficient ${selectedToken} balance (have $${balance.toFixed(2)})`
                 : 'Transaction failed — please try again'}
             </div>
           )}
@@ -228,7 +227,7 @@ export default function BuyPage() {
                   className={`bp-vault-opt${selectedVault === v.id ? ' selected' : ''}`}
                   onClick={() => setSelectedVault(v.id)}
                 >
-                  <span className="bp-vault-check">✓</span>
+                  <span className="bp-vault-check">&#10003;</span>
                   <span className="bp-vault-icon">{v.icon}</span>
                   <span className="bp-vault-name">{v.name}</span>
                   <span className="bp-vault-roi">{vaultRois[v.id] ?? '—'} 30D</span>
@@ -239,8 +238,57 @@ export default function BuyPage() {
               Your USDC earns 4.5% APY in a Base vault today. At Q3 2026 launch, it migrates to this agent trading vault.
             </div>
 
-            {/* Step 2: Amount */}
-            <div className="bp-section-label">Step 2 — Select amount (USDC)</div>
+            {/* Step 2: Amount + Token */}
+            <div className="bp-section-label">Step 2 — Select amount</div>
+
+            {/* Chain + Token selector */}
+            {isConnected && (
+              <div className="bp-chain-row">
+                <div className="bp-chain-info">
+                  <span className="bp-chain-dot" /> {chainName ?? 'Unknown'} {isSupported ? '' : '(unsupported)'}
+                </div>
+                {isSupported && availableTokens.length > 1 && (
+                  <div className="bp-token-toggle">
+                    {availableTokens.map(t => (
+                      <button
+                        key={t}
+                        className={`bp-token-btn${selectedToken === t ? ' active' : ''}`}
+                        onClick={() => setSelectedToken(t)}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {isSupported && availableTokens.length === 1 && (
+                  <div className="bp-token-single">{availableTokens[0]}</div>
+                )}
+                {isConnected && isSupported && (
+                  <div className="bp-balance">
+                    Balance: <strong>${balance.toFixed(2)}</strong> {selectedToken}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Unsupported chain — switch buttons */}
+            {isConnected && !isSupported && (
+              <div className="bp-switch-chain">
+                <div className="bp-switch-label">Switch to a supported network:</div>
+                <div className="bp-switch-btns">
+                  {Object.entries(SUPPORTED_CHAINS).map(([id, cfg]) => (
+                    <button
+                      key={id}
+                      className="bp-switch-btn"
+                      onClick={() => switchChain({ chainId: Number(id) })}
+                    >
+                      {cfg.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="bp-amount-section">
               <div className="bp-amount-row">
                 {PRESET_AMOUNTS.map(p => (
@@ -267,24 +315,24 @@ export default function BuyPage() {
               <div className="bp-split-title">Your Allocation</div>
               <div className="bp-split-row">
                 <span className="bp-split-lbl">
-                  💰 USDC Vault (4.5% APY now)
+                  USDC Vault (4.5% APY now)
                   <span className="bp-split-sub">Migrates to agent vault Q3 2026</span>
                 </span>
                 <span className="bp-split-val">${fmtNum(half)}</span>
               </div>
               <div className="bp-split-row">
                 <span className="bp-split-lbl">
-                  🪙 YLDR Token @ $9M FDV
+                  YLDR Token @ $9M FDV
                   <span className="bp-split-sub">12-month linear vest from TGE</span>
                 </span>
                 <span className="bp-split-val">${fmtNum(half)}</span>
               </div>
               <div className="bp-split-row">
-                <span className="bp-split-lbl">📊 YLDR Tokens Received</span>
+                <span className="bp-split-lbl">YLDR Tokens Received</span>
                 <span className="bp-split-val white">{fmtNum(tokens)}</span>
               </div>
               <div className="bp-split-row">
-                <span className="bp-split-lbl">💎 Projected value at $75M TGE FDV</span>
+                <span className="bp-split-lbl">Projected value at $75M TGE FDV</span>
                 <span className="bp-split-val">${fmtNum(tgeValue)}</span>
               </div>
             </div>
@@ -292,7 +340,7 @@ export default function BuyPage() {
             {/* Earning callout */}
             <div className="bp-earning">
               <div className="bp-earning-big">Your USDC starts earning 4.5% APY immediately</div>
-              <div className="bp-earning-small">No lock-up on USDC portion • Withdraw anytime before vault migration</div>
+              <div className="bp-earning-small">No lock-up on USDC portion &bull; Withdraw anytime before vault migration</div>
             </div>
 
             {/* CTA */}
@@ -300,7 +348,7 @@ export default function BuyPage() {
               {btnLabel()}
             </button>
             <div className="bp-fine">
-              Min $1 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE Q1 2027 • Performance data from live testing, not guaranteed
+              Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE Q1 2027
             </div>
           </div>
 
@@ -309,9 +357,9 @@ export default function BuyPage() {
             <div className="bp-trust-grid">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <div className="bp-trust-item"><img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730551690x161831425309488800/_base-square%20%282%29.svg" alt="Base" /> Batches 002 Winner</div>
-              <div className="bp-trust-item">🔒 Multisig Treasury</div>
-              <div className="bp-trust-item">🔗 Onchain Verifiable</div>
-              <div className="bp-trust-item">📖 Build-in-Public</div>
+              <div className="bp-trust-item">&#128274; Multisig Treasury</div>
+              <div className="bp-trust-item">&#128279; Onchain Verifiable</div>
+              <div className="bp-trust-item">&#128214; Build-in-Public</div>
             </div>
           </div>
 

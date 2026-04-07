@@ -1,4 +1,4 @@
-// Wagmi and RainbowKit configuration
+// Wagmi and RainbowKit configuration — Multi-chain support
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   metaMaskWallet,
@@ -9,7 +9,7 @@ import {
   trustWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { createConfig, http } from 'wagmi';
-import { base } from 'wagmi/chains';
+import { base, mainnet, polygon, bsc } from 'wagmi/chains';
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
 
@@ -39,9 +39,12 @@ const connectors = connectorsForWallets(
 
 export const config = createConfig({
   connectors,
-  chains: [base],
+  chains: [base, mainnet, polygon, bsc],
   ssr: true,
   transports: {
     [base.id]: http(),
+    [mainnet.id]: http(),
+    [polygon.id]: http(),
+    [bsc.id]: http(),
   },
 });
