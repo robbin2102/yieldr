@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useReadContract, useChainId } from 'wagmi';
-import { formatUnits, createPublicClient, http } from 'viem';
+import { formatUnits, createPublicClient, http, type Chain } from 'viem';
 import { base, mainnet, polygon, bsc } from 'viem/chains';
 import { SUPPORTED_CHAINS, ERC20_ABI, type TokenId } from '@/config/payment';
 
-const VIEM_CHAINS: Record<number, typeof base> = {
+const VIEM_CHAINS: Record<number, Chain> = {
   8453: base,
   1: mainnet,
   137: polygon,
