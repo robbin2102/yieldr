@@ -13,7 +13,7 @@ export function usePaymentFlow(selectedToken: TokenId = 'USDC') {
   const { address, isConnected, chain } = useAccount();
   const chainId = useChainId();
   const { openConnectModal } = useConnectModal();
-  const { balance, refetch: refetchBalance } = useUSDCBalance(selectedToken);
+  const { balance, refetch: refetchBalance, otherBalances, scanDone } = useUSDCBalance(selectedToken);
   const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
   const { contributionAmount, selectedVault, setStatus, setTxHash, setAllocationData, setHasCompletedPayment } = usePayment();
   const { totalRaised } = useRaiseStats();
@@ -25,9 +25,26 @@ export function usePaymentFlow(selectedToken: TokenId = 'USDC') {
   const tokenConfig = chainConfig?.tokens[selectedToken];
   const isSupported = !!chainConfig;
 
+  // Log connection state
+  useEffect(() => {
+    if (isConnected && address) {
+      console.log('=== Payment Flow State ===');
+      console.log('Address:', address);
+      console.log('Chain:', chain?.name, '(', chainId, ')');
+      console.log('Supported:', isSupported);
+      console.log('Token:', selectedToken);
+      console.log('Token Config:', tokenConfig ? `${tokenConfig.address} (${tokenConfig.decimals} decimals)` : 'NONE');
+      console.log('Balance:', balance);
+      console.log('Amount:', contributionAmount);
+      console.log('Can pay:', isSupported && !!tokenConfig && balance >= contributionAmount);
+      console.log('==========================');
+    }
+  }, [isConnected, address, chainId, balance, selectedToken, contributionAmount]);
+
   // Handle successful transaction
   useEffect(() => {
     if (isConfirmed && hash && !recordedTransactions.current.has(hash)) {
+      console.log('Payment confirmed! Hash:', hash);
       recordedTransactions.current.add(hash);
       setTxHash(hash);
       setStatus('success');
@@ -69,6 +86,8 @@ export function usePaymentFlow(selectedToken: TokenId = 'USDC') {
         selected_vault: selectedVault ?? undefined,
       };
 
+      console.log('Recording contribution:', payload);
+
       const response = await fetch('/api/contributions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -91,22 +110,29 @@ export function usePaymentFlow(selectedToken: TokenId = 'USDC') {
 
   const initiatePayment = async () => {
     try {
+      console.log('=== initiatePayment ===');
+      console.log('Connected:', isConnected, '| Supported:', isSupported);
+      console.log('Token:', selectedToken, '| Balance:', balance, '| Amount:', contributionAmount);
+
       if (!isConnected) {
         if (openConnectModal) openConnectModal();
         return;
       }
 
       if (!isSupported || !tokenConfig) {
+        console.error('Chain not supported or token not available');
         setStatus('error');
         return;
       }
 
       if (balance < contributionAmount) {
+        console.error(`Insufficient balance: have $${balance}, need $${contributionAmount}`);
         setStatus('error');
         return;
       }
 
       setStatus('processing');
+      console.log('Calling transfer:', contributionAmount, selectedToken, 'on', chainConfig?.name);
       await transfer(contributionAmount, tokenConfig);
     } catch (error) {
       console.error('Payment initiation error:', error);
@@ -125,5 +151,7 @@ export function usePaymentFlow(selectedToken: TokenId = 'USDC') {
     chainName: chainConfig?.name,
     isSupported,
     tokenConfig,
+    otherBalances,
+    scanDone,
   };
 }

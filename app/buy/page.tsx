@@ -8,7 +8,6 @@ import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { usePaymentFlow } from '@/hooks/usePaymentFlow';
-import { useUSDCBalance } from '@/hooks/useUSDCBalance';
 import { SUPPORTED_CHAINS, getExplorerUrl, type TokenId } from '@/config/payment';
 
 // ── Constants ──────────────────────────────────────────────────────────────
@@ -57,7 +56,7 @@ export default function BuyPage() {
   const [vaultRois, setVaultRois]         = useState<Partial<Record<VaultId, string>>>({});
   const [bestRoi, setBestRoi]             = useState<string | null>(null);
 
-  const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported } = usePaymentFlow(selectedToken);
+  const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported, otherBalances, scanDone } = usePaymentFlow(selectedToken);
   const chainConfig = SUPPORTED_CHAINS[chainId];
   const availableTokens = chainConfig ? Object.keys(chainConfig.tokens) as TokenId[] : [];
 
@@ -210,7 +209,7 @@ export default function BuyPage() {
                 : isConnected && !isSupported
                 ? 'Please switch to Base, Ethereum, Polygon, or BNB Chain'
                 : balance < amount
-                ? `Insufficient ${selectedToken} balance (have $${balance.toFixed(2)})`
+                ? `Insufficient ${selectedToken} balance (have $${balance.toFixed(2)})${otherBalances.length > 0 ? ' — see other chains below' : ''}`
                 : 'Transaction failed — please try again'}
             </div>
           )}
@@ -283,6 +282,29 @@ export default function BuyPage() {
                       onClick={() => switchChain({ chainId: Number(id) })}
                     >
                       {cfg.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Funds on other chains — show when current chain balance is low */}
+            {isConnected && isSupported && scanDone && balance < amount && otherBalances.length > 0 && (
+              <div className="bp-switch-chain">
+                <div className="bp-switch-label">
+                  💡 You have stablecoins on other chains:
+                </div>
+                <div className="bp-switch-btns">
+                  {otherBalances.map((ob, i) => (
+                    <button
+                      key={i}
+                      className="bp-switch-btn"
+                      onClick={() => {
+                        switchChain({ chainId: ob.chainId });
+                        setSelectedToken(ob.token);
+                      }}
+                    >
+                      {ob.chainName}: ${ob.balance.toFixed(2)} {ob.token}
                     </button>
                   ))}
                 </div>
