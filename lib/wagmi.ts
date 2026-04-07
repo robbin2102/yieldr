@@ -42,9 +42,9 @@ export const config = createConfig({
   chains: [base, mainnet, polygon, bsc],
   ssr: true,
   transports: {
-    [base.id]: http(),
-    [mainnet.id]: http(),
-    [polygon.id]: http(),
-    [bsc.id]: http(),
+    [base.id]: http(process.env.NEXT_PUBLIC_RPC_BASE),
+    [mainnet.id]: http(process.env.NEXT_PUBLIC_RPC_ETHEREUM),
+    [polygon.id]: http(process.env.NEXT_PUBLIC_RPC_POLYGON),
+    [bsc.id]: http(process.env.NEXT_PUBLIC_RPC_BSC),
   },
 });

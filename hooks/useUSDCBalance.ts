@@ -13,12 +13,12 @@ const VIEM_CHAINS: Record<number, typeof base> = {
   56: bsc,
 };
 
-// Public RPCs that support browser CORS requests
+// QuickNode RPCs from env vars (fallback to public RPCs)
 const PUBLIC_RPCS: Record<number, string> = {
-  8453: 'https://mainnet.base.org',
-  1: 'https://eth.llamarpc.com',
-  137: 'https://polygon.llamarpc.com',
-  56: 'https://bsc-dataseed.binance.org',
+  8453: process.env.NEXT_PUBLIC_RPC_BASE || 'https://mainnet.base.org',
+  1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
+  137: process.env.NEXT_PUBLIC_RPC_POLYGON || 'https://polygon.llamarpc.com',
+  56: process.env.NEXT_PUBLIC_RPC_BSC || 'https://bsc-dataseed.binance.org',
 };
 
 export interface ChainBalance {
