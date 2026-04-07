@@ -55,10 +55,10 @@ function Skel({ s = 'md' }: { s?: 'sm' | 'md' | 'lg' }) {
 }
 
 export default function AllocationsPage() {
-  const { address, isConnected, isReconnecting, isConnecting } = useAccount();
+  const { address, isConnected, isReconnecting, isConnecting, status: accountStatus } = useAccount();
   const { hasCompletedPayment, allocationData, txHash, status, reset } = usePayment();
 
-  const [mounted, setMounted] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const [userStats, setUserStats]             = useState<AllocationStats | null>(null);
   const [contributions, setContributions]     = useState<Contribution[]>([]);
   const [publicContribs, setPublicContribs]   = useState<Contribution[]>([]);
@@ -67,8 +67,12 @@ export default function AllocationsPage() {
   const [discordClaimed, setDiscordClaimed]   = useState(false);
   const [currentPage, setCurrentPage]         = useState(1);
 
-  // Track client-side hydration
-  useEffect(() => { setMounted(true); }, []);
+  // Wait for wagmi to finish reconnecting after SSR hydration
+  useEffect(() => {
+    if (isConnected || accountStatus === 'disconnected') {
+      setHydrated(true);
+    }
+  }, [isConnected, accountStatus]);
 
   useEffect(() => {
     if (!address) { setLoading(false); return; }
@@ -165,7 +169,7 @@ export default function AllocationsPage() {
 
         <main className="ap-main">
 
-          {!mounted || isReconnecting || isConnecting ? (
+          {!hydrated || isReconnecting || isConnecting ? (
             <div className="ap-not-connected">
               <div className="ap-nc-title">Connecting...</div>
               <div className="ap-nc-sub">Reconnecting to your wallet...</div>

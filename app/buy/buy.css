@@ -293,6 +293,7 @@
   border-bottom: 1px solid rgba(255,255,255,.04);
 }
 .bp-modal-row:last-child { border-bottom: none; }
+.bp-modal-divider { height: 1px; background: var(--b1); margin: .2rem 0; }
 .bp-modal-row span:last-child { color: var(--t1); font-weight: 500; }
 .bp-modal-row .green { color: var(--g); }
 .bp-modal-row a { color: var(--g); text-decoration: none; }

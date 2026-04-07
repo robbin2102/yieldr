@@ -45,7 +45,7 @@ export default function BuyPage() {
   const chainId = useChainId();
   const { switchChain } = useSwitchChain();
   const { openConnectModal } = useConnectModal();
-  const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus } = usePayment();
+  const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus, allocationData } = usePayment();
 
   const [selectedVault, setSelectedVault] = useState<VaultId | null>(null);
   const [selectedToken, setSelectedToken] = useState<TokenId>('USDC');
@@ -433,17 +433,25 @@ export default function BuyPage() {
 
             <div className="bp-modal-details">
               <div className="bp-modal-row">
-                <span>Amount Deposited</span>
+                <span>Total Deposited</span>
                 <span>${fmtNum(amount)} {selectedToken}</span>
               </div>
+              <div className="bp-modal-divider" />
               <div className="bp-modal-row">
-                <span>USDC Vault (4.5% APY)</span>
+                <span>Stablecoin Vault (4.5% APY)</span>
                 <span className="green">${fmtNum(half)}</span>
               </div>
               <div className="bp-modal-row">
-                <span>YLDR Tokens</span>
-                <span className="green">{fmtNum(tokens)} YLDR</span>
+                <span>YLDR Token Allocation</span>
+                <span className="green">{fmtNum(allocationData?.yldrAmount ?? tokens)} YLDR</span>
               </div>
+              {allocationData?.effectivePrice && (
+                <div className="bp-modal-row">
+                  <span>Price per YLDR</span>
+                  <span>${allocationData.effectivePrice.toFixed(4)}</span>
+                </div>
+              )}
+              <div className="bp-modal-divider" />
               <div className="bp-modal-row">
                 <span>Network</span>
                 <span>{chainName}</span>
