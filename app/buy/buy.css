@@ -39,6 +39,10 @@
 }
 .bp-nav-l { display: flex; align-items: center; gap: .6rem; }
 .bp-nav-brand { font-family: var(--fd); font-weight: 700; font-size: .95rem; letter-spacing: 3px; }
+.bp-nav-r { display: flex; align-items: center; gap: 1rem; }
+.bp-nav-r .ynav-links { display: none; }
+.bp-nav-r .ynav-soc { display: none; }
+.bp-nav-r .ynav-cta { display: none; }
 .bp-nav-back { font-size: .65rem; color: var(--t3); letter-spacing: 1px; text-transform: uppercase; text-decoration: none; transition: color .2s; }
 .bp-nav-back:hover { color: var(--t1); }
 

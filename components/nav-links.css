@@ -1,0 +1,119 @@
+/* ── Shared NavLinks Component (ynav- prefix) ── */
+
+/* Desktop nav links */
+.ynav-links {
+  display: flex; align-items: center; gap: 1.8rem;
+}
+.ynav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: #8888a0; text-decoration: none;
+  letter-spacing: .5px; text-transform: uppercase;
+  transition: color .2s;
+}
+.ynav-links a:hover, .ynav-links a.active { color: #e8e8f0; }
+.ynav-alloc { color: #00E87B !important; }
+.ynav-alloc.active { color: #00E87B !important; text-decoration: underline; text-underline-offset: 4px; }
+
+/* Socials */
+.ynav-soc { display: flex; align-items: center; gap: .8rem; }
+.ynav-soc a { display: flex; }
+.ynav-soc svg { width: 16px; height: 16px; fill: #55556a; transition: fill .2s; }
+.ynav-soc a:hover svg { fill: #e8e8f0; }
+
+/* CTA button */
+.ynav-cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; text-decoration: none;
+  padding: .5rem 1.2rem; background: #00E87B; color: #000;
+  transition: opacity .2s;
+}
+.ynav-cta:hover { opacity: .9; }
+
+/* Hamburger — hidden on desktop */
+.ynav-hamburger {
+  display: none; flex-direction: column; justify-content: center;
+  gap: 4px; background: none; border: 1px solid #1a1a2e;
+  padding: 8px; cursor: pointer; width: 36px; height: 36px;
+}
+.ynav-hamburger span {
+  display: block; width: 100%; height: 2px; background: #8888a0;
+  transition: background .2s;
+}
+.ynav-hamburger:hover span { background: #e8e8f0; }
+
+/* ── Mobile overlay ── */
+.ynav-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(2,2,4,.85); backdrop-filter: blur(8px);
+  animation: ynav-fade .2s ease;
+}
+@keyframes ynav-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.ynav-menu {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: min(320px, 85vw);
+  background: #07070b; border-left: 1px solid #1a1a2e;
+  display: flex; flex-direction: column;
+  animation: ynav-slide .25s ease;
+}
+@keyframes ynav-slide { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+.ynav-menu-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.2rem; border-bottom: 1px solid #1a1a2e;
+}
+.ynav-menu-brand {
+  display: flex; align-items: center; gap: .5rem;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 700; font-size: .9rem; letter-spacing: 3px; color: #e8e8f0;
+}
+.ynav-menu-close {
+  background: none; border: 1px solid #1a1a2e; color: #55556a;
+  width: 32px; height: 32px; font-size: .8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.ynav-menu-close:hover { border-color: #ff4455; color: #ff4455; }
+
+.ynav-menu-links {
+  flex: 1; display: flex; flex-direction: column;
+  padding: 1rem 0; overflow-y: auto;
+}
+.ynav-menu-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; color: #8888a0; text-decoration: none;
+  padding: .75rem 1.5rem; letter-spacing: .5px;
+  text-transform: uppercase; transition: all .2s;
+  border-bottom: 1px solid rgba(255,255,255,.03);
+}
+.ynav-menu-links a:hover, .ynav-menu-links a:active { color: #e8e8f0; background: rgba(255,255,255,.03); }
+.ynav-menu-links a.active { color: #00E87B; background: rgba(0,232,123,.05); }
+.ynav-alloc-mobile { color: #00E87B !important; }
+
+.ynav-menu-footer {
+  padding: 1rem 1.2rem; border-top: 1px solid #1a1a2e;
+  display: flex; flex-direction: column; gap: .8rem;
+}
+.ynav-menu-cta {
+  display: block; text-align: center; padding: .65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; font-weight: 600; letter-spacing: 1px;
+  text-decoration: none; background: #00E87B; color: #000;
+  transition: opacity .2s;
+}
+.ynav-menu-cta:hover { opacity: .9; }
+.ynav-menu-soc {
+  display: flex; justify-content: center; gap: 1rem;
+}
+.ynav-menu-soc a { display: flex; }
+.ynav-menu-soc svg { width: 18px; height: 18px; fill: #55556a; transition: fill .2s; }
+.ynav-menu-soc a:hover svg { fill: #e8e8f0; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ynav-links { display: none; }
+  .ynav-soc { display: none; }
+  .ynav-cta { display: none; }
+  .ynav-hamburger { display: flex; }
+}

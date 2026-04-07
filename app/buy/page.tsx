@@ -9,6 +9,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { usePaymentFlow } from '@/hooks/usePaymentFlow';
 import { SUPPORTED_CHAINS, getExplorerUrl, type TokenId } from '@/config/payment';
+import NavLinks from '@/components/NavLinks';
 
 // ── Constants ──────────────────────────────────────────────────────────────
 type VaultId = 'geo' | 'nba' | 'soccerAlpha';
@@ -183,7 +184,10 @@ export default function BuyPage() {
           </svg>
           <span className="bp-nav-brand">YIELDR</span>
         </div>
-        <Link href="/vaults" className="bp-nav-back">&#8592; Back to Vaults</Link>
+        <div className="bp-nav-r">
+          <Link href="/vaults" className="bp-nav-back">&#8592; Back to Vaults</Link>
+          <NavLinks showSocials={false} />
+        </div>
       </nav>
 
       <main className="bp-main">
