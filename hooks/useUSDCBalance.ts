@@ -13,6 +13,14 @@ const VIEM_CHAINS: Record<number, typeof base> = {
   56: bsc,
 };
 
+// Public RPCs that support browser CORS requests
+const PUBLIC_RPCS: Record<number, string> = {
+  8453: 'https://mainnet.base.org',
+  1: 'https://eth.llamarpc.com',
+  137: 'https://polygon.llamarpc.com',
+  56: 'https://bsc-dataseed.binance.org',
+};
+
 export interface ChainBalance {
   chainId: number;
   chainName: string;
@@ -66,7 +74,10 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
       const viemChain = VIEM_CHAINS[numId];
       if (!viemChain) continue;
 
-      const client = createPublicClient({ chain: viemChain, transport: http() });
+      const rpcUrl = PUBLIC_RPCS[numId];
+      if (!rpcUrl) continue;
+
+      const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl) });
 
       for (const [tokenName, tokenCfg] of Object.entries(cfg.tokens)) {
         try {
