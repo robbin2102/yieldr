@@ -52,7 +52,7 @@ function Skel({ s = 'md' }: { s?: 'sm' | 'md' | 'lg' }) {
 }
 
 export default function AllocationsPage() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, isReconnecting, isConnecting } = useAccount();
   const { hasCompletedPayment, allocationData, txHash, status, reset } = usePayment();
 
   const [userStats, setUserStats]             = useState<AllocationStats | null>(null);
@@ -158,7 +158,12 @@ export default function AllocationsPage() {
 
         <main className="ap-main">
 
-          {!isConnected ? (
+          {isReconnecting || isConnecting ? (
+            <div className="ap-not-connected">
+              <div className="ap-nc-title">Connecting...</div>
+              <div className="ap-nc-sub">Reconnecting to your wallet...</div>
+            </div>
+          ) : !isConnected ? (
             <div className="ap-not-connected">
               <div className="ap-nc-title">Connect Wallet</div>
               <div className="ap-nc-sub">Connect your wallet to view your allocation and deposit history.</div>
