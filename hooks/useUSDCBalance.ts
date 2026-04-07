@@ -59,7 +59,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     }
   }, [data, tokenConfig?.decimals]);
 
-  // Scan all other chains for stablecoin balances
+  // Scan all other chains for stablecoin balances + other tokens on current chain
   const scanAllChains = useCallback(async () => {
     if (!address || !isConnected) return;
     setScanDone(false);
@@ -69,7 +69,6 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
 
     for (const [cId, cfg] of Object.entries(SUPPORTED_CHAINS)) {
       const numId = Number(cId);
-      if (numId === chainId) continue; // skip current chain
 
       const viemChain = VIEM_CHAINS[numId];
       if (!viemChain) continue;
@@ -80,6 +79,9 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
       const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl) });
 
       for (const [tokenName, tokenCfg] of Object.entries(cfg.tokens)) {
+        // Skip the selected token on current chain (already read by useReadContract)
+        if (numId === chainId && tokenName === selectedToken) continue;
+
         try {
           const raw = await client.readContract({
             address: tokenCfg.address,
@@ -101,7 +103,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     console.log(`[Balance] Scan complete. Found ${results.length} balances on other chains.`);
     setOtherBalances(results);
     setScanDone(true);
-  }, [address, isConnected, chainId]);
+  }, [address, isConnected, chainId, selectedToken]);
 
   // Trigger scan when wallet connects or chain changes
   useEffect(() => {

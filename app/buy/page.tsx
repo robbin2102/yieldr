@@ -141,15 +141,17 @@ export default function BuyPage() {
     setContributionAmount(amount);
     setCtxVault(selectedVault);
 
-    // If insufficient balance on current chain but funds on another, switch chain first
+    // If insufficient balance but funds found elsewhere, switch chain/token
     if (bestOtherChain) {
-      switchChain({ chainId: bestOtherChain.chainId });
+      if (bestOtherChain.chainId !== chainId) {
+        switchChain({ chainId: bestOtherChain.chainId });
+      }
       setSelectedToken(bestOtherChain.token);
       return;
     }
 
     await initiatePayment();
-  }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus, bestOtherChain, switchChain, setSelectedToken]);
+  }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus, bestOtherChain, switchChain, setSelectedToken, chainId]);
 
   const { half, tokens, tgeValue } = calcSplit(amount);
 
@@ -158,6 +160,7 @@ export default function BuyPage() {
     if (isProcessing)   return 'Processing…';
     if (!isConnected)   return `Connect Wallet & Pay — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} Vault ↗`;
     if (!isSupported)   return 'Switch to a supported network';
+    if (bestOtherChain && bestOtherChain.chainId === chainId) return `Switch to ${bestOtherChain.token} & Pay $${fmtNum(amount)} ↗`;
     if (bestOtherChain) return `Switch to ${bestOtherChain.chainName} & Pay $${fmtNum(amount)} ${bestOtherChain.token} ↗`;
     return `Deposit $${fmtNum(amount)} ${selectedToken} on ${chainName} — ${VAULT_OPTS.find(v => v.id === selectedVault)?.name} ↗`;
   };
@@ -307,11 +310,11 @@ export default function BuyPage() {
               </div>
             )}
 
-            {/* Funds on other chains — show when current chain balance is low */}
+            {/* Funds on other chains/tokens — show when current balance is low */}
             {isConnected && isSupported && scanDone && balance < amount && otherBalances.length > 0 && (
               <div className="bp-switch-chain">
                 <div className="bp-switch-label">
-                  💡 You have stablecoins on other chains:
+                  💡 You have stablecoins available:
                 </div>
                 <div className="bp-switch-btns">
                   {otherBalances.map((ob, i) => (
@@ -319,11 +322,11 @@ export default function BuyPage() {
                       key={i}
                       className="bp-switch-btn"
                       onClick={() => {
-                        switchChain({ chainId: ob.chainId });
+                        if (ob.chainId !== chainId) switchChain({ chainId: ob.chainId });
                         setSelectedToken(ob.token);
                       }}
                     >
-                      {ob.chainName}: ${ob.balance.toFixed(2)} {ob.token}
+                      {ob.chainId === chainId ? `${ob.token}` : ob.chainName}: ${ob.balance.toFixed(2)} {ob.token}
                     </button>
                   ))}
                 </div>
