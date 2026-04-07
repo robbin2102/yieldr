@@ -55,6 +55,8 @@ export default function BuyPage() {
   const [spotsLeft, setSpotsLeft]         = useState<number | null>(null);
   const [vaultRois, setVaultRois]         = useState<Partial<Record<VaultId, string>>>({});
   const [bestRoi, setBestRoi]             = useState<string | null>(null);
+  const [countdown, setCountdown]         = useState<number | null>(null);
+  const [redirectFailed, setRedirectFailed] = useState(false);
 
   const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported, otherBalances, scanDone } = usePaymentFlow(selectedToken);
   const chainConfig = SUPPORTED_CHAINS[chainId];
@@ -67,13 +69,24 @@ export default function BuyPage() {
     }
   }, [chainId]);
 
-  // ── Redirect to allocations after successful payment ─────────────────────
+  // ── Countdown + redirect after successful payment ────────────────────────
   useEffect(() => {
-    if (status === 'success' && txHash) {
-      const t = setTimeout(() => router.push('/allocations'), 2000);
-      return () => clearTimeout(t);
+    if (status === 'success' && txHash && countdown === null) {
+      setCountdown(5);
+      setRedirectFailed(false);
     }
-  }, [status, txHash, router]);
+  }, [status, txHash]);
+
+  useEffect(() => {
+    if (countdown === null || countdown < 0) return;
+    if (countdown === 0) {
+      try { router.push('/allocations'); }
+      catch { setRedirectFailed(true); }
+      return;
+    }
+    const t = setTimeout(() => setCountdown(c => (c ?? 1) - 1), 1000);
+    return () => clearTimeout(t);
+  }, [countdown, router]);
 
   // ── Fetch live stats ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -207,14 +220,6 @@ export default function BuyPage() {
           {/* Status messages */}
           {status === 'processing' && (
             <div className="bp-status processing">⏳ Transaction in progress — do not close this page…</div>
-          )}
-          {status === 'success' && txHash && (
-            <div className="bp-status success">
-              &#10003; Payment confirmed! Redirecting to your allocation…{' '}
-              <a href={`${explorerUrl}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
-                View on {chainName ?? 'Explorer'} &#8599;
-              </a>
-            </div>
           )}
           {status === 'error' && (
             <div className="bp-status error">
@@ -412,6 +417,56 @@ export default function BuyPage() {
 
         </div>
       </main>
+
+      {/* ── Success Modal ── */}
+      {status === 'success' && txHash && (
+        <div className="bp-modal-overlay">
+          <div className="bp-modal">
+            <div className="bp-modal-icon">&#10003;</div>
+            <div className="bp-modal-title">Payment Confirmed!</div>
+            <div className="bp-modal-sub">
+              Your ${fmtNum(amount)} {selectedToken} deposit on {chainName} was successful.
+            </div>
+
+            <div className="bp-modal-details">
+              <div className="bp-modal-row">
+                <span>Amount Deposited</span>
+                <span>${fmtNum(amount)} {selectedToken}</span>
+              </div>
+              <div className="bp-modal-row">
+                <span>USDC Vault (4.5% APY)</span>
+                <span className="green">${fmtNum(half)}</span>
+              </div>
+              <div className="bp-modal-row">
+                <span>YLDR Tokens</span>
+                <span className="green">{fmtNum(tokens)} YLDR</span>
+              </div>
+              <div className="bp-modal-row">
+                <span>Network</span>
+                <span>{chainName}</span>
+              </div>
+              <div className="bp-modal-row">
+                <span>Transaction</span>
+                <span>
+                  <a href={`${explorerUrl}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
+                    {txHash.slice(0, 8)}...{txHash.slice(-6)} &#8599;
+                  </a>
+                </span>
+              </div>
+            </div>
+
+            {!redirectFailed && countdown !== null && countdown > 0 ? (
+              <div className="bp-modal-countdown">
+                Redirecting to your allocation in {countdown}s...
+              </div>
+            ) : redirectFailed || (countdown !== null && countdown <= 0) ? (
+              <Link href="/allocations" className="bp-modal-cta">
+                View My Allocation &#8599;
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
