@@ -58,6 +58,7 @@ export default function AllocationsPage() {
   const { address, isConnected, isReconnecting, isConnecting } = useAccount();
   const { hasCompletedPayment, allocationData, txHash, status, reset } = usePayment();
 
+  const [mounted, setMounted] = useState(false);
   const [userStats, setUserStats]             = useState<AllocationStats | null>(null);
   const [contributions, setContributions]     = useState<Contribution[]>([]);
   const [publicContribs, setPublicContribs]   = useState<Contribution[]>([]);
@@ -65,6 +66,9 @@ export default function AllocationsPage() {
   const [discordInvite, setDiscordInvite]     = useState<string | null>(null);
   const [discordClaimed, setDiscordClaimed]   = useState(false);
   const [currentPage, setCurrentPage]         = useState(1);
+
+  // Track client-side hydration
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (!address) { setLoading(false); return; }
@@ -161,7 +165,7 @@ export default function AllocationsPage() {
 
         <main className="ap-main">
 
-          {isReconnecting || isConnecting ? (
+          {!mounted || isReconnecting || isConnecting ? (
             <div className="ap-not-connected">
               <div className="ap-nc-title">Connecting...</div>
               <div className="ap-nc-sub">Reconnecting to your wallet...</div>
