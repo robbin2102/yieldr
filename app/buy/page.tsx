@@ -116,6 +116,11 @@ export default function BuyPage() {
     if (!isNaN(n) && n > 0) setAmount(n);
   }
 
+  // Find the best other-chain balance that can cover the amount
+  const bestOtherChain = scanDone && balance < amount && otherBalances.length > 0
+    ? otherBalances.reduce((best, ob) => ob.balance > best.balance ? ob : best, otherBalances[0])
+    : null;
+
   // ── Payment handler ───────────────────────────────────────────────────────
   const handleBuy = useCallback(async () => {
     if (!selectedVault) return;
@@ -134,11 +139,6 @@ export default function BuyPage() {
   }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus, bestOtherChain, switchChain, setSelectedToken]);
 
   const { half, tokens, tgeValue } = calcSplit(amount);
-
-  // Find the best other-chain balance that can cover the amount
-  const bestOtherChain = scanDone && balance < amount && otherBalances.length > 0
-    ? otherBalances.reduce((best, ob) => ob.balance > best.balance ? ob : best, otherBalances[0])
-    : null;
 
   const btnLabel = () => {
     if (!selectedVault) return 'Select a vault above to continue';
