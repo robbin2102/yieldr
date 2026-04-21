@@ -110,10 +110,66 @@
 .ynav-menu-soc svg { width: 18px; height: 18px; fill: #55556a; transition: fill .2s; }
 .ynav-menu-soc a:hover svg { fill: #e8e8f0; }
 
+/* ── Wallet Profile ── */
+.ynav-profile { position: relative; }
+.ynav-profile-btn {
+  display: flex; align-items: center; gap: .4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; color: #8888a0; letter-spacing: .5px;
+  background: none; border: 1px solid #1a1a2e;
+  padding: .4rem .8rem; cursor: pointer;
+  transition: all .2s;
+}
+.ynav-profile-btn:hover { border-color: #252540; color: #e8e8f0; }
+.ynav-profile-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #00E87B; flex-shrink: 0;
+}
+.ynav-profile-chevron { transition: transform .2s; }
+.ynav-profile-chevron.open { transform: rotate(180deg); }
+
+.ynav-profile-dropdown {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  min-width: 180px; background: #0c0c12;
+  border: 1px solid #1a1a2e;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  z-index: 200; animation: ynav-fade .15s ease;
+}
+.ynav-profile-item {
+  display: block; width: 100%; text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; color: #8888a0; letter-spacing: .3px;
+  padding: .55rem .8rem; text-decoration: none;
+  background: none; border: none; cursor: pointer;
+  transition: all .15s;
+}
+.ynav-profile-item:hover { color: #e8e8f0; background: rgba(255,255,255,.04); }
+.ynav-profile-divider { height: 1px; background: #1a1a2e; margin: .2rem 0; }
+.ynav-disconnect { color: #ff4455 !important; }
+.ynav-disconnect:hover { background: rgba(255,68,85,.08) !important; }
+
+/* ── Mobile wallet info ── */
+.ynav-menu-wallet {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .6rem 1.5rem; border-bottom: 1px solid #1a1a2e;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: #8888a0;
+}
+.ynav-menu-disconnect {
+  display: block; width: 100%; text-align: center; padding: .55rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500; letter-spacing: .5px;
+  color: #ff4455; background: none;
+  border: 1px solid rgba(255,68,85,.25); cursor: pointer;
+  transition: all .2s;
+}
+.ynav-menu-disconnect:hover { background: rgba(255,68,85,.08); border-color: #ff4455; }
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .ynav-links { display: none; }
   .ynav-soc { display: none; }
   .ynav-cta { display: none; }
+  .ynav-profile { display: none; }
   .ynav-hamburger { display: flex; }
 }

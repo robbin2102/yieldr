@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import './nav-links.css';
 
 interface NavLinksProps {
@@ -16,12 +16,14 @@ const GITHUB = 'https://github.com/robbin2102/yieldr-app';
 
 export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
   const pathname = usePathname();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const { disconnect } = useDisconnect();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [hasContributions, setHasContributions] = useState(false);
-  const { address } = useAccount();
+  const profileRef = useRef<HTMLDivElement>(null);
 
-  // Check if user has contributions (show Allocations link)
+  // Check if user has contributions
   useEffect(() => {
     if (!address) { setHasContributions(false); return; }
     fetch(`/api/contributions?wallet=${address}`)
@@ -35,7 +37,7 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
   }, [address]);
 
   // Close menu on route change
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); setProfileOpen(false); }, [pathname]);
 
   // Prevent scroll when menu is open
   useEffect(() => {
@@ -43,7 +45,26 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
+  // Close profile dropdown on outside click
+  useEffect(() => {
+    if (!profileOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [profileOpen]);
+
   const isActive = (path: string) => pathname === path;
+  const truncAddr = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
+
+  const handleDisconnect = () => {
+    disconnect();
+    setProfileOpen(false);
+    setHasContributions(false);
+  };
 
   return (
     <>
@@ -68,9 +89,32 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
         </div>
       )}
 
-      {cta && (
+      {/* Wallet profile (replaces CTA when connected with contributions) */}
+      {isConnected && hasContributions ? (
+        <div className="ynav-profile" ref={profileRef}>
+          <button className="ynav-profile-btn" onClick={() => setProfileOpen(!profileOpen)}>
+            <span className="ynav-profile-dot" />
+            {truncAddr}
+            <svg className={`ynav-profile-chevron${profileOpen ? ' open' : ''}`} width="10" height="10" viewBox="0 0 10 10"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
+          </button>
+          {profileOpen && (
+            <div className="ynav-profile-dropdown">
+              <Link href="/allocations" className="ynav-profile-item" onClick={() => setProfileOpen(false)}>
+                My Allocations
+              </Link>
+              <Link href="/buy" className="ynav-profile-item" onClick={() => setProfileOpen(false)}>
+                Buy More
+              </Link>
+              <div className="ynav-profile-divider" />
+              <button className="ynav-profile-item ynav-disconnect" onClick={handleDisconnect}>
+                Disconnect Wallet
+              </button>
+            </div>
+          )}
+        </div>
+      ) : cta ? (
         <Link href={cta.href} className="ynav-cta">{cta.label}</Link>
-      )}
+      ) : null}
 
       {/* Hamburger button (mobile) */}
       <button className="ynav-hamburger" onClick={() => setMenuOpen(true)} aria-label="Open menu">
@@ -92,6 +136,15 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
               </div>
               <button className="ynav-menu-close" onClick={() => setMenuOpen(false)}>&#10005;</button>
             </div>
+
+            {/* Mobile wallet info */}
+            {isConnected && address && (
+              <div className="ynav-menu-wallet">
+                <span className="ynav-profile-dot" />
+                <span>{truncAddr}</span>
+              </div>
+            )}
+
             <div className="ynav-menu-links">
               <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
               <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
@@ -102,6 +155,11 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
               )}
             </div>
             <div className="ynav-menu-footer">
+              {isConnected ? (
+                <button className="ynav-menu-disconnect" onClick={() => { handleDisconnect(); setMenuOpen(false); }}>
+                  Disconnect Wallet
+                </button>
+              ) : null}
               {cta ? (
                 <Link href={cta.href} className="ynav-menu-cta">{cta.label}</Link>
               ) : (
