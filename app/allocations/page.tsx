@@ -63,7 +63,8 @@ export default function AllocationsPage() {
   const [userStats, setUserStats]             = useState<AllocationStats | null>(null);
   const [contributions, setContributions]     = useState<Contribution[]>([]);
   const [publicContribs, setPublicContribs]   = useState<Contribution[]>([]);
-  const [loading, setLoading]                 = useState(true);
+  const [userLoading, setUserLoading]         = useState(false);
+  const [publicLoading, setPublicLoading]     = useState(true);
   const [discordInvite, setDiscordInvite]     = useState<string | null>(null);
   const [discordClaimed, setDiscordClaimed]   = useState(false);
   const [currentPage, setCurrentPage]         = useState(1);
@@ -75,30 +76,40 @@ export default function AllocationsPage() {
     }
   }, [isConnected, accountStatus]);
 
+  // Always fetch public contributions
   useEffect(() => {
-    if (!address) { setLoading(false); return; }
+    async function fetchPublic() {
+      try {
+        const pRes = await fetch('/api/contributions/public');
+        const pd = await pRes.json();
+        if (pd.success) setPublicContribs(pd.data.contributions);
+      } catch { /* silently fail */ }
+      finally { setPublicLoading(false); }
+    }
+    fetchPublic();
+  }, []);
+
+  // Fetch user data when wallet connected
+  useEffect(() => {
+    if (!address) { setUserLoading(false); return; }
     if (allocationData?.discord_invite) setDiscordInvite(allocationData.discord_invite);
     const claimed = localStorage.getItem(`yldr_discord_invite_used_${address}`) === 'true';
     setDiscordClaimed(claimed);
 
-    async function fetchData() {
+    setUserLoading(true);
+    async function fetchUserData() {
       try {
-        const [uRes, pRes] = await Promise.all([
-          fetch(`/api/contributions?wallet=${address}`),
-          fetch('/api/contributions/public'),
-        ]);
+        const uRes = await fetch(`/api/contributions?wallet=${address}`);
         const ud = await uRes.json();
-        const pd = await pRes.json();
         if (ud.success) {
           setUserStats(ud.data.summary);
           setContributions(ud.data.contributions ?? []);
           if (ud.data.discord_invite) setDiscordInvite(ud.data.discord_invite);
         }
-        if (pd.success) setPublicContribs(pd.data.contributions);
       } catch { /* silently fail */ }
-      finally { setLoading(false); }
+      finally { setUserLoading(false); }
     }
-    fetchData();
+    fetchUserData();
   }, [address, allocationData]);
 
   // Refresh after successful payment
@@ -127,13 +138,16 @@ export default function AllocationsPage() {
     window.open(discordInvite || DISCORD_INVITE, '_blank');
   };
 
-  // Derived values
+  // Derived values (default to 0 when no data)
   const totalUsdc   = userStats?.totalUsdc ?? 0;
   const totalYldr   = userStats?.totalYldr ?? 0;
   const avgPrice    = userStats?.avgPrice ?? 0;
   const usdcVault   = totalUsdc / 2;
   const yldrValue   = totalUsdc / 2;
   const tgeProj2    = (totalUsdc / 2) * (TGE_FDV / CURRENT_FDV);
+
+  const isWalletPending = !hydrated || isReconnecting || isConnecting;
+  const showUserData = isConnected && !isWalletPending;
 
   // Pagination
   const totalPages = Math.ceil(publicContribs.length / ITEMS_PER_PAGE);
@@ -161,194 +175,200 @@ export default function AllocationsPage() {
 
         <main className="ap-main">
 
-          {!hydrated || isReconnecting || isConnecting ? (
-            <div className="ap-not-connected">
-              <div className="ap-nc-title">Connecting...</div>
-              <div className="ap-nc-sub">Reconnecting to your wallet...</div>
-            </div>
-          ) : !isConnected ? (
-            <div className="ap-not-connected">
-              <div className="ap-nc-title">Connect Wallet</div>
-              <div className="ap-nc-sub">Connect your wallet to view your allocation and deposit history.</div>
+          {/* Page Header */}
+          <div className="ap-hero">
+            <div className="ap-hero-tag">My Allocation</div>
+            <h1 className="ap-hero-title">Your Early Access Position</h1>
+            {isWalletPending ? (
+              <div className="ap-hero-sub">Connecting wallet...</div>
+            ) : !isConnected ? (
+              <div className="ap-hero-sub">Connect your wallet to view your personal allocation.</div>
+            ) : (
+              <div className="ap-hero-sub">
+                {address?.slice(0,6)}...{address?.slice(-4)} &middot; {userStats?.contributionCount ?? 0} deposit{(userStats?.contributionCount ?? 0) !== 1 ? 's' : ''}
+              </div>
+            )}
+          </div>
+
+          {/* Inline connect prompt when not connected */}
+          {!isWalletPending && !isConnected && (
+            <div className="ap-connect-inline">
               <ConnectButton />
+              <p className="ap-connect-hint">Connect to see your deposits, YLDR allocation, and TGE projection.</p>
             </div>
-          ) : (
-            <>
-              {/* Page Header */}
-              <div className="ap-hero">
-                <div className="ap-hero-tag">My Allocation</div>
-                <h1 className="ap-hero-title">Your Early Access Position</h1>
-                <div className="ap-hero-sub">
-                  {address?.slice(0,6)}...{address?.slice(-4)} &middot; {userStats?.contributionCount ?? 0} deposit{(userStats?.contributionCount ?? 0) !== 1 ? 's' : ''}
-                </div>
-              </div>
-
-              {/* How it works banner */}
-              <div className="ap-how-box">
-                <div className="ap-how-label">How Early Access Works</div>
-                <div className="ap-how-text">
-                  Every <strong>$100</strong> deposited = <strong>$50</strong> into a Base USDC vault earning <span className="green">4.5% APY</span> from day one
-                  (migrates to your chosen agent trading vault at Q3 2026 launch) + <strong>$50</strong> in <span className="green">YLDR token allocation</span> at $9M FDV.
-                </div>
-              </div>
-
-              {/* Summary Stats */}
-              <div className="ap-stats-grid">
-                <div className="ap-stat-card">
-                  <div className="ap-stat-v">{loading ? <Skel s="md" /> : `$${fmt(totalUsdc)}`}</div>
-                  <div className="ap-stat-l">Total Deposited</div>
-                </div>
-                <div className="ap-stat-card">
-                  <div className="ap-stat-v green">{loading ? <Skel s="md" /> : `$${fmt(usdcVault)}`}</div>
-                  <div className="ap-stat-l">USDC Vault (4.5% APY)</div>
-                </div>
-                <div className="ap-stat-card">
-                  <div className="ap-stat-v">{loading ? <Skel s="md" /> : `${fmtInt(totalYldr)} YLDR`}</div>
-                  <div className="ap-stat-l">Token Allocation</div>
-                </div>
-                <div className="ap-stat-card">
-                  <div className="ap-stat-v green">{loading ? <Skel s="md" /> : `$${fmt(tgeProj2)}`}</div>
-                  <div className="ap-stat-l">TGE Projection ($75M)</div>
-                </div>
-              </div>
-
-              {/* Two-column: Allocation + Discord */}
-              <div className="ap-cols">
-
-                {/* Left: Allocation breakdown */}
-                <div className="ap-card">
-                  <div className="ap-card-title">Allocation Breakdown</div>
-
-                  <div className="ap-alloc-block">
-                    <div className="ap-alloc-tag">USDC Vault — Earning Now</div>
-                    <div className="ap-alloc-val">{loading ? <Skel s="lg" /> : `$${fmt(usdcVault)}`}</div>
-                    <div className="ap-alloc-meta">Earning <span>4.5% APY</span> &middot; Migrates to agent vault <span>Q3 2026</span></div>
-                  </div>
-
-                  <div className="ap-alloc-block">
-                    <div className="ap-alloc-tag">YLDR Token Allocation</div>
-                    <div className="ap-alloc-val">{loading ? <Skel s="lg" /> : `${fmtInt(totalYldr)} YLDR`}</div>
-                    <div className="ap-alloc-meta">Avg price <span>${fmt(avgPrice, 4)}</span> &middot; TGE <span>Q1 2027</span> &middot; 12-month vest</div>
-                  </div>
-
-                  <div className="ap-detail-rows">
-                    <div className="ap-detail-row">
-                      <span className="ap-detail-l">USDC value deposited for YLDR</span>
-                      <span className="ap-detail-v">${fmt(yldrValue)}</span>
-                    </div>
-                    <div className="ap-detail-row">
-                      <span className="ap-detail-l">TGE projection at $75M FDV</span>
-                      <span className="ap-detail-v green">${fmt(tgeProj2)}</span>
-                    </div>
-                    <div className="ap-detail-row">
-                      <span className="ap-detail-l">Potential return (vs YLDR cost)</span>
-                      <span className="ap-detail-v green">{yldrValue > 0 ? `${fmt((tgeProj2 / yldrValue) * 100, 1)}%` : '—'}</span>
-                    </div>
-                  </div>
-
-                  {contributions.length > 0 && (
-                    <div className="ap-tx-link">
-                      Last tx ({contributions[0].network ?? 'Base'}):{' '}
-                      <a href={`${getExplorerUrl(contributions[0].chain_id ?? 8453)}/tx/${contributions[0].tx_hash}`} target="_blank" rel="noopener noreferrer">
-                        {contributions[0].tx_hash.slice(0,10)}...{contributions[0].tx_hash.slice(-8)} &#8599;
-                      </a>
-                    </div>
-                  )}
-
-                  <Link href="/buy" className="ap-btn-primary">Buy More Allocation &#8599;</Link>
-                </div>
-
-                {/* Right: Discord + Deposit History */}
-                <div className="ap-card ap-card-center">
-                  <div className="ap-card-title">Exclusive Access</div>
-                  <div className="ap-discord-emoji">&#128172;</div>
-                  <div className="ap-discord-h">Join Early Backers Discord</div>
-                  <div className="ap-discord-p">
-                    Get exclusive access to the early backers channel, direct line to the founder, and real-time vault performance updates.
-                  </div>
-                  {discordClaimed ? (
-                    <>
-                      <div className="ap-discord-done">&#10003; Invite claimed</div>
-                      <button className="ap-btn-outline" onClick={handleJoinDiscord}>Rejoin Discord &#8594;</button>
-                    </>
-                  ) : (
-                    <button className="ap-btn-primary" onClick={handleJoinDiscord}>
-                      {discordInvite ? 'Claim Exclusive Invite ↗' : 'Join Discord ↗'}
-                    </button>
-                  )}
-
-                  {/* Recent tx history */}
-                  {contributions.length > 1 && (
-                    <div className="ap-history">
-                      <div className="ap-card-title">Deposit History</div>
-                      {contributions.slice(0, 5).map((c, i) => (
-                        <div className="ap-detail-row" key={i}>
-                          <span className="ap-detail-l">{timeAgo(c.created_at)}</span>
-                          <span className="ap-detail-v">${fmt(c.usdc_amount)} &#8594; {fmtInt(c.yldr_allocation)} YLDR</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Public Tracker */}
-              <div className="ap-card">
-                <div className="ap-tracker-head">
-                  <div className="ap-tracker-title">Community Deposits</div>
-                  <div className="ap-tracker-count">{publicContribs.length} total</div>
-                </div>
-                <div className="ap-table-wrap">
-                  <table className="ap-table">
-                    <thead>
-                      <tr>
-                        <th>Wallet</th>
-                        <th>Total USDC</th>
-                        <th>USDC Vault</th>
-                        <th>YLDR Tokens</th>
-                        <th>Price/YLDR</th>
-                        <th>Chain</th>
-                        <th>Tier</th>
-                        <th>When</th>
-                        <th>TX</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pageItems.map((c, i) => (
-                        <tr key={i}>
-                          <td className="white">{c.wallet_address.slice(0,6)}...{c.wallet_address.slice(-4)}</td>
-                          <td>${fmt(c.usdc_amount)}</td>
-                          <td className="green">${fmt(c.usdc_amount / 2)}</td>
-                          <td className="green">{fmtInt(c.yldr_allocation)}</td>
-                          <td>${fmt(c.yldr_price, 4)}</td>
-                          <td>{c.network ?? 'Base'}</td>
-                          <td>{c.allocation_tier}</td>
-                          <td>{timeAgo(c.created_at)}</td>
-                          <td>
-                            <a href={`${getExplorerUrl(c.chain_id ?? 8453)}/tx/${c.tx_hash}`} target="_blank" rel="noopener noreferrer">
-                              {c.tx_hash.slice(0,6)}... &#8599;
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
-                      {pageItems.length === 0 && !loading && (
-                        <tr><td colSpan={9} style={{textAlign:'center',padding:'2rem',color:'var(--t3)'}}>No deposits yet.</td></tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-
-                {totalPages > 1 && (
-                  <div className="ap-pagination">
-                    <button className="ap-pg-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&#8592; Prev</button>
-                    <span className="ap-pg-info">Page {currentPage} of {totalPages}</span>
-                    <button className="ap-pg-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>Next &#8594;</button>
-                  </div>
-                )}
-              </div>
-
-            </>
           )}
+
+          {/* How it works banner */}
+          <div className="ap-how-box">
+            <div className="ap-how-label">How Early Access Works</div>
+            <div className="ap-how-text">
+              Every <strong>$100</strong> deposited = <strong>$50</strong> into a Base USDC vault earning <span className="green">4.5% APY</span> from day one
+              (migrates to your chosen agent trading vault at Q3 2026 launch) + <strong>$50</strong> in <span className="green">YLDR token allocation</span> at $9M FDV.
+            </div>
+          </div>
+
+          {/* Summary Stats */}
+          <div className="ap-stats-grid">
+            <div className="ap-stat-card">
+              <div className="ap-stat-v">{userLoading ? <Skel s="md" /> : showUserData ? `$${fmt(totalUsdc)}` : '—'}</div>
+              <div className="ap-stat-l">Total Deposited</div>
+            </div>
+            <div className="ap-stat-card">
+              <div className="ap-stat-v green">{userLoading ? <Skel s="md" /> : showUserData ? `$${fmt(usdcVault)}` : '—'}</div>
+              <div className="ap-stat-l">USDC Vault (4.5% APY)</div>
+            </div>
+            <div className="ap-stat-card">
+              <div className="ap-stat-v">{userLoading ? <Skel s="md" /> : showUserData ? `${fmtInt(totalYldr)} YLDR` : '—'}</div>
+              <div className="ap-stat-l">Token Allocation</div>
+            </div>
+            <div className="ap-stat-card">
+              <div className="ap-stat-v green">{userLoading ? <Skel s="md" /> : showUserData ? `$${fmt(tgeProj2)}` : '—'}</div>
+              <div className="ap-stat-l">TGE Projection ($75M)</div>
+            </div>
+          </div>
+
+          {/* Two-column: Allocation + Discord */}
+          <div className="ap-cols">
+
+            {/* Left: Allocation breakdown */}
+            <div className="ap-card">
+              <div className="ap-card-title">Allocation Breakdown</div>
+
+              <div className="ap-alloc-block">
+                <div className="ap-alloc-tag">USDC Vault — Earning Now</div>
+                <div className="ap-alloc-val">{userLoading ? <Skel s="lg" /> : showUserData ? `$${fmt(usdcVault)}` : '—'}</div>
+                <div className="ap-alloc-meta">Earning <span>4.5% APY</span> &middot; Migrates to agent vault <span>Q3 2026</span></div>
+              </div>
+
+              <div className="ap-alloc-block">
+                <div className="ap-alloc-tag">YLDR Token Allocation</div>
+                <div className="ap-alloc-val">{userLoading ? <Skel s="lg" /> : showUserData ? `${fmtInt(totalYldr)} YLDR` : '—'}</div>
+                <div className="ap-alloc-meta">Avg price <span>{showUserData ? `$${fmt(avgPrice, 4)}` : '—'}</span> &middot; TGE <span>Q1 2027</span> &middot; 12-month vest</div>
+              </div>
+
+              <div className="ap-detail-rows">
+                <div className="ap-detail-row">
+                  <span className="ap-detail-l">USDC value deposited for YLDR</span>
+                  <span className="ap-detail-v">{showUserData ? `$${fmt(yldrValue)}` : '—'}</span>
+                </div>
+                <div className="ap-detail-row">
+                  <span className="ap-detail-l">TGE projection at $75M FDV</span>
+                  <span className="ap-detail-v green">{showUserData ? `$${fmt(tgeProj2)}` : '—'}</span>
+                </div>
+                <div className="ap-detail-row">
+                  <span className="ap-detail-l">Potential return (vs YLDR cost)</span>
+                  <span className="ap-detail-v green">{showUserData && yldrValue > 0 ? `${fmt((tgeProj2 / yldrValue) * 100, 1)}%` : '—'}</span>
+                </div>
+              </div>
+
+              {contributions.length > 0 && (
+                <div className="ap-tx-link">
+                  Last tx ({contributions[0].network ?? 'Base'}):{' '}
+                  <a href={`${getExplorerUrl(contributions[0].chain_id ?? 8453)}/tx/${contributions[0].tx_hash}`} target="_blank" rel="noopener noreferrer">
+                    {contributions[0].tx_hash.slice(0,10)}...{contributions[0].tx_hash.slice(-8)} &#8599;
+                  </a>
+                </div>
+              )}
+
+              <Link href="/buy" className="ap-btn-primary">Buy More Allocation &#8599;</Link>
+            </div>
+
+            {/* Right: Discord + Deposit History */}
+            <div className="ap-card ap-card-center">
+              <div className="ap-card-title">Exclusive Access</div>
+              <div className="ap-discord-emoji">&#128172;</div>
+              <div className="ap-discord-h">Join Early Backers Discord</div>
+              <div className="ap-discord-p">
+                Get exclusive access to the early backers channel, direct line to the founder, and real-time vault performance updates.
+              </div>
+              {isConnected ? (
+                discordClaimed ? (
+                  <>
+                    <div className="ap-discord-done">&#10003; Invite claimed</div>
+                    <button className="ap-btn-outline" onClick={handleJoinDiscord}>Rejoin Discord &#8594;</button>
+                  </>
+                ) : (
+                  <button className="ap-btn-primary" onClick={handleJoinDiscord}>
+                    {discordInvite ? 'Claim Exclusive Invite ↗' : 'Join Discord ↗'}
+                  </button>
+                )
+              ) : (
+                <button className="ap-btn-outline" onClick={() => window.open(DISCORD_INVITE, '_blank')}>Join Discord ↗</button>
+              )}
+
+              {/* Recent tx history */}
+              {contributions.length > 1 && (
+                <div className="ap-history">
+                  <div className="ap-card-title">Deposit History</div>
+                  {contributions.slice(0, 5).map((c, i) => (
+                    <div className="ap-detail-row" key={i}>
+                      <span className="ap-detail-l">{timeAgo(c.created_at)}</span>
+                      <span className="ap-detail-v">${fmt(c.usdc_amount)} &#8594; {fmtInt(c.yldr_allocation)} YLDR</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Public Tracker — always visible */}
+          <div className="ap-card">
+            <div className="ap-tracker-head">
+              <div className="ap-tracker-title">Community Deposits</div>
+              <div className="ap-tracker-count">{publicContribs.length} total</div>
+            </div>
+            <div className="ap-table-wrap">
+              <table className="ap-table">
+                <thead>
+                  <tr>
+                    <th>Wallet</th>
+                    <th>Total USDC</th>
+                    <th>USDC Vault</th>
+                    <th>YLDR Tokens</th>
+                    <th>Price/YLDR</th>
+                    <th>Chain</th>
+                    <th>Tier</th>
+                    <th>When</th>
+                    <th>TX</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pageItems.map((c, i) => (
+                    <tr key={i}>
+                      <td className="white">{c.wallet_address.slice(0,6)}...{c.wallet_address.slice(-4)}</td>
+                      <td>${fmt(c.usdc_amount)}</td>
+                      <td className="green">${fmt(c.usdc_amount / 2)}</td>
+                      <td className="green">{fmtInt(c.yldr_allocation)}</td>
+                      <td>${fmt(c.yldr_price, 4)}</td>
+                      <td>{c.network ?? 'Base'}</td>
+                      <td>{c.allocation_tier}</td>
+                      <td>{timeAgo(c.created_at)}</td>
+                      <td>
+                        <a href={`${getExplorerUrl(c.chain_id ?? 8453)}/tx/${c.tx_hash}`} target="_blank" rel="noopener noreferrer">
+                          {c.tx_hash.slice(0,6)}... &#8599;
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                  {pageItems.length === 0 && !publicLoading && (
+                    <tr><td colSpan={9} style={{textAlign:'center',padding:'2rem',color:'var(--t3)'}}>No deposits yet.</td></tr>
+                  )}
+                  {publicLoading && (
+                    <tr><td colSpan={9} style={{textAlign:'center',padding:'2rem',color:'var(--t3)'}}>Loading...</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="ap-pagination">
+                <button className="ap-pg-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>&#8592; Prev</button>
+                <span className="ap-pg-info">Page {currentPage} of {totalPages}</span>
+                <button className="ap-pg-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>Next &#8594;</button>
+              </div>
+            )}
+          </div>
+
         </main>
 
         <footer className="ap-footer">
