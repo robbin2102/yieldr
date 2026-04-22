@@ -51,11 +51,12 @@
 @keyframes ynav-fade { from { opacity: 0; } to { opacity: 1; } }
 
 .ynav-menu {
-  position: fixed; top: 0; right: 0; bottom: 0;
+  position: absolute; top: 0; right: 0; bottom: 0;
   width: min(320px, 85vw);
   background: #07070b; border-left: 1px solid #1a1a2e;
   display: flex; flex-direction: column;
   animation: ynav-slide .25s ease;
+  overflow-y: auto;
 }
 @keyframes ynav-slide { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
