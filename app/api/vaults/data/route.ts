@@ -4,7 +4,6 @@ import VaultStats from '@/models/VaultStats';
 import VaultTrade from '@/models/VaultTrade';
 import VaultOpenPosition from '@/models/VaultOpenPosition';
 import VaultDailySnapshot from '@/models/VaultDailySnapshot';
-import EdgeRankedTrader from '@/models/EdgeRankedTrader';
 import { VAULT_META, type VaultId } from '@/config/vaults';
 
 export const dynamic = 'force-dynamic';
@@ -82,13 +81,15 @@ export async function GET() {
       initial_capital_usdc: number;
       vault_size_usdc: number;
       totalPnlAllTime: number;
+      totalRealizedPnl: number;
       win_rate: number;
       win_rate_sample_size: number;
-      profitFactor: number;
       subscribers: number;
-      tradingConsistency: { sortinoRatio: number };
-      timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number }>;
+      tradingConsistency: { daysWonRate: number };
+      timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number; maxDrawdownPct: number }>;
       last_polled_activity_ts: number;
+      roce_trend?: { direction: string };
+      drawdown_trend?: string;
     }>;
 
     const LABEL_TO_ID: Record<string, VaultId> = {
@@ -117,22 +118,26 @@ export async function GET() {
 
         const wallet = statsDoc.wallet;
 
-        const [posDoc, trades, snapshots, edgeDoc] = await Promise.all([
+        const [posDoc, trades, snapshots] = await Promise.all([
           VaultOpenPosition.findOne({ wallet }).lean(),
           VaultTrade.find({ wallet, status: { $in: ['win', 'loss'] } })
             .sort({ opened_at: -1 })
             .limit(15)
             .lean(),
           VaultDailySnapshot.find({ wallet })
-            .sort({ date: 1 }) // oldest first → for chart
+            .sort({ date: 1 })
             .lean(),
-          EdgeRankedTrader.findOne({ wallet }).lean(),
         ]);
 
         const capital = statsDoc.initial_capital_usdc || 1;
 
         const tf = statsDoc.timeframePnL ?? {};
-        const roi30d = (tf['30d']?.tradeCount ?? 0) > 0 ? parseFloat((tf['30d']?.roce ?? 0).toFixed(1)) : 0;
+        // Honest return: 30d pnl relative to initial vault capital (not capital deployed)
+        const roi30d = parseFloat(((tf['30d']?.pnl ?? 0) / capital * 100).toFixed(1));
+        const maxDrawdown30d  = parseFloat((tf['30d']?.maxDrawdownPct ?? 0).toFixed(1));
+        const daysWonRate     = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
+        const roceTrend       = statsDoc.roce_trend?.direction ?? null;
+        const drawdownTrend   = statsDoc.drawdown_trend ?? null;
 
         // All-time chart points from daily snapshots
         const snaps = snapshots as unknown as { date: Date; cumulative_pnl_usdc: number }[];
@@ -151,19 +156,18 @@ export async function GET() {
         const filteredPositions = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
         const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
-        const edgeRaw = (edgeDoc as unknown as { edge?: number; p_val?: number } | null);
-        const edgeScore = parseFloat((edgeRaw?.edge ?? 0).toFixed(4));
-        const pValue   = parseFloat((edgeRaw?.p_val ?? 0).toFixed(6));
-
         const stats = {
-          totalPnl:          statsDoc.totalPnlAllTime ?? 0,
+          totalPnl:        statsDoc.totalPnlAllTime ?? 0,
+          realizedPnl:     statsDoc.totalRealizedPnl ?? 0,
           roi30d,
+          maxDrawdown30d,
+          daysWonRate,
           openPositionsValue,
-          winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          edgeScore,
-          pValue,
-          trades:            statsDoc.win_rate_sample_size ?? 0,
-          lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
+          winRate:         parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          trades:          statsDoc.win_rate_sample_size ?? 0,
+          lastTradeTs:     statsDoc.last_polled_activity_ts ?? 0,
+          roceTrend,
+          drawdownTrend,
         };
 
         const openPositions = filteredPositions.length

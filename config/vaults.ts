@@ -6,12 +6,13 @@ export const VAULT_META: Record<VaultId, {
   emoji: string;
   description: string;
   fallback: {
-    totalPnl:  number;
-    roi30d:    number;
-    winRate:   number;
-    edgeScore: number;
-    pValue:    number;
-    trades:    number;
+    totalPnl:      number;
+    realizedPnl:   number;
+    roi30d:        number;
+    winRate:       number;
+    maxDrawdown30d: number;
+    daysWonRate:   number;
+    trades:        number;
   };
 }> = {
   geo: {
@@ -21,12 +22,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Human-curated thesis on geopolitical events. Agents scan prediction markets for insider wallets with abnormal win rates vs implied probability, then execute positions within trader-defined risk parameters.',
     fallback: {
-      totalPnl:  24768,
-      roi30d:    41.8,
-      winRate:   82,
-      edgeScore: 0.0504,
-      pValue:    0.0006,
-      trades:    67,
+      totalPnl:      24768,
+      realizedPnl:   18400,
+      roi30d:        11.5,
+      winRate:       82,
+      maxDrawdown30d: -8.9,
+      daysWonRate:   61.3,
+      trades:        67,
     },
   },
   nba: {
@@ -36,12 +38,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Trader-designed strategy: agents discover and rank top NBA prediction market traders by statistical edge, profile their betting patterns, and execute positions at the highest-conviction price levels within human-set rules.',
     fallback: {
-      totalPnl:  4190,
-      roi30d:    22.4,
-      winRate:   74,
-      edgeScore: 0.0380,
-      pValue:    0.0012,
-      trades:    143,
+      totalPnl:      4190,
+      realizedPnl:   2800,
+      roi30d:        8.2,
+      winRate:       74,
+      maxDrawdown30d: -5.2,
+      daysWonRate:   58.0,
+      trades:        143,
     },
   },
   soccer: {
@@ -51,12 +54,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Agents scan NHL prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
     fallback: {
-      totalPnl:  2312,
-      roi30d:    15.8,
-      winRate:   69,
-      edgeScore: 0.0210,
-      pValue:    0.0031,
-      trades:    89,
+      totalPnl:      2312,
+      realizedPnl:   1600,
+      roi30d:        6.1,
+      winRate:       69,
+      maxDrawdown30d: -12.3,
+      daysWonRate:   55.0,
+      trades:        89,
     },
   },
   esports: {
@@ -66,12 +70,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Agents scan e-sports prediction markets for traders with exceptional win rates on CS:GO, Valorant, and League of Legends markets. Human trader sets risk rules; agents execute near top-trader price levels with automated controls.',
     fallback: {
-      totalPnl:  0,
-      roi30d:    0,
-      winRate:   0,
-      edgeScore: 0,
-      pValue:    1,
-      trades:    0,
+      totalPnl:      0,
+      realizedPnl:   0,
+      roi30d:        0,
+      winRate:       0,
+      maxDrawdown30d: 0,
+      daysWonRate:   0,
+      trades:        0,
     },
   },
   soccerAlpha: {
@@ -81,12 +86,13 @@ export const VAULT_META: Record<VaultId, {
     description:
       'Agents scan soccer prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
     fallback: {
-      totalPnl:  0,
-      roi30d:    0,
-      winRate:   0,
-      edgeScore: 0,
-      pValue:    1,
-      trades:    0,
+      totalPnl:      0,
+      realizedPnl:   0,
+      roi30d:        0,
+      winRate:       0,
+      maxDrawdown30d: 0,
+      daysWonRate:   0,
+      trades:        0,
     },
   },
 };

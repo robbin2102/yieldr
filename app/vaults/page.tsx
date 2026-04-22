@@ -18,8 +18,9 @@ type Position   = { market: string; side: string; size: string; entry: string; p
 type Trade      = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; roi30d: number; openPositionsValue: number;
-    winRate: number; edgeScore: number; pValue: number; trades: number;
+    totalPnl: number; realizedPnl: number; roi30d: number; openPositionsValue: number;
+    winRate: number; maxDrawdown30d: number; daysWonRate: number; trades: number;
+    roceTrend?: string; drawdownTrend?: string;
   };
   chartPoints: ChartPoint[];
   positions: Position[];
@@ -49,12 +50,6 @@ function totalUnrealisedPnl(positions: Position[]): { text: string; positive: bo
   }, 0);
   return { text: fmtPnl(total), positive: total >= 0 };
 }
-function fmtPValue(v: number): string {
-  if (v === 0) return '0.000';
-  if (v < 0.001) return '<0.001';
-  return v.toFixed(3);
-}
-
 // ── Build initial state from fallbacks ────────────────────────────────────
 function buildFallbackState(): Record<VaultId, VaultState> {
   const out = {} as Record<VaultId, VaultState>;
@@ -63,11 +58,12 @@ function buildFallbackState(): Record<VaultId, VaultState> {
     out[id] = {
       stats: {
         totalPnl:           m.fallback.totalPnl,
+        realizedPnl:        m.fallback.realizedPnl,
         roi30d:             m.fallback.roi30d,
         openPositionsValue: 0,
         winRate:            m.fallback.winRate,
-        edgeScore:          m.fallback.edgeScore,
-        pValue:             m.fallback.pValue,
+        maxDrawdown30d:     m.fallback.maxDrawdown30d,
+        daysWonRate:        m.fallback.daysWonRate,
         trades:             m.fallback.trades,
       },
       chartPoints:  [],
@@ -354,6 +350,7 @@ function VaultsPageInner() {
                   <div className="vp-vd-header">
                     <div className="vp-vd-info">
                       <h2>{m.emoji} {m.name}</h2>
+                      <span className="vp-vd-testing-tag">Testing Phase · Project Capital</span>
                       <p>{m.description}</p>
                     </div>
                     <div className="vp-vd-pnl">
@@ -367,34 +364,37 @@ function VaultsPageInner() {
                   {/* Stats row */}
                   <div className="vp-vd-stats">
                     <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.roi30d >= 0 ? 'green' : 'red'}`}>
-                        {isLoading ? <Skel size="sm" /> : `${d.stats.roi30d >= 0 ? '+' : ''}${d.stats.roi30d}%`}
-                      </div>
-                      <div className="vp-vd-stat-l">30D ROI</div>
-                    </div>
-                    <div className="vp-vd-stat">
-                      <div className="vp-vd-stat-v green">
-                        {isLoading ? <Skel size="sm" /> : d.stats.edgeScore.toFixed(3)}
-                      </div>
-                      <div className="vp-vd-stat-l">Edge Score</div>
-                    </div>
-                    <div className="vp-vd-stat">
                       <div className="vp-vd-stat-v green">
                         {isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}
                       </div>
                       <div className="vp-vd-stat-l">Win Rate</div>
                     </div>
                     <div className="vp-vd-stat">
-                      <div className="vp-vd-stat-v white">
-                        {isLoading ? <Skel size="sm" /> : fmtPValue(d.stats.pValue)}
+                      <div className={`vp-vd-stat-v ${d.stats.roi30d >= 0 ? 'green' : 'red'}`}>
+                        {isLoading ? <Skel size="sm" /> : `${d.stats.roi30d >= 0 ? '+' : ''}${d.stats.roi30d}%`}
+                        {!isLoading && d.stats.roceTrend === 'improving' && <span className="vp-trend-up">↑</span>}
+                        {!isLoading && d.stats.roceTrend === 'worsening' && <span className="vp-trend-dn">↓</span>}
                       </div>
-                      <div className="vp-vd-stat-l">P-Value</div>
+                      <div className="vp-vd-stat-l">30D Return</div>
+                    </div>
+                    <div className="vp-vd-stat">
+                      <div className={`vp-vd-stat-v ${d.stats.maxDrawdown30d < 0 ? 'red' : 'white'}`}>
+                        {isLoading ? <Skel size="sm" /> : `${d.stats.maxDrawdown30d}%`}
+                        {!isLoading && d.stats.drawdownTrend === 'worsening' && <span className="vp-trend-dn">↓</span>}
+                      </div>
+                      <div className="vp-vd-stat-l">Max DD 30D</div>
                     </div>
                     <div className="vp-vd-stat">
                       <div className="vp-vd-stat-v white">
-                        {isLoading ? <Skel size="sm" /> : d.stats.trades}
+                        {isLoading ? <Skel size="sm" /> : `${d.stats.daysWonRate}%`}
                       </div>
-                      <div className="vp-vd-stat-l">Trades</div>
+                      <div className="vp-vd-stat-l">Days Winning</div>
+                    </div>
+                    <div className="vp-vd-stat">
+                      <div className={`vp-vd-stat-v ${d.stats.realizedPnl >= 0 ? 'green' : 'red'}`}>
+                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.realizedPnl)}
+                      </div>
+                      <div className="vp-vd-stat-l">Realized PnL</div>
                     </div>
                   </div>
 

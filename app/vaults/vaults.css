@@ -144,7 +144,8 @@
 
 .vp-vd-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
 .vp-vd-info h2 { font-family: var(--fd); font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: .5rem; }
-.vp-vd-info p  { font-size: .7rem; color: var(--t2); margin-top: .3rem; max-width: 500px; line-height: 1.6; }
+.vp-vd-testing-tag { font-size: .46rem; color: var(--t3); letter-spacing: 1.2px; text-transform: uppercase; display: block; margin: .15rem 0 .25rem; }
+.vp-vd-info p  { font-size: .7rem; color: var(--t2); margin-top: .1rem; max-width: 500px; line-height: 1.6; }
 .vp-vd-pnl { text-align: right; }
 .vp-vd-pnl-v { font-family: var(--fd); font-size: 1.8rem; font-weight: 700; color: var(--g); }
 .vp-vd-pnl-v.red { color: var(--r); }
@@ -161,6 +162,8 @@
 .vp-vd-stat-v.green { color: var(--g); }
 .vp-vd-stat-v.white { color: var(--t1); }
 .vp-vd-stat-v.red   { color: var(--r); }
+.vp-trend-up { font-size: .55rem; color: var(--g); margin-left: .15rem; vertical-align: middle; }
+.vp-trend-dn { font-size: .55rem; color: var(--r); margin-left: .15rem; vertical-align: middle; }
 .vp-vd-stat-l { font-size: .48rem; color: var(--t2); text-transform: uppercase; letter-spacing: 1px; }
 
 /* ── Chart ── */
