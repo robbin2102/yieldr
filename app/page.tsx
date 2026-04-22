@@ -23,7 +23,7 @@ export default function HomePage() {
   const tickerItems = [
     { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
     { label: 'NBA VAULT', value: '+18.7% 7D', up: true },
-    { label: 'NHL VAULT', value: '+12.4% 7D', up: true },
+    { label: 'SOCCER VAULT', value: '+12.4% 7D', up: true },
     { label: 'USDC YIELD', value: '4.5% APY', up: true },
     { label: 'YLDR TGE', value: 'Q1 2027', up: true },
     { label: 'EARLY ACCESS', value: '$9M FDV', up: true },
@@ -180,9 +180,9 @@ export default function HomePage() {
                 ],
               },
               {
-                href: '/vaults?vault=soccer',
-                name: '🏒 NHL Edge Vault',
-                desc: 'Agent scans NHL prediction markets for traders with statistically impossible edge (p<0.0001), enters near their price levels.',
+                href: '/vaults?vault=soccerAlpha',
+                name: '⚽ Soccer Alpha Vault',
+                desc: 'Agent scans soccer markets for traders with statistically impossible edge (p<0.0001), enters near their price levels.',
                 stats: [
                   { v: '+12.4%', l: '7D Return' },
                   { v: '$18.6K', l: 'Vault Size' },
@@ -341,7 +341,7 @@ export default function HomePage() {
             </div>
             <div className="lp-token-note">
               ⚡ You choose which vault your capital enters on launch:{' '}
-              <em>NBA Edge</em>, <em>NHL Edge</em>, or <em>Geopolitics</em>
+              <em>NBA Edge</em>, <em>Soccer Alpha</em>, or <em>Geopolitics</em>
             </div>
             <Link href="/vaults" className="lp-btn-p">
               Choose Your Vault — Early Access ↗

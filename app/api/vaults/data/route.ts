@@ -73,7 +73,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer'];
+    const vaultIds: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
 
     const allStats = await VaultStats.find({}).lean() as unknown as Array<{
       wallet: string;
@@ -97,8 +97,8 @@ export async function GET() {
       'nba edge vault':       'nba',
       'nhl edge vault':       'soccer',
       'nhl alpha vault':      'soccer',
-      'e-sports ninja vault': 'esports',
       'soccer alpha vault':   'soccerAlpha',
+      'e-sports ninja vault': 'esports',
     };
 
     const statsByLabel = new Map(
@@ -133,7 +133,9 @@ export async function GET() {
         const capital = statsDoc.initial_capital_usdc || 1;
 
         const tf = statsDoc.timeframePnL ?? {};
-        const pnl30d            = tf['30d']?.pnl ?? 0;
+        const pnl30dRaw         = tf['30d']?.pnl ?? 0;
+        const totalPnl          = statsDoc.totalPnlAllTime ?? 0;
+        const pnl30d            = Math.abs(pnl30dRaw) > Math.abs(totalPnl) ? null : pnl30dRaw;
         const capitalDeployed30d = tf['30d']?.capitalDeployed ?? 0;
         const daysWonRate       = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
 
@@ -158,7 +160,7 @@ export async function GET() {
         const openPositionsValue = allFiltered.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
         const stats = {
-          totalPnl:           statsDoc.totalPnlAllTime ?? 0,
+          totalPnl,
           pnl30d,
           capitalDeployed30d,
           daysWonRate,
