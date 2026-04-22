@@ -96,6 +96,7 @@ export async function GET() {
       'geopolitics vault':    'geo',
       'nba edge vault':       'nba',
       'nhl edge vault':       'soccer',
+      'nhl alpha vault':      'soccer',
       'e-sports ninja vault': 'esports',
       'soccer alpha vault':   'soccerAlpha',
     };
