@@ -22,6 +22,8 @@
   --fd:  'Instrument Sans', sans-serif;
 }
 
+html, body { overflow-x: hidden; }
+
 .vp-root {
   background: var(--bg);
   color: var(--t1);
@@ -374,7 +376,9 @@
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .vp-vault-detail { grid-template-columns: 1fr; }
+  .vp-vault-detail { grid-template-columns: 1fr; padding: 1.5rem 1rem; }
+  .vp-vd-header { flex-direction: column; gap: .75rem; }
+  .vp-vd-pnl { text-align: left; }
   .vp-vd-stats { grid-template-columns: repeat(2, 1fr); }
   .vp-nav { padding: 0 1rem; }
   .vp-nav-links { display: none; }
@@ -404,7 +408,7 @@
   .vp-sticky-cta {
     display: flex; align-items: center; justify-content: space-between;
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-    background: rgba(7,7,11,.97); backdrop-filter: blur(16px);
+    background: #07070b;
     border-top: 1px solid rgba(0,232,123,.25);
     padding: .75rem 1.25rem; gap: 1rem;
   }
