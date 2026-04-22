@@ -405,7 +405,7 @@ function VaultsPageInner() {
                   <div className="vp-open-positions">
                     <div className="vp-op-head">
                       <span className="vp-op-title"><span className="vp-op-dot" /> Open Positions</span>
-                      <span className="vp-op-count">{d.positions.length} active</span>
+                      <span className="vp-op-count">Showing top {d.positions.length}</span>
                     </div>
                     <div className="vp-op-cols">
                       <span>Market</span><span>Position</span><span>Size</span>
