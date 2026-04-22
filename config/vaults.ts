@@ -112,7 +112,13 @@ export const FALLBACK_POSITIONS: Record<VaultId, Array<{
     { market: 'Suns vs Pacers Apr 7',      side: 'PHX', size: '$600', entry: '$0.44', pnl: '+$15',  pnlPositive: true,  time: '12h ago' },
   ],
   esports:     [],
-  soccer:      [],
+  soccer: [
+    { market: 'Bruins vs Maple Leafs Apr 9',  side: 'BOS', size: '$900', entry: '$0.54', pnl: '+$180', pnlPositive: true,  time: '1h ago' },
+    { market: 'Rangers vs Penguins Apr 9',    side: 'NYR', size: '$750', entry: '$0.58', pnl: '+$95',  pnlPositive: true,  time: '2h ago' },
+    { market: 'Oilers vs Avalanche Apr 9',    side: 'COL', size: '$850', entry: '$0.46', pnl: '-$60',  pnlPositive: false, time: '4h ago' },
+    { market: 'Panthers vs Lightning Apr 10', side: 'FLA', size: '$700', entry: '$0.61', pnl: '+$70',  pnlPositive: true,  time: '6h ago' },
+    { market: 'Capitals vs Hurricanes Apr 10',side: 'CAR', size: '$650', entry: '$0.52', pnl: '+$45',  pnlPositive: true,  time: '8h ago' },
+  ],
   soccerAlpha: [],
 };
 
@@ -155,7 +161,18 @@ export const FALLBACK_TRADES: Record<VaultId, Array<{
     { market: 'Celtics vs Sixers Mar 20',   entry: 'BOS @ $0.61', size: '$900',   pnl: '+$450', status: 'win',  time: '3d ago'  },
     { market: 'Wolves vs Suns Mar 19',      entry: 'MIN @ $0.44', size: '$650',   pnl: '+$510', status: 'win',  time: '4d ago'  },
   ],
-  soccer:      [],
+  soccer: [
+    { market: 'Bruins vs Maple Leafs Apr 4',  entry: 'BOS @ $0.52', size: '$900',   pnl: '+$430', status: 'win',  time: '3h ago'  },
+    { market: 'Rangers vs Penguins Apr 3',    entry: 'NYR @ $0.61', size: '$750',   pnl: '+$270', status: 'win',  time: '8h ago'  },
+    { market: 'Oilers vs Avalanche Apr 2',    entry: 'EDM @ $0.44', size: '$850',   pnl: '-$210', status: 'loss', time: '14h ago' },
+    { market: 'Panthers vs Lightning Apr 2',  entry: 'FLA @ $0.58', size: '$700',   pnl: '+$310', status: 'win',  time: '20h ago' },
+    { market: 'Capitals vs Hurricanes Apr 1', entry: 'CAR @ $0.53', size: '$650',   pnl: '+$195', status: 'win',  time: '1d ago'  },
+    { market: 'Maple Leafs vs Sens Mar 31',   entry: 'TOR @ $0.67', size: '$800',   pnl: '+$240', status: 'win',  time: '1d ago'  },
+    { market: 'Stars vs Wild Mar 30',         entry: 'DAL @ $0.55', size: '$600',   pnl: '+$180', status: 'win',  time: '2d ago'  },
+    { market: 'Jets vs Predators Mar 29',     entry: 'WPG @ $0.62', size: '$700',   pnl: '-$140', status: 'loss', time: '2d ago'  },
+    { market: 'Bruins vs Sabres Mar 28',      entry: 'BOS @ $0.73', size: '$950',   pnl: '+$190', status: 'win',  time: '3d ago'  },
+    { market: 'Knights vs Sharks Mar 27',     entry: 'VGK @ $0.69', size: '$800',   pnl: '+$220', status: 'win',  time: '3d ago'  },
+  ],
   esports:     [],
   soccerAlpha: [],
 };

@@ -28,7 +28,7 @@ type VaultState = {
 };
 type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string; totalSubscribers: number };
 
-const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
+const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccer'];
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
@@ -327,7 +327,7 @@ function VaultsPageInner() {
               className={`vp-vtab${activeVault === id ? ' active' : ''}`}
               onClick={() => setActiveVault(id)}
             >
-              {VAULT_META[id].emoji} {id === 'soccerAlpha' ? 'Soccer Alpha' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
+              {VAULT_META[id].emoji} {VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
             </button>
           ))}
         </div>
@@ -510,9 +510,9 @@ function VaultsPageInner() {
                 <span className="lbl">Onchain Proof</span>
                 {(() => {
                   const wallets: Record<string, { full: string; short: string }> = {
-                    geo:         { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
-                    nba:         { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
-                    soccerAlpha: { full: '0x1ba1bb6aa2490adbbbbb314bc07ff21a8cc71ce4', short: '0x1ba1…1ce4' },
+                    geo:    { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
+                    nba:    { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
+                    soccer: { full: '0x07aa5fb9f7db93e1d1ffdc6e0251f28a3aa2deb1', short: '0x07aa…deb1' },
                   };
                   const w = wallets[activeVault];
                   const href = activeVault === 'geo'

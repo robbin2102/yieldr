@@ -73,7 +73,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const vaultIds: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
+    const vaultIds: VaultId[] = ['geo', 'nba', 'soccer'];
 
     const allStats = await VaultStats.find({}).lean() as unknown as Array<{
       wallet: string;
@@ -150,8 +150,11 @@ export async function GET() {
           currentValue: number; cashPnl: number; percentPnl: number;
         }> | undefined;
 
-        const filteredPositions = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
-        const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
+        const allFiltered = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
+        const filteredPositions = [...allFiltered]
+          .sort((a, b) => (b.currentValue ?? 0) - (a.currentValue ?? 0))
+          .slice(0, 10);
+        const openPositionsValue = allFiltered.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
         const stats = {
           totalPnl:           statsDoc.totalPnlAllTime ?? 0,
