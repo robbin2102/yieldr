@@ -45,7 +45,7 @@
 /* ── Mobile overlay ── */
 .ynav-overlay {
   position: fixed; inset: 0; z-index: 9999;
-  background: rgba(2,2,4,.85); backdrop-filter: blur(8px);
+  background: rgba(2,2,4,.93);
   animation: ynav-fade .2s ease;
 }
 @keyframes ynav-fade { from { opacity: 0; } to { opacity: 1; } }
