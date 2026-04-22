@@ -144,12 +144,12 @@ export default function BuildInPublicPage() {
             {/* APRIL 2026 */}
             <div className="tl-month">
               <div className="tl-month-head">
-                <span className="tl-month-name">April – Q3 2026</span>
+                <span className="tl-month-name">April – Q4 2026</span>
                 <span className="tl-month-badge active">&#9679; In Progress</span>
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">Agent Trading Vault Infrastructure</div>
-                <div className="tl-item-p">Vault smart contracts, agent execution framework, and deposit/withdrawal flows. Strategies being tested with $100K of project capital across NBA, Soccer, and Geopolitics prediction market vaults. Public launch targeted Q3 2026.</div>
+                <div className="tl-item-p">Vault smart contracts, agent execution framework, and deposit/withdrawal flows. Strategies being tested with $100K of project capital across NBA, Soccer, and Geopolitics prediction market vaults. Public launch targeted Q4 2026.</div>
                 <div className="tl-tags"><span className="tl-tag green">Vaults</span><span className="tl-tag">Smart Contracts</span><span className="tl-tag">Agents</span></div>
               </div>
               <div className="tl-item">
@@ -314,7 +314,7 @@ export default function BuildInPublicPage() {
             <div className="rm-card">
               <div className="rm-status active">&#9679; Active</div>
               <div className="rm-h">Agent Trading Vaults</div>
-              <div className="rm-p">$100K live testing across NBA, Soccer, and Geopolitics vaults. Smart contract infrastructure for public deposits and performance fees. Target: Q3 2026.</div>
+              <div className="rm-p">$100K live testing across NBA, Soccer, and Geopolitics vaults. Smart contract infrastructure for public deposits and performance fees. Target: Q4 2026.</div>
             </div>
             <div className="rm-card">
               <div className="rm-status active">&#9679; Active</div>

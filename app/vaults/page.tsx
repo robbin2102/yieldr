@@ -469,7 +469,7 @@ function VaultsPageInner() {
             <div className="vp-cta-box" id="buy">
               <div className="vp-cta-h">Get Early Access</div>
               <div className="vp-cta-sub">
-                Every $100 deposited = $50 into a Base USDC vault earning 4.5% APY from day one (migrates to your chosen agent trading vault at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV.
+                Every $100 deposited = $50 into a Base USDC vault earning 4.5% APY from day one (migrates to your chosen agent trading vault at Q4 2026 launch) + $50 in YLDR token allocation at $9M FDV.
               </div>
               <div className="vp-cta-split">
                 <div className="vp-cta-split-item">

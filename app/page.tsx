@@ -27,8 +27,7 @@ export default function HomePage() {
     { label: 'USDC YIELD', value: '4.5% APY', up: true },
     { label: 'YLDR TGE', value: 'Q1 2027', up: true },
     { label: 'EARLY ACCESS', value: '$9M FDV', up: true },
-    { label: '842 SUBSCRIBERS', value: null, up: false },
-    { label: 'VAULTS LAUNCH', value: 'Q3 2026', up: true },
+    { label: 'VAULTS LAUNCH', value: 'Q4 2026', up: true },
   ];
 
   return (
@@ -97,10 +96,6 @@ export default function HomePage() {
             <div className="lp-stat">
               <div className="lp-stat-v">+34.2%</div>
               <div className="lp-stat-l">Best Vault 30D</div>
-            </div>
-            <div className="lp-stat">
-              <div className="lp-stat-v">842</div>
-              <div className="lp-stat-l">Subscribers</div>
             </div>
             <div className="lp-stat">
               <div className="lp-stat-v">3</div>
@@ -337,7 +332,7 @@ export default function HomePage() {
             <div className="lp-token-offer">
               <strong>Early Access Offer:</strong> Every $100 deposited = $50 into a Base USDC
               vault earning <strong>4.5% APY</strong> from day one (migrates to agent trading
-              vaults at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV
+              vaults at Q4 2026 launch) + $50 in YLDR token allocation at $9M FDV
             </div>
             <div className="lp-token-note">
               ⚡ You choose which vault your capital enters on launch:{' '}

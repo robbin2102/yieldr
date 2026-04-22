@@ -196,7 +196,7 @@ export default function BuyPage() {
           {/* Head */}
           <div className="bp-head">
             <h1>Early Access — YLDR</h1>
-            <p>Choose your vault, deposit USDC or USDT. Half starts earning 4.5% APY today and migrates to your chosen agent vault at Q3 2026 launch. Half is your YLDR token allocation at the lowest valuation.</p>
+            <p>Choose your vault, deposit USDC or USDT. Half starts earning 4.5% APY today and migrates to your chosen agent vault at Q4 2026 launch. Half is your YLDR token allocation at the lowest valuation.</p>
           </div>
 
           {/* Live strip */}
@@ -208,10 +208,6 @@ export default function BuyPage() {
             <div className="bp-ls-item">
               <div className="bp-ls-v">$9M</div>
               <div className="bp-ls-l">Current FDV</div>
-            </div>
-            <div className="bp-ls-item">
-              <div className="bp-ls-v">842</div>
-              <div className="bp-ls-l">Subscribers</div>
             </div>
             <div className="bp-ls-item">
               <div className="bp-ls-v">{spotsLeft ?? '—'}</div>
@@ -260,7 +256,7 @@ export default function BuyPage() {
               ))}
             </div>
             <div className="bp-vault-note">
-              Your USDC earns 4.5% APY in a Base vault today. At Q3 2026 launch, it migrates to this agent trading vault.
+              Your USDC earns 4.5% APY in a Base vault today. At Q4 2026 launch, it migrates to this agent trading vault.
             </div>
 
             {/* Step 2: Amount + Token */}
@@ -364,7 +360,7 @@ export default function BuyPage() {
               <div className="bp-split-row">
                 <span className="bp-split-lbl">
                   USDC Vault (4.5% APY now)
-                  <span className="bp-split-sub">Migrates to agent vault Q3 2026</span>
+                  <span className="bp-split-sub">Migrates to agent vault Q4 2026</span>
                 </span>
                 <span className="bp-split-val">${fmtNum(half)}</span>
               </div>
@@ -419,7 +415,7 @@ export default function BuyPage() {
               ))}
               <div className="bp-avatar special">+837</div>
             </div>
-            <div className="bp-social-txt"><strong>842 subscribers</strong> already in.</div>
+            <div className="bp-social-txt">Early depositors already in.</div>
           </div>
 
         </div>

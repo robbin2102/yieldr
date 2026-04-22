@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
         usdc_vault_amount:    half,
         usdc_vault_apy:       4.5,
         selected_vault:       selected_vault ?? null,
-        vault_migration_target: 'Q3 2026',
+        vault_migration_target: 'Q4 2026',
         yldr_token_amount:    allocation.yldrAmount,
         yldr_usdc_value:      half,
         yldr_price_per_token: allocation.effectivePrice,

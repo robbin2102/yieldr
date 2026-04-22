@@ -203,7 +203,7 @@ export default function AllocationsPage() {
             <div className="ap-how-label">How Early Access Works</div>
             <div className="ap-how-text">
               Every <strong>$100</strong> deposited = <strong>$50</strong> into a Base USDC vault earning <span className="green">4.5% APY</span> from day one
-              (migrates to your chosen agent trading vault at Q3 2026 launch) + <strong>$50</strong> in <span className="green">YLDR token allocation</span> at $9M FDV.
+              (migrates to your chosen agent trading vault at Q4 2026 launch) + <strong>$50</strong> in <span className="green">YLDR token allocation</span> at $9M FDV.
             </div>
           </div>
 
@@ -237,7 +237,7 @@ export default function AllocationsPage() {
               <div className="ap-alloc-block">
                 <div className="ap-alloc-tag">USDC Vault — Earning Now</div>
                 <div className="ap-alloc-val">{userLoading ? <Skel s="lg" /> : showUserData ? `$${fmt(usdcVault)}` : '—'}</div>
-                <div className="ap-alloc-meta">Earning <span>4.5% APY</span> &middot; Migrates to agent vault <span>Q3 2026</span></div>
+                <div className="ap-alloc-meta">Earning <span>4.5% APY</span> &middot; Migrates to agent vault <span>Q4 2026</span></div>
               </div>
 
               <div className="ap-alloc-block">
