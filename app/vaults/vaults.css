@@ -153,18 +153,18 @@
 
 /* ── Stats Row ── */
 .vp-vd-stats {
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 1px; background: var(--b1); border: 1px solid var(--b1);
   margin-bottom: 1.5rem;
 }
-.vp-vd-stat { background: var(--bg2); padding: .8rem .6rem; text-align: center; }
-.vp-vd-stat-v { font-size: .85rem; font-weight: 600; margin-bottom: .15rem; }
+.vp-vd-stat { background: var(--bg2); padding: 1rem .8rem; text-align: center; }
+.vp-vd-stat-v { font-size: .95rem; font-weight: 600; margin-bottom: .25rem; }
 .vp-vd-stat-v.green { color: var(--g); }
 .vp-vd-stat-v.white { color: var(--t1); }
 .vp-vd-stat-v.red   { color: var(--r); }
 .vp-trend-up { font-size: .55rem; color: var(--g); margin-left: .15rem; vertical-align: middle; }
 .vp-trend-dn { font-size: .55rem; color: var(--r); margin-left: .15rem; vertical-align: middle; }
-.vp-vd-stat-l { font-size: .48rem; color: var(--t2); text-transform: uppercase; letter-spacing: 1px; }
+.vp-vd-stat-l { font-size: .58rem; color: var(--t1); text-transform: uppercase; letter-spacing: 1px; opacity: .55; }
 
 /* ── Chart ── */
 .vp-vd-chart {
@@ -369,9 +369,7 @@
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .vp-vault-detail { grid-template-columns: 1fr; }
-  .vp-vd-stats { grid-template-columns: repeat(3, 1fr); }
-  .vp-vd-stats .vp-vd-stat:nth-child(4),
-  .vp-vd-stats .vp-vd-stat:nth-child(5) { grid-column: span 1; }
+  .vp-vd-stats { grid-template-columns: repeat(2, 1fr); }
   .vp-nav { padding: 0 1rem; }
   .vp-nav-links { display: none; }
   .vp-page-head { flex-direction: column; align-items: flex-start; gap: 1rem; }

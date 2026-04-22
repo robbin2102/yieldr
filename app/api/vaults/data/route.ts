@@ -132,11 +132,9 @@ export async function GET() {
         const capital = statsDoc.initial_capital_usdc || 1;
 
         const tf = statsDoc.timeframePnL ?? {};
-        const pnl30d           = tf['30d']?.pnl ?? 0;
-        const capitalDeployed7d = tf['7d']?.capitalDeployed ?? 0;
-        const maxDrawdown30d   = parseFloat((tf['30d']?.maxDrawdownPct ?? 0).toFixed(1));
-        const daysWonRate      = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
-        const drawdownTrend    = statsDoc.drawdown_trend ?? null;
+        const pnl30d            = tf['30d']?.pnl ?? 0;
+        const capitalDeployed30d = tf['30d']?.capitalDeployed ?? 0;
+        const daysWonRate       = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
 
         // All-time chart points from daily snapshots
         const snaps = snapshots as unknown as { date: Date; cumulative_pnl_usdc: number }[];
@@ -156,16 +154,14 @@ export async function GET() {
         const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
         const stats = {
-          totalPnl:          statsDoc.totalPnlAllTime ?? 0,
+          totalPnl:           statsDoc.totalPnlAllTime ?? 0,
           pnl30d,
-          capitalDeployed7d,
-          maxDrawdown30d,
+          capitalDeployed30d,
           daysWonRate,
           openPositionsValue,
-          winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          trades:            statsDoc.win_rate_sample_size ?? 0,
-          lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
-          drawdownTrend,
+          winRate:            parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          trades:             statsDoc.win_rate_sample_size ?? 0,
+          lastTradeTs:        statsDoc.last_polled_activity_ts ?? 0,
         };
 
         const openPositions = filteredPositions.length

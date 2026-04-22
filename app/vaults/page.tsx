@@ -18,9 +18,8 @@ type Position   = { market: string; side: string; size: string; entry: string; p
 type Trade      = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; pnl30d: number; capitalDeployed7d: number; openPositionsValue: number;
-    winRate: number; maxDrawdown30d: number; daysWonRate: number; trades: number;
-    drawdownTrend?: string;
+    totalPnl: number; pnl30d: number; capitalDeployed30d: number; openPositionsValue: number;
+    winRate: number; daysWonRate: number; trades: number;
   };
   chartPoints: ChartPoint[];
   positions: Position[];
@@ -59,10 +58,9 @@ function buildFallbackState(): Record<VaultId, VaultState> {
       stats: {
         totalPnl:           m.fallback.totalPnl,
         pnl30d:             m.fallback.pnl30d,
-        capitalDeployed7d:  m.fallback.capitalDeployed7d,
+        capitalDeployed30d: m.fallback.capitalDeployed30d,
         openPositionsValue: 0,
         winRate:            m.fallback.winRate,
-        maxDrawdown30d:     m.fallback.maxDrawdown30d,
         daysWonRate:        m.fallback.daysWonRate,
         trades:             m.fallback.trades,
       },
@@ -371,16 +369,9 @@ function VaultsPageInner() {
                     </div>
                     <div className="vp-vd-stat">
                       <div className="vp-vd-stat-v white">
-                        {isLoading ? <Skel size="md" /> : fmtUsd(d.stats.capitalDeployed7d)}
+                        {isLoading ? <Skel size="md" /> : fmtUsd(d.stats.capitalDeployed30d)}
                       </div>
-                      <div className="vp-vd-stat-l">Avg Capital 7D</div>
-                    </div>
-                    <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.maxDrawdown30d < 0 ? 'red' : 'white'}`}>
-                        {isLoading ? <Skel size="sm" /> : `${d.stats.maxDrawdown30d}%`}
-                        {!isLoading && d.stats.drawdownTrend === 'worsening' && <span className="vp-trend-dn">↓</span>}
-                      </div>
-                      <div className="vp-vd-stat-l">Max DD 30D</div>
+                      <div className="vp-vd-stat-l">Avg Capital 30D</div>
                     </div>
                     <div className="vp-vd-stat">
                       <div className="vp-vd-stat-v white">
