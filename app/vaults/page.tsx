@@ -499,7 +499,7 @@ function VaultsPageInner() {
                 { lbl: 'Treasury',          val: 'Multisig',      green: false },
                 { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
                 { lbl: 'Vault Subscribers', val: isLoading ? '…' : String(global.totalSubscribers || '—'), green: false },
-                { lbl: 'Telegram',          val: '2,400 members', green: false },
+                { lbl: 'Telegram',          val: 'Coming Soon', green: false },
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>
