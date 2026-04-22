@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import NavLinks from '@/components/NavLinks';
@@ -13,14 +13,15 @@ import {
 } from '@/config/vaults';
 
 // ── Types ──────────────────────────────────────────────────────────────────
-type Position = { market: string; side: string; size: string; entry: string; pnl: string; pnlPositive: boolean; time: string };
-type Trade    = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
+type ChartPoint = { date: string; pnl: number };
+type Position   = { market: string; side: string; size: string; entry: string; pnl: string; pnlPositive: boolean; time: string };
+type Trade      = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; roi30d: number; vaultSize: number; openPositionsValue: number;
-    winRate: number; sortino: number; profitFactor: number; trades: number;
+    totalPnl: number; roi30d: number; openPositionsValue: number;
+    winRate: number; edgeScore: number; pValue: number; trades: number;
   };
-  chartPath: { line: string; fill: string };
+  chartPoints: ChartPoint[];
   positions: Position[];
   closedTrades: Trade[];
   wallet?: string;
@@ -48,6 +49,11 @@ function totalUnrealisedPnl(positions: Position[]): { text: string; positive: bo
   }, 0);
   return { text: fmtPnl(total), positive: total >= 0 };
 }
+function fmtPValue(v: number): string {
+  if (v === 0) return '0.000';
+  if (v < 0.001) return '<0.001';
+  return v.toFixed(3);
+}
 
 // ── Build initial state from fallbacks ────────────────────────────────────
 function buildFallbackState(): Record<VaultId, VaultState> {
@@ -56,38 +62,123 @@ function buildFallbackState(): Record<VaultId, VaultState> {
     const m = VAULT_META[id];
     out[id] = {
       stats: {
-        totalPnl:          m.fallback.totalPnl,
-        roi30d:            m.fallback.roi30d,
-        vaultSize:         m.fallback.vaultSize,
+        totalPnl:           m.fallback.totalPnl,
+        roi30d:             m.fallback.roi30d,
         openPositionsValue: 0,
-        winRate:           m.fallback.winRate,
-        sortino:           m.fallback.sortino,
-        profitFactor:      m.fallback.profitFactor,
-        trades:            m.fallback.trades,
+        winRate:            m.fallback.winRate,
+        edgeScore:          m.fallback.edgeScore,
+        pValue:             m.fallback.pValue,
+        trades:             m.fallback.trades,
       },
-      chartPath: { line: m.fallback.chartPath, fill: m.fallback.chartFill },
-      positions: FALLBACK_POSITIONS[id],
+      chartPoints:  [],
+      positions:    FALLBACK_POSITIONS[id],
       closedTrades: FALLBACK_TRADES[id],
     };
   }
   return out;
 }
 
+// ── Interactive Chart ──────────────────────────────────────────────────────
+function VaultChart({ points, gradId }: { points: ChartPoint[]; gradId: string }) {
+  const lineRef = useRef<HTMLDivElement>(null);
+  const [tooltip, setTooltip] = useState<{ leftPct: number; crossX: number; pnl: number; date: string } | null>(null);
+
+  const W = 800, H = 140, PAD = 5;
+
+  const coords = useMemo(() => {
+    if (points.length < 2) return [];
+    const minPnl = Math.min(0, ...points.map((p) => p.pnl));
+    const maxPnl = Math.max(...points.map((p) => p.pnl), 0.01);
+    const range  = maxPnl - minPnl || 1;
+    return points.map((p, i) => ({
+      svgX: Math.round((i / (points.length - 1)) * W),
+      svgY: Math.round(H - PAD - ((p.pnl - minPnl) / range) * (H - PAD * 2)),
+      date: p.date,
+      pnl:  p.pnl,
+    }));
+  }, [points]);
+
+  const linePath = coords.length
+    ? `M${coords.map((c) => `${c.svgX},${c.svgY}`).join(' L')}`
+    : `M0,${H * 0.5} L${W},${H * 0.5}`;
+  const fillPath = coords.length
+    ? `${linePath} L${W},${H} L0,${H}Z`
+    : `M0,${H * 0.5} L${W},${H * 0.5} L${W},${H} L0,${H}Z`;
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!coords.length || !lineRef.current) return;
+    const rect = lineRef.current.getBoundingClientRect();
+    const svgX  = ((e.clientX - rect.left) / rect.width) * W;
+    let nearest = coords[0];
+    let minDist = Infinity;
+    for (const c of coords) {
+      const d = Math.abs(c.svgX - svgX);
+      if (d < minDist) { minDist = d; nearest = c; }
+    }
+    setTooltip({
+      leftPct: (nearest.svgX / W) * 100,
+      crossX:  nearest.svgX,
+      pnl:     nearest.pnl,
+      date:    nearest.date,
+    });
+  }
+
+  return (
+    <>
+      <div className="vp-chart-label">Cumulative PnL — All Time</div>
+      <div
+        ref={lineRef}
+        className="vp-chart-line"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setTooltip(null)}
+      >
+        <svg className="vp-chart-svg" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
+          <defs>
+            <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stopColor="#00E87B" stopOpacity=".2" />
+              <stop offset="100%" stopColor="#00E87B" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d={linePath} fill="none" stroke="#00E87B" strokeWidth="2" />
+          <path d={fillPath} fill={`url(#${gradId})`} />
+          {tooltip && (
+            <line
+              x1={tooltip.crossX} y1="0"
+              x2={tooltip.crossX} y2={H}
+              stroke="rgba(255,255,255,.2)" strokeWidth="1" strokeDasharray="3,2"
+            />
+          )}
+        </svg>
+        {tooltip && (
+          <div
+            className="vp-chart-tooltip"
+            style={{ left: `${Math.min(Math.max(tooltip.leftPct, 8), 72)}%` }}
+          >
+            <div className="vp-chart-tt-date">{tooltip.date}</div>
+            <div className={`vp-chart-tt-pnl${tooltip.pnl < 0 ? ' neg' : ''}`}>
+              {tooltip.pnl >= 0 ? '+' : '−'}${Math.abs(tooltip.pnl).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
 // ── Component ──────────────────────────────────────────────────────────────
 function VaultsPageInner() {
   const searchParams = useSearchParams();
-  const vaultParam = searchParams.get('vault') as VaultId | null;
+  const vaultParam   = searchParams.get('vault') as VaultId | null;
   const [activeVault, setActiveVault] = useState<VaultId>(
     vaultParam && VAULT_IDS.includes(vaultParam) ? vaultParam : 'geo'
   );
-  const [isLoading, setIsLoading]     = useState(true);
-  const [vaultData, setVaultData]     = useState<Record<VaultId, VaultState>>(buildFallbackState);
-  const [global, setGlobal]           = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—', totalSubscribers: 0 });
-  const [spotsLeft, setSpotsLeft]     = useState(127);
-  const [deadline, setDeadline]       = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 90); return d; });
-  const [countdown, setCountdown]     = useState('');
-  const [selectedVault, setSelectedVault] = useState<VaultId | null>(null);
-  const [chatMessages, setChatMessages]   = useState<Array<{ type: 'agent' | 'user' | 'system'; text: string }>>([
+  const [isLoading, setIsLoading]   = useState(true);
+  const [vaultData, setVaultData]   = useState<Record<VaultId, VaultState>>(buildFallbackState);
+  const [global, setGlobal]         = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—', totalSubscribers: 0 });
+  const [spotsLeft, setSpotsLeft]   = useState(127);
+  const [deadline, setDeadline]     = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 90); return d; });
+  const [countdown, setCountdown]   = useState('');
+  const [chatMessages, setChatMessages] = useState<Array<{ type: 'agent' | 'user' | 'system'; text: string }>>([
     { type: 'system', text: '⚡ Vault agent connected' },
     { type: 'agent',  text: 'Welcome! I can tell you about any of our three vaults, how the human + agent strategy works, or early access terms. What would you like to know?' },
   ]);
@@ -111,11 +202,11 @@ function VaultsPageInner() {
                 const d = data[id];
                 if (!d) continue;
                 next[id] = {
-                  stats:       d.stats        ?? prev[id].stats,
-                  chartPath:   d.chartPath    ?? prev[id].chartPath,
-                  positions:   d.openPositions ?? prev[id].positions,
-                  closedTrades: d.closedTrades ?? prev[id].closedTrades,
-                  wallet:      d.wallet,
+                  stats:        d.stats         ?? prev[id].stats,
+                  chartPoints:  d.chartPoints   ?? prev[id].chartPoints,
+                  positions:    d.openPositions ?? prev[id].positions,
+                  closedTrades: d.closedTrades  ?? prev[id].closedTrades,
+                  wallet:       d.wallet,
                 };
               }
               return next;
@@ -154,9 +245,9 @@ function VaultsPageInner() {
     return () => clearInterval(t);
   }, [deadline]);
 
-  // ── Auto-scroll chat (only when user sends a message) ─────────────────
+  // ── Auto-scroll chat ───────────────────────────────────────────────────
   useEffect(() => {
-    if (chatMessages.length <= 2) return; // skip initial system + welcome messages
+    if (chatMessages.length <= 2) return;
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
 
@@ -174,7 +265,6 @@ function VaultsPageInner() {
     }, 600);
   }
 
-  // ── Active vault data ──────────────────────────────────────────────────
   const av   = vaultData[activeVault];
   const meta = VAULT_META[activeVault as VaultId];
   const unr  = totalUnrealisedPnl(av.positions);
@@ -209,7 +299,7 @@ function VaultsPageInner() {
         <div className="vp-sb-right">
           <span>Capital: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtUsd(global.totalCapital)}</span></span>
           <span>Subscribers: <span className="vp-sb-val">{isLoading ? <Skel size="sm" /> : global.totalSubscribers || '—'}</span></span>
-          <span>All-time PnL: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtPnl(global.totalPnl)}</span></span>
+          <span>All-Time PnL: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtPnl(global.totalPnl)}</span></span>
         </div>
       </div>
 
@@ -223,8 +313,10 @@ function VaultsPageInner() {
           </div>
           <div className="vp-ph-right">
             <div className="vp-ph-stat">
-              <div className="vp-ph-stat-v">{isLoading ? <Skel size="xl" /> : fmtPnl(global.totalPnl)}</div>
-              <div className="vp-ph-stat-l">Total PnL</div>
+              <div className={`vp-ph-stat-v${global.totalPnl < 0 ? ' red' : ''}`}>
+                {isLoading ? <Skel size="xl" /> : fmtPnl(global.totalPnl)}
+              </div>
+              <div className="vp-ph-stat-l">All-Time PnL</div>
             </div>
             <div className="vp-ph-stat">
               <div className="vp-ph-stat-v">{isLoading ? <Skel size="lg" /> : `+${global.combinedRoi.toFixed(1)}%`}</div>
@@ -241,7 +333,7 @@ function VaultsPageInner() {
               className={`vp-vtab${activeVault === id ? ' active' : ''}`}
               onClick={() => setActiveVault(id)}
             >
-              {VAULT_META[id].emoji} {id === 'esports' ? 'E-Sports Ninja' : id === 'soccerAlpha' ? 'Soccer Alpha' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
+              {VAULT_META[id].emoji} {id === 'soccerAlpha' ? 'Soccer Alpha' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
             </button>
           ))}
         </div>
@@ -255,7 +347,6 @@ function VaultsPageInner() {
               const d = vaultData[id];
               const m = VAULT_META[id];
               const u = totalUnrealisedPnl(d.positions);
-              const gradId = `vg-${id}`;
               return (
                 <div key={id} className={`vp-vault-panel${activeVault === id ? ' active' : ''}`}>
 
@@ -266,36 +357,50 @@ function VaultsPageInner() {
                       <p>{m.description}</p>
                     </div>
                     <div className="vp-vd-pnl">
-                      <div className="vp-vd-pnl-v">{isLoading ? <Skel size="xl" /> : fmtPnl(d.stats.totalPnl)}</div>
-                      <div className="vp-vd-pnl-l">Total PnL</div>
+                      <div className={`vp-vd-pnl-v${d.stats.totalPnl < 0 ? ' red' : ''}`}>
+                        {isLoading ? <Skel size="xl" /> : fmtPnl(d.stats.totalPnl)}
+                      </div>
+                      <div className="vp-vd-pnl-l">All-Time PnL</div>
                     </div>
                   </div>
 
                   {/* Stats row */}
                   <div className="vp-vd-stats">
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `+${d.stats.roi30d}%`}</div><div className="vp-vd-stat-l">30D ROI</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="md" /> : fmtUsd(d.stats.vaultSize)}</div><div className="vp-vd-stat-l">Vault Size</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v green">{isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}</div><div className="vp-vd-stat-l">Win Rate</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.sortino}</div><div className="vp-vd-stat-l">Sortino</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : `${d.stats.profitFactor}x`}</div><div className="vp-vd-stat-l">Profit Factor</div></div>
-                    <div className="vp-vd-stat"><div className="vp-vd-stat-v white">{isLoading ? <Skel size="sm" /> : d.stats.trades}</div><div className="vp-vd-stat-l">Trades</div></div>
+                    <div className="vp-vd-stat">
+                      <div className={`vp-vd-stat-v ${d.stats.roi30d >= 0 ? 'green' : 'red'}`}>
+                        {isLoading ? <Skel size="sm" /> : `${d.stats.roi30d >= 0 ? '+' : ''}${d.stats.roi30d}%`}
+                      </div>
+                      <div className="vp-vd-stat-l">30D ROI</div>
+                    </div>
+                    <div className="vp-vd-stat">
+                      <div className="vp-vd-stat-v green">
+                        {isLoading ? <Skel size="sm" /> : d.stats.edgeScore.toFixed(3)}
+                      </div>
+                      <div className="vp-vd-stat-l">Edge Score</div>
+                    </div>
+                    <div className="vp-vd-stat">
+                      <div className="vp-vd-stat-v green">
+                        {isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}
+                      </div>
+                      <div className="vp-vd-stat-l">Win Rate</div>
+                    </div>
+                    <div className="vp-vd-stat">
+                      <div className="vp-vd-stat-v white">
+                        {isLoading ? <Skel size="sm" /> : fmtPValue(d.stats.pValue)}
+                      </div>
+                      <div className="vp-vd-stat-l">P-Value</div>
+                    </div>
+                    <div className="vp-vd-stat">
+                      <div className="vp-vd-stat-v white">
+                        {isLoading ? <Skel size="sm" /> : d.stats.trades}
+                      </div>
+                      <div className="vp-vd-stat-l">Trades</div>
+                    </div>
                   </div>
 
                   {/* PnL Chart */}
                   <div className="vp-vd-chart">
-                    <div className="vp-chart-label">Cumulative PnL — 30 Days</div>
-                    <div className="vp-chart-line">
-                      <svg className="vp-chart-svg" viewBox="0 0 800 140" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%"   stopColor="#00E87B" stopOpacity=".2" />
-                            <stop offset="100%" stopColor="#00E87B" stopOpacity="0" />
-                          </linearGradient>
-                        </defs>
-                        <path d={d.chartPath.line} fill="none" stroke="#00E87B" strokeWidth="2" />
-                        <path d={d.chartPath.fill} fill={`url(#${gradId})`} />
-                      </svg>
-                    </div>
+                    <VaultChart points={d.chartPoints} gradId={`vg-${id}`} />
                   </div>
 
                   {/* Open Positions */}

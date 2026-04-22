@@ -4,6 +4,7 @@ import VaultStats from '@/models/VaultStats';
 import VaultTrade from '@/models/VaultTrade';
 import VaultOpenPosition from '@/models/VaultOpenPosition';
 import VaultDailySnapshot from '@/models/VaultDailySnapshot';
+import EdgeRankedTrader from '@/models/EdgeRankedTrader';
 import { VAULT_META, type VaultId } from '@/config/vaults';
 
 export const dynamic = 'force-dynamic';
@@ -23,28 +24,6 @@ function formatTimeAgo(ts: number | Date): string {
 
 function fmtPnl(n: number): string {
   return (n >= 0 ? '+' : '') + `$${Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-function computeChartPath(cumPnl: number[]): { line: string; fill: string } | null {
-  if (!cumPnl || cumPnl.length < 2) return null;
-  const min = Math.min(0, ...cumPnl);
-  const max = Math.max(...cumPnl, 0.01);
-  const range = max - min || 1;
-  const W = 800, H = 140, PAD = 5;
-  const pts = cumPnl.map((v, i) => {
-    const x = (i / (cumPnl.length - 1)) * W;
-    const y = H - PAD - ((v - min) / range) * (H - PAD * 2);
-    return `${Math.round(x)},${Math.round(y)}`;
-  });
-  const line = `M${pts.join(' L')}`;
-  return { line, fill: `${line} L${W},${H} L0,${H}Z` };
-}
-
-function roiFromSnapshots(snapshots: { daily_pnl_usdc: number }[], days: number, capital: number): number {
-  if (!capital || !snapshots.length) return 0;
-  const slice = snapshots.slice(-days);
-  const sum = slice.reduce((s, d) => s + (d.daily_pnl_usdc ?? 0), 0);
-  return parseFloat(((sum / capital) * 100).toFixed(1));
 }
 
 // ── Sport keyword filters ──────────────────────────────────────────────────
@@ -84,7 +63,7 @@ const SPORT_KEYWORDS: Record<VaultId, string[]> = {
 
 function isRelevantPosition(title: string, vaultId: VaultId): boolean {
   const keywords = SPORT_KEYWORDS[vaultId];
-  if (!keywords.length) return true; // geo: keep all
+  if (!keywords.length) return true;
   const t = title.toLowerCase();
   return keywords.some((k) => t.includes(k));
 }
@@ -95,9 +74,8 @@ export async function GET() {
   try {
     await connectDB();
 
-    const vaultIds: VaultId[] = ['geo', 'nba', 'soccerAlpha']; // hockey hidden, esports hidden
+    const vaultIds: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
 
-    // Fetch all vault stat docs — map by traderLabel to vault ID
     const allStats = await VaultStats.find({}).lean() as unknown as Array<{
       wallet: string;
       traderLabel: string;
@@ -113,7 +91,6 @@ export async function GET() {
       last_polled_activity_ts: number;
     }>;
 
-    // Map traderLabel → vault ID
     const LABEL_TO_ID: Record<string, VaultId> = {
       'geopolitics vault':    'geo',
       'nba edge vault':       'nba',
@@ -122,7 +99,6 @@ export async function GET() {
       'soccer alpha vault':   'soccerAlpha',
     };
 
-    // Build a map: vaultId → doc
     const statsByLabel = new Map(
       allStats.map((d) => [LABEL_TO_ID[d.traderLabel?.toLowerCase()] ?? d.traderLabel?.toLowerCase(), d])
     );
@@ -135,42 +111,37 @@ export async function GET() {
         const meta = VAULT_META[id];
 
         if (!statsDoc) {
-          result[id] = null; // no data yet → page uses fallback
+          result[id] = null;
           return;
         }
 
         const wallet = statsDoc.wallet;
 
-        // ── Fetch related data concurrently ──────────────────────────────
-        const [posDoc, trades, snapshots] = await Promise.all([
+        const [posDoc, trades, snapshots, edgeDoc] = await Promise.all([
           VaultOpenPosition.findOne({ wallet }).lean(),
           VaultTrade.find({ wallet, status: { $in: ['win', 'loss'] } })
             .sort({ opened_at: -1 })
             .limit(15)
             .lean(),
           VaultDailySnapshot.find({ wallet })
-            .sort({ date: 1 })   // oldest first → for chart + ROI
-            .limit(30)
+            .sort({ date: 1 }) // oldest first → for chart
             .lean(),
+          EdgeRankedTrader.findOne({ wallet }).lean(),
         ]);
 
         const capital = statsDoc.initial_capital_usdc || 1;
 
-        // ── ROI: use roce but only when trades exist in the period ─────────────
-        // If tradeCount=0, roce reflects only unrealized PnL which is misleading
         const tf = statsDoc.timeframePnL ?? {};
-        const roi7d  = (tf['7d']?.tradeCount  ?? 0) > 0 ? parseFloat((tf['7d']?.roce  ?? 0).toFixed(1)) : 0;
         const roi30d = (tf['30d']?.tradeCount ?? 0) > 0 ? parseFloat((tf['30d']?.roce ?? 0).toFixed(1)) : 0;
 
-        // ── Chart from daily snapshots (cumulative curve) ───────────────
-        const snaps = snapshots as unknown as { daily_pnl_usdc: number; cumulative_pnl_usdc: number }[];
-        const cumSeries = snaps.map((d) => d.cumulative_pnl_usdc ?? 0);
-        const chartPath = computeChartPath(cumSeries) ?? {
-          line: meta.fallback.chartPath,
-          fill: meta.fallback.chartFill,
-        };
+        // All-time chart points from daily snapshots
+        const snaps = snapshots as unknown as { date: Date; cumulative_pnl_usdc: number }[];
+        const chartPoints = snaps.map((d) => ({
+          date: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          pnl:  d.cumulative_pnl_usdc ?? 0,
+        }));
 
-        // ── Open positions (filtered to sport-relevant markets only) ────
+        // Open positions filtered to sport-relevant markets
         const rawPositions = posDoc?.topOpenPositions as Array<{
           title: string; outcome: string; size: number;
           avgPrice: number; curPrice: number;
@@ -178,21 +149,19 @@ export async function GET() {
         }> | undefined;
 
         const filteredPositions = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
-
         const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
-        // ── Stats ───────────────────────────────────────────────────────
-        // Vault size = initial capital + all-time PnL (current equity)
-        const vaultSize = (statsDoc.initial_capital_usdc ?? 0) + (statsDoc.totalPnlAllTime ?? 0);
+        const edgeRaw = (edgeDoc as unknown as { edge?: number; p_val?: number } | null);
+        const edgeScore = parseFloat((edgeRaw?.edge ?? 0).toFixed(4));
+        const pValue   = parseFloat((edgeRaw?.p_val ?? 0).toFixed(6));
 
         const stats = {
           totalPnl:          statsDoc.totalPnlAllTime ?? 0,
           roi30d,
-          vaultSize,
           openPositionsValue,
           winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          sortino:           parseFloat((statsDoc.tradingConsistency?.sortinoRatio ?? 0).toFixed(2)),
-          profitFactor:      parseFloat((statsDoc.profitFactor ?? 0).toFixed(2)),
+          edgeScore,
+          pValue,
           trades:            statsDoc.win_rate_sample_size ?? 0,
           lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
         };
@@ -210,7 +179,6 @@ export async function GET() {
             }))
           : null;
 
-        // ── Closed trades ───────────────────────────────────────────────
         const closedTrades = trades.length
           ? (trades as Array<{
               market: string; side: string; entry_price: number;
@@ -226,21 +194,21 @@ export async function GET() {
             }))
           : null;
 
-        result[id] = { stats, chartPath, openPositions, closedTrades, wallet: statsDoc.wallet };
+        result[id] = { stats, chartPoints, openPositions, closedTrades, wallet: statsDoc.wallet };
       })
     );
 
-    // ── Global stats — only displayed vaults, not hidden ones ──────────
+    // Global stats
     const displayedStats = vaultIds
       .map((id) => statsByLabel.get(id))
       .filter((d): d is typeof allStats[0] => d != null);
 
     if (displayedStats.length) {
-      const totalPnl       = displayedStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
-      const totalCapital   = displayedStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
-      const totalInitial   = displayedStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
+      const totalPnl         = displayedStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
+      const totalCapital     = displayedStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
+      const totalInitial     = displayedStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
       const totalSubscribers = displayedStats.reduce((s, v) => s + (v.subscribers ?? 0), 0);
-      const latestTs       = Math.max(...displayedStats.map((v) => v.last_polled_activity_ts ?? 0));
+      const latestTs         = Math.max(...displayedStats.map((v) => v.last_polled_activity_ts ?? 0));
 
       result._global = {
         totalPnl,
