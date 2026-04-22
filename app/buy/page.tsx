@@ -221,7 +221,7 @@ export default function BuyPage() {
 
           {/* Urgency */}
           <div className="bp-urgency">
-            ⏳ Tier 1 pricing ends April 30 · Next tier is 2x FDV
+            ⏳ Tier 1 pricing ends May 31st · Next tier is 2x FDV
           </div>
 
           {/* Status messages */}

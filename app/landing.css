@@ -259,7 +259,7 @@
 }
 .lp-stat-l {
   font-size: .58rem;
-  color: var(--t3);
+  color: var(--t2);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-top: .25rem;
@@ -476,7 +476,7 @@
 }
 .lp-vp-stat-l {
   font-size: .52rem;
-  color: var(--t3);
+  color: var(--t2);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-top: .15rem;
