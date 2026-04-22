@@ -392,6 +392,15 @@ function VaultsPageInner() {
                     <VaultChart points={d.chartPoints} gradId={`vg-${id}`} />
                   </div>
 
+                  {/* Mobile-only CTA strip — shown right after chart */}
+                  <div className="vp-mobile-cta-strip">
+                    <div className="vp-mcs-text">
+                      <span className="vp-mcs-label">50% USDC (4.5% APY) · 50% YLDR @$9M FDV</span>
+                      <span className="vp-mcs-sub">Tier 1 pricing ends May 31st</span>
+                    </div>
+                    <Link href="/buy" className="vp-mcs-btn">Get Early Access ↗</Link>
+                  </div>
+
                   {/* Open Positions */}
                   <div className="vp-open-positions">
                     <div className="vp-op-head">
@@ -562,6 +571,15 @@ function VaultsPageInner() {
 
         </div>
       </main>
+
+      {/* Sticky mobile CTA bar */}
+      <div className="vp-sticky-cta">
+        <div className="vp-sct-left">
+          <div className="vp-sct-label">Get Early Access</div>
+          <div className="vp-sct-sub">50% USDC APY · 50% YLDR @$9M FDV</div>
+        </div>
+        <Link href="/buy" className="vp-sct-btn">Buy YLDR ↗</Link>
+      </div>
 
       <footer className="vp-footer">
         <div className="vp-footer-txt">
