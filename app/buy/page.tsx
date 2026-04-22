@@ -101,10 +101,11 @@ export default function BuyPage() {
       const rois: Partial<Record<VaultId, string>> = {};
       let best = -Infinity;
       for (const id of ['geo','nba','soccerAlpha'] as VaultId[]) {
-        const roi = data[id]?.stats?.roi30d;
-        if (typeof roi === 'number') {
-          rois[id] = `+${roi.toFixed(1)}%`;
-          if (roi > best) { best = roi; setBestRoi(`+${roi.toFixed(1)}%`); }
+        const roce = data[id]?.stats?.roce30d;
+        if (typeof roce === 'number') {
+          const label = `${roce >= 0 ? '+' : ''}${roce.toFixed(1)}%`;
+          rois[id] = label;
+          if (roce > best) { best = roce; setBestRoi(label); }
         }
       }
       setVaultRois(rois);

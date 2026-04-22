@@ -136,6 +136,7 @@ export async function GET() {
         const pnl30dRaw         = tf['30d']?.pnl ?? 0;
         const totalPnl          = statsDoc.totalPnlAllTime ?? 0;
         const pnl30d            = Math.abs(pnl30dRaw) > Math.abs(totalPnl) ? null : pnl30dRaw;
+        const roce30d           = pnl30d === null ? null : parseFloat((tf['30d']?.roce ?? 0).toFixed(1));
         const capitalDeployed30d = tf['30d']?.capitalDeployed ?? 0;
         const daysWonRate       = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
 
@@ -162,6 +163,7 @@ export async function GET() {
         const stats = {
           totalPnl,
           pnl30d,
+          roce30d,
           capitalDeployed30d,
           daysWonRate,
           openPositionsValue,
