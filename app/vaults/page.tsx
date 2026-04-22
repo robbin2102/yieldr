@@ -18,9 +18,9 @@ type Position   = { market: string; side: string; size: string; entry: string; p
 type Trade      = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; realizedPnl: number; roi30d: number; openPositionsValue: number;
+    totalPnl: number; pnl30d: number; capitalDeployed7d: number; openPositionsValue: number;
     winRate: number; maxDrawdown30d: number; daysWonRate: number; trades: number;
-    roceTrend?: string; drawdownTrend?: string;
+    drawdownTrend?: string;
   };
   chartPoints: ChartPoint[];
   positions: Position[];
@@ -58,8 +58,8 @@ function buildFallbackState(): Record<VaultId, VaultState> {
     out[id] = {
       stats: {
         totalPnl:           m.fallback.totalPnl,
-        realizedPnl:        m.fallback.realizedPnl,
-        roi30d:             m.fallback.roi30d,
+        pnl30d:             m.fallback.pnl30d,
+        capitalDeployed7d:  m.fallback.capitalDeployed7d,
         openPositionsValue: 0,
         winRate:            m.fallback.winRate,
         maxDrawdown30d:     m.fallback.maxDrawdown30d,
@@ -370,12 +370,10 @@ function VaultsPageInner() {
                       <div className="vp-vd-stat-l">Win Rate</div>
                     </div>
                     <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.roi30d >= 0 ? 'green' : 'red'}`}>
-                        {isLoading ? <Skel size="sm" /> : `${d.stats.roi30d >= 0 ? '+' : ''}${d.stats.roi30d}%`}
-                        {!isLoading && d.stats.roceTrend === 'improving' && <span className="vp-trend-up">↑</span>}
-                        {!isLoading && d.stats.roceTrend === 'worsening' && <span className="vp-trend-dn">↓</span>}
+                      <div className="vp-vd-stat-v white">
+                        {isLoading ? <Skel size="md" /> : fmtUsd(d.stats.capitalDeployed7d)}
                       </div>
-                      <div className="vp-vd-stat-l">30D Return</div>
+                      <div className="vp-vd-stat-l">Avg Capital 7D</div>
                     </div>
                     <div className="vp-vd-stat">
                       <div className={`vp-vd-stat-v ${d.stats.maxDrawdown30d < 0 ? 'red' : 'white'}`}>
@@ -391,10 +389,10 @@ function VaultsPageInner() {
                       <div className="vp-vd-stat-l">Days Winning</div>
                     </div>
                     <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.realizedPnl >= 0 ? 'green' : 'red'}`}>
-                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.realizedPnl)}
+                      <div className={`vp-vd-stat-v ${d.stats.pnl30d >= 0 ? 'green' : 'red'}`}>
+                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.pnl30d)}
                       </div>
-                      <div className="vp-vd-stat-l">Realized PnL</div>
+                      <div className="vp-vd-stat-l">30D PnL</div>
                     </div>
                   </div>
 

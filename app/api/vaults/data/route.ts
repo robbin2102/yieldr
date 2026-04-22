@@ -86,7 +86,7 @@ export async function GET() {
       win_rate_sample_size: number;
       subscribers: number;
       tradingConsistency: { daysWonRate: number };
-      timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number; maxDrawdownPct: number }>;
+      timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number; maxDrawdownPct: number; capitalDeployed: number }>;
       last_polled_activity_ts: number;
       roce_trend?: { direction: string };
       drawdown_trend?: string;
@@ -132,12 +132,11 @@ export async function GET() {
         const capital = statsDoc.initial_capital_usdc || 1;
 
         const tf = statsDoc.timeframePnL ?? {};
-        // Honest return: 30d pnl relative to initial vault capital (not capital deployed)
-        const roi30d = parseFloat(((tf['30d']?.pnl ?? 0) / capital * 100).toFixed(1));
-        const maxDrawdown30d  = parseFloat((tf['30d']?.maxDrawdownPct ?? 0).toFixed(1));
-        const daysWonRate     = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
-        const roceTrend       = statsDoc.roce_trend?.direction ?? null;
-        const drawdownTrend   = statsDoc.drawdown_trend ?? null;
+        const pnl30d           = tf['30d']?.pnl ?? 0;
+        const capitalDeployed7d = tf['7d']?.capitalDeployed ?? 0;
+        const maxDrawdown30d   = parseFloat((tf['30d']?.maxDrawdownPct ?? 0).toFixed(1));
+        const daysWonRate      = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
+        const drawdownTrend    = statsDoc.drawdown_trend ?? null;
 
         // All-time chart points from daily snapshots
         const snaps = snapshots as unknown as { date: Date; cumulative_pnl_usdc: number }[];
@@ -157,16 +156,15 @@ export async function GET() {
         const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
         const stats = {
-          totalPnl:        statsDoc.totalPnlAllTime ?? 0,
-          realizedPnl:     statsDoc.totalRealizedPnl ?? 0,
-          roi30d,
+          totalPnl:          statsDoc.totalPnlAllTime ?? 0,
+          pnl30d,
+          capitalDeployed7d,
           maxDrawdown30d,
           daysWonRate,
           openPositionsValue,
-          winRate:         parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
-          trades:          statsDoc.win_rate_sample_size ?? 0,
-          lastTradeTs:     statsDoc.last_polled_activity_ts ?? 0,
-          roceTrend,
+          winRate:           parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
+          trades:            statsDoc.win_rate_sample_size ?? 0,
+          lastTradeTs:       statsDoc.last_polled_activity_ts ?? 0,
           drawdownTrend,
         };
 
