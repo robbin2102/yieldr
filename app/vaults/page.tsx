@@ -523,7 +523,7 @@ function VaultsPageInner() {
               ))}
               <div className="vp-tb-item">
                 <span className="lbl">Build Log</span>
-                <Link href="/build-in-public" className="val green" style={{ textDecoration: 'none' }}>Public ✓</Link>
+                <a href="/build-in-public" className="val green" style={{ textDecoration: 'none', cursor: 'pointer' }}>Public ✓</a>
               </div>
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
