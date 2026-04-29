@@ -26,7 +26,7 @@ type VaultState = {
   closedTrades: Trade[];
   wallet?: string;
 };
-type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string; totalSubscribers: number };
+type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string };
 
 const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
 
@@ -168,7 +168,7 @@ function VaultsPageInner() {
   );
   const [isLoading, setIsLoading]   = useState(true);
   const [vaultData, setVaultData]   = useState<Record<VaultId, VaultState>>(buildFallbackState);
-  const [global, setGlobal]         = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—', totalSubscribers: 0 });
+  const [global, setGlobal]         = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—' });
   const [spotsLeft, setSpotsLeft]   = useState(127);
   const [deadline, setDeadline]     = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 90); return d; });
   const [countdown, setCountdown]   = useState('');
@@ -304,7 +304,6 @@ function VaultsPageInner() {
         </div>
         <div className="vp-sb-right">
           <span>Capital: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtUsd(global.totalCapital)}</span></span>
-          <span>Subscribers: <span className="vp-sb-val">{isLoading ? <Skel size="sm" /> : global.totalSubscribers || '—'}</span></span>
           <span>All-Time PnL: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtPnl(global.totalPnl)}</span></span>
         </div>
       </div>
@@ -515,7 +514,7 @@ function VaultsPageInner() {
                 { lbl: 'Base Batches',      val: '002 Winner ✓', green: true  },
                 { lbl: 'Treasury',          val: 'Multisig',      green: false },
                 { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
-                { lbl: 'Vault Subscribers', val: isLoading ? '…' : String(global.totalSubscribers || '—'), green: false },
+
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>

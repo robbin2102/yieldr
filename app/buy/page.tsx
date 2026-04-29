@@ -209,10 +209,7 @@ export default function BuyPage() {
               <div className="bp-ls-v">$9M</div>
               <div className="bp-ls-l">Current FDV</div>
             </div>
-            <div className="bp-ls-item">
-              <div className="bp-ls-v">842</div>
-              <div className="bp-ls-l">Subscribers</div>
-            </div>
+
             <div className="bp-ls-item">
               <div className="bp-ls-v">{spotsLeft ?? '—'}</div>
               <div className="bp-ls-l">Spots Left</div>
@@ -419,7 +416,6 @@ export default function BuyPage() {
               ))}
               <div className="bp-avatar special">+837</div>
             </div>
-            <div className="bp-social-txt"><strong>842 subscribers</strong> already in.</div>
           </div>
 
         </div>

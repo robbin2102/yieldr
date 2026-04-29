@@ -84,7 +84,7 @@ export async function GET() {
       totalRealizedPnl: number;
       win_rate: number;
       win_rate_sample_size: number;
-      subscribers: number;
+
       tradingConsistency: { daysWonRate: number };
       timeframePnL: Record<string, { pnl: number; roce: number; tradeCount: number; maxDrawdownPct: number; capitalDeployed: number }>;
       last_polled_activity_ts: number;
@@ -206,13 +206,11 @@ export async function GET() {
       const totalPnl         = displayedStats.reduce((s, v) => s + (v.totalPnlAllTime ?? 0), 0);
       const totalCapital     = displayedStats.reduce((s, v) => s + (v.vault_size_usdc ?? 0), 0);
       const totalInitial     = displayedStats.reduce((s, v) => s + (v.initial_capital_usdc ?? 0), 0);
-      const totalSubscribers = displayedStats.reduce((s, v) => s + (v.subscribers ?? 0), 0);
       const latestTs         = Math.max(...displayedStats.map((v) => v.last_polled_activity_ts ?? 0));
 
       result._global = {
         totalPnl,
         totalCapital,
-        totalSubscribers,
         combinedRoi: parseFloat(((totalPnl / Math.max(totalInitial, 1)) * 100).toFixed(1)),
         lastTradeAt: latestTs ? formatTimeAgo(latestTs) : '—',
       };

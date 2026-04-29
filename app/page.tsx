@@ -27,7 +27,7 @@ export default function HomePage() {
     { label: 'USDC YIELD', value: '4.5% APY', up: true },
     { label: 'YLDR TGE', value: 'Q1 2027', up: true },
     { label: 'EARLY ACCESS', value: '$9M FDV', up: true },
-    { label: '842 SUBSCRIBERS', value: null, up: false },
+
     { label: 'VAULTS LAUNCH', value: 'Q3 2026', up: true },
   ];
 
@@ -98,10 +98,7 @@ export default function HomePage() {
               <div className="lp-stat-v">+34.2%</div>
               <div className="lp-stat-l">Best Vault 30D</div>
             </div>
-            <div className="lp-stat">
-              <div className="lp-stat-v">842</div>
-              <div className="lp-stat-l">Subscribers</div>
-            </div>
+
             <div className="lp-stat">
               <div className="lp-stat-v">3</div>
               <div className="lp-stat-l">Live Vaults</div>
