@@ -513,7 +513,6 @@ function VaultsPageInner() {
               {[
                 { lbl: 'Base Batches',      val: '002 Winner ✓', green: true  },
                 { lbl: 'Treasury',          val: 'Multisig',      green: false },
-                { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
                 { lbl: 'Telegram',          val: 'Coming Soon',   green: false },
 
               ].map((item) => (
@@ -522,6 +521,10 @@ function VaultsPageInner() {
                   <span className={`val${item.green ? ' green' : ''}`}>{item.val}</span>
                 </div>
               ))}
+              <div className="vp-tb-item">
+                <span className="lbl">Build Log</span>
+                <Link href="/build-in-public" className="val green" style={{ textDecoration: 'none' }}>Public ✓</Link>
+              </div>
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
                 {(() => {
