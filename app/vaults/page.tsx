@@ -516,7 +516,6 @@ function VaultsPageInner() {
                 { lbl: 'Treasury',          val: 'Multisig',      green: false },
                 { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
                 { lbl: 'Vault Subscribers', val: isLoading ? '…' : String(global.totalSubscribers || '—'), green: false },
-                { lbl: 'Telegram',          val: '2,400 members', green: false },
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>
@@ -527,7 +526,7 @@ function VaultsPageInner() {
                 <span className="lbl">Onchain Proof</span>
                 {(() => {
                   const wallets: Record<string, { full: string; short: string }> = {
-                    geo:         { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
+                    geo:         { full: '0x9bbd88140ccba06100da00476257d9cffce56e72', short: '0x9bbd…e72' },
                     nba:         { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
                     soccerAlpha: { full: '0x1ba1bb6aa2490adbbbbb314bc07ff21a8cc71ce4', short: '0x1ba1…1ce4' },
                   };

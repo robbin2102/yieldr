@@ -151,7 +151,7 @@ export async function GET() {
           currentValue: number; cashPnl: number; percentPnl: number;
         }> | undefined;
 
-        const filteredPositions = rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? [];
+        const filteredPositions = (rawPositions?.filter((p) => isRelevantPosition(p.title ?? '', id)) ?? []).slice(0, 10);
         const openPositionsValue = filteredPositions.reduce((s, p) => s + (p.currentValue ?? 0), 0);
 
         const stats = {
