@@ -54,8 +54,8 @@ export default function BuyPage() {
   const [customInput, setCustomInput]     = useState('1,000');
   const [activePreset, setActivePreset]   = useState<number | null>(1000);
   const [spotsLeft, setSpotsLeft]         = useState<number | null>(null);
-  const [vaultRois, setVaultRois]         = useState<Partial<Record<VaultId, string>>>({});
-  const [bestRoi, setBestRoi]             = useState<string | null>(null);
+  const [totalPnl, setTotalPnl]           = useState<string | null>(null);
+  const [combinedRoi, setCombinedRoi]     = useState<string | null>(null);
   const [countdown, setCountdown]         = useState<number | null>(null);
   const [redirectFailed, setRedirectFailed] = useState(false);
 
@@ -97,17 +97,11 @@ export default function BuyPage() {
     }).catch(() => {});
 
     fetch('/api/vaults/data').then(r => r.json()).then(({ data }) => {
-      if (!data) return;
-      const rois: Partial<Record<VaultId, string>> = {};
-      let best = -Infinity;
-      for (const id of ['geo','nba','soccerAlpha'] as VaultId[]) {
-        const roi = data[id]?.stats?.roi30d;
-        if (typeof roi === 'number') {
-          rois[id] = `+${roi.toFixed(1)}%`;
-          if (roi > best) { best = roi; setBestRoi(`+${roi.toFixed(1)}%`); }
-        }
-      }
-      setVaultRois(rois);
+      if (!data?._global) return;
+      const pnl = data._global.totalPnl;
+      const roi = data._global.combinedRoi;
+      if (typeof pnl === 'number') setTotalPnl((pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }));
+      if (typeof roi === 'number') setCombinedRoi((roi >= 0 ? '+' : '') + roi.toFixed(1) + '%');
     }).catch(() => {});
   }, []);
 
@@ -202,17 +196,16 @@ export default function BuyPage() {
           {/* Live strip */}
           <div className="bp-live-strip">
             <div className="bp-ls-item">
-              <div className="bp-ls-v">{bestRoi ?? '—'}</div>
-              <div className="bp-ls-l">Best Vault 30D</div>
+              <div className="bp-ls-v">{totalPnl ?? '—'}</div>
+              <div className="bp-ls-l">All-Time PnL</div>
+            </div>
+            <div className="bp-ls-item">
+              <div className="bp-ls-v">{combinedRoi ?? '—'}</div>
+              <div className="bp-ls-l">All-Time ROI</div>
             </div>
             <div className="bp-ls-item">
               <div className="bp-ls-v">$9M</div>
               <div className="bp-ls-l">Current FDV</div>
-            </div>
-
-            <div className="bp-ls-item">
-              <div className="bp-ls-v">{spotsLeft ?? '—'}</div>
-              <div className="bp-ls-l">Spots Left</div>
             </div>
           </div>
 
@@ -252,7 +245,6 @@ export default function BuyPage() {
                   <span className="bp-vault-check">&#10003;</span>
                   <span className="bp-vault-icon">{v.icon}</span>
                   <span className="bp-vault-name">{v.name}</span>
-                  <span className="bp-vault-roi">{vaultRois[v.id] ?? '—'} 30D</span>
                 </div>
               ))}
             </div>
