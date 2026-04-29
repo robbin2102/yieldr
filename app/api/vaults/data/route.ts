@@ -75,7 +75,7 @@ export async function GET() {
 
     const vaultIds: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
 
-    const allStats = await VaultStats.find({}).lean() as unknown as Array<{
+    const allStats = await VaultStats.find({ status: 'active' }).lean() as unknown as Array<{
       wallet: string;
       traderLabel: string;
       initial_capital_usdc: number;
@@ -94,6 +94,7 @@ export async function GET() {
 
     const LABEL_TO_ID: Record<string, VaultId> = {
       'geopolitics vault':    'geo',
+      'politics edge vault':  'geo',
       'nba edge vault':       'nba',
       'nhl edge vault':       'soccer',
       'e-sports ninja vault': 'esports',

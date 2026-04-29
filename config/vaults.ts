@@ -16,7 +16,7 @@ export const VAULT_META: Record<VaultId, {
 }> = {
   geo: {
     id: 'geo',
-    name: 'Geopolitics Vault',
+    name: 'Politics Edge Vault',
     emoji: '🌐',
     description:
       'Human-curated thesis on geopolitical events. Agents scan prediction markets for insider wallets with abnormal win rates vs implied probability, then execute positions within trader-defined risk parameters.',

@@ -177,7 +177,10 @@ function VaultsPageInner() {
     { type: 'agent',  text: 'Welcome! I can tell you about any of our three vaults, how the human + agent strategy works, or early access terms. What would you like to know?' },
   ]);
   const [chatInput, setChatInput] = useState('');
+  const [hiddenVaultIds, setHiddenVaultIds] = useState<Set<VaultId>>(new Set());
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const visibleVaultIds = VAULT_IDS.filter((id) => !hiddenVaultIds.has(id));
 
   // ── Fetch live data ────────────────────────────────────────────────────
   useEffect(() => {
@@ -205,6 +208,7 @@ function VaultsPageInner() {
               }
               return next;
             });
+            setHiddenVaultIds(new Set(VAULT_IDS.filter((id) => !data[id])));
             if (data._global) setGlobal(data._global);
           }
         }
@@ -238,6 +242,14 @@ function VaultsPageInner() {
     const t = setInterval(tick, 60000);
     return () => clearInterval(t);
   }, [deadline]);
+
+  // ── If the active vault becomes hidden, switch to the first visible one ──
+  useEffect(() => {
+    if (hiddenVaultIds.has(activeVault)) {
+      const first = VAULT_IDS.find((id) => !hiddenVaultIds.has(id));
+      if (first) setActiveVault(first);
+    }
+  }, [hiddenVaultIds, activeVault]);
 
   // ── Auto-scroll chat ───────────────────────────────────────────────────
   useEffect(() => {
@@ -321,7 +333,7 @@ function VaultsPageInner() {
 
         {/* ── Vault Tabs ── */}
         <div className="vp-vault-tabs">
-          {VAULT_IDS.map((id) => (
+          {visibleVaultIds.map((id) => (
             <button
               key={id}
               className={`vp-vtab${activeVault === id ? ' active' : ''}`}
@@ -337,7 +349,7 @@ function VaultsPageInner() {
 
           {/* ── Left — Vault Panel ── */}
           <div>
-            {VAULT_IDS.map((id) => {
+            {visibleVaultIds.map((id) => {
               const d = vaultData[id];
               const m = VAULT_META[id];
               const u = totalUnrealisedPnl(d.positions);
