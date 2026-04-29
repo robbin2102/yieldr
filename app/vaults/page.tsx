@@ -514,6 +514,7 @@ function VaultsPageInner() {
                 { lbl: 'Base Batches',      val: '002 Winner ✓', green: true  },
                 { lbl: 'Treasury',          val: 'Multisig',      green: false },
                 { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
+                { lbl: 'Telegram',          val: 'Coming Soon',   green: false },
 
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
