@@ -391,8 +391,8 @@ function VaultsPageInner() {
                       <div className="vp-vd-stat-l">Days Winning</div>
                     </div>
                     <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.pnl30d >= 0 ? 'green' : 'red'}`}>
-                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.pnl30d)}
+                      <div className={`vp-vd-stat-v ${d.stats.pnl30d < d.stats.totalPnl ? 'red' : 'green'}`}>
+                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.pnl30d < d.stats.totalPnl ? -Math.abs(d.stats.pnl30d) : d.stats.pnl30d)}
                       </div>
                       <div className="vp-vd-stat-l">30D PnL</div>
                     </div>
