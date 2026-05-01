@@ -707,7 +707,7 @@
   .lp-nav { padding: 0 1rem; }
   .lp-nav-links { display: none; }
   .lp-hero h1 { font-size: 2.2rem; }
-  .lp-hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+  .lp-hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; text-align: center; }
   .lp-how-grid { grid-template-columns: 1fr 1fr; }
   .lp-how-arrow { display: none; }
   .lp-vp-grid { grid-template-columns: 1fr; }
