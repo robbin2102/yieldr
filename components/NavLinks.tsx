@@ -121,14 +121,19 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
       ) : null}
 
       {/* Hamburger button (mobile) */}
-      <button className="ynav-hamburger" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+      <button
+        className="ynav-hamburger"
+        onTouchEnd={e => { e.preventDefault(); setMenuOpen(true); }}
+        onClick={() => setMenuOpen(true)}
+        aria-label="Open menu"
+      >
         <span /><span /><span />
       </button>
 
       {/* Mobile menu overlay — rendered via portal to escape nav stacking context */}
       {mounted && menuOpen && createPortal(
-        <div className="ynav-overlay" onClick={() => setMenuOpen(false)}>
-          <div className="ynav-menu" onClick={e => e.stopPropagation()}>
+        <div className="ynav-overlay" onClick={() => setMenuOpen(false)} onTouchEnd={() => setMenuOpen(false)}>
+          <div className="ynav-menu" onClick={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
             <div className="ynav-menu-head">
               <div className="ynav-menu-brand">
                 <svg width="20" height="24" viewBox="0 0 100 120">
