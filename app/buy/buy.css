@@ -207,7 +207,7 @@
 @media (max-width: 600px) {
   .bp-nav { padding: 0 1rem; }
   .bp-main { padding: 70px 1rem 2rem; }
-  .bp-live-strip { grid-template-columns: repeat(2,1fr); }
+  .bp-live-strip { grid-template-columns: repeat(3,1fr); }
   .bp-amount-row { flex-wrap: wrap; }
   .bp-amount-btn { min-width: calc(50% - .2rem); }
   .bp-vault-grid { grid-template-columns: repeat(3,1fr); gap: .3rem; }

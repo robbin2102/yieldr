@@ -381,8 +381,18 @@
   .vp-page-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .vp-status-bar { display: none; }
   .vp-trust-bar { flex-wrap: wrap; }
-  .vp-op-cols, .vp-op-row { grid-template-columns: 2fr 1fr .8fr .8fr 1fr; }
-  .vp-op-cols span:nth-child(4), .vp-op-row span:nth-child(4) { display: none; }
+
+  /* Reduce horizontal padding so content doesn't get clipped */
+  .vp-page-head, .vp-vault-tabs, .vp-vault-detail { padding-left: 1rem; padding-right: 1rem; }
+
+  /* Stack vault header so PnL doesn't overflow right edge */
+  .vp-vd-header { flex-direction: column; gap: .5rem; }
+
+  /* Simplify positions to 3 columns: Market, Side, PnL */
+  .vp-op-cols, .vp-op-row { grid-template-columns: 2fr .8fr 1fr; }
+  .vp-op-cols span:nth-child(3), .vp-op-row span:nth-child(3),
+  .vp-op-cols span:nth-child(4), .vp-op-row span:nth-child(4),
+  .vp-op-cols span:nth-child(6), .vp-op-row span:nth-child(6) { display: none; }
 
   /* Mobile CTA strip (after chart) */
   .vp-mobile-cta-strip {
