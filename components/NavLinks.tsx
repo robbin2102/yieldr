@@ -13,6 +13,7 @@ interface NavLinksProps {
 
 const TWITTER = 'https://x.com/yieldrdotorg';
 const GITHUB = 'https://github.com/robbin2102/yieldr-app';
+const TELEGRAM = 'https://web.telegram.org/k/#@yieldrdotorg';
 
 export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
   const pathname = usePathname();
@@ -74,6 +75,7 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
         <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
         <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
         <Link href="/allocations" className={`ynav-alloc${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
+        <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">TG Channel</a>
       </nav>
 
       {showSocials && (
@@ -149,6 +151,7 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
               <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
               <Link href="/docs" className={isActive('/docs') ? 'active' : ''}>Docs</Link>
               <Link href="/allocations" className={`ynav-alloc-mobile${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
+              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="ynav-tg">TG Channel ↗</a>
             </div>
             <div className="ynav-menu-footer">
               {isConnected ? (

@@ -91,6 +91,7 @@
 .ynav-menu-links a:hover, .ynav-menu-links a:active { color: #e8e8f0; background: rgba(255,255,255,.03); }
 .ynav-menu-links a.active { color: #00E87B; background: rgba(0,232,123,.05); }
 .ynav-alloc-mobile { color: #00E87B !important; }
+.ynav-tg { color: #4488FF !important; }
 
 .ynav-menu-footer {
   padding: 1rem 1.2rem; border-top: 1px solid #1a1a2e;
