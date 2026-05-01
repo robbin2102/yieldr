@@ -132,8 +132,18 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
 
       {/* Mobile menu overlay — rendered via portal to escape nav stacking context */}
       {mounted && menuOpen && createPortal(
-        <div className="ynav-overlay" onClick={() => setMenuOpen(false)} onTouchEnd={() => setMenuOpen(false)}>
-          <div className="ynav-menu" onClick={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
+        <div
+          className="ynav-overlay"
+          style={{ position: 'fixed', inset: 0, zIndex: 99999, background: 'rgba(2,2,4,.9)' }}
+          onClick={() => setMenuOpen(false)}
+          onTouchEnd={() => setMenuOpen(false)}
+        >
+          <div
+            className="ynav-menu"
+            style={{ position: 'fixed', top: 0, right: 0, bottom: 0, width: 'min(320px, 85vw)', background: '#07070b', borderLeft: '1px solid #1a1a2e', zIndex: 100000, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}
+            onClick={e => e.stopPropagation()}
+            onTouchEnd={e => e.stopPropagation()}
+          >
             <div className="ynav-menu-head">
               <div className="ynav-menu-brand">
                 <svg width="20" height="24" viewBox="0 0 100 120">
