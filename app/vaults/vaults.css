@@ -383,16 +383,27 @@
   .vp-trust-bar { flex-wrap: wrap; }
 
   /* Reduce horizontal padding so content doesn't get clipped */
-  .vp-page-head, .vp-vault-tabs, .vp-vault-detail { padding-left: 1rem; padding-right: 1rem; }
+  .vp-page-head, .vp-vault-tabs, .vp-vault-detail, .vp-trust-bar { padding-left: 1rem; padding-right: 1rem; }
 
   /* Stack vault header so PnL doesn't overflow right edge */
   .vp-vd-header { flex-direction: column; gap: .5rem; }
+  .vp-vd-pnl { text-align: left; }
+  .vp-vd-pnl-v { font-size: 1.3rem; }
+
+  /* Page header stats: allow wrapping on small screens */
+  .vp-ph-right { flex-wrap: wrap; gap: .75rem; }
 
   /* Simplify positions to 3 columns: Market, Side, PnL */
   .vp-op-cols, .vp-op-row { grid-template-columns: 2fr .8fr 1fr; }
   .vp-op-cols span:nth-child(3), .vp-op-row span:nth-child(3),
   .vp-op-cols span:nth-child(4), .vp-op-row span:nth-child(4),
   .vp-op-cols span:nth-child(6), .vp-op-row span:nth-child(6) { display: none; }
+
+  /* Simplify trade history to 3 columns: Market, PnL, Status */
+  .vp-th-cols, .vp-th-row { grid-template-columns: 2fr 1fr 1fr; }
+  .vp-th-cols span:nth-child(2), .vp-th-row span:nth-child(2),
+  .vp-th-cols span:nth-child(3), .vp-th-row span:nth-child(3),
+  .vp-th-cols span:nth-child(6), .vp-th-row span:nth-child(6) { display: none; }
 
   /* Mobile CTA strip (after chart) */
   .vp-mobile-cta-strip {
