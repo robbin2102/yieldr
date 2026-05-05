@@ -334,29 +334,50 @@
 /* ── Mobile prerequisite hint ── */
 .bp-mobile-prereq {
   font-size: .62rem; color: var(--t3); text-align: center;
-  padding: .55rem; border: 1px solid var(--b1); margin-bottom: .75rem;
+  padding: .55rem; border: 1px solid var(--b1); margin-bottom: .65rem;
 }
 
+/* ── Network picker ── */
+.bp-mob-network {
+  display: flex; gap: .3rem; flex-wrap: wrap; margin-bottom: .4rem;
+}
+.bp-mob-net-btn {
+  font-family: var(--fm); font-size: .58rem; letter-spacing: .5px;
+  padding: .3rem .65rem; background: var(--bg); border: 1px solid var(--b1);
+  color: var(--t3); cursor: pointer; transition: all .2s; text-transform: uppercase;
+}
+.bp-mob-net-btn.active { border-color: var(--g); color: var(--g); background: var(--gd); }
+.bp-mob-net-btn:hover:not(.active) { border-color: var(--t3); color: var(--t2); }
+
+/* ── Token picker (USDC / USDT) ── */
+.bp-mob-token-row { display: flex; gap: .3rem; margin-bottom: .4rem; }
+.bp-mob-tok-btn {
+  font-family: var(--fm); font-size: .58rem; letter-spacing: .5px;
+  padding: .3rem .7rem; background: var(--bg); border: 1px solid var(--b1);
+  color: var(--t3); cursor: pointer; transition: all .2s; text-transform: uppercase;
+}
+.bp-mob-tok-btn.active { border-color: var(--g); color: var(--g); background: var(--gd); }
+
 /* ── Wallet pay buttons ── */
-.bp-wallet-btns { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .65rem; }
+.bp-wallet-btns { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .6rem; }
 .bp-wallet-btn {
-  display: flex; align-items: center; gap: .65rem;
-  padding: .8rem 1rem; text-decoration: none;
+  display: flex; align-items: center; gap: .7rem;
+  padding: .7rem 1rem; text-decoration: none;
   font-family: var(--fm); font-size: .72rem; font-weight: 600; letter-spacing: .3px;
   border: 1px solid var(--b1); background: var(--bg3); color: var(--t1);
   transition: all .2s; cursor: pointer;
 }
 .bp-wallet-btn:hover { border-color: var(--g); color: var(--g); background: var(--gd); }
-.bp-wallet-btn-disabled { opacity: .38; pointer-events: none; }
+.bp-wallet-btn-disabled { opacity: .35; pointer-events: none; }
 
-.bp-wallet-logo {
-  width: 22px; height: 22px; border-radius: 4px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .65rem; font-weight: 800;
+/* ── Copy payment link button ── */
+.bp-wallet-copy {
+  width: 100%; padding: .6rem; text-align: center;
+  font-family: var(--fm); font-size: .62rem; letter-spacing: .5px;
+  background: none; border: 1px dashed var(--b2); color: var(--t3);
+  cursor: pointer; transition: all .2s;
 }
-.bp-wl-mm { background: #E8831D; color: #fff; }
-.bp-wl-cb { background: #0052FF; color: #fff; }
-.bp-wl-tw { background: #3375BB; color: #fff; }
+.bp-wallet-copy:hover { border-color: var(--t2); color: var(--t2); }
 
 /* ── "I've paid" button ── */
 .bp-mobile-paid-btn {
@@ -369,24 +390,29 @@
 .bp-mobile-paid-btn:hover { background: rgba(0,232,123,.18); border-color: var(--g); }
 
 /* ── Confirm step ── */
-.bp-confirm-step { display: flex; flex-direction: column; gap: .65rem; }
-.bp-confirm-hint {
-  font-size: .62rem; color: var(--t2); line-height: 1.5;
+.bp-confirm-step { display: flex; flex-direction: column; gap: .6rem; }
+.bp-confirm-label {
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--t3); margin-bottom: .25rem;
 }
-.bp-confirm-connect-btn {
-  width: 100%; padding: .8rem;
-  font-family: var(--fm); font-size: .75rem; font-weight: 700; letter-spacing: .5px;
-  background: var(--g); color: #000; border: none; cursor: pointer;
-  transition: opacity .2s;
+.bp-confirm-addr-row {
+  display: flex; gap: .3rem; align-items: stretch;
 }
-.bp-confirm-connect-btn:hover { opacity: .9; }
-.bp-confirm-wallet {
-  display: flex; align-items: center; gap: .5rem;
-  padding: .5rem .75rem; font-size: .65rem; color: var(--t2);
-  border: 1px solid rgba(0,232,123,.2); background: rgba(0,232,123,.04);
+.bp-confirm-addr-row .bp-confirm-input { flex: 1; }
+.bp-confirm-auto-btn {
+  flex-shrink: 0; padding: 0 .7rem;
+  font-family: var(--fm); font-size: .58rem; font-weight: 600; letter-spacing: .5px;
+  background: var(--bg4); border: 1px solid var(--b1); color: var(--t2);
+  cursor: pointer; transition: all .2s; white-space: nowrap;
 }
-.bp-confirm-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--g); flex-shrink: 0;
+.bp-confirm-auto-btn:hover { border-color: var(--g); color: var(--g); }
+.bp-confirm-connected-badge {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  padding: 0 .6rem; border: 1px solid rgba(0,232,123,.3);
+  background: rgba(0,232,123,.08); color: var(--g); font-size: .7rem;
+}
+.bp-confirm-addr-hint {
+  font-size: .55rem; color: var(--t3); margin-top: .25rem; line-height: 1.5;
 }
 .bp-confirm-input {
   width: 100%; padding: .65rem .75rem; background: var(--bg);
@@ -396,6 +422,22 @@
 }
 .bp-confirm-input:focus { border-color: var(--g); }
 .bp-confirm-input::placeholder { color: var(--t3); }
+.bp-confirm-net {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .45rem .65rem; border: 1px solid var(--b1); background: var(--bg3);
+  font-size: .6rem; color: var(--t2);
+}
+.bp-confirm-net strong { color: var(--t1); }
+.bp-confirm-net-change {
+  background: none; border: none; color: var(--t3); font-family: var(--fm);
+  font-size: .55rem; cursor: pointer; text-decoration: underline;
+  transition: color .2s;
+}
+.bp-confirm-net-change:hover { color: var(--g); }
+.bp-confirm-warning {
+  font-size: .62rem; color: var(--y); padding: .4rem .6rem;
+  border: 1px solid rgba(255,184,0,.2); background: rgba(255,184,0,.04);
+}
 .bp-confirm-submit {
   width: 100%; padding: .85rem;
   font-family: var(--fm); font-size: .75rem; font-weight: 700;

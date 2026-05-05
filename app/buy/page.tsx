@@ -8,7 +8,7 @@ import { useAccount, useChainId, useSwitchChain, useWaitForTransactionReceipt } 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { usePaymentFlow } from '@/hooks/usePaymentFlow';
-import { SUPPORTED_CHAINS, getExplorerUrl, type TokenId } from '@/config/payment';
+import { SUPPORTED_CHAINS, getExplorerUrl, type TokenId, TREASURY_ADDRESS } from '@/config/payment';
 import NavLinks from '@/components/NavLinks';
 
 // ── Constants ──────────────────────────────────────────────────────────────
@@ -59,15 +59,26 @@ export default function BuyPage() {
   const [countdown, setCountdown]         = useState<number | null>(null);
   const [redirectFailed, setRedirectFailed] = useState(false);
   const [mobileStep, setMobileStep]         = useState<'pay' | 'confirm'>('pay');
+  const [mobileNetwork, setMobileNetwork]   = useState<number>(8453);
+  const [mobileToken, setMobileToken]       = useState<TokenId>('USDC');
+  const [mobileWalletAddr, setMobileWalletAddr] = useState('');
   const [mobileTxInput, setMobileTxInput]   = useState('');
   const [mobileSubmitting, setMobileSubmitting] = useState(false);
   const [mobileSuccess, setMobileSuccess]   = useState<string | null>(null);
+  const [mobileCopied, setMobileCopied]     = useState(false);
 
   const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported, otherBalances, scanDone } = usePaymentFlow(selectedToken);
 
   // ── Mobile payment ───────────────────────────────────────────────────────
-  const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
-  const TREASURY  = '0xB56C6247F39A992dbcF172a4308386A23d0ea15C';
+  const mobileChainCfg = SUPPORTED_CHAINS[mobileNetwork];
+  const mobileTokenOpts = mobileChainCfg ? Object.keys(mobileChainCfg.tokens) as TokenId[] : ['USDC' as TokenId];
+
+  // Sync token when network changes and token unavailable
+  useEffect(() => {
+    if (mobileChainCfg && !(mobileChainCfg.tokens as Record<string, unknown>)[mobileToken]) {
+      setMobileToken(Object.keys(mobileChainCfg.tokens)[0] as TokenId);
+    }
+  }, [mobileNetwork]);
 
   const mobileTxHash = /^0x[a-fA-F0-9]{64}$/.test(mobileTxInput)
     ? mobileTxInput as `0x${string}`
@@ -76,22 +87,32 @@ export default function BuyPage() {
   // Reuse wagmi receipt listener for externally-initiated mobile tx
   useWaitForTransactionReceipt({
     hash: mobileTxHash,
-    chainId: 8453,
+    chainId: mobileNetwork,
     query: { enabled: !!mobileTxHash },
   });
 
   const truncAddr = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
   const mobileCanPay = !!selectedVault && amount >= MIN_AMOUNT;
 
-  function getMobileLinks(amountUsd: number) {
-    const wei = BigInt(Math.round(amountUsd * 1_000_000)).toString();
-    const eip681 = `ethereum:${USDC_BASE}@8453/transfer?address=${TREASURY}&uint256=${wei}`;
+  function getMobileLinks(amountUsd: number, chainId: number, token: TokenId) {
+    const chainCfg = SUPPORTED_CHAINS[chainId];
+    const tokenCfg = chainCfg?.tokens[token];
+    if (!tokenCfg) return null;
+    const decimals = tokenCfg.decimals;
+    const wei = BigInt(Math.round(amountUsd * Math.pow(10, decimals))).toString();
+    const tokenAddr = tokenCfg.address;
+    // EIP-681 URI — handled natively by MetaMask, Phantom, Trust, Coinbase
+    const eip681 = `ethereum:${tokenAddr}@${chainId}/transfer?address=${TREASURY_ADDRESS}&uint256=${wei}`;
     return {
-      metamask: `https://metamask.app.link/send/${USDC_BASE}@8453/transfer?address=${TREASURY}&uint256=${wei}`,
-      coinbase:  `https://go.cb-w.com/dapp?cb_url=${encodeURIComponent(eip681)}`,
-      trust:     `https://link.trustwallet.com/send?coin=60&address=${TREASURY}&amount=${amountUsd}&token=${USDC_BASE}`,
+      metamask: `https://metamask.app.link/send/${tokenAddr}@${chainId}/transfer?address=${TREASURY_ADDRESS}&uint256=${wei}`,
+      phantom:  eip681,   // Phantom EVM supports ethereum: URI scheme
+      trust:    eip681,   // Trust Wallet handles ethereum: URIs natively
+      coinbase: eip681,   // Coinbase Wallet handles ethereum: URIs — NOT go.cb-w.com wrapper
+      eip681,
     };
   }
+
+  const mobileLinks = mobileCanPay ? getMobileLinks(amount, mobileNetwork, mobileToken) : null;
   const chainConfig = SUPPORTED_CHAINS[chainId];
   const availableTokens = chainConfig ? Object.keys(chainConfig.tokens) as TokenId[] : [];
 
@@ -104,11 +125,11 @@ export default function BuyPage() {
 
   // ── Countdown + redirect after successful payment ────────────────────────
   useEffect(() => {
-    if (status === 'success' && txHash && countdown === null) {
+    if (status === 'success' && (txHash || mobileSuccess) && countdown === null) {
       setCountdown(5);
       setRedirectFailed(false);
     }
-  }, [status, txHash]);
+  }, [status, txHash, mobileSuccess]);
 
   useEffect(() => {
     if (countdown === null || countdown < 0) return;
@@ -181,19 +202,21 @@ export default function BuyPage() {
   }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus, bestOtherChain, switchChain, setSelectedToken, chainId]);
 
   const handleMobileSubmit = useCallback(async () => {
-    if (!isConnected || !address || !mobileTxHash || !selectedVault) return;
+    const walletAddr = mobileWalletAddr.trim() || (isConnected ? address : '');
+    if (!walletAddr || !mobileTxHash || !selectedVault) return;
     setMobileSubmitting(true);
+    const networkName = SUPPORTED_CHAINS[mobileNetwork]?.name ?? 'Base';
     try {
       const resp = await fetch('/api/contributions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          wallet_address: address,
+          wallet_address: walletAddr,
           usdc_amount: amount,
           tx_hash: mobileTxInput,
-          network: 'Base',
-          chain_id: 8453,
-          token: 'USDC',
+          network: networkName,
+          chain_id: mobileNetwork,
+          token: mobileToken,
           selected_vault: selectedVault,
         }),
       });
@@ -218,7 +241,8 @@ export default function BuyPage() {
       setStatus('error');
     }
     setMobileSubmitting(false);
-  }, [isConnected, address, mobileTxHash, mobileTxInput, selectedVault, amount,
+  }, [mobileWalletAddr, isConnected, address, mobileTxHash, mobileTxInput,
+      selectedVault, amount, mobileNetwork, mobileToken,
       setContributionAmount, setCtxVault, setAllocationData, setStatus]);
 
   const { half, tokens, tgeValue } = calcSplit(amount);
@@ -467,71 +491,164 @@ export default function BuyPage() {
             <div className="bp-mobile-pay">
               {mobileStep === 'pay' ? (
                 <>
-                  <div className="bp-section-label">Step 3 — Pay with your wallet</div>
-                  {!mobileCanPay && (
-                    <div className="bp-mobile-prereq">Select a vault and amount above to continue</div>
+                  {/* Network + token picker */}
+                  <div className="bp-section-label" style={{marginTop: '.25rem'}}>Step 3 — Network &amp; token</div>
+                  <div className="bp-mob-network">
+                    {Object.entries(SUPPORTED_CHAINS).map(([id, cfg]) => (
+                      <button
+                        key={id}
+                        className={`bp-mob-net-btn${mobileNetwork === Number(id) ? ' active' : ''}`}
+                        onClick={() => setMobileNetwork(Number(id))}
+                      >{cfg.name}</button>
+                    ))}
+                  </div>
+                  {mobileTokenOpts.length > 1 && (
+                    <div className="bp-mob-token-row">
+                      {mobileTokenOpts.map(t => (
+                        <button
+                          key={t}
+                          className={`bp-mob-tok-btn${mobileToken === t ? ' active' : ''}`}
+                          onClick={() => setMobileToken(t)}
+                        >{t}</button>
+                      ))}
+                    </div>
                   )}
+
+                  {/* Wallet buttons */}
+                  <div className="bp-section-label" style={{marginTop: '1rem'}}>Step 4 — Pay with your wallet</div>
+                  {!mobileCanPay && <div className="bp-mobile-prereq">Select a vault and amount above first</div>}
                   <div className="bp-wallet-btns">
-                    <a
-                      className={`bp-wallet-btn${!mobileCanPay ? ' bp-wallet-btn-disabled' : ''}`}
-                      href={mobileCanPay ? getMobileLinks(amount).metamask : undefined}
-                      rel="noopener noreferrer"
-                    >
-                      <span className="bp-wallet-logo bp-wl-mm">M</span>
-                      Pay with MetaMask
+                    {/* MetaMask */}
+                    <a className={`bp-wallet-btn${!mobileLinks ? ' bp-wallet-btn-disabled' : ''}`}
+                       href={mobileLinks?.metamask ?? undefined} rel="noopener noreferrer">
+                      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style={{flexShrink:0}}>
+                        <rect width="32" height="32" rx="6" fill="#F6851B"/>
+                        <path d="M24 6L17 11.5L18.5 8.5L24 6Z" fill="#E4761B" stroke="#E4761B" strokeWidth="0.3"/>
+                        <path d="M8 6L15 11.5L13.5 8.5L8 6Z" fill="#E4761B" stroke="#E4761B" strokeWidth="0.3"/>
+                        <path d="M21.5 20.5L19.5 23L23 24L24 20.5Z" fill="#E4761B"/>
+                        <path d="M8 20.5L9 24L12.5 23L10.5 20.5Z" fill="#E4761B"/>
+                        <path d="M12.3 14.2L11 16L14.5 16.2L14.3 12L12.3 14.2Z" fill="#F6851B"/>
+                        <path d="M19.7 14.2L17.7 12L17.5 16.2L21 16L19.7 14.2Z" fill="#F6851B"/>
+                        <path d="M12.5 23L14.5 22L12.7 20.5Z" fill="#E4761B"/>
+                        <path d="M17.5 22L19.5 23L19.3 20.5Z" fill="#E4761B"/>
+                        <ellipse cx="13" cy="16" rx="2" ry="2.2" fill="white" opacity="0.9"/>
+                        <ellipse cx="19" cy="16" rx="2" ry="2.2" fill="white" opacity="0.9"/>
+                        <circle cx="13" cy="16" r="1.1" fill="#D57E3A"/>
+                        <circle cx="19" cy="16" r="1.1" fill="#D57E3A"/>
+                      </svg>
+                      <span>MetaMask</span>
                     </a>
-                    <a
-                      className={`bp-wallet-btn${!mobileCanPay ? ' bp-wallet-btn-disabled' : ''}`}
-                      href={mobileCanPay ? getMobileLinks(amount).coinbase : undefined}
-                      rel="noopener noreferrer"
-                    >
-                      <span className="bp-wallet-logo bp-wl-cb">C</span>
-                      Pay with Coinbase Wallet
+                    {/* Phantom */}
+                    <a className={`bp-wallet-btn${!mobileLinks ? ' bp-wallet-btn-disabled' : ''}`}
+                       href={mobileLinks?.phantom ?? undefined} rel="noopener noreferrer">
+                      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style={{flexShrink:0}}>
+                        <defs>
+                          <linearGradient id="pg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#534BB1"/>
+                            <stop offset="1" stopColor="#551BF9"/>
+                          </linearGradient>
+                        </defs>
+                        <rect width="32" height="32" rx="6" fill="url(#pg)"/>
+                        <path d="M7 19.5C7 13.7 11.1 9 16 9C20.9 9 25 13.7 25 19.5V25.5L22 23.8L19.5 25.5L17 23.8L14.5 25.5L12 23.8L9 25.5V19.5Z" fill="white"/>
+                        <circle cx="13" cy="18.5" r="2" fill="#534BB1"/>
+                        <circle cx="19" cy="18.5" r="2" fill="#534BB1"/>
+                      </svg>
+                      <span>Phantom</span>
                     </a>
-                    <a
-                      className={`bp-wallet-btn${!mobileCanPay ? ' bp-wallet-btn-disabled' : ''}`}
-                      href={mobileCanPay ? getMobileLinks(amount).trust : undefined}
-                      rel="noopener noreferrer"
-                    >
-                      <span className="bp-wallet-logo bp-wl-tw">T</span>
-                      Pay with Trust Wallet
+                    {/* Trust Wallet */}
+                    <a className={`bp-wallet-btn${!mobileLinks ? ' bp-wallet-btn-disabled' : ''}`}
+                       href={mobileLinks?.trust ?? undefined} rel="noopener noreferrer">
+                      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style={{flexShrink:0}}>
+                        <rect width="32" height="32" rx="6" fill="#3375BB"/>
+                        <path d="M16 6L24 9.5V17C24 22 20.5 26 16 27C11.5 26 8 22 8 17V9.5L16 6Z" fill="none" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+                        <path d="M12 17L15 20L21 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span>Trust Wallet</span>
                     </a>
+                    {/* Coinbase Wallet */}
+                    <a className={`bp-wallet-btn${!mobileLinks ? ' bp-wallet-btn-disabled' : ''}`}
+                       href={mobileLinks?.coinbase ?? undefined} rel="noopener noreferrer">
+                      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style={{flexShrink:0}}>
+                        <circle cx="16" cy="16" r="16" fill="#0052FF"/>
+                        <circle cx="16" cy="16" r="9" fill="none" stroke="white" strokeWidth="1.5" opacity="0.4"/>
+                        <path d="M20 12.5C18.2 10.2 13 10 11 13.5C9.5 16 10 20 13 22.5C15.5 24.5 20 23.5 22 20.5" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+                      </svg>
+                      <span>Coinbase Wallet</span>
+                    </a>
+                    {/* Copy EIP-681 link */}
+                    {mobileLinks && (
+                      <button className="bp-wallet-copy" onClick={() => {
+                        navigator.clipboard.writeText(mobileLinks.eip681).then(() => {
+                          setMobileCopied(true);
+                          setTimeout(() => setMobileCopied(false), 2500);
+                        });
+                      }}>
+                        {mobileCopied ? '✓ Copied!' : '⧉ Copy payment link — any other wallet'}
+                      </button>
+                    )}
                   </div>
                   <button className="bp-mobile-paid-btn" onClick={() => setMobileStep('confirm')}>
-                    ✓ Sent the payment? Confirm here →
+                    ✓ Payment sent — Confirm now →
                   </button>
-                  <div className="bp-fine" style={{ marginTop: '.5rem' }}>
-                    Sends USDC on Base · Min $1 · YLDR vests 12 months from TGE Q1 2027
+                  <div className="bp-fine" style={{marginTop: '.5rem'}}>
+                    Sending {mobileToken} on {mobileChainCfg?.name ?? 'Base'} · Min $1 · YLDR vests 12 months from TGE Q1 2027
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="bp-section-label">Step 4 — Confirm your payment</div>
+                  <div className="bp-section-label">Step 5 — Confirm your payment</div>
                   <div className="bp-confirm-step">
-                    {!isConnected ? (
-                      <>
-                        <div className="bp-confirm-hint">Connect the wallet you paid from to verify ownership</div>
-                        <button className="bp-confirm-connect-btn" onClick={() => openConnectModal?.()}>
-                          Connect Wallet →
-                        </button>
-                      </>
-                    ) : (
-                      <div className="bp-confirm-wallet">
-                        <span className="bp-confirm-dot" />
-                        <span>{truncAddr}</span>
-                        <span style={{ marginLeft: 'auto', fontSize: '.55rem', color: 'var(--g)' }}>Connected</span>
+
+                    {/* Wallet address — manual input, no connection required */}
+                    <div>
+                      <div className="bp-confirm-label">Your wallet address</div>
+                      <div className="bp-confirm-addr-row">
+                        <input
+                          type="text"
+                          className="bp-confirm-input"
+                          placeholder={isConnected ? `Using: ${truncAddr} — or paste different` : '0x… copy from your wallet app'}
+                          value={mobileWalletAddr}
+                          onChange={e => setMobileWalletAddr(e.target.value.trim())}
+                        />
+                        {!isConnected && (
+                          <button className="bp-confirm-auto-btn" onClick={() => openConnectModal?.()}>
+                            Auto-fill
+                          </button>
+                        )}
+                        {isConnected && !mobileWalletAddr && (
+                          <span className="bp-confirm-connected-badge">✓</span>
+                        )}
                       </div>
+                      <div className="bp-confirm-addr-hint">
+                        Works with any wallet — MetaMask, Phantom, Trust, Coinbase, or any EVM wallet
+                      </div>
+                    </div>
+
+                    {/* TX hash */}
+                    <div>
+                      <div className="bp-confirm-label">Transaction hash</div>
+                      <input
+                        type="text"
+                        className="bp-confirm-input"
+                        placeholder="0x… (66 chars — copy from wallet tx history)"
+                        value={mobileTxInput}
+                        onChange={e => setMobileTxInput(e.target.value.trim())}
+                      />
+                    </div>
+
+                    {/* Network info */}
+                    <div className="bp-confirm-net">
+                      <span>{mobileChainCfg?.name ?? 'Base'} · {mobileToken}</span>
+                      <button className="bp-confirm-net-change" onClick={() => setMobileStep('pay')}>Change network</button>
+                    </div>
+
+                    {!selectedVault && (
+                      <div className="bp-confirm-warning">← Go back and select a vault above first</div>
                     )}
-                    <input
-                      type="text"
-                      className="bp-confirm-input"
-                      placeholder="Paste transaction hash (0x…)"
-                      value={mobileTxInput}
-                      onChange={e => setMobileTxInput(e.target.value.trim())}
-                    />
+
                     <button
                       className="bp-confirm-submit"
-                      disabled={!isConnected || !mobileTxHash || !selectedVault || mobileSubmitting}
+                      disabled={!(mobileWalletAddr.trim() || (isConnected && address)) || !mobileTxHash || !selectedVault || mobileSubmitting}
                       onClick={handleMobileSubmit}
                     >
                       {mobileSubmitting ? 'Confirming…' : 'Confirm Payment →'}
@@ -570,8 +687,8 @@ export default function BuyPage() {
       {/* ── Success Modal ── */}
       {status === 'success' && (txHash || mobileSuccess) && (() => {
         const activeTx        = txHash || mobileSuccess!;
-        const activeNetwork   = mobileSuccess ? 'Base' : (chainName ?? 'Base');
-        const activeExplorer  = mobileSuccess ? 'https://basescan.org' : explorerUrl;
+        const activeNetwork   = mobileSuccess ? (SUPPORTED_CHAINS[mobileNetwork]?.name ?? 'Base') : (chainName ?? 'Base');
+        const activeExplorer  = mobileSuccess ? (SUPPORTED_CHAINS[mobileNetwork]?.explorer ?? 'https://basescan.org') : explorerUrl;
         return (
           <div className="bp-modal-overlay">
             <div className="bp-modal">
