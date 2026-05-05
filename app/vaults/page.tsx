@@ -534,17 +534,11 @@ function VaultsPageInner() {
                     soccerAlpha: { full: '0x1ba1bb6aa2490adbbbbb314bc07ff21a8cc71ce4', short: '0x1ba1…1ce4' },
                   };
                   const w = wallets[activeVault];
-                  const href = activeVault === 'geo'
-                    ? `https://polygonscan.com/address/${w.full}`
-                    : undefined;
+                  const href = w ? `https://polygonscan.com/address/${w.full}` : undefined;
                   return w ? (
-                    href ? (
-                      <a href={href} target="_blank" rel="noopener noreferrer" className="val green" style={{ textDecoration: 'none' }}>
-                        {w.short} ✓
-                      </a>
-                    ) : (
-                      <span className="val green">{w.short} ✓</span>
-                    )
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="val green" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+                      {w.short} ✓
+                    </a>
                   ) : (
                     <span className="val green">Verifiable ✓</span>
                   );
