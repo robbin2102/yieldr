@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './buy.css';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import { useAccount, useChainId, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { usePaymentFlow } from '@/hooks/usePaymentFlow';
@@ -42,11 +42,11 @@ function fmtNum(n: number) {
 // ── Component ──────────────────────────────────────────────────────────────
 export default function BuyPage() {
   const router = useRouter();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const chainId = useChainId();
   const { switchChain } = useSwitchChain();
   const { openConnectModal } = useConnectModal();
-  const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus, allocationData } = usePayment();
+  const { setContributionAmount, setSelectedVault: setCtxVault, status, setStatus, allocationData, setAllocationData } = usePayment();
 
   const [selectedVault, setSelectedVault] = useState<VaultId | null>(null);
   const [selectedToken, setSelectedToken] = useState<TokenId>('USDC');
@@ -58,8 +58,40 @@ export default function BuyPage() {
   const [combinedRoi, setCombinedRoi]     = useState<string | null>(null);
   const [countdown, setCountdown]         = useState<number | null>(null);
   const [redirectFailed, setRedirectFailed] = useState(false);
+  const [mobileStep, setMobileStep]         = useState<'pay' | 'confirm'>('pay');
+  const [mobileTxInput, setMobileTxInput]   = useState('');
+  const [mobileSubmitting, setMobileSubmitting] = useState(false);
+  const [mobileSuccess, setMobileSuccess]   = useState<string | null>(null);
 
   const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported, otherBalances, scanDone } = usePaymentFlow(selectedToken);
+
+  // ── Mobile payment ───────────────────────────────────────────────────────
+  const USDC_BASE = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+  const TREASURY  = '0xB56C6247F39A992dbcF172a4308386A23d0ea15C';
+
+  const mobileTxHash = /^0x[a-fA-F0-9]{64}$/.test(mobileTxInput)
+    ? mobileTxInput as `0x${string}`
+    : undefined;
+
+  // Reuse wagmi receipt listener for externally-initiated mobile tx
+  useWaitForTransactionReceipt({
+    hash: mobileTxHash,
+    chainId: 8453,
+    query: { enabled: !!mobileTxHash },
+  });
+
+  const truncAddr = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
+  const mobileCanPay = !!selectedVault && amount >= MIN_AMOUNT;
+
+  function getMobileLinks(amountUsd: number) {
+    const wei = BigInt(Math.round(amountUsd * 1_000_000)).toString();
+    const eip681 = `ethereum:${USDC_BASE}@8453/transfer?address=${TREASURY}&uint256=${wei}`;
+    return {
+      metamask: `https://metamask.app.link/send/${USDC_BASE}@8453/transfer?address=${TREASURY}&uint256=${wei}`,
+      coinbase:  `https://go.cb-w.com/dapp?cb_url=${encodeURIComponent(eip681)}`,
+      trust:     `https://link.trustwallet.com/send?coin=60&address=${TREASURY}&amount=${amountUsd}&token=${USDC_BASE}`,
+    };
+  }
   const chainConfig = SUPPORTED_CHAINS[chainId];
   const availableTokens = chainConfig ? Object.keys(chainConfig.tokens) as TokenId[] : [];
 
@@ -147,6 +179,47 @@ export default function BuyPage() {
 
     await initiatePayment();
   }, [selectedVault, amount, setContributionAmount, initiatePayment, setStatus, bestOtherChain, switchChain, setSelectedToken, chainId]);
+
+  const handleMobileSubmit = useCallback(async () => {
+    if (!isConnected || !address || !mobileTxHash || !selectedVault) return;
+    setMobileSubmitting(true);
+    try {
+      const resp = await fetch('/api/contributions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          wallet_address: address,
+          usdc_amount: amount,
+          tx_hash: mobileTxInput,
+          network: 'Base',
+          chain_id: 8453,
+          token: 'USDC',
+          selected_vault: selectedVault,
+        }),
+      });
+      const data = await resp.json();
+      if (data.success) {
+        setContributionAmount(amount);
+        setCtxVault(selectedVault);
+        if (data.data) {
+          setAllocationData({
+            yldrAmount: data.data.yldr_allocation ?? 0,
+            effectivePrice: data.data.yldr_price ?? 0,
+            breakdown: data.data.breakdown ?? [],
+            discord_invite: data.data.discord_invite ?? null,
+          });
+        }
+        setMobileSuccess(mobileTxInput);
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+    setMobileSubmitting(false);
+  }, [isConnected, address, mobileTxHash, mobileTxInput, selectedVault, amount,
+      setContributionAmount, setCtxVault, setAllocationData, setStatus]);
 
   const { half, tokens, tgeValue } = calcSplit(amount);
 
@@ -380,12 +453,93 @@ export default function BuyPage() {
               <div className="bp-earning-small">No lock-up on USDC portion &bull; Withdraw anytime before vault migration</div>
             </div>
 
-            {/* CTA */}
-            <button className="bp-btn" disabled={btnDisabled} onClick={handleBuy}>
-              {btnLabel()}
-            </button>
-            <div className="bp-fine">
-              Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE Q1 2027
+            {/* Desktop CTA — hidden on mobile via CSS */}
+            <div className="bp-desktop-cta-wrap">
+              <button className="bp-btn" disabled={btnDisabled} onClick={handleBuy}>
+                {btnLabel()}
+              </button>
+              <div className="bp-fine">
+                Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE Q1 2027
+              </div>
+            </div>
+
+            {/* Mobile payment section — hidden on desktop via CSS */}
+            <div className="bp-mobile-pay">
+              {mobileStep === 'pay' ? (
+                <>
+                  <div className="bp-section-label">Step 3 — Pay with your wallet</div>
+                  {!mobileCanPay && (
+                    <div className="bp-mobile-prereq">Select a vault and amount above to continue</div>
+                  )}
+                  <div className="bp-wallet-btns">
+                    <a
+                      className={`bp-wallet-btn${!mobileCanPay ? ' bp-wallet-btn-disabled' : ''}`}
+                      href={mobileCanPay ? getMobileLinks(amount).metamask : undefined}
+                      rel="noopener noreferrer"
+                    >
+                      <span className="bp-wallet-logo bp-wl-mm">M</span>
+                      Pay with MetaMask
+                    </a>
+                    <a
+                      className={`bp-wallet-btn${!mobileCanPay ? ' bp-wallet-btn-disabled' : ''}`}
+                      href={mobileCanPay ? getMobileLinks(amount).coinbase : undefined}
+                      rel="noopener noreferrer"
+                    >
+                      <span className="bp-wallet-logo bp-wl-cb">C</span>
+                      Pay with Coinbase Wallet
+                    </a>
+                    <a
+                      className={`bp-wallet-btn${!mobileCanPay ? ' bp-wallet-btn-disabled' : ''}`}
+                      href={mobileCanPay ? getMobileLinks(amount).trust : undefined}
+                      rel="noopener noreferrer"
+                    >
+                      <span className="bp-wallet-logo bp-wl-tw">T</span>
+                      Pay with Trust Wallet
+                    </a>
+                  </div>
+                  <button className="bp-mobile-paid-btn" onClick={() => setMobileStep('confirm')}>
+                    ✓ Sent the payment? Confirm here →
+                  </button>
+                  <div className="bp-fine" style={{ marginTop: '.5rem' }}>
+                    Sends USDC on Base · Min $1 · YLDR vests 12 months from TGE Q1 2027
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="bp-section-label">Step 4 — Confirm your payment</div>
+                  <div className="bp-confirm-step">
+                    {!isConnected ? (
+                      <>
+                        <div className="bp-confirm-hint">Connect the wallet you paid from to verify ownership</div>
+                        <button className="bp-confirm-connect-btn" onClick={() => openConnectModal?.()}>
+                          Connect Wallet →
+                        </button>
+                      </>
+                    ) : (
+                      <div className="bp-confirm-wallet">
+                        <span className="bp-confirm-dot" />
+                        <span>{truncAddr}</span>
+                        <span style={{ marginLeft: 'auto', fontSize: '.55rem', color: 'var(--g)' }}>Connected</span>
+                      </div>
+                    )}
+                    <input
+                      type="text"
+                      className="bp-confirm-input"
+                      placeholder="Paste transaction hash (0x…)"
+                      value={mobileTxInput}
+                      onChange={e => setMobileTxInput(e.target.value.trim())}
+                    />
+                    <button
+                      className="bp-confirm-submit"
+                      disabled={!isConnected || !mobileTxHash || !selectedVault || mobileSubmitting}
+                      onClick={handleMobileSubmit}
+                    >
+                      {mobileSubmitting ? 'Confirming…' : 'Confirm Payment →'}
+                    </button>
+                    <button className="bp-mobile-back" onClick={() => setMobileStep('pay')}>← Back</button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -414,62 +568,67 @@ export default function BuyPage() {
       </main>
 
       {/* ── Success Modal ── */}
-      {status === 'success' && txHash && (
-        <div className="bp-modal-overlay">
-          <div className="bp-modal">
-            <div className="bp-modal-icon">&#10003;</div>
-            <div className="bp-modal-title">Payment Confirmed!</div>
-            <div className="bp-modal-sub">
-              Your ${fmtNum(amount)} {selectedToken} deposit on {chainName} was successful.
-            </div>
+      {status === 'success' && (txHash || mobileSuccess) && (() => {
+        const activeTx        = txHash || mobileSuccess!;
+        const activeNetwork   = mobileSuccess ? 'Base' : (chainName ?? 'Base');
+        const activeExplorer  = mobileSuccess ? 'https://basescan.org' : explorerUrl;
+        return (
+          <div className="bp-modal-overlay">
+            <div className="bp-modal">
+              <div className="bp-modal-icon">&#10003;</div>
+              <div className="bp-modal-title">Payment Confirmed!</div>
+              <div className="bp-modal-sub">
+                Your ${fmtNum(amount)} USDC deposit on {activeNetwork} was successful.
+              </div>
 
-            <div className="bp-modal-details">
-              <div className="bp-modal-row">
-                <span>Total Deposited</span>
-                <span>${fmtNum(amount)} {selectedToken}</span>
-              </div>
-              <div className="bp-modal-divider" />
-              <div className="bp-modal-row">
-                <span>Stablecoin Vault (4.5% APY)</span>
-                <span className="green">${fmtNum(half)}</span>
-              </div>
-              <div className="bp-modal-row">
-                <span>YLDR Token Allocation</span>
-                <span className="green">{fmtNum(allocationData?.yldrAmount ?? tokens)} YLDR</span>
-              </div>
-              {allocationData?.effectivePrice && (
+              <div className="bp-modal-details">
                 <div className="bp-modal-row">
-                  <span>Price per YLDR</span>
-                  <span>${allocationData.effectivePrice.toFixed(4)}</span>
+                  <span>Total Deposited</span>
+                  <span>${fmtNum(amount)} USDC</span>
                 </div>
-              )}
-              <div className="bp-modal-divider" />
-              <div className="bp-modal-row">
-                <span>Network</span>
-                <span>{chainName}</span>
+                <div className="bp-modal-divider" />
+                <div className="bp-modal-row">
+                  <span>Stablecoin Vault (4.5% APY)</span>
+                  <span className="green">${fmtNum(half)}</span>
+                </div>
+                <div className="bp-modal-row">
+                  <span>YLDR Token Allocation</span>
+                  <span className="green">{fmtNum(allocationData?.yldrAmount ?? tokens)} YLDR</span>
+                </div>
+                {allocationData?.effectivePrice && (
+                  <div className="bp-modal-row">
+                    <span>Price per YLDR</span>
+                    <span>${allocationData.effectivePrice.toFixed(4)}</span>
+                  </div>
+                )}
+                <div className="bp-modal-divider" />
+                <div className="bp-modal-row">
+                  <span>Network</span>
+                  <span>{activeNetwork}</span>
+                </div>
+                <div className="bp-modal-row">
+                  <span>Transaction</span>
+                  <span>
+                    <a href={`${activeExplorer}/tx/${activeTx}`} target="_blank" rel="noopener noreferrer">
+                      {activeTx.slice(0, 8)}...{activeTx.slice(-6)} &#8599;
+                    </a>
+                  </span>
+                </div>
               </div>
-              <div className="bp-modal-row">
-                <span>Transaction</span>
-                <span>
-                  <a href={`${explorerUrl}/tx/${txHash}`} target="_blank" rel="noopener noreferrer">
-                    {txHash.slice(0, 8)}...{txHash.slice(-6)} &#8599;
-                  </a>
-                </span>
-              </div>
-            </div>
 
-            {!redirectFailed && countdown !== null && countdown > 0 ? (
-              <div className="bp-modal-countdown">
-                Redirecting to your allocation in {countdown}s...
-              </div>
-            ) : redirectFailed || (countdown !== null && countdown <= 0) ? (
-              <Link href="/allocations" className="bp-modal-cta">
-                View My Allocation &#8599;
-              </Link>
-            ) : null}
+              {!redirectFailed && countdown !== null && countdown > 0 ? (
+                <div className="bp-modal-countdown">
+                  Redirecting to your allocation in {countdown}s...
+                </div>
+              ) : redirectFailed || (countdown !== null && countdown <= 0) ? (
+                <Link href="/allocations" className="bp-modal-cta">
+                  View My Allocation &#8599;
+                </Link>
+              ) : null}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
