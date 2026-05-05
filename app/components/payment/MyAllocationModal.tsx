@@ -7,7 +7,7 @@ import { usePayment } from '@/app/context/PaymentContext';
 import { EXPLORER_URL } from '@/config/payment';
 import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 
-const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
+const DISCORD_INVITE = 'https://t.me/+bKuyducVGqliNGVl';
 
 interface MyAllocationModalProps {
   isOpen: boolean;
@@ -83,7 +83,7 @@ export function MyAllocationModal({ isOpen, onClose }: MyAllocationModalProps) {
               rel="noopener noreferrer"
               className="action-button discord"
             >
-              💬 Join Discord
+              💬 Join Telegram
             </a>
             <a
               href="/build-in-public"

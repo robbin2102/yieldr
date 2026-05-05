@@ -6,8 +6,10 @@ export const TREASURY_ADDRESS = '0xB56C6247F39A992dbcF172a4308386A23d0ea15C';
 // Contribution Limits
 export const MIN_CONTRIBUTION = 1; // $1 minimum for testing
 
-// Discord
-export const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
+// Telegram (early backers group)
+export const TELEGRAM_INVITE = 'https://t.me/+bKuyducVGqliNGVl';
+// Legacy alias — kept for back-compat with components still importing the old name
+export const DISCORD_INVITE = TELEGRAM_INVITE;
 
 // API Authentication
 export const API_AUTH_KEY = process.env.API_AUTH_KEY || '';

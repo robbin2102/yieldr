@@ -5,8 +5,7 @@ import { Contribution } from '@/models/Contribution';
 import { RaiseStats } from '@/models/RaiseStats';
 import VaultDeposit from '@/models/VaultDeposit';
 import { calculateAllocation, getCurrentTier } from '@/lib/tierCalculations';
-import { API_AUTH_KEY, TREASURY_ADDRESS } from '@/config/payment';
-import { createExclusiveInvite } from '@/lib/discord';
+import { API_AUTH_KEY, TREASURY_ADDRESS, TELEGRAM_INVITE } from '@/config/payment';
 
 // Helper to verify API auth for internal calls
 function verifyApiAuth(request: NextRequest): boolean {
@@ -151,20 +150,15 @@ export async function POST(req: NextRequest) {
       // Non-blocking — contribution already recorded
     }
 
-    // Generate Discord invite
-    let discordInvite: string | null = null;
+    // Attach Telegram invite (static early-backers group link)
+    const telegramInvite: string = TELEGRAM_INVITE;
     try {
-      console.log('🎫 Generating exclusive Discord invite...');
-      discordInvite = await createExclusiveInvite();
-      console.log('✅ Discord invite created:', discordInvite);
-
-      // Save the invite to the contribution
-      contribution.discord_invite = discordInvite;
+      contribution.discord_invite = telegramInvite;
       await contribution.save();
-      console.log('✅ Discord invite saved to contribution');
-    } catch (discordError) {
-      console.error('⚠️  Failed to create Discord invite:', discordError);
-      // Continue without Discord invite - don't fail the entire transaction
+      console.log('✅ Telegram invite attached to contribution');
+    } catch (inviteError) {
+      console.error('⚠️  Failed to save Telegram invite:', inviteError);
+      // Non-blocking — contribution already recorded
     }
 
     // Update raise stats
@@ -206,7 +200,7 @@ export async function POST(req: NextRequest) {
         tier: allocation.tier,
         fdv: allocation.fdv,
         breakdown: allocation.breakdown,
-        discord_invite: discordInvite,
+        discord_invite: telegramInvite,
       },
     };
 

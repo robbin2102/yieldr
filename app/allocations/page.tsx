@@ -277,23 +277,23 @@ export default function AllocationsPage() {
             <div className="ap-card ap-card-center">
               <div className="ap-card-title">Exclusive Access</div>
               <div className="ap-discord-emoji">&#128172;</div>
-              <div className="ap-discord-h">Join Early Backers Discord</div>
+              <div className="ap-discord-h">Join Early Backers Telegram</div>
               <div className="ap-discord-p">
-                Get exclusive access to the early backers channel, direct line to the founder, and real-time vault performance updates.
+                Get exclusive access to the early backers group, direct line to the founder, and real-time vault performance updates.
               </div>
               {isConnected ? (
                 discordClaimed ? (
                   <>
                     <div className="ap-discord-done">&#10003; Invite claimed</div>
-                    <button className="ap-btn-outline" onClick={handleJoinDiscord}>Rejoin Discord &#8594;</button>
+                    <button className="ap-btn-outline" onClick={handleJoinDiscord}>Rejoin Telegram &#8594;</button>
                   </>
                 ) : (
                   <button className="ap-btn-primary" onClick={handleJoinDiscord}>
-                    {discordInvite ? 'Claim Exclusive Invite ↗' : 'Join Discord ↗'}
+                    {discordInvite ? 'Claim Exclusive Invite ↗' : 'Join Telegram ↗'}
                   </button>
                 )
               ) : (
-                <button className="ap-btn-outline" onClick={() => window.open(DISCORD_INVITE, '_blank')}>Join Discord ↗</button>
+                <button className="ap-btn-outline" onClick={() => window.open(DISCORD_INVITE, '_blank')}>Join Telegram ↗</button>
               )}
 
               {/* Recent tx history */}

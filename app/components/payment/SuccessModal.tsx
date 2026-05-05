@@ -8,7 +8,7 @@ import { usePayment } from '@/app/context/PaymentContext';
 import { EXPLORER_URL } from '@/config/payment';
 import { formatNumber, formatPrice, formatUsd } from '@/lib/tierCalculations';
 
-const DISCORD_INVITE = 'https://discord.gg/c8qq9DKkjM';
+const DISCORD_INVITE = 'https://t.me/+bKuyducVGqliNGVl';
 
 export function SuccessModal() {
   const router = useRouter();
@@ -101,15 +101,15 @@ export function SuccessModal() {
           <div className="discord-cta">
             <div className="cta-icon">💬</div>
             <h3>Claim Exclusive Beta Access</h3>
-            <p>Join our private Discord for direct team interaction, product updates, and priority support</p>
-            <p className="discord-warning">⚠️ This is a one-time invite. Do not share.</p>
+            <p>Join our private Telegram for direct team interaction, product updates, and priority support</p>
+            <p className="discord-warning">⚠️ Invite-only group for early backers.</p>
             <a
               href={discord_invite || DISCORD_INVITE}
               target="_blank"
               rel="noopener noreferrer"
               className="discord-button"
             >
-              Join Discord Community
+              Join Telegram Group
             </a>
           </div>
 
