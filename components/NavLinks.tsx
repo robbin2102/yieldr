@@ -168,7 +168,6 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
               <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
               <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
               <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
-              <Link href="/docs" className={isActive('/docs') ? 'active' : ''}>Docs</Link>
               <Link href="/allocations" className={`ynav-alloc-mobile${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
               <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="ynav-tg">TG Channel ↗</a>
             </div>
