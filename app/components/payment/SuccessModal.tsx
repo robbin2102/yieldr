@@ -56,7 +56,7 @@ export function SuccessModal() {
           <div className="allocation-main">
             <div className="allocation-amount-display">
               <span className="yldr-amount">{formatNumber(yldrAmount)} YLDR</span>
-              <span className="allocation-label">Allocated at TGE (Q1 2027)</span>
+              <span className="allocation-label">Allocated at TGE</span>
             </div>
           </div>
 

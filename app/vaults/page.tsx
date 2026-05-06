@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import NavLinks from '@/components/NavLinks';
 import './vaults.css';
+import { TELEGRAM_INVITE } from '@/config/payment';
 import {
   VAULT_META,
   FALLBACK_POSITIONS,
@@ -160,7 +161,7 @@ function VaultChart({ points, gradId }: { points: ChartPoint[]; gradId: string }
 }
 
 // ── Component ──────────────────────────────────────────────────────────────
-function VaultsPageInner() {
+export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }) {
   const searchParams = useSearchParams();
   const vaultParam   = searchParams.get('vault') as VaultId | null;
   const [activeVault, setActiveVault] = useState<VaultId>(
@@ -251,6 +252,13 @@ function VaultsPageInner() {
     }
   }, [hiddenVaultIds, activeVault]);
 
+  // ── Campaign access token ──────────────────────────────────────────────
+  useEffect(() => {
+    if (isCampaign) {
+      try { sessionStorage.setItem('yldr_campaign_access', '1'); } catch {}
+    }
+  }, [isCampaign]);
+
   // ── Auto-scroll chat ───────────────────────────────────────────────────
   useEffect(() => {
     if (chatMessages.length <= 2) return;
@@ -291,7 +299,7 @@ function VaultsPageInner() {
           <span className="vp-nav-brand">YIELDR</span>
         </Link>
         <div className="vp-nav-r">
-          <NavLinks cta={{ href: '/buy', label: 'Early Access ↗' }} />
+          <NavLinks cta={isCampaign ? { href: '/buy', label: 'Early Access ↗' } : { href: TELEGRAM_INVITE, label: 'Join Waitlist →' }} />
         </div>
       </nav>
 
@@ -404,13 +412,23 @@ function VaultsPageInner() {
                   </div>
 
                   {/* Mobile-only CTA strip — shown right after chart */}
-                  <div className="vp-mobile-cta-strip">
-                    <div className="vp-mcs-text">
-                      <span className="vp-mcs-label">50% USDC (4.5% APY) · 50% YLDR @$9M FDV</span>
-                      <span className="vp-mcs-sub">Tier 1 pricing ends May 31st</span>
+                  {isCampaign ? (
+                    <div className="vp-mobile-cta-strip">
+                      <div className="vp-mcs-text">
+                        <span className="vp-mcs-label">50% USDC · 50% YLDR @$9M FDV</span>
+                        <span className="vp-mcs-sub">Q4 2026 launch · Limited spots</span>
+                      </div>
+                      <Link href="/buy" className="vp-mcs-btn">Get Early Access ↗</Link>
                     </div>
-                    <Link href="/buy" className="vp-mcs-btn">Get Early Access ↗</Link>
-                  </div>
+                  ) : (
+                    <div className="vp-mobile-cta-strip">
+                      <div className="vp-mcs-text">
+                        <span className="vp-mcs-label">Invites open early June 2026</span>
+                        <span className="vp-mcs-sub">Community builds via Telegram first</span>
+                      </div>
+                      <a href={TELEGRAM_INVITE} target="_blank" rel="noopener noreferrer" className="vp-mcs-btn">Join Waitlist →</a>
+                    </div>
+                  )}
 
                   {/* Open Positions */}
                   <div className="vp-open-positions">
@@ -482,30 +500,44 @@ function VaultsPageInner() {
             </div>
 
             {/* CTA Box */}
-            <div className="vp-cta-box" id="buy">
-              <div className="vp-cta-h">Get Early Access</div>
-              <div className="vp-cta-sub">
-                Every $100 deposited = $50 into a Base USDC vault earning 4.5% APY from day one (migrates to your chosen agent trading vault at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV.
-              </div>
-              <div className="vp-cta-split">
-                <div className="vp-cta-split-item">
-                  <div className="vp-cta-split-v">50%</div>
-                  <div className="vp-cta-split-l">USDC Vault (4.5% APY)</div>
+            {isCampaign ? (
+              <div className="vp-cta-box" id="buy">
+                <div className="vp-cta-h">Get Early Access</div>
+                <div className="vp-cta-sub">
+                  Every $100 deposited = $50 into a Base USDC vault (migrates to your chosen agent trading vault at Q4 2026 launch) + $50 in YLDR token allocation at $9M FDV.
                 </div>
-                <div className="vp-cta-split-item">
-                  <div className="vp-cta-split-v">50%</div>
-                  <div className="vp-cta-split-l">YLDR @ $9M FDV</div>
+                <div className="vp-cta-split">
+                  <div className="vp-cta-split-item">
+                    <div className="vp-cta-split-v">50%</div>
+                    <div className="vp-cta-split-l">USDC Vault</div>
+                  </div>
+                  <div className="vp-cta-split-item">
+                    <div className="vp-cta-split-v">50%</div>
+                    <div className="vp-cta-split-l">YLDR @ $9M FDV</div>
+                  </div>
+                </div>
+                <div className="vp-cta-note">⚡ USDC earning from day 1 → moves to agent vault at Q4 launch</div>
+                <Link href="/buy" className="vp-cta-btn">
+                  Buy YLDR — Early Access ↗
+                </Link>
+                <div className="vp-cta-fine">
+                  Min $100 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE
                 </div>
               </div>
-              <div className="vp-cta-note">⚡ USDC earning from day 1 → moves to agent vault at Q3 launch</div>
-
-              <Link href="/buy" className="vp-cta-btn">
-                Buy YLDR — Early Access ↗
-              </Link>
-              <div className="vp-cta-fine">
-                Min $100 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE Q1 2027
+            ) : (
+              <div className="vp-cta-box" id="buy">
+                <div className="vp-cta-h">Join the Waitlist</div>
+                <div className="vp-cta-sub">
+                  Invites open early June 2026. Be among the first to get vault access when we open. Community builds via Telegram first.
+                </div>
+                <a href={TELEGRAM_INVITE} target="_blank" rel="noopener noreferrer" className="vp-cta-btn">
+                  Join Telegram → Get Invited ↗
+                </a>
+                <div className="vp-cta-fine">
+                  Invites open early June 2026 · TGE timing tied to TVL milestones
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Trust Box */}
             <div className="vp-trust-box">
@@ -581,13 +613,23 @@ function VaultsPageInner() {
       </main>
 
       {/* Sticky mobile CTA bar */}
-      <div className="vp-sticky-cta">
-        <div className="vp-sct-left">
-          <div className="vp-sct-label">Get Early Access</div>
-          <div className="vp-sct-sub">50% USDC APY · 50% YLDR @$9M FDV</div>
+      {isCampaign ? (
+        <div className="vp-sticky-cta">
+          <div className="vp-sct-left">
+            <div className="vp-sct-label">Get Early Access</div>
+            <div className="vp-sct-sub">50% USDC · 50% YLDR @$9M FDV</div>
+          </div>
+          <Link href="/buy" className="vp-sct-btn">Buy YLDR ↗</Link>
         </div>
-        <Link href="/buy" className="vp-sct-btn">Buy YLDR ↗</Link>
-      </div>
+      ) : (
+        <div className="vp-sticky-cta">
+          <div className="vp-sct-left">
+            <div className="vp-sct-label">Join the Waitlist</div>
+            <div className="vp-sct-sub">Invites open early June 2026</div>
+          </div>
+          <a href={TELEGRAM_INVITE} target="_blank" rel="noopener noreferrer" className="vp-sct-btn">Join Telegram ↗</a>
+        </div>
+      )}
 
       <footer className="vp-footer">
         <div className="vp-footer-txt">

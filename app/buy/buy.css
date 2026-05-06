@@ -453,3 +453,31 @@
   text-align: left; padding: 0; transition: color .2s;
 }
 .bp-mobile-back:hover { color: var(--t2); }
+
+/* ── Invite gate (access denied) ── */
+.bp-invite-gate {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 70vh; text-align: center; padding: 2rem 1.5rem; gap: 1.2rem;
+}
+.bp-invite-lock { font-size: 3.5rem; }
+.bp-invite-title {
+  font-family: var(--fd); font-size: 1.8rem; font-weight: 700;
+  color: var(--t1); margin: 0;
+}
+.bp-invite-body {
+  font-size: .8rem; color: var(--t2); line-height: 1.7;
+  max-width: 380px; margin: 0;
+}
+.bp-invite-btn {
+  display: inline-block; background: var(--g); color: #000;
+  font-family: var(--fm); font-size: .75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  padding: .9rem 2rem; text-decoration: none;
+  transition: box-shadow .2s;
+}
+.bp-invite-btn:hover { box-shadow: 0 0 28px rgba(0,232,123,.4); }
+.bp-invite-back {
+  font-size: .65rem; color: var(--t3); text-decoration: none;
+  transition: color .2s;
+}
+.bp-invite-back:hover { color: var(--t2); }

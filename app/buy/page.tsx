@@ -66,6 +66,7 @@ export default function BuyPage() {
   const [mobileSubmitting, setMobileSubmitting] = useState(false);
   const [mobileSuccess, setMobileSuccess]   = useState<string | null>(null);
   const [mobileCopied, setMobileCopied]     = useState(false);
+  const [accessGranted, setAccessGranted]   = useState<boolean | null>(null);
 
   const { initiatePayment, isProcessing, txHash, balance, chainName, isSupported, otherBalances, scanDone } = usePaymentFlow(selectedToken);
 
@@ -141,6 +142,15 @@ export default function BuyPage() {
     const t = setTimeout(() => setCountdown(c => (c ?? 1) - 1), 1000);
     return () => clearTimeout(t);
   }, [countdown, router]);
+
+  // ── sessionStorage access gate ───────────────────────────────────────────
+  useEffect(() => {
+    try {
+      setAccessGranted(sessionStorage.getItem('yldr_campaign_access') === '1');
+    } catch {
+      setAccessGranted(true);
+    }
+  }, []);
 
   // ── Fetch live stats ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -247,6 +257,46 @@ export default function BuyPage() {
 
   const { half, tokens, tgeValue } = calcSplit(amount);
 
+  // ── Access gate ───────────────────────────────────────────────────────────
+  if (accessGranted === null) return null;
+  if (!accessGranted) return (
+    <div className="bp-root">
+      <div className="bp-grid" />
+      <nav className="bp-nav">
+        <div className="bp-nav-l">
+          <svg width="20" height="24" viewBox="0 0 100 120">
+            <path d="M50 10Q70 30 80 60Q70 90 50 110Q30 90 20 60Q30 30 50 10Z" fill="#00E87B"/>
+            <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000" opacity=".3"/>
+            <circle cx="50" cy="60" r="8" fill="#FFF" opacity=".9"/>
+          </svg>
+          <span className="bp-nav-brand">YIELDR</span>
+        </div>
+        <div className="bp-nav-r">
+          <Link href="/vaults" className="bp-nav-back">&#8592; Back to Vaults</Link>
+        </div>
+      </nav>
+      <main className="bp-main">
+        <div className="bp-invite-gate">
+          <div className="bp-invite-lock">🔒</div>
+          <h2 className="bp-invite-title">Invite Only</h2>
+          <p className="bp-invite-body">
+            YLDR Early Access is currently invite-only.<br />
+            Invites open early June 2026 — join the Telegram to get invited first.
+          </p>
+          <a
+            href="https://t.me/+bKuyducVGqliNGVl"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bp-invite-btn"
+          >
+            Join Telegram → Get Invited ↗
+          </a>
+          <Link href="/vaults" className="bp-invite-back">← View Live Vaults</Link>
+        </div>
+      </main>
+    </div>
+  );
+
   const btnLabel = () => {
     if (!selectedVault) return 'Select a vault above to continue';
     if (isProcessing)   return 'Processing…';
@@ -287,7 +337,7 @@ export default function BuyPage() {
           {/* Head */}
           <div className="bp-head">
             <h1>Early Access — YLDR</h1>
-            <p>Choose your vault, deposit USDC or USDT. Half starts earning 4.5% APY today and migrates to your chosen agent vault at Q3 2026 launch. Half is your YLDR token allocation at the lowest valuation.</p>
+            <p>Choose your vault, deposit USDC or USDT. Half goes into a stablecoin vault today and migrates to your chosen agent vault at Q4 2026 launch. Half is your YLDR token allocation at the lowest valuation.</p>
           </div>
 
           {/* Live strip */}
@@ -331,7 +381,7 @@ export default function BuyPage() {
           <div className="bp-box">
 
             {/* Step 1: Vault */}
-            <div className="bp-section-label">Step 1 — Choose your vault for Q3 launch</div>
+            <div className="bp-section-label">Step 1 — Choose your vault for Q4 launch</div>
             <div className="bp-vault-grid">
               {VAULT_OPTS.map(v => (
                 <div
@@ -346,7 +396,7 @@ export default function BuyPage() {
               ))}
             </div>
             <div className="bp-vault-note">
-              Your USDC earns 4.5% APY in a Base vault today. At Q3 2026 launch, it migrates to this agent trading vault.
+              Your USDC earns yield in a Base stablecoin vault today. At Q4 2026 launch, it migrates to this agent trading vault.
             </div>
 
             {/* Step 2: Amount + Token */}
@@ -449,8 +499,8 @@ export default function BuyPage() {
               <div className="bp-split-title">Your Allocation</div>
               <div className="bp-split-row">
                 <span className="bp-split-lbl">
-                  USDC Vault (4.5% APY now)
-                  <span className="bp-split-sub">Migrates to agent vault Q3 2026</span>
+                  USDC Vault (earning yield)
+                  <span className="bp-split-sub">Migrates to agent vault Q4 2026</span>
                 </span>
                 <span className="bp-split-val">${fmtNum(half)}</span>
               </div>
@@ -473,7 +523,7 @@ export default function BuyPage() {
 
             {/* Earning callout */}
             <div className="bp-earning">
-              <div className="bp-earning-big">Your USDC starts earning 4.5% APY immediately</div>
+              <div className="bp-earning-big">Your USDC starts earning yield immediately</div>
               <div className="bp-earning-small">No lock-up on USDC portion &bull; Withdraw anytime before vault migration</div>
             </div>
 
@@ -483,7 +533,7 @@ export default function BuyPage() {
                 {btnLabel()}
               </button>
               <div className="bp-fine">
-                Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE Q1 2027
+                Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE
               </div>
             </div>
 
@@ -591,7 +641,7 @@ export default function BuyPage() {
                     ✓ Payment sent — Confirm now →
                   </button>
                   <div className="bp-fine" style={{marginTop: '.5rem'}}>
-                    Sending {mobileToken} on {mobileChainCfg?.name ?? 'Base'} · Min $1 · YLDR vests 12 months from TGE Q1 2027
+                    Sending {mobileToken} on {mobileChainCfg?.name ?? 'Base'} · Min $1 · YLDR vests 12 months from TGE
                   </div>
                 </>
               ) : (
@@ -705,7 +755,7 @@ export default function BuyPage() {
                 </div>
                 <div className="bp-modal-divider" />
                 <div className="bp-modal-row">
-                  <span>Stablecoin Vault (4.5% APY)</span>
+                  <span>Stablecoin Vault</span>
                   <span className="green">${fmtNum(half)}</span>
                 </div>
                 <div className="bp-modal-row">

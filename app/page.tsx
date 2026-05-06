@@ -24,11 +24,9 @@ export default function HomePage() {
     { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
     { label: 'NBA VAULT', value: '+18.7% 7D', up: true },
     { label: 'SOCCER VAULT', value: '+12.4% 7D', up: true },
-    { label: 'USDC YIELD', value: '4.5% APY', up: true },
-    { label: 'YLDR TGE', value: 'Q1 2027', up: true },
     { label: 'EARLY ACCESS', value: '$9M FDV', up: true },
-
-    { label: 'VAULTS LAUNCH', value: 'Q3 2026', up: true },
+    { label: 'VAULTS LAUNCH', value: 'Q4 2026', up: true },
+    { label: 'YLDR TGE', value: 'TVL-gated', up: true },
   ];
 
   return (
@@ -84,9 +82,9 @@ export default function HomePage() {
             strategies. Deposit into a vault. Let the agent compound.
           </p>
           <div className="lp-hero-ctas">
-            <Link href="/vaults" className="lp-btn-p">
-              Enter Vaults — Early Access ↗
-            </Link>
+            <a href="https://t.me/+bKuyducVGqliNGVl" target="_blank" rel="noopener noreferrer" className="lp-btn-p">
+              Join Waitlist → Get Invited ↗
+            </a>
             <a href="#how" className="lp-btn-s">How it works ↓</a>
           </div>
           <div className="lp-hero-stats">
@@ -327,22 +325,22 @@ export default function HomePage() {
                 <div className="lp-token-stat-l">Total Supply</div>
               </div>
               <div className="lp-token-stat">
-                <div className="lp-token-stat-v">Q1 &apos;27</div>
-                <div className="lp-token-stat-l">TGE</div>
+                <div className="lp-token-stat-v">TVL-gated</div>
+                <div className="lp-token-stat-l">TGE timing</div>
               </div>
             </div>
             <div className="lp-token-offer">
               <strong>Early Access Offer:</strong> Every $100 deposited = $50 into a Base USDC
-              vault earning <strong>4.5% APY</strong> from day one (migrates to agent trading
-              vaults at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV
+              vault earning yield from day one (migrates to agent trading
+              vaults at Q4 2026 launch) + $50 in YLDR token allocation at $9M FDV
             </div>
             <div className="lp-token-note">
               ⚡ You choose which vault your capital enters on launch:{' '}
               <em>NBA Edge</em>, <em>Soccer Alpha</em>, or <em>Geopolitics</em>
             </div>
-            <Link href="/vaults" className="lp-btn-p">
-              Choose Your Vault — Early Access ↗
-            </Link>
+            <a href="https://t.me/+bKuyducVGqliNGVl" target="_blank" rel="noopener noreferrer" className="lp-btn-p">
+              Join Waitlist → Get Invited ↗
+            </a>
           </div>
         </section>
 
