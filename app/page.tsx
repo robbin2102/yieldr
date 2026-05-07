@@ -74,7 +74,7 @@ export default function HomePage() {
           </h1>
           <p className="lp-hero-sub">
             The platform for <strong>AI-native hedge funds onchain.</strong> Top traders launch vaults.
-            Investors set targets. Agents handle everything in between — discovery, allocation, and operations.
+            Investors set yield targets. Agents handle everything in between — discovery, allocation, and operations.
           </p>
           <div className="lp-hero-ctas">
             <Link href="/vaults" className="lp-btn-p">Explore Live Vaults ↗</Link>
