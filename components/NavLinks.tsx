@@ -77,9 +77,9 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
       <nav className="ynav-links">
         <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
         <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
+        <Link href="/docs" className={isActive('/docs') ? 'active' : ''}>Docs</Link>
         <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
         <Link href="/allocations" className={`ynav-alloc${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
-        <a href={TELEGRAM} target="_blank" rel="noopener noreferrer">TG Channel</a>
       </nav>
 
       {showSocials && (
@@ -167,9 +167,9 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
             <div className="ynav-menu-links">
               <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
               <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
+              <Link href="/docs" className={isActive('/docs') ? 'active' : ''}>Docs</Link>
               <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
               <Link href="/allocations" className={`ynav-alloc-mobile${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
-              <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" className="ynav-tg">TG Channel ↗</a>
             </div>
             <div className="ynav-menu-footer">
               {isConnected ? (

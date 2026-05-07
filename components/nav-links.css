@@ -23,12 +23,14 @@
 /* CTA button */
 .ynav-cta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .65rem; font-weight: 700; letter-spacing: .5px;
+  font-size: .65rem; font-weight: 600; letter-spacing: .5px;
   text-transform: uppercase; text-decoration: none;
-  padding: .5rem 1.2rem; background: #00E87B; color: #000;
-  transition: opacity .2s;
+  padding: .5rem 1.2rem;
+  background: transparent; color: #00E87B;
+  border: 1px solid #00E87B;
+  transition: background .2s, color .2s;
 }
-.ynav-cta:hover { opacity: .9; }
+.ynav-cta:hover { background: #00E87B; color: #000; text-decoration: none; }
 
 /* Hamburger — hidden on desktop */
 .ynav-hamburger {
@@ -101,10 +103,12 @@
   display: block; text-align: center; padding: .65rem;
   font-family: 'JetBrains Mono', monospace;
   font-size: .65rem; font-weight: 600; letter-spacing: 1px;
-  text-decoration: none; background: #00E87B; color: #000;
-  transition: opacity .2s;
+  text-decoration: none;
+  background: transparent; color: #00E87B;
+  border: 1px solid #00E87B;
+  transition: background .2s, color .2s;
 }
-.ynav-menu-cta:hover { opacity: .9; }
+.ynav-menu-cta:hover { background: #00E87B; color: #000; text-decoration: none; }
 .ynav-menu-soc {
   display: flex; justify-content: center; gap: 1rem;
 }
