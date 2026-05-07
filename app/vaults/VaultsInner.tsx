@@ -309,7 +309,6 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
         <div className="vp-sb-left">
           <div className="vp-sb-live"><span className="vp-sb-dot" /> 3 Vaults Testing</div>
           <span>Last trade: <span className="vp-sb-val">{isLoading ? <Skel size="sm" /> : global.lastTradeAt}</span></span>
-          <span>Human + Agent</span>
         </div>
         <div className="vp-sb-right">
           <span>Capital: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtUsd(global.totalCapital)}</span></span>
