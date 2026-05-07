@@ -19,9 +19,9 @@ background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0
 
 /* NAV */
 nav:not(.ynav-links){position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:54px;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--b1)}
-.nav-l{display:flex;align-items:center;gap:.6rem}
+.nav-l{display:flex;align-items:center;gap:12px}
 .nav-logo{width:20px;height:24px}
-.nav-brand{font-family:var(--fd);font-weight:700;font-size:.95rem;letter-spacing:3px;color:var(--t1)}
+.nav-brand{font-family:var(--fm);font-weight:700;font-size:14px;letter-spacing:0.18em;color:var(--t1)}
 .nav-r{display:flex;align-items:center;gap:2rem}
 .nav-links{display:flex;gap:1.8rem}
 .nav-links a{font-size:.65rem;color:var(--t3);letter-spacing:1px;text-transform:uppercase;transition:color .2s;text-decoration:none}

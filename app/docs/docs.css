@@ -69,8 +69,8 @@
 .docs-nav-r { display: flex; align-items: center; gap: 28px; }
 .docs-nav-r a {
   color: var(--text-dim); text-decoration: none;
-  font-family: var(--mono); font-size: 13px; letter-spacing: 0.05em;
-  transition: color 0.2s;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; transition: color 0.2s;
 }
 .docs-nav-r a:hover { color: var(--text); }
 .docs-nav-r a.active { color: var(--green); }

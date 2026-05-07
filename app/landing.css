@@ -59,56 +59,7 @@
   color: var(--text);
 }
 .lp-nav-r {
-  display: flex; align-items: center; gap: 28px;
-}
-
-/* Override NavLinks styles within landing nav to match design */
-.lp-nav .ynav-links {
   display: flex; align-items: center; gap: 24px;
-}
-.lp-nav .ynav-links a {
-  color: var(--text-dim); font-family: var(--mono);
-  font-size: 12px; letter-spacing: 0.08em;
-  text-transform: uppercase; text-decoration: none;
-  transition: color 0.2s;
-}
-.lp-nav .ynav-links a:hover { color: var(--text); }
-.lp-nav .ynav-links a.active { color: var(--green); }
-
-/* Social icons in nav */
-.lp-nav .ynav-soc { display: flex; align-items: center; gap: 10px; }
-.lp-nav .ynav-soc a {
-  width: 30px; height: 30px;
-  display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  transition: all 0.2s;
-}
-.lp-nav .ynav-soc a:hover {
-  border-color: var(--green-dim);
-}
-.lp-nav .ynav-soc svg {
-  width: 12px; height: 12px;
-  fill: var(--text-faint);
-  transition: fill 0.2s;
-}
-.lp-nav .ynav-soc a:hover svg { fill: var(--green); }
-
-/* CTA button in nav */
-.lp-nav .ynav-cta {
-  padding: 8px 16px;
-  border: 1px solid var(--green);
-  color: var(--green) !important;
-  background: transparent;
-  border-radius: 4px;
-  font-family: var(--mono); font-size: 12px; font-weight: 600;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-.lp-nav .ynav-cta:hover {
-  background: var(--green);
-  color: var(--bg) !important;
 }
 
 /* TICKER */
