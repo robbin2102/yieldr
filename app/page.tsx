@@ -284,30 +284,32 @@ export default function HomePage() {
 
         {/* ── Protocols ── */}
         <div className="lp-protocols lp-reveal">
-          <div className="lp-proto-section">
-            <div className="lp-proto-label">— Live Integration —</div>
-            <div className="lp-proto-row">
-              <div className="lp-proto-item lp-proto-live">
-                <span className="lp-proto-name">Polymarket</span>
-                <span className="lp-proto-cat">Predictions</span>
-              </div>
-            </div>
+          <div className="lp-proto-header">
+            <span className="lp-proto-header-dot" />
+            protocol integrations
           </div>
-          <div className="lp-proto-section">
-            <div className="lp-proto-label">— Upcoming Integrations —</div>
-            <div className="lp-proto-row">
-              {[
-                { name: 'Hyperliquid', cat: 'Perps' },
-                { name: 'Avantis',     cat: 'Perps' },
-                { name: 'Uniswap',     cat: 'Liquidity' },
-                { name: 'Aerodrome',   cat: 'Liquidity' },
-              ].map((p) => (
-                <div className="lp-proto-item" key={p.name}>
-                  <span className="lp-proto-name">{p.name}</span>
-                  <span className="lp-proto-cat">{p.cat}</span>
-                </div>
-              ))}
+          <div className="lp-proto-log">
+            <div className="lp-proto-divider">— Live Integration —</div>
+            <div className="lp-proto-row lp-proto-live">
+              <span className="lp-proto-prefix">→</span>
+              <span className="lp-proto-name">Polymarket</span>
+              <span className="lp-proto-cat">Predictions</span>
+              <span className="lp-proto-status live">LIVE</span>
             </div>
+            <div className="lp-proto-divider">— Upcoming Integrations —</div>
+            {[
+              { name: 'Hyperliquid', cat: 'Perps' },
+              { name: 'Avantis',     cat: 'Perps' },
+              { name: 'Uniswap',     cat: 'Liquidity' },
+              { name: 'Aerodrome',   cat: 'Liquidity' },
+            ].map((p) => (
+              <div className="lp-proto-row" key={p.name}>
+                <span className="lp-proto-prefix">·</span>
+                <span className="lp-proto-name">{p.name}</span>
+                <span className="lp-proto-cat">{p.cat}</span>
+                <span className="lp-proto-status soon">SOON</span>
+              </div>
+            ))}
           </div>
         </div>
 

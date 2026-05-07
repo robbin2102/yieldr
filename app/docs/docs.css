@@ -54,7 +54,7 @@
 .docs-topnav {
   position: sticky; top: 0; z-index: 100;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 40px;
+  height: 54px; padding: 0 2.5rem;
   border-bottom: 1px solid var(--line);
   background: rgba(10,10,10,0.92);
   backdrop-filter: blur(12px);
@@ -112,22 +112,20 @@
 
 /* LAYOUT */
 .docs-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  max-width: 1400px;
-  margin: 0 auto;
   position: relative;
   z-index: 5;
 }
 
 /* SIDEBAR */
 .docs-aside {
-  position: sticky; top: 75px;
-  align-self: start;
-  height: calc(100vh - 75px);
+  position: fixed;
+  top: 54px; left: 0; bottom: 0;
+  width: 280px;
   overflow-y: auto;
   padding: 40px 28px 40px 40px;
   border-right: 1px solid var(--line);
+  background: var(--bg);
+  z-index: 50;
 }
 .docs-aside::-webkit-scrollbar { width: 4px; }
 .docs-aside::-webkit-scrollbar-thumb { background: var(--line-2); }
@@ -171,6 +169,7 @@
 
 /* MAIN */
 .docs-main {
+  margin-left: 280px;
   padding: 60px 60px 120px;
   min-width: 0;
   max-width: 880px;
@@ -557,29 +556,24 @@
 
 /* MOBILE */
 @media (max-width: 1024px) {
-  .docs-layout { grid-template-columns: 1fr; }
   .docs-nav-hamburger { display: inline-flex; }
+  /* On mobile, sidebar is hidden by default, slides in from left */
   .docs-aside {
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
+    top: 0; bottom: 0;
     width: 320px; max-width: 85vw;
     height: 100vh;
     z-index: 110;
-    background: var(--bg);
-    border-right: 1px solid var(--line);
-    border-bottom: none;
     padding: 70px 28px 40px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    align-self: auto;
   }
   .docs-aside.open { transform: translateX(0); }
   .docs-sb-close { display: inline-flex; }
-  .docs-main { padding: 40px 24px 80px; }
+  .docs-main { margin-left: 0; padding: 40px 24px 80px; }
   .docs-nav-r a:not(.docs-nav-cta):not(.docs-nav-hamburger) { display: none; }
 }
 @media (max-width: 640px) {
-  .docs-topnav { padding: 14px 20px; }
+  .docs-topnav { padding: 0 1.5rem; }
   .docs-nav-r { gap: 12px; }
   .docs-nav-cta { padding: 7px 12px; font-size: 11px; }
   .docs-page-h1 { font-size: 32px; }
