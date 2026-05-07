@@ -20,16 +20,16 @@ export default function HomePage() {
   }, []);
 
   const tickerItems = [
-    { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
-    { label: 'NBA VAULT', value: '+18.7% 7D', up: true },
-    { label: 'SOCCER VAULT', value: '+12.4% 7D', up: true },
-    { label: 'EARLY ACCESS', value: '$9M FDV', up: true },
-    { label: 'VAULTS LAUNCH', value: 'Q4 2026', up: true },
-    { label: 'YLDR TGE', value: 'TVL-gated', up: true },
+    { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D' },
+    { label: 'NBA VAULT',         value: '+18.7% 7D' },
+    { label: 'SOCCER VAULT',      value: '+12.4% 7D' },
+    { label: 'EARLY ACCESS',      value: '$9M FDV' },
+    { label: 'VAULTS LAUNCH',     value: 'Q4 2026' },
+    { label: 'YLDR TGE',          value: 'TVL-gated' },
   ];
 
   return (
-    <div className="lp-root">
+    <div className="lp-root" style={{ background: 'var(--bg)', minHeight: '100vh', overflowX: 'hidden' }}>
       <div className="lp-grid" />
       <div className="lp-scanline" />
 
@@ -54,10 +54,7 @@ export default function HomePage() {
           {[...tickerItems, ...tickerItems].map((item, i) => (
             <span key={i} style={{ display: 'contents' }}>
               <span className="lp-ti">
-                {item.label}
-                {item.value && (
-                  <span className={item.up ? 'up' : 'dn'}>{item.value}</span>
-                )}
+                {item.label} <span className="up">{item.value}</span>
               </span>
               <span className="lp-tsep">|</span>
             </span>
@@ -70,20 +67,18 @@ export default function HomePage() {
         {/* ── Hero ── */}
         <section className="lp-hero">
           <div className="lp-hero-glow" />
-          <div className="lp-hero-tag">Agentic Trading Vaults — Live on Polymarket</div>
+          <div className="lp-hero-tag">Live on Polymarket · $100K Project Capital</div>
           <h1>
             AI Agents Run Funds.<br />
             You <span className="ac">Earn</span>.
           </h1>
           <p className="lp-hero-sub">
-            The platform for AI-native hedge funds onchain. Agents find edge,
-            execute strategy, and compound returns — you deposit and collect yield.
+            The platform for <strong>AI-native hedge funds onchain.</strong> Top traders launch vaults.
+            Investors set targets. Agents handle everything in between — discovery, allocation, and operations.
           </p>
           <div className="lp-hero-ctas">
-            <Link href="/vaults" className="lp-btn-p">
-              Explore Live Vaults ↗
-            </Link>
-            <a href="#vaults" className="lp-btn-s">See the vaults ↓</a>
+            <Link href="/vaults" className="lp-btn-p">Explore Live Vaults ↗</Link>
+            <a href="#vision" className="lp-btn-s">See the Vision ↓</a>
           </div>
           <div className="lp-hero-stats">
             <div className="lp-stat">
@@ -91,7 +86,7 @@ export default function HomePage() {
               <div className="lp-stat-l">Project Capital</div>
             </div>
             <div className="lp-stat">
-              <div className="lp-stat-v">+41.8%</div>
+              <div className="lp-stat-v">+34.2%</div>
               <div className="lp-stat-l">Best Vault 30D</div>
             </div>
             <div className="lp-stat">
@@ -102,135 +97,104 @@ export default function HomePage() {
         </section>
 
         {/* ── Vision ── */}
-        <section className="lp-vision lp-reveal">
+        <section className="lp-section lp-reveal" id="vision">
           <div className="lp-sec-head">
-            <div className="lp-sec-tag">Vision</div>
-            <div className="lp-sec-title">A million AI-native hedge funds onchain</div>
+            <div className="lp-sec-tag">The Vision</div>
+            <div className="lp-sec-title">
+              A million AI-native hedge funds <span className="ac">onchain</span>.
+            </div>
             <div className="lp-sec-sub">
-              Every edge, every market, every strategy — run by agents, accessible to anyone.
+              For 70 years, the hedge fund has served ~10,000 managers. The structure is designed for
+              scarcity. <strong>We&apos;re rebuilding it as a primitive that scales to a million
+              operators</strong> — open to anyone with verified edge or capital to allocate.
             </div>
           </div>
           <div className="lp-vision-grid">
             <div className="lp-vision-card">
-              <div className="lp-vision-num">01 / Problem</div>
-              <div className="lp-vision-icon">⚡</div>
-              <div className="lp-vision-h">Hedge funds are closed to 99%</div>
-              <p className="lp-vision-p">
-                Sophisticated trading strategies, alpha-generating infrastructure, and proven fund managers
-                are locked behind $1M minimums and institutional gates. Retail never gets access.
-              </p>
+              <div className="lp-vision-num">01 / Scale</div>
+              <div className="lp-vision-h">A million funds</div>
+              <p className="lp-vision-p">Every trader with verified edge — anywhere in the world — running a fund. From Seoul to São Paulo to Lagos, agent-managed and onchain.</p>
             </div>
             <div className="lp-vision-card">
-              <div className="lp-vision-num">02 / Solution</div>
-              <div className="lp-vision-icon">🤖</div>
-              <div className="lp-vision-h">Agents democratise fund management</div>
-              <p className="lp-vision-p">
-                AI agents can run entire funds — scanning markets, executing positions, managing risk —
-                at near-zero cost. Every strategy becomes a vault. Every vault is open to anyone.
-              </p>
+              <div className="lp-vision-num">02 / Access</div>
+              <div className="lp-vision-h">A billion allocators</div>
+              <p className="lp-vision-p">Every investor with capital, allocating across global strategies through agents tuned to their risk-return goals. Continuously, autonomously.</p>
             </div>
             <div className="lp-vision-card">
-              <div className="lp-vision-num">03 / Platform</div>
-              <div className="lp-vision-icon">🏗️</div>
-              <div className="lp-vision-h">Infrastructure for AI fund managers</div>
-              <p className="lp-vision-p">
-                Yieldr provides the full stack: agent framework, vault contracts, execution layer,
-                and investor interface. Anyone can launch an AI fund. Anyone can invest in one.
-              </p>
+              <div className="lp-vision-num">03 / Market</div>
+              <div className="lp-vision-h">A new market</div>
+              <p className="lp-vision-p">Open, agent-operated, performance-driven, and onchain by default. Capital flows to verified edge — not to whoever has the best fund admin.</p>
             </div>
           </div>
           <div className="lp-vision-quote">
-            <p className="lp-vision-quote-text">
-              &ldquo;The future isn&apos;t a handful of hedge funds managing trillions —
-              it&apos;s <strong>millions of AI agents</strong>, each running a specialized fund,
-              each open to the world.&rdquo;
-            </p>
+            <span className="lp-vision-quote-mark">→</span>
+            <div className="lp-vision-quote-text">
+              The hedge fund served a few thousand managers.{' '}
+              <strong>The agent-managed fund will serve the world.</strong>
+            </div>
+            <Link href="/docs#vision" className="lp-vision-link">Full Vision ↗</Link>
           </div>
         </section>
 
         {/* ── Agent Stack ── */}
-        <section className="lp-stack lp-reveal">
+        <section className="lp-section lp-reveal" id="stack">
           <div className="lp-sec-head">
-            <div className="lp-sec-tag">Agent Stack</div>
-            <div className="lp-sec-title">Two sides of the same fund</div>
+            <div className="lp-sec-tag">The Mechanism</div>
+            <div className="lp-sec-title">
+              Agents that turn every top trader into a fund manager — and every investor into a{' '}
+              <span className="ac">pro allocator</span>.
+            </div>
             <div className="lp-sec-sub">
-              Agents operate on both sides — managing capital and serving investors —
-              so no human bottleneck exists in the loop.
+              Agents on both sides of the marketplace. Each side handles the work that capped funds at
+              thousands. <strong>With agents, the constraint dissolves.</strong>
             </div>
           </div>
           <div className="lp-stack-grid">
             <div className="lp-stack-card">
-              <div className="lp-stack-side trader">Trader Side</div>
-              <div className="lp-stack-h">Fund Management Agents</div>
-              <p className="lp-stack-p">
-                These agents run the fund — discovering edge, executing trades, and managing risk
-                24/7 without human intervention.
-              </p>
-              <div className="lp-stack-agents">
-                <div className="lp-stack-agent">
-                  <div className="lp-stack-agent-icon">🔍</div>
-                  <div>
-                    <div className="lp-stack-agent-name">Market Scanner</div>
-                    <div className="lp-stack-agent-desc">Continuously scans prediction markets for traders with statistically abnormal win rates and implied edge.</div>
-                  </div>
-                </div>
-                <div className="lp-stack-agent">
-                  <div className="lp-stack-agent-icon">⚡</div>
-                  <div>
-                    <div className="lp-stack-agent-name">Strategy Executor</div>
-                    <div className="lp-stack-agent-desc">Enters and exits positions at optimal price levels, mirrors high-conviction trades, manages slippage.</div>
-                  </div>
-                </div>
-                <div className="lp-stack-agent">
-                  <div className="lp-stack-agent-icon">🛡️</div>
-                  <div>
-                    <div className="lp-stack-agent-name">Risk Monitor</div>
-                    <div className="lp-stack-agent-desc">Enforces position limits, drawdown caps, and correlation constraints. Closes positions when thresholds are breached.</div>
-                  </div>
-                </div>
+              <div className="lp-stack-side">Trader-Side Agents</div>
+              <div className="lp-stack-h">
+                Grow the vault. <span className="ac">Manage investors.</span>
               </div>
+              <ul className="lp-stack-list">
+                <li>
+                  <span className="lp-stack-name">Matching</span>
+                  <span className="lp-stack-desc">Surfaces the vault to investors whose risk-return profiles fit. Capital finds the vault.</span>
+                </li>
+                <li>
+                  <span className="lp-stack-name">Community</span>
+                  <span className="lp-stack-desc">Manages investor queries and performance communication. Holds the relationship through drawdowns.</span>
+                </li>
+              </ul>
             </div>
             <div className="lp-stack-card">
-              <div className="lp-stack-side investor">Investor Side</div>
-              <div className="lp-stack-h">Capital Management Agents</div>
-              <p className="lp-stack-p">
-                These agents serve depositors — allocating capital, reporting performance, and
-                managing the investor experience end-to-end.
-              </p>
-              <div className="lp-stack-agents">
-                <div className="lp-stack-agent">
-                  <div className="lp-stack-agent-icon">💰</div>
-                  <div>
-                    <div className="lp-stack-agent-name">Vault Allocator</div>
-                    <div className="lp-stack-agent-desc">Routes depositor capital into the selected vault strategy, rebalances on schedule, optimises entry timing.</div>
-                  </div>
-                </div>
-                <div className="lp-stack-agent">
-                  <div className="lp-stack-agent-icon">📊</div>
-                  <div>
-                    <div className="lp-stack-agent-name">Performance Tracker</div>
-                    <div className="lp-stack-agent-desc">Calculates real-time NAV, generates transparent P&L reports, and surfaces attribution by strategy and market.</div>
-                  </div>
-                </div>
-                <div className="lp-stack-agent">
-                  <div className="lp-stack-agent-icon">🚪</div>
-                  <div>
-                    <div className="lp-stack-agent-name">Exit Optimizer</div>
-                    <div className="lp-stack-agent-desc">Processes withdrawal requests, times exits to minimise market impact, manages liquidity across positions.</div>
-                  </div>
-                </div>
+              <div className="lp-stack-side">Investor-Side Agents</div>
+              <div className="lp-stack-h">
+                Run the portfolio. <span className="ac">Hit the target.</span>
               </div>
+              <ul className="lp-stack-list">
+                <li>
+                  <span className="lp-stack-name">Allocation</span>
+                  <span className="lp-stack-desc">Continuously deploys, rotates, and rebalances across vaults that fit the investor&apos;s risk-return goals.</span>
+                </li>
+                <li>
+                  <span className="lp-stack-name">Monitoring</span>
+                  <span className="lp-stack-desc">Tracks every vault held. Flags edge decay, strategy drift, or risk creep before it shows up in PnL.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </section>
 
         {/* ── Live Vaults ── */}
-        <section className="lp-vp lp-reveal" id="vaults">
+        <section className="lp-section lp-reveal" id="vaults">
           <div className="lp-sec-head">
             <div className="lp-sec-tag">Live Vaults</div>
-            <div className="lp-sec-title">$100K of project capital. Trading live.</div>
+            <div className="lp-sec-title">
+              $100K of project capital. Trading <span className="ac">live</span>.
+            </div>
             <div className="lp-sec-sub">
-              Before we open to the public, we&apos;re proving it with our own money.
+              Before we open to the public, we&apos;re proving the agent stack with our own money.{' '}
+              <strong>Real performance, public onchain, fully transparent.</strong>
             </div>
           </div>
           <div className="lp-vp-grid">
@@ -270,9 +234,7 @@ export default function HomePage() {
               },
             ].map((vault) => (
               <Link href={vault.href} className="lp-vp-card" key={vault.href}>
-                <div className="lp-vp-tag">
-                  <span className="lp-vp-live" /> LIVE
-                </div>
+                <span className="lp-vp-tag"><span className="lp-vp-live" /> LIVE</span>
                 <div className="lp-vp-name">{vault.name}</div>
                 <p className="lp-vp-desc">{vault.desc}</p>
                 <div className="lp-vp-stats">
@@ -289,44 +251,33 @@ export default function HomePage() {
         </section>
 
         {/* ── Track Record ── */}
-        <section className="lp-proof lp-reveal">
+        <section className="lp-section lp-reveal">
           <div className="lp-sec-head">
             <div className="lp-sec-tag">Track Record</div>
-            <div className="lp-sec-title">Built different. Proven onchain.</div>
+            <div className="lp-sec-title">
+              Built different. <span className="ac">Proven onchain.</span>
+            </div>
           </div>
           <div className="lp-proof-grid">
             <div className="lp-proof-card">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="lp-proof-logo"
-                src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730551690x161831425309488800/_base-square%20%282%29.svg"
-                alt="Base"
-              />
+              <div className="lp-proof-icon">🏆</div>
               <div className="lp-proof-h">Base Batches 002 Winner</div>
-              <p className="lp-proof-p">
-                Selected from 900+ projects for building DeFi infrastructure on Base.
-              </p>
+              <p className="lp-proof-p">Selected from 900+ projects for building DeFi infrastructure on Base.</p>
             </div>
             <Link href="/build-in-public" className="lp-proof-card">
               <div className="lp-proof-icon">📊</div>
               <div className="lp-proof-h">Building in Public</div>
-              <p className="lp-proof-p">
-                Weekly build logs, real treasury data, real trading performance. No sanitisation.
-              </p>
+              <p className="lp-proof-p">Weekly build logs, real treasury data, real trading performance. No sanitisation.</p>
             </Link>
             <div className="lp-proof-card">
               <div className="lp-proof-icon">🔨</div>
               <div className="lp-proof-h">Actively Building</div>
-              <p className="lp-proof-p">
-                275+ commits, 60K+ lines of code shipped since October 2025.
-              </p>
+              <p className="lp-proof-p">275+ commits, 60K+ lines of code shipped since October 2025.</p>
             </div>
             <div className="lp-proof-card">
               <div className="lp-proof-icon">🛡️</div>
               <div className="lp-proof-h">Treasury Public</div>
-              <p className="lp-proof-p">
-                All funds in multisig. Monthly reporting. Full build-in-public transparency.
-              </p>
+              <p className="lp-proof-p">All funds in multisig. Monthly reporting. Full build-in-public transparency.</p>
             </div>
           </div>
         </section>
@@ -334,27 +285,24 @@ export default function HomePage() {
         {/* ── Protocols ── */}
         <div className="lp-protocols lp-reveal">
           <div className="lp-proto-section">
-            <div className="lp-proto-label">Live Integration</div>
+            <div className="lp-proto-label">— Live Integration —</div>
             <div className="lp-proto-row">
               <div className="lp-proto-item lp-proto-live">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="https://polymarket.com/images/brand/icon-blue.png" alt="Polymarket" />
                 <span className="lp-proto-name">Polymarket</span>
+                <span className="lp-proto-cat">Predictions</span>
               </div>
             </div>
           </div>
           <div className="lp-proto-section">
-            <div className="lp-proto-label">Upcoming Integrations</div>
+            <div className="lp-proto-label">— Upcoming Integrations —</div>
             <div className="lp-proto-row">
               {[
-                { src: 'https://nftevening.com/wp-content/uploads/2025/03/hyperliquid-logo.png', name: 'Hyperliquid', cat: 'Perps' },
-                { src: 'https://www.avantisfi.com/images/avantis-logo.svg', name: 'Avantis', cat: 'Perps' },
-                { src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxiwWCpFc4gAmdCBNs4jdn04D0FyVDS8NtmA&s', name: 'Uniswap', cat: 'Liquidity' },
-                { src: 'https://aerodrome.finance/brand-kit/AERO/symbol.png', name: 'Aerodrome', cat: 'Liquidity' },
+                { name: 'Hyperliquid', cat: 'Perps' },
+                { name: 'Avantis',     cat: 'Perps' },
+                { name: 'Uniswap',     cat: 'Liquidity' },
+                { name: 'Aerodrome',   cat: 'Liquidity' },
               ].map((p) => (
-                <div className="lp-proto-item lp-proto-upcoming" key={p.name}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt={p.name} />
+                <div className="lp-proto-item" key={p.name}>
                   <span className="lp-proto-name">{p.name}</span>
                   <span className="lp-proto-cat">{p.cat}</span>
                 </div>
@@ -363,18 +311,21 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ── Token / Early Access CTA ── */}
-        <section className="lp-token lp-reveal">
+        {/* ── Token / Early Access ── */}
+        <section className="lp-section lp-reveal">
           <div className="lp-token-box">
-            <div className="lp-token-h">Early Access: YLDR Token</div>
+            <div className="lp-token-tag">Early Access</div>
+            <div className="lp-token-h">
+              Become a YLDR holder. <span className="ac">Own the protocol</span> from day one.
+            </div>
             <p className="lp-token-sub">
-              Get vault access + YLDR allocation at the earliest stage. Choose your preferred
-              vault, and your capital starts earning from day one.
+              Every $100 contributed: $50 deposited into agent-managed vaults from day one + $50 in
+              YLDR token allocation. Withdraw vault deposits anytime, no lock-up.
             </p>
             <div className="lp-token-grid">
               <div className="lp-token-stat">
                 <div className="lp-token-stat-v">$9M</div>
-                <div className="lp-token-stat-l">FDV</div>
+                <div className="lp-token-stat-l">Genesis FDV</div>
               </div>
               <div className="lp-token-stat">
                 <div className="lp-token-stat-v">210M</div>
@@ -382,20 +333,20 @@ export default function HomePage() {
               </div>
               <div className="lp-token-stat">
                 <div className="lp-token-stat-v">41%</div>
-                <div className="lp-token-stat-l">Public Alloc.</div>
+                <div className="lp-token-stat-l">Public Allocation</div>
               </div>
               <div className="lp-token-stat">
-                <div className="lp-token-stat-v">TVL-gated</div>
-                <div className="lp-token-stat-l">TGE timing</div>
+                <div className="lp-token-stat-v">T+7d</div>
+                <div className="lp-token-stat-l">TGE from Target</div>
               </div>
             </div>
             <div className="lp-token-offer">
-              <strong>Early Access Offer:</strong> Every $100 deposited = $50 into a Base USDC
-              vault earning yield from day one (migrates to agent trading vaults at Q4 2026 launch)
-              + $50 in YLDR token allocation at $9M FDV
+              <strong>Tiered Early Access</strong> — 5 tiers from $9M → $34M FDV. $5M total target
+              ($2.5M to vaults + $2.5M to YLDR allocation). No VC pricing — retail and institutions
+              allocate at the same price, first come, first served.
             </div>
             <div className="lp-token-note">
-              ⚡ You choose which vault your capital enters on launch:{' '}
+              ⚡ You choose which vault your capital enters at launch:{' '}
               <em>NBA Edge</em>, <em>Soccer Alpha</em>, or <em>Geopolitics</em>
             </div>
             <a
@@ -414,19 +365,24 @@ export default function HomePage() {
       {/* ── Footer ── */}
       <footer className="lp-footer">
         <div className="lp-f-soc">
-          <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">
+          <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
             <svg viewBox="0 0 24 24">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
           </a>
-          <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer">
+          <a href="https://web.telegram.org/k/#@yieldrdotorg" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+            <svg viewBox="0 0 24 24">
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+            </svg>
+          </a>
+          <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
             <svg viewBox="0 0 24 24">
               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z" />
             </svg>
           </a>
         </div>
         <div className="lp-f-txt">
-          Yieldr © 2025. Built on Base.{' '}
+          Yieldr © 2026. Built on Base.{' '}
           <a href="https://yieldr.org">yieldr.org</a>
         </div>
       </footer>
