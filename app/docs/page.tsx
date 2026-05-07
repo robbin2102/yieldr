@@ -74,8 +74,8 @@ export default function DocsPage() {
         <div className="docs-nav-r">
           <Link href="/">Home</Link>
           <Link href="/vaults">Vaults</Link>
-          <Link href="/build-in-public">Build Log</Link>
           <Link href="/docs" className="active">Docs</Link>
+          <Link href="/build-in-public">Build Log</Link>
           <Link href="/vaults" className="docs-nav-cta">Enter Vaults ↗</Link>
           <button className="docs-nav-hamburger" onClick={openSidebar} aria-label="Open docs menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
