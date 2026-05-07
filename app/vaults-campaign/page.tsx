@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { VaultsPageInner } from '../vaults/page';
+import { VaultsPageInner } from '../vaults/VaultsInner';
 
 export default function VaultsCampaignPage() {
   return (
