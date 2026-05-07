@@ -82,10 +82,10 @@ export default function HomePage() {
             strategies. Deposit into a vault. Let the agent compound.
           </p>
           <div className="lp-hero-ctas">
-            <a href="https://t.me/+bKuyducVGqliNGVl" target="_blank" rel="noopener noreferrer" className="lp-btn-p">
-              Join Waitlist → Get Invited ↗
-            </a>
-            <a href="#how" className="lp-btn-s">How it works ↓</a>
+            <Link href="/vaults" className="lp-btn-p">
+              Explore Live Vaults ↗
+            </Link>
+            <a href="#vaults" className="lp-btn-s">See the vaults ↓</a>
           </div>
           <div className="lp-hero-stats">
             <div className="lp-stat">
@@ -101,54 +101,6 @@ export default function HomePage() {
               <div className="lp-stat-v">3</div>
               <div className="lp-stat-l">Live Vaults</div>
             </div>
-          </div>
-        </section>
-
-        {/* ── How It Works ── */}
-        <section className="lp-how lp-reveal" id="how">
-          <div className="lp-sec-head">
-            <div className="lp-sec-tag">How It Works</div>
-            <div className="lp-sec-title">Four steps to your onchain hedge fund</div>
-          </div>
-          <div className="lp-how-grid">
-            {[
-              {
-                step: '01',
-                icon: '🔍',
-                title: 'Discover Edge',
-                body: 'Use quant agents to research and backtest strategies from 30K+ traders and 10M+ trades indexed — or bring your own playbook.',
-                arrow: true,
-              },
-              {
-                step: '02',
-                icon: '⚡',
-                title: 'Automate Execution',
-                body: 'Define your trade execution strategy with risk parameters and watch the agent execute flawlessly, around the clock.',
-                arrow: true,
-              },
-              {
-                step: '03',
-                icon: '📈',
-                title: 'Deposit & Earn',
-                body: 'Returns compound in the vault. Track PnL, trades, and agent reasoning in real time. Withdraw anytime — no lock-ups.',
-                arrow: true,
-              },
-              {
-                step: '04',
-                icon: '🤝',
-                title: 'Invite & Earn More',
-                body: 'Invite depositors into your vault and set a 2/20 performance fee — earn like hedge funds, but entirely onchain.',
-                arrow: false,
-              },
-            ].map((card) => (
-              <div className="lp-how-card" key={card.step}>
-                <div className="lp-how-num">Step {card.step}</div>
-                <div className="lp-how-icon">{card.icon}</div>
-                <div className="lp-how-h">{card.title}</div>
-                <p className="lp-how-p">{card.body}</p>
-                {card.arrow && <span className="lp-how-arrow">→</span>}
-              </div>
-            ))}
           </div>
         </section>
 
