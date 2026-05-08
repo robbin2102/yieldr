@@ -545,7 +545,6 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
               {[
                 { lbl: 'Base Batches', val: '002 Winner ✓', green: true  },
                 { lbl: 'Treasury',     val: 'Multisig',      green: false },
-                { lbl: 'Telegram',     val: 'Coming Soon',   green: false },
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>
