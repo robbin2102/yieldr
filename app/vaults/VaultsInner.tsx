@@ -436,16 +436,13 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
                       <span className="vp-op-title"><span className="vp-op-dot" /> Open Positions</span>
                       <span className="vp-op-count">
                         {d.positions.length} active
-                        {d.stats.openPositionsValue > 0 && (
-                          <> · <span className="vp-op-val">{fmtUsd(d.stats.openPositionsValue)}</span> deployed</>
-                        )}
                       </span>
                     </div>
                     <div className="vp-op-cols">
                       <span>Market</span><span>Position</span><span>Size</span>
                       <span>Entry</span><span>Unrealised PnL</span><span>Opened</span>
                     </div>
-                    {d.positions.map((p: Position, i: number) => (
+                    {d.positions.slice(0, 10).map((p: Position, i: number) => (
                       <div className="vp-op-row" key={i}>
                         <span className="mkt">{p.market}</span>
                         <span className="yel">{p.side}</span>
@@ -455,10 +452,6 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
                         <span className="tim">{p.time}</span>
                       </div>
                     ))}
-                    <div className="vp-op-total">
-                      <span className="lbl">Total Unrealised</span>
-                      <span className={u.positive ? 'val-g' : 'val-r'}>{u.text}</span>
-                    </div>
                   </div>
 
                   {/* Closed Trades */}
