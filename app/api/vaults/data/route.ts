@@ -137,16 +137,11 @@ export async function GET() {
         const capitalDeployed30d = tf['30d']?.capitalDeployed ?? 0;
         const daysWonRate       = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
 
-        // All-time chart points from daily snapshots.
-        // Historical points are realized-PnL-only (snapshot definition).
-        // The last point is overridden with totalPnlAllTime (realized + unrealized)
-        // so the chart endpoint always matches the "All-Time PnL" stat metric.
+        // All-time chart points from daily snapshots
         const snaps = snapshots as unknown as { date: Date; cumulative_pnl_usdc: number }[];
-        const chartPoints = snaps.map((d, i) => ({
+        const chartPoints = snaps.map((d) => ({
           date: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          pnl:  i === snaps.length - 1
-            ? (statsDoc.totalPnlAllTime ?? d.cumulative_pnl_usdc ?? 0)
-            : (d.cumulative_pnl_usdc ?? 0),
+          pnl:  d.cumulative_pnl_usdc ?? 0,
         }));
 
         // Open positions filtered to sport-relevant markets
