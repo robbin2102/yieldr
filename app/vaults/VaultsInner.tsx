@@ -488,7 +488,7 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
             {/* Urgency bar */}
             <div className="vp-urgency-bar">
               <div className="vp-ub-text">
-                🔒 Early access is invite-only · Request your invite to get in
+                🔒 Early access · Invite only
               </div>
             </div>
 
