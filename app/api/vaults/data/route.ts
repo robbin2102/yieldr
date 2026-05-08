@@ -82,6 +82,7 @@ export async function GET() {
       vault_size_usdc: number;
       totalPnlAllTime: number;
       totalRealizedPnl: number;
+      totalUnrealizedPnl: number;
       win_rate: number;
       win_rate_sample_size: number;
 
