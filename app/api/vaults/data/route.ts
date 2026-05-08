@@ -133,7 +133,6 @@ export async function GET() {
         const capital = statsDoc.initial_capital_usdc || 1;
 
         const tf = statsDoc.timeframePnL ?? {};
-        const pnl30d            = tf['30d']?.pnl ?? 0;
         const capitalDeployed30d = tf['30d']?.capitalDeployed ?? 0;
         const daysWonRate       = parseFloat((statsDoc.tradingConsistency?.daysWonRate ?? 0).toFixed(1));
 
@@ -156,7 +155,7 @@ export async function GET() {
 
         const stats = {
           totalPnl:           statsDoc.totalPnlAllTime ?? 0,
-          pnl30d,
+          unrealizedPnl:      statsDoc.totalUnrealizedPnl ?? 0,
           capitalDeployed30d,
           daysWonRate,
           openPositionsValue,

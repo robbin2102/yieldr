@@ -19,7 +19,7 @@ type Position   = { market: string; side: string; size: string; entry: string; p
 type Trade      = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; pnl30d: number; capitalDeployed30d: number; openPositionsValue: number;
+    totalPnl: number; unrealizedPnl: number; capitalDeployed30d: number; openPositionsValue: number;
     winRate: number; daysWonRate: number; trades: number;
   };
   chartPoints: ChartPoint[];
@@ -59,7 +59,7 @@ function buildFallbackState(): Record<VaultId, VaultState> {
     out[id] = {
       stats: {
         totalPnl:           m.fallback.totalPnl,
-        pnl30d:             m.fallback.pnl30d,
+        unrealizedPnl:      m.fallback.unrealizedPnl,
         capitalDeployed30d: m.fallback.capitalDeployed30d,
         openPositionsValue: 0,
         winRate:            m.fallback.winRate,
@@ -121,7 +121,7 @@ function VaultChart({ points, gradId }: { points: ChartPoint[]; gradId: string }
 
   return (
     <>
-      <div className="vp-chart-label">Cumulative PnL — All Time</div>
+      <div className="vp-chart-label">Realized PnL — All Time</div>
       <div
         ref={lineRef}
         className="vp-chart-line"
@@ -399,10 +399,10 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
                       <div className="vp-vd-stat-l">Days Winning</div>
                     </div>
                     <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.pnl30d >= 0 ? 'green' : 'red'}`}>
-                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.pnl30d)}
+                      <div className={`vp-vd-stat-v ${d.stats.unrealizedPnl >= 0 ? 'green' : 'red'}`}>
+                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.unrealizedPnl)}
                       </div>
-                      <div className="vp-vd-stat-l">30D PnL</div>
+                      <div className="vp-vd-stat-l">Unrealized PnL</div>
                     </div>
                   </div>
 

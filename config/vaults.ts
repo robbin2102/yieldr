@@ -7,7 +7,7 @@ export const VAULT_META: Record<VaultId, {
   description: string;
   fallback: {
     totalPnl:          number;
-    pnl30d:            number;
+    unrealizedPnl:     number;
     capitalDeployed30d: number;
     winRate:           number;
     daysWonRate:       number;
@@ -22,7 +22,7 @@ export const VAULT_META: Record<VaultId, {
       'Human-curated thesis on geopolitical events. Agents scan prediction markets for insider wallets with abnormal win rates vs implied probability, then execute positions within trader-defined risk parameters.',
     fallback: {
       totalPnl:          24768,
-      pnl30d:            2303,
+      unrealizedPnl:            2303,
       capitalDeployed30d: 14847,
       winRate:           82,
       daysWonRate:       61.3,
@@ -37,7 +37,7 @@ export const VAULT_META: Record<VaultId, {
       'Trader-designed strategy: agents discover and rank top NBA prediction market traders by statistical edge, profile their betting patterns, and execute positions at the highest-conviction price levels within human-set rules.',
     fallback: {
       totalPnl:          4190,
-      pnl30d:            980,
+      unrealizedPnl:            980,
       capitalDeployed30d: 7200,
       winRate:           74,
       daysWonRate:       58.0,
@@ -52,7 +52,7 @@ export const VAULT_META: Record<VaultId, {
       'Agents scan NHL prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
     fallback: {
       totalPnl:          2312,
-      pnl30d:            420,
+      unrealizedPnl:            420,
       capitalDeployed30d: 4800,
       winRate:           69,
       daysWonRate:       55.0,
@@ -67,7 +67,7 @@ export const VAULT_META: Record<VaultId, {
       'Agents scan e-sports prediction markets for traders with exceptional win rates on CS:GO, Valorant, and League of Legends markets. Human trader sets risk rules; agents execute near top-trader price levels with automated controls.',
     fallback: {
       totalPnl:          0,
-      pnl30d:            0,
+      unrealizedPnl:            0,
       capitalDeployed30d: 0,
       winRate:           0,
       daysWonRate:       0,
@@ -82,7 +82,7 @@ export const VAULT_META: Record<VaultId, {
       'Agents scan soccer prediction markets for traders with statistically impossible edge (p-score < 0.0001). Human trader validates patterns, sets entry rules. Agents execute positions near top-trader price levels with automated risk controls.',
     fallback: {
       totalPnl:          0,
-      pnl30d:            0,
+      unrealizedPnl:            0,
       capitalDeployed30d: 0,
       winRate:           0,
       daysWonRate:       0,
