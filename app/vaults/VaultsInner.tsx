@@ -322,7 +322,7 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
         <div className="vp-page-head">
           <div className="vp-ph-left">
             <h1>Agent Trading Vaults</h1>
-            <p>$100K of project capital trading live across 3 strategies. Agents find edge, execute trades, compound returns.</p>
+            <p>$100K of project capital trading live across 3 strategies in test wallets run by agents.</p>
           </div>
           <div className="vp-ph-right">
             <div className="vp-ph-stat">
