@@ -419,8 +419,8 @@ export default function DocsPage() {
                   <span className="rm-status">◐ Now</span>
                 </div>
                 <div>
-                  <div className="rm-h">Capital Raise & TGE</div>
-                  <p className="rm-p">Raising through tiered Early Access from <strong>$9M FDV to $34M FDV</strong>, averaging ~$18M FDV across tiers. 50% of contributions deposited into agent-managed vaults, 50% allocated as YLDR token. <strong>TGE fires T+7 days</strong> from raise target completion — YLDR distributed to wallets.</p>
+                  <div className="rm-h">Capital Raise</div>
+                  <p className="rm-p">Raising through tiered Early Access from <strong>$9M FDV</strong>. Tiers 1–2 open June–July 2026 via multi-curve pricing auction (bankr + Doppler, Aerodrome Ignition, or Uniswap CCA — mechanism TBD). Subsequent tiers priced at 5× the prior tier's FDV, opening annually from 2027.</p>
                 </div>
               </div>
 
@@ -478,12 +478,8 @@ export default function DocsPage() {
                 <div className="token-stat-l">Network</div>
               </div>
               <div className="token-stat">
-                <div className="token-stat-v">$5M</div>
-                <div className="token-stat-l">Raise Target</div>
-              </div>
-              <div className="token-stat">
-                <div className="token-stat-v">T+7d</div>
-                <div className="token-stat-l">TGE from Target</div>
+                <div className="token-stat-v">Jun 2026</div>
+                <div className="token-stat-l">Tiers 1–2 Open</div>
               </div>
             </div>
 
@@ -534,7 +530,7 @@ export default function DocsPage() {
                   <td><strong>Liquidity Provision</strong></td>
                   <td className="num">5%</td>
                   <td className="num">10,500,000</td>
-                  <td>DEX liquidity at TGE + CEX reserve</td>
+                  <td>DEX liquidity + CEX reserve</td>
                 </tr>
                 <tr className="row-total">
                   <td>TOTAL</td>
@@ -545,8 +541,8 @@ export default function DocsPage() {
               </tbody>
             </table>
 
-            <h3>Sale Tiers — First Raise</h3>
-            <p>The first raise opens <strong>13.87% of supply</strong> (~29.1M YLDR) across five tiers from $9M → $34M FDV. Allocations are first-come, first-served. Tier locks at the price of contribution.</p>
+            <h3>Sale Tiers — Multi-Phase Raise</h3>
+            <p>Tiers 1–2 close via <strong>multi-curve pricing auction</strong> in June–July 2026 — mechanism TBD between bankr + Doppler Protocol, Aerodrome Ignition, and Uniswap CCA. Each subsequent tier is priced at <strong>5× the prior tier&apos;s FDV</strong> and opens annually as the protocol scales.</p>
 
             <table className="dtable">
               <thead>
@@ -556,6 +552,7 @@ export default function DocsPage() {
                   <th className="num">Price</th>
                   <th className="num">Tokens</th>
                   <th className="num">Tier Raise</th>
+                  <th className="num">Timeline</th>
                 </tr>
               </thead>
               <tbody>
@@ -565,6 +562,7 @@ export default function DocsPage() {
                   <td className="num">$0.0429</td>
                   <td className="num">5,833,333</td>
                   <td className="num green">$250,000</td>
+                  <td className="num">Jun 2026</td>
                 </tr>
                 <tr>
                   <td><span className="tier-pill">PRE-SEED</span></td>
@@ -572,79 +570,40 @@ export default function DocsPage() {
                   <td className="num">$0.0571</td>
                   <td className="num">7,875,000</td>
                   <td className="num green">$450,000</td>
+                  <td className="num">Jul 2026</td>
                 </tr>
                 <tr>
                   <td><span className="tier-pill">SEED</span></td>
-                  <td className="num">$18M</td>
-                  <td className="num">$0.0857</td>
-                  <td className="num">5,833,333</td>
-                  <td className="num green">$500,000</td>
+                  <td className="num">$60M</td>
+                  <td className="num">$0.2857</td>
+                  <td className="num">TBD</td>
+                  <td className="num">TBD</td>
+                  <td className="num">2027</td>
                 </tr>
                 <tr>
                   <td><span className="tier-pill">GROWTH</span></td>
-                  <td className="num">$25M</td>
-                  <td className="num">$0.1190</td>
-                  <td className="num">5,880,000</td>
-                  <td className="num green">$700,000</td>
+                  <td className="num">$300M</td>
+                  <td className="num">$1.4286</td>
+                  <td className="num">TBD</td>
+                  <td className="num">TBD</td>
+                  <td className="num">2028</td>
                 </tr>
                 <tr>
                   <td><span className="tier-pill">SCALE</span></td>
-                  <td className="num">$34M</td>
-                  <td className="num">$0.1619</td>
-                  <td className="num">3,705,882</td>
-                  <td className="num green">$600,000</td>
-                </tr>
-                <tr className="row-total">
-                  <td>TOTAL</td>
-                  <td className="num">~$18M avg</td>
-                  <td className="num">—</td>
-                  <td className="num">29,127,549</td>
-                  <td className="num">$2,500,000</td>
+                  <td className="num">$1.5B</td>
+                  <td className="num">$7.1429</td>
+                  <td className="num">TBD</td>
+                  <td className="num">TBD</td>
+                  <td className="num">2029+</td>
                 </tr>
               </tbody>
             </table>
 
-            <h3>Use of Funds</h3>
-            <p>Every $100 raised splits as follows:</p>
-
-            <div className="uof-bars">
-              <div className="uof-row">
-                <div className="uof-bar-wrap">
-                  <div className="uof-bar-fill" style={{ width: '50%' }} />
-                  <div className="uof-bar-label">Vault Deposits</div>
-                </div>
-                <div className="uof-bar-pct">$50</div>
-              </div>
-              <div className="uof-row">
-                <div className="uof-bar-wrap">
-                  <div className="uof-bar-fill" style={{ width: '40%' }} />
-                  <div className="uof-bar-label">Protocol Dev &amp; GTM</div>
-                </div>
-                <div className="uof-bar-pct">$40</div>
-              </div>
-              <div className="uof-row">
-                <div className="uof-bar-wrap">
-                  <div className="uof-bar-fill" style={{ width: '10%' }} />
-                  <div className="uof-bar-label">DEX Liquidity</div>
-                </div>
-                <div className="uof-bar-pct">$10</div>
-              </div>
-            </div>
-
-            <p style={{ fontSize: 14, color: 'var(--text-dim)' }}>
-              <strong style={{ color: 'var(--text)' }}>Vault Deposits.</strong> Goes into agent-managed vaults. Free to deposit or withdraw anytime, no lock-up.
-              <br /><strong style={{ color: 'var(--text)' }}>Protocol Dev &amp; GTM.</strong> Engineering, agent infrastructure, and go-to-market.
-              <br /><strong style={{ color: 'var(--text)' }}>DEX Liquidity.</strong> Seeds YLDR liquidity at TGE.
-            </p>
-
             <h3>How to Participate</h3>
             <div className="info-box">
               <div className="info-box-h">// Invite-only Early Access</div>
-              <p className="info-box-p">The raise is invite-only. Every depositor becomes a YLDR holder and protocol owner from day one. Slots open progressively — the matching agent surfaces invites as they become available.</p>
+              <p className="info-box-p">The raise is invite-only. Slots open progressively via Tiers 1–2 in June–July 2026 — the matching agent surfaces invites as they become available.</p>
             </div>
-
-            <h3>TGE</h3>
-            <p>When the $5M raise target is met, TGE fires <strong>T+7 days</strong>. YLDR is distributed to contributor wallets and DEX liquidity goes live. <strong>Public allocation has no vesting</strong> — full distribution at TGE. Team and strategic allocations follow 12-month cliff + 36-month monthly vesting.</p>
 
             <h3>Utility</h3>
             <p>YLDR is the protocol token. Specific utility mechanics will be defined as the platform evolves. Holders are protocol owners from day one — utility expands with the platform.</p>

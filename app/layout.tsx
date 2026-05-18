@@ -5,7 +5,7 @@ import { ProvidersLayout } from './ProvidersLayout';
 
 export const metadata: Metadata = {
   title: 'Yieldr — Agentic Trading Vaults',
-  description: 'AI agents trade prediction markets 24/7. Deposit into a vault and let the agent compound your returns. Live on Polymarket.',
+  description: 'AI agents trade prediction markets 24/7. $100K live across NBA, Soccer, and Geopolitics vaults on Polymarket.',
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },

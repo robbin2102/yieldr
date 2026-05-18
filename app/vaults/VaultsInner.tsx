@@ -497,25 +497,11 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
               <div className="vp-cta-box" id="buy">
                 <div className="vp-cta-h">Get Early Access</div>
                 <div className="vp-cta-sub">
-                  Every $100 deposited = $50 into a Base USDC vault (migrates to your chosen agent trading vault at Q4 2026 launch) + $50 in YLDR token allocation at $9M FDV.
+                  Become a YLDR holder and protocol owner from day one. Tiers 1–2 open June–July 2026 via multi-curve pricing auction.
                 </div>
-                <div className="vp-cta-split">
-                  <div className="vp-cta-split-item">
-                    <div className="vp-cta-split-v">50%</div>
-                    <div className="vp-cta-split-l">USDC Vault</div>
-                  </div>
-                  <div className="vp-cta-split-item">
-                    <div className="vp-cta-split-v">50%</div>
-                    <div className="vp-cta-split-l">YLDR @ $9M FDV</div>
-                  </div>
-                </div>
-                <div className="vp-cta-note">⚡ USDC earning from day 1 → moves to agent vault at Q4 launch</div>
                 <Link href="/buy" className="vp-cta-btn">
                   Buy YLDR — Early Access ↗
                 </Link>
-                <div className="vp-cta-fine">
-                  Min $100 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE
-                </div>
               </div>
             ) : (
               <div className="vp-cta-box" id="buy">
@@ -526,9 +512,6 @@ export function VaultsPageInner({ isCampaign = false }: { isCampaign?: boolean }
                 <a href={TELEGRAM_INVITE} target="_blank" rel="noopener noreferrer" className="vp-cta-btn">
                   Join Telegram → Get Invited ↗
                 </a>
-                <div className="vp-cta-fine">
-                  Invites open early June 2026 · TGE timing tied to TVL milestones
-                </div>
               </div>
             )}
 

@@ -25,7 +25,6 @@ export default function HomePage() {
     { label: 'SOCCER VAULT',      value: '+12.4% 7D' },
     { label: 'EARLY ACCESS',      value: '$9M FDV' },
     { label: 'VAULTS LAUNCH',     value: 'Q4 2026' },
-    { label: 'YLDR TGE',          value: 'TVL-gated' },
   ];
 
   return (
@@ -321,8 +320,7 @@ export default function HomePage() {
               Become a YLDR holder. <span className="ac">Own the protocol</span> from day one.
             </div>
             <p className="lp-token-sub">
-              Every $100 contributed: $50 deposited into agent-managed vaults from day one + $50 in
-              YLDR token allocation. Withdraw vault deposits anytime, no lock-up.
+              Become a YLDR holder and protocol owner from day one. Invite-only early access — tiers open progressively via multi-curve pricing auction.
             </p>
             <div className="lp-token-grid">
               <div className="lp-token-stat">
@@ -337,15 +335,9 @@ export default function HomePage() {
                 <div className="lp-token-stat-v">41%</div>
                 <div className="lp-token-stat-l">Public Allocation</div>
               </div>
-              <div className="lp-token-stat">
-                <div className="lp-token-stat-v">T+7d</div>
-                <div className="lp-token-stat-l">TGE from Target</div>
-              </div>
             </div>
             <div className="lp-token-offer">
-              <strong>Tiered Early Access</strong> — 5 tiers from $9M → $34M FDV. $5M total target
-              ($2.5M to vaults + $2.5M to YLDR allocation). No VC pricing — retail and institutions
-              allocate at the same price, first come, first served.
+              <strong>Tiered Early Access</strong> — 5 tiers from $9M → $1.5B FDV. Tiers 1–2 open June–July 2026 via multi-curve pricing auction. No VC pricing — retail and institutions allocate at the same price, first come, first served.
             </div>
             <div className="lp-token-note">
               ⚡ You choose which vault your capital enters at launch:{' '}

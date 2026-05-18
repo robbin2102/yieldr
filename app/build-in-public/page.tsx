@@ -318,7 +318,7 @@ export default function BuildInPublicPage() {
             <div className="rm-card">
               <div className="rm-status active">&#9679; Active</div>
               <div className="rm-h">YLDR Early Access</div>
-              <div className="rm-p">Token sale at $9M FDV. 50% USDC vault (4.5% APY), 50% YLDR allocation. Burn-for-access utility model. TGE Q1 2027.</div>
+              <div className="rm-p">Token sale at $9M FDV. Tiers 1–2 open June–July 2026 via multi-curve pricing auction. No VC pricing — retail and institutions allocate at the same price.</div>
             </div>
             <div className="rm-card">
               <div className="rm-status planned">&#9675; Planned</div>
