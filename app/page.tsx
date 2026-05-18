@@ -335,6 +335,10 @@ export default function HomePage() {
                 <div className="lp-token-stat-v">41%</div>
                 <div className="lp-token-stat-l">Public Allocation</div>
               </div>
+              <div className="lp-token-stat">
+                <div className="lp-token-stat-v">Jun 2026</div>
+                <div className="lp-token-stat-l">Tiers Open</div>
+              </div>
             </div>
             <div className="lp-token-offer">
               <strong>Tiered Early Access</strong> — 5 tiers from $9M → $1.5B FDV. Tiers 1–2 open June–July 2026 via multi-curve pricing auction. No VC pricing — retail and institutions allocate at the same price, first come, first served.

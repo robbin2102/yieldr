@@ -481,6 +481,10 @@ export default function DocsPage() {
                 <div className="token-stat-v">Jun 2026</div>
                 <div className="token-stat-l">Tiers 1–2 Open</div>
               </div>
+              <div className="token-stat">
+                <div className="token-stat-v">$9M</div>
+                <div className="token-stat-l">Genesis FDV</div>
+              </div>
             </div>
 
             <h3>Allocation</h3>
