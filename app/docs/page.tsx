@@ -546,7 +546,7 @@ export default function DocsPage() {
             </table>
 
             <h3>Sale Tiers — Multi-Phase Raise</h3>
-            <p>Tiers 1–2 close via <strong>multi-curve pricing auction</strong> in June–July 2026 — mechanism TBD between bankr + Doppler Protocol, Aerodrome Ignition, and Uniswap CCA. Each subsequent tier is priced at <strong>5× the prior tier&apos;s FDV</strong> and opens annually as the protocol scales.</p>
+            <p>Tiers 1–2 close via <strong>multi-curve pricing auction</strong> in June–July 2026 — bootstrapping pools on Base via Aerodrome Ignition or Uniswap CCA (mechanism TBD). Each subsequent tier is priced at <strong>5× the prior tier&apos;s FDV</strong> and opens annually as the protocol scales.</p>
 
             <table className="dtable">
               <thead>
