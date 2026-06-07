@@ -479,138 +479,24 @@ export default function DocsPage() {
               </div>
               <div className="token-stat">
                 <div className="token-stat-v">Jun 2026</div>
-                <div className="token-stat-l">Tiers 1–2 Open</div>
+                <div className="token-stat-l">Fair Launch TGE</div>
               </div>
               <div className="token-stat">
-                <div className="token-stat-v">$9M</div>
-                <div className="token-stat-l">Genesis FDV</div>
+                <div className="token-stat-v">$700K</div>
+                <div className="token-stat-l">Raise Target</div>
               </div>
             </div>
 
-            <h3>Allocation</h3>
-            <p>41% of total supply goes to the community. Team has 12-month cliff + 36-month monthly vesting.</p>
-
-            <table className="dtable">
-              <thead>
-                <tr>
-                  <th>Bucket</th>
-                  <th className="num">% Supply</th>
-                  <th className="num">Tokens</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Public (Community)</strong></td>
-                  <td className="num green">41%</td>
-                  <td className="num">86,100,000</td>
-                  <td>Tiered Early Access. No VC pricing.</td>
-                </tr>
-                <tr>
-                  <td><strong>Team &amp; Contributors</strong></td>
-                  <td className="num">20%</td>
-                  <td className="num">42,000,000</td>
-                  <td>12mo cliff + 36mo monthly vesting</td>
-                </tr>
-                <tr>
-                  <td><strong>Treasury &amp; Operations</strong></td>
-                  <td className="num">15%</td>
-                  <td className="num">31,500,000</td>
-                  <td>Multi-year runway: dev, agents, ops</td>
-                </tr>
-                <tr>
-                  <td><strong>Strategic Reserve</strong></td>
-                  <td className="num">10%</td>
-                  <td className="num">21,000,000</td>
-                  <td>Optional institutional partners (SAFT)</td>
-                </tr>
-                <tr>
-                  <td><strong>Ecosystem Incentives</strong></td>
-                  <td className="num">9%</td>
-                  <td className="num">18,900,000</td>
-                  <td>Trader/investor rewards, airdrops</td>
-                </tr>
-                <tr>
-                  <td><strong>Liquidity Provision</strong></td>
-                  <td className="num">5%</td>
-                  <td className="num">10,500,000</td>
-                  <td>DEX liquidity + CEX reserve</td>
-                </tr>
-                <tr className="row-total">
-                  <td>TOTAL</td>
-                  <td className="num">100%</td>
-                  <td className="num">210,000,000</td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h3>Sale Tiers — Multi-Phase Raise</h3>
-            <p>Tiers 1–2 close via <strong>multi-curve pricing auction</strong> in June–July 2026 — bootstrapping pools on Base via Aerodrome Ignition or Uniswap CCA (mechanism TBD). Each subsequent tier is priced at <strong>5× the prior tier&apos;s FDV</strong> and opens annually as the protocol scales.</p>
-
-            <table className="dtable">
-              <thead>
-                <tr>
-                  <th>Tier</th>
-                  <th className="num">FDV</th>
-                  <th className="num">Price</th>
-                  <th className="num">Tokens</th>
-                  <th className="num">Tier Raise</th>
-                  <th className="num">Timeline</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span className="tier-pill">GENESIS</span></td>
-                  <td className="num">$9M</td>
-                  <td className="num">$0.0429</td>
-                  <td className="num">5,833,333</td>
-                  <td className="num green">$250,000</td>
-                  <td className="num">Jun 2026</td>
-                </tr>
-                <tr>
-                  <td><span className="tier-pill">PRE-SEED</span></td>
-                  <td className="num">$12M</td>
-                  <td className="num">$0.0571</td>
-                  <td className="num">7,875,000</td>
-                  <td className="num green">$450,000</td>
-                  <td className="num">Jul 2026</td>
-                </tr>
-                <tr>
-                  <td><span className="tier-pill">SEED</span></td>
-                  <td className="num">$60M</td>
-                  <td className="num">$0.2857</td>
-                  <td className="num">TBD</td>
-                  <td className="num">TBD</td>
-                  <td className="num">2027</td>
-                </tr>
-                <tr>
-                  <td><span className="tier-pill">GROWTH</span></td>
-                  <td className="num">$300M</td>
-                  <td className="num">$1.4286</td>
-                  <td className="num">TBD</td>
-                  <td className="num">TBD</td>
-                  <td className="num">2028</td>
-                </tr>
-                <tr>
-                  <td><span className="tier-pill">SCALE</span></td>
-                  <td className="num">$1.5B</td>
-                  <td className="num">$7.1429</td>
-                  <td className="num">TBD</td>
-                  <td className="num">TBD</td>
-                  <td className="num">2029+</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h3>How to Participate</h3>
-            <div className="info-box">
-              <div className="info-box-h">// Invite-only Early Access</div>
-              <p className="info-box-p">The raise is invite-only. Slots open progressively via Tiers 1–2 in June–July 2026 — the matching agent surfaces invites as they become available.</p>
-            </div>
+            <h3>Fair Launch</h3>
+            <p>YLDR will launch via a <strong>fair launch TGE on Base</strong> in June–July 2026. We are exploring Base ecosystem launchpads and raise mechanics to close a <strong>$700K USDC raise target</strong> — earmarked for product engineering and agent inference costs.</p>
+            <p style={{ marginTop: '0.75rem' }}>No VC allocations. Team vesting TBD. Retail and institutions participate at the same price, first come, first served.</p>
 
             <h3>Utility</h3>
-            <p>YLDR is the protocol token. Specific utility mechanics will be defined as the platform evolves. Holders are protocol owners from day one — utility expands with the platform.</p>
+            <ul style={{ paddingLeft: '1.2rem', lineHeight: 2, fontSize: 14, color: 'var(--text-dim)' }}>
+              <li>YLDR can be used to purchase agent inference for quant, trading and investing agents on the protocol.</li>
+              <li>Holding and staking YLDR enables fee discounts for agents trading and investing.</li>
+              <li>More utilities to be defined as the platform evolves into an agentic onchain fund management platform.</li>
+            </ul>
           </section>
 
           {/* CONNECT */}
