@@ -474,7 +474,7 @@ export default function DocsPage() {
                 <div className="token-stat-l">Network</div>
               </div>
               <div className="token-stat">
-                <div className="token-stat-v">Jun–Jul 2026</div>
+                <div className="token-stat-v">Jul 2026</div>
                 <div className="token-stat-l">Fair Launch TGE</div>
               </div>
               <div className="token-stat">
