@@ -180,7 +180,7 @@ export default function ExplorerPage() {
           <span className="ex-nav-brand">YIELDR</span>
         </Link>
         <div className="ex-nav-r">
-          <NavLinks cta={{ href: '/buy', label: 'Early Access ↗' }} />
+          <NavLinks />
         </div>
       </nav>
 
