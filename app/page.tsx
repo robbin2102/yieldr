@@ -171,40 +171,39 @@ export default function HomePage() {
               <div className="lp-sec-tag">The Problem</div>
               <div className="lp-sec-title">Great traders should run onchain funds.<br /><span className="ac">Most never do.</span></div>
               <p className="lp-sec-sub">
-                Every trade, every wallet, every PnL is verifiable. The edge is provable. What&apos;s
-                missing is the operational layer to turn it into a fund.
+                Your wallet is public. Your PnL is onchain. Your edge is more verifiable than
+                anything in traditional finance. But you&apos;re still only trading your own capital.
               </p>
             </div>
             <div className="lp-pd">
               <div className="lp-pd-col">
                 <div className="lp-pd-header without">Without Yieldr</div>
                 <ul className="lp-pd-items">
-                  <li><span className="lp-pd-x">×</span>Package your strategy into a readable pitch</li>
-                  <li><span className="lp-pd-x">×</span>Set and maintain risk limits manually</li>
-                  <li><span className="lp-pd-x">×</span>Attract depositors without tools</li>
-                  <li><span className="lp-pd-x">×</span>Answer queries through volatile periods</li>
-                  <li><span className="lp-pd-x">×</span>Prove your edge is repeatable, not lucky</li>
-                  <li><span className="lp-pd-x">×</span>Handle all of this instead of trading</li>
+                  <li><span className="lp-pd-x">×</span>Nobody outside your circle knows your track record exists</li>
+                  <li><span className="lp-pd-x">×</span>Depositors have no way to find you or trust your edge</li>
+                  <li><span className="lp-pd-x">×</span>You have no way to match with the right capital</li>
+                  <li><span className="lp-pd-x">×</span>Every depositor question pulls you out of your positions</li>
+                  <li><span className="lp-pd-x">×</span>Drawdowns create noise you have to manage manually</li>
+                  <li><span className="lp-pd-x">×</span>You scale by risking more of your own money, not theirs</li>
                 </ul>
               </div>
               <div className="lp-pd-wall">
                 <div className="lp-pd-wall-label">The wall</div>
-                <div className="lp-pd-wall-item">No infrastructure</div>
-                <div className="lp-pd-wall-item">No ops layer</div>
-                <div className="lp-pd-wall-item">No depositor network</div>
-                <div className="lp-pd-wall-item">No reporting</div>
+                <div className="lp-pd-wall-item">No discovery layer</div>
+                <div className="lp-pd-wall-item">No depositor matching</div>
+                <div className="lp-pd-wall-item">No comms when markets move</div>
+                <div className="lp-pd-wall-item">No way to scale edge without scaling personal risk</div>
                 <div className="lp-pd-wall-arrow">↓</div>
                 <div className="lp-pd-badge">Yieldr removes the wall</div>
               </div>
               <div className="lp-pd-col">
                 <div className="lp-pd-header with">With Yieldr</div>
                 <ul className="lp-pd-items">
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Quant Agent analyzes your wallet history automatically</span></li>
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Vault Designer sets risk limits from your edge profile</span></li>
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Matching Agent surfaces your vault to right depositors</span></li>
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Comms Agent handles updates and depositor queries</span></li>
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Monitoring Agent tracks edge decay and drift</span></li>
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with" style={{ color: 'var(--g)', fontWeight: 600 }}>You trade. Agents operate the rest.</span></li>
+                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Quant Agent identifies your edge from your wallet history</span></li>
+                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Matching Agent surfaces your vault to the right depositors</span></li>
+                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Comms Agent handles depositor queries through volatile periods</span></li>
+                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Monitoring Agent tracks edge decay before it shows in PnL</span></li>
+                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with" style={{ color: 'var(--g)', fontWeight: 600 }}>You keep trading. Agents handle the rest.</span></li>
                 </ul>
               </div>
             </div>
