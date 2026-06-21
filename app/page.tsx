@@ -103,7 +103,9 @@ export default function HomePage() {
           </svg>
           <span className="lp-nav-brand">YIELDR</span>
         </Link>
-        <NavLinks cta={{ href: '/vaults', label: 'Explore Vaults ↗' }} />
+        <div className="lp-nav-r">
+          <NavLinks cta={{ href: '/vaults', label: 'Explore Vaults ↗' }} />
+        </div>
       </nav>
 
       {/* ── Ticker ── */}
