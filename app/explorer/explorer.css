@@ -65,9 +65,11 @@
 .ex-vc {
   background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r);
   padding: 16px; display: flex; flex-direction: column; gap: 10px;
-  transition: border-color .15s;
+  transition: border-color .15s; text-decoration: none; color: inherit;
 }
 .ex-vc:hover { border-color: var(--line-3); }
+a.ex-vc { cursor: pointer; }
+a.ex-vc:hover { border-color: var(--g); }
 .ex-vc-top { display: flex; align-items: center; justify-content: space-between; }
 .ex-vc-badge {
   font-family: var(--mono); font-size: .58rem; letter-spacing: .5px; text-transform: uppercase;

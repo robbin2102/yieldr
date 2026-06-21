@@ -355,13 +355,18 @@ export default function ExplorerPage() {
 }
 
 function VaultCard({ v, onWhitelist }: { v: Vault; onWhitelist: () => void }) {
-  return (
-    <div className="ex-vc">
+  const body = (
+    <>
       <div className="ex-vc-top">
         <span className={`ex-vc-badge ${v.status}`}>
           <span className="ex-vc-dot" />{v.status === 'live' ? 'Live' : 'Waitlist'}
         </span>
-        <button className="ex-vc-wl-btn" onClick={onWhitelist}>Whitelist Wallet</button>
+        <button
+          className="ex-vc-wl-btn"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onWhitelist(); }}
+        >
+          Whitelist Wallet
+        </button>
       </div>
       <div className="ex-vc-proto">{v.proto}</div>
       <div className="ex-vc-name">{v.name}</div>
@@ -371,6 +376,15 @@ function VaultCard({ v, onWhitelist }: { v: Vault; onWhitelist: () => void }) {
           <div className="ex-vc-stat" key={s.l}><div className="ex-vc-sv">{s.v}</div><div className="ex-vc-sl">{s.l}</div></div>
         ))}
       </div>
-    </div>
+    </>
   );
+
+  if (v.status === 'live') {
+    return (
+      <Link href={`/vaults?vault=${v.id}`} className="ex-vc">
+        {body}
+      </Link>
+    );
+  }
+  return <div className="ex-vc">{body}</div>;
 }
