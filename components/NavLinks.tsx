@@ -71,7 +71,7 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
       {/* Desktop links */}
       <nav className="ynav-links">
         <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
-        <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
+        <Link href="/explorer" className={isActive('/explorer') ? 'active' : ''}>Vaults</Link>
         <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
         <Link href="/allocations" className={`ynav-alloc${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
       </nav>
@@ -145,7 +145,7 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
 
             <div className="ynav-menu-links">
               <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
-              <Link href="/vaults" className={isActive('/vaults') ? 'active' : ''}>Vaults</Link>
+              <Link href="/explorer" className={isActive('/explorer') ? 'active' : ''}>Vaults</Link>
               <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
               <Link href="/docs" className={isActive('/docs') ? 'active' : ''}>Docs</Link>
               <Link href="/allocations" className={`ynav-alloc-mobile${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>

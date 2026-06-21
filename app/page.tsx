@@ -7,14 +7,14 @@ import './landing.css';
 
 const LIVE_VAULTS = [
   {
-    href: '/vaults?vault=geo',
+    href: '/explorer',
     proto: 'Polymarket · Predictions',
     name: '🌐 Geopolitics Vault',
     desc: 'Agent identifies wallets with abnormal win rates vs implied probability on geopolitical events.',
     stats: [{ v: '+41.8%', l: '30D Return' }, { v: '82%', l: 'Win Rate' }],
   },
   {
-    href: '/vaults?vault=nba',
+    href: '/explorer',
     proto: 'Polymarket · Predictions',
     name: '🏀 NBA Edge Vault',
     desc: 'Agent ranks top NBA prediction market traders by statistical edge, mirrors highest-conviction positions.',
@@ -104,7 +104,7 @@ export default function HomePage() {
           <span className="lp-nav-brand">YIELDR</span>
         </Link>
         <div className="lp-nav-r">
-          <NavLinks cta={{ href: '/vaults', label: 'Explore Vaults ↗' }} />
+          <NavLinks cta={{ href: '/explorer', label: 'Explore Vaults ↗' }} />
         </div>
       </nav>
 
@@ -136,7 +136,7 @@ export default function HomePage() {
               onchain performance into <strong>recurring revenue.</strong>
             </p>
             <div className="lp-hero-ctas">
-              <Link href="/vaults" className="lp-btn-p">Explore Agent Vaults ↗</Link>
+              <Link href="/explorer" className="lp-btn-p">Explore Agent Vaults ↗</Link>
             </div>
             <div className="lp-hero-metrics">
               <div className="lp-hm-panel">
@@ -248,7 +248,7 @@ export default function HomePage() {
                 </Link>
               ))}
               {WAITLIST_VAULTS.map((v) => (
-                <Link href="/vaults" className="lp-vs-card waitlist" key={v.name}>
+                <Link href="/explorer" className="lp-vs-card waitlist" key={v.name}>
                   <div className="lp-vs-badge waitlist"><span className="lp-vs-dot waitlist" />Waitlist</div>
                   <div className="lp-vs-proto">{v.proto}</div>
                   <div className="lp-vs-name">{v.name}</div>
@@ -264,7 +264,7 @@ export default function HomePage() {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: 20 }}>
-              <Link href="/vaults" className="lp-btn-s">Explore all agent vaults ↗</Link>
+              <Link href="/explorer" className="lp-btn-s">Explore all agent vaults ↗</Link>
             </div>
             <p className="lp-vs-fine">
               Past performance ≠ future results · Live performance reflects Yieldr project capital
@@ -320,7 +320,7 @@ export default function HomePage() {
                 deposit per wallet into an agent vault for 30 days is required to claim. Think of
                 it as a product trial, not a farm.
               </p>
-              <Link href="/vaults" className="lp-btn-p">Explore Agent Vaults ↗</Link>
+              <Link href="/explorer" className="lp-btn-p">Explore Agent Vaults ↗</Link>
             </div>
           </section>
         </div>
