@@ -12,6 +12,7 @@ export const VAULT_META: Record<VaultId, {
     winRate:           number;
     daysWonRate:       number;
     trades:            number;
+    initialCapital:    number;
   };
 }> = {
   geo: {
@@ -27,6 +28,7 @@ export const VAULT_META: Record<VaultId, {
       winRate:           82,
       daysWonRate:       61.3,
       trades:            67,
+      initialCapital:    30000,
     },
   },
   nba: {
@@ -42,6 +44,7 @@ export const VAULT_META: Record<VaultId, {
       winRate:           74,
       daysWonRate:       58.0,
       trades:            143,
+      initialCapital:    15000,
     },
   },
   soccer: {
@@ -57,6 +60,7 @@ export const VAULT_META: Record<VaultId, {
       winRate:           69,
       daysWonRate:       55.0,
       trades:            89,
+      initialCapital:    8000,
     },
   },
   esports: {
@@ -72,6 +76,7 @@ export const VAULT_META: Record<VaultId, {
       winRate:           0,
       daysWonRate:       0,
       trades:            0,
+      initialCapital:    0,
     },
   },
   soccerAlpha: {
@@ -87,6 +92,7 @@ export const VAULT_META: Record<VaultId, {
       winRate:           0,
       daysWonRate:       0,
       trades:            0,
+      initialCapital:    0,
     },
   },
 };

@@ -3,13 +3,14 @@
 import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useAccount } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import NavLinks from '@/components/NavLinks';
 import './vaults.css';
 import {
   VAULT_META,
   FALLBACK_POSITIONS,
   FALLBACK_TRADES,
-  type VaultId,
 } from '@/config/vaults';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -19,16 +20,23 @@ type Trade      = { market: string; entry: string; size: string; pnl: string; st
 type VaultState = {
   stats: {
     totalPnl: number; pnl30d: number; capitalDeployed30d: number; openPositionsValue: number;
-    winRate: number; daysWonRate: number; trades: number;
+    winRate: number; daysWonRate: number; trades: number; initialCapital: number;
   };
   chartPoints: ChartPoint[];
   positions: Position[];
   closedTrades: Trade[];
   wallet?: string;
 };
-type GlobalState = { totalPnl: number; totalCapital: number; combinedRoi: number; lastTradeAt: string; totalSubscribers: number };
 
-const VAULT_IDS: VaultId[] = ['geo', 'nba', 'soccerAlpha'];
+type ShownVaultId = 'geo' | 'nba';
+const VAULT_IDS: ShownVaultId[] = ['geo', 'nba'];
+
+const WALLETS: Record<ShownVaultId, { full: string; short: string }> = {
+  geo: { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
+  nba: { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
+};
+
+const WHITELIST_COUNTS: Record<ShownVaultId, number> = { geo: 312, nba: 187 };
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
@@ -50,8 +58,8 @@ function totalUnrealisedPnl(positions: Position[]): { text: string; positive: bo
   return { text: fmtPnl(total), positive: total >= 0 };
 }
 // ── Build initial state from fallbacks ────────────────────────────────────
-function buildFallbackState(): Record<VaultId, VaultState> {
-  const out = {} as Record<VaultId, VaultState>;
+function buildFallbackState(): Record<ShownVaultId, VaultState> {
+  const out = {} as Record<ShownVaultId, VaultState>;
   for (const id of VAULT_IDS) {
     const m = VAULT_META[id];
     out[id] = {
@@ -63,6 +71,7 @@ function buildFallbackState(): Record<VaultId, VaultState> {
         winRate:            m.fallback.winRate,
         daysWonRate:        m.fallback.daysWonRate,
         trades:             m.fallback.trades,
+        initialCapital:     m.fallback.initialCapital,
       },
       chartPoints:  [],
       positions:    FALLBACK_POSITIONS[id],
@@ -162,35 +171,30 @@ function VaultChart({ points, gradId }: { points: ChartPoint[]; gradId: string }
 // ── Component ──────────────────────────────────────────────────────────────
 function VaultsPageInner() {
   const searchParams = useSearchParams();
-  const vaultParam   = searchParams.get('vault') as VaultId | null;
-  const [activeVault, setActiveVault] = useState<VaultId>(
+  const vaultParam   = searchParams.get('vault') as ShownVaultId | null;
+  const [activeVault, setActiveVault] = useState<ShownVaultId>(
     vaultParam && VAULT_IDS.includes(vaultParam) ? vaultParam : 'geo'
   );
   const [isLoading, setIsLoading]   = useState(true);
-  const [vaultData, setVaultData]   = useState<Record<VaultId, VaultState>>(buildFallbackState);
-  const [global, setGlobal]         = useState<GlobalState>({ totalPnl: 0, totalCapital: 0, combinedRoi: 0, lastTradeAt: '—', totalSubscribers: 0 });
-  const [spotsLeft, setSpotsLeft]   = useState(127);
-  const [deadline, setDeadline]     = useState<Date>(() => { const d = new Date(); d.setDate(d.getDate() + 90); return d; });
-  const [countdown, setCountdown]   = useState('');
-  const [chatMessages, setChatMessages] = useState<Array<{ type: 'agent' | 'user' | 'system'; text: string }>>([
-    { type: 'system', text: '⚡ Vault agent connected' },
-    { type: 'agent',  text: 'Welcome! I can tell you about any of our three vaults, how the human + agent strategy works, or early access terms. What would you like to know?' },
-  ]);
-  const [chatInput, setChatInput] = useState('');
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const [vaultData, setVaultData]   = useState<Record<ShownVaultId, VaultState>>(buildFallbackState);
+  const [whitelisted, setWhitelisted] = useState<Set<ShownVaultId>>(new Set());
+
+  useEffect(() => {
+    if (vaultParam && VAULT_IDS.includes(vaultParam)) setActiveVault(vaultParam);
+  }, [vaultParam]);
+
+  const { isConnected, address } = useAccount();
+  const { openConnectModal } = useConnectModal();
 
   // ── Fetch live data ────────────────────────────────────────────────────
   useEffect(() => {
     async function load() {
       try {
-        const [vRes, cRes] = await Promise.all([
-          fetch('/api/vaults/data'),
-          fetch('/api/site-config'),
-        ]);
+        const vRes = await fetch('/api/vaults/data');
         if (vRes.ok) {
           const { data } = await vRes.json();
           if (data) {
-            setVaultData((prev: Record<VaultId, VaultState>) => {
+            setVaultData((prev: Record<ShownVaultId, VaultState>) => {
               const next = { ...prev };
               for (const id of VAULT_IDS) {
                 const d = data[id];
@@ -205,14 +209,6 @@ function VaultsPageInner() {
               }
               return next;
             });
-            if (data._global) setGlobal(data._global);
-          }
-        }
-        if (cRes.ok) {
-          const { data: cd } = await cRes.json();
-          if (cd) {
-            setSpotsLeft(cd.spots_remaining ?? 127);
-            if (cd.deadline) setDeadline(new Date(cd.deadline));
           }
         }
       } catch {
@@ -224,44 +220,23 @@ function VaultsPageInner() {
     load();
   }, []);
 
-  // ── Countdown timer ────────────────────────────────────────────────────
-  useEffect(() => {
-    function tick() {
-      const diff = deadline.getTime() - Date.now();
-      if (diff <= 0) { setCountdown('Closed'); return; }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000)  / 60000);
-      setCountdown(`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m`);
-    }
-    tick();
-    const t = setInterval(tick, 60000);
-    return () => clearInterval(t);
-  }, [deadline]);
-
-  // ── Auto-scroll chat ───────────────────────────────────────────────────
-  useEffect(() => {
-    if (chatMessages.length <= 2) return;
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
-
-  // ── Chat send ──────────────────────────────────────────────────────────
-  function sendChat() {
-    const text = chatInput.trim();
-    if (!text) return;
-    setChatMessages((m: typeof chatMessages) => [...m, { type: 'user', text }]);
-    setChatInput('');
-    setTimeout(() => {
-      setChatMessages((m: typeof chatMessages) => [
-        ...m,
-        { type: 'agent', text: '🚧 <strong>Coming soon</strong> — full vault agent chat is in active development. Check the Build Log for updates!' },
-      ]);
-    }, 600);
+  function handleConfirmWhitelist() {
+    // ← Hook: sign whitelist message + POST to backend here
+    setWhitelisted((prev) => new Set(prev).add(activeVault));
   }
 
   const av   = vaultData[activeVault];
-  const meta = VAULT_META[activeVault as VaultId];
+  const meta = VAULT_META[activeVault];
   const unr  = totalUnrealisedPnl(av.positions);
+  const roi  = av.stats.initialCapital > 0 ? (av.stats.totalPnl / av.stats.initialCapital) * 100 : 0;
+  const otherVault = VAULT_IDS.find((id) => id !== activeVault)!;
+  const otherMeta   = VAULT_META[otherVault];
+  const otherData   = vaultData[otherVault];
+  const otherRoi    = otherData.stats.initialCapital > 0 ? (otherData.stats.totalPnl / otherData.stats.initialCapital) * 100 : 0;
+  const truncAddr   = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
+  const wlState: 'connect' | 'confirm' | 'success' = whitelisted.has(activeVault)
+    ? 'success'
+    : isConnected ? 'confirm' : 'connect';
 
   return (
     <div className="vp-root">
@@ -283,53 +258,31 @@ function VaultsPageInner() {
         </div>
       </nav>
 
-      {/* ── Status Bar ── */}
-      <div className="vp-status-bar">
-        <div className="vp-sb-left">
-          <div className="vp-sb-live"><span className="vp-sb-dot" /> 3 Vaults Testing</div>
-          <span>Last trade: <span className="vp-sb-val">{isLoading ? <Skel size="sm" /> : global.lastTradeAt}</span></span>
-          <span>Human + Agent</span>
-        </div>
-        <div className="vp-sb-right">
-          <span>Capital: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtUsd(global.totalCapital)}</span></span>
-          <span>Subscribers: <span className="vp-sb-val">{isLoading ? <Skel size="sm" /> : global.totalSubscribers || '—'}</span></span>
-          <span>All-Time PnL: <span className="vp-sb-val">{isLoading ? <Skel size="md" /> : fmtPnl(global.totalPnl)}</span></span>
-        </div>
-      </div>
-
       <main className="vp-main">
 
-        {/* ── Page Header ── */}
-        <div className="vp-page-head">
-          <div className="vp-ph-left">
-            <h1>Agent Trading Vaults</h1>
-            <p>$100K of project capital trading live across 3 strategies. Agents find edge, execute trades, compound returns.</p>
-          </div>
-          <div className="vp-ph-right">
-            <div className="vp-ph-stat">
-              <div className={`vp-ph-stat-v${global.totalPnl < 0 ? ' red' : ''}`}>
-                {isLoading ? <Skel size="xl" /> : fmtPnl(global.totalPnl)}
-              </div>
-              <div className="vp-ph-stat-l">All-Time PnL</div>
-            </div>
-            <div className="vp-ph-stat">
-              <div className="vp-ph-stat-v">{isLoading ? <Skel size="lg" /> : `+${global.combinedRoi.toFixed(1)}%`}</div>
-              <div className="vp-ph-stat-l">Combined ROI</div>
-            </div>
-          </div>
+        {/* ── Breadcrumb ── */}
+        <div className="vp-breadcrumb">
+          <Link href="/explorer">Vaults</Link>
+          <span className="vp-bc-sep">/</span>
+          <span className="vp-bc-current">{meta.name}</span>
         </div>
 
-        {/* ── Vault Tabs ── */}
-        <div className="vp-vault-tabs">
-          {VAULT_IDS.map((id) => (
-            <button
-              key={id}
-              className={`vp-vtab${activeVault === id ? ' active' : ''}`}
-              onClick={() => setActiveVault(id)}
-            >
-              {VAULT_META[id].emoji} {id === 'soccerAlpha' ? 'Soccer Alpha' : VAULT_META[id].name.split(' ').slice(0, 2).join(' ')}
-            </button>
-          ))}
+        {/* ── Vault Header ── */}
+        <div className="vp-vd-header">
+          <div className="vp-vd-info">
+            <h2>{meta.emoji} {meta.name}</h2>
+            <span className="vp-vd-testing-tag">Testing Phase · Project Capital</span>
+            <p>{meta.description}</p>
+          </div>
+          <div className="vp-vd-pnl">
+            <div className={`vp-vd-pnl-v${av.stats.totalPnl < 0 ? ' red' : ''}`}>
+              {isLoading ? <Skel size="xl" /> : fmtPnl(av.stats.totalPnl)}
+            </div>
+            <div className="vp-vd-pnl-l">All-Time PnL</div>
+            <div className={`vp-vd-roi${roi < 0 ? ' red' : ''}`}>
+              {isLoading ? <Skel size="sm" /> : `${roi >= 0 ? '+' : ''}${roi.toFixed(1)}% ROI`}
+            </div>
+          </div>
         </div>
 
         {/* ── Main Grid ── */}
@@ -337,174 +290,134 @@ function VaultsPageInner() {
 
           {/* ── Left — Vault Panel ── */}
           <div>
-            {VAULT_IDS.map((id) => {
-              const d = vaultData[id];
-              const m = VAULT_META[id];
-              const u = totalUnrealisedPnl(d.positions);
-              return (
-                <div key={id} className={`vp-vault-panel${activeVault === id ? ' active' : ''}`}>
-
-                  {/* Header */}
-                  <div className="vp-vd-header">
-                    <div className="vp-vd-info">
-                      <h2>{m.emoji} {m.name}</h2>
-                      <span className="vp-vd-testing-tag">Testing Phase · Project Capital</span>
-                      <p>{m.description}</p>
-                    </div>
-                    <div className="vp-vd-pnl">
-                      <div className={`vp-vd-pnl-v${d.stats.totalPnl < 0 ? ' red' : ''}`}>
-                        {isLoading ? <Skel size="xl" /> : fmtPnl(d.stats.totalPnl)}
-                      </div>
-                      <div className="vp-vd-pnl-l">All-Time PnL</div>
-                    </div>
-                  </div>
-
-                  {/* Stats row */}
-                  <div className="vp-vd-stats">
-                    <div className="vp-vd-stat">
-                      <div className="vp-vd-stat-v green">
-                        {isLoading ? <Skel size="sm" /> : `${d.stats.winRate}%`}
-                      </div>
-                      <div className="vp-vd-stat-l">Win Rate</div>
-                    </div>
-                    <div className="vp-vd-stat">
-                      <div className="vp-vd-stat-v white">
-                        {isLoading ? <Skel size="md" /> : fmtUsd(d.stats.capitalDeployed30d)}
-                      </div>
-                      <div className="vp-vd-stat-l">Avg Capital 30D</div>
-                    </div>
-                    <div className="vp-vd-stat">
-                      <div className="vp-vd-stat-v white">
-                        {isLoading ? <Skel size="sm" /> : `${d.stats.daysWonRate}%`}
-                      </div>
-                      <div className="vp-vd-stat-l">Days Winning</div>
-                    </div>
-                    <div className="vp-vd-stat">
-                      <div className={`vp-vd-stat-v ${d.stats.pnl30d >= 0 ? 'green' : 'red'}`}>
-                        {isLoading ? <Skel size="sm" /> : fmtPnl(d.stats.pnl30d)}
-                      </div>
-                      <div className="vp-vd-stat-l">30D PnL</div>
-                    </div>
-                  </div>
-
-                  {/* PnL Chart */}
-                  <div className="vp-vd-chart">
-                    <VaultChart points={d.chartPoints} gradId={`vg-${id}`} />
-                  </div>
-
-                  {/* Mobile-only CTA strip — shown right after chart */}
-                  <div className="vp-mobile-cta-strip">
-                    <div className="vp-mcs-text">
-                      <span className="vp-mcs-label">50% USDC (4.5% APY) · 50% YLDR @$9M FDV</span>
-                      <span className="vp-mcs-sub">Tier 1 pricing ends May 31st</span>
-                    </div>
-                    <Link href="/buy" className="vp-mcs-btn">Get Early Access ↗</Link>
-                  </div>
-
-                  {/* Open Positions */}
-                  <div className="vp-open-positions">
-                    <div className="vp-op-head">
-                      <span className="vp-op-title"><span className="vp-op-dot" /> Open Positions</span>
-                      <span className="vp-op-count">
-                        {d.positions.length} active
-                        {d.stats.openPositionsValue > 0 && (
-                          <> · <span className="vp-op-val">{fmtUsd(d.stats.openPositionsValue)}</span> deployed</>
-                        )}
-                      </span>
-                    </div>
-                    <div className="vp-op-cols">
-                      <span>Market</span><span>Position</span><span>Size</span>
-                      <span>Entry</span><span>Unrealised PnL</span><span>Opened</span>
-                    </div>
-                    {d.positions.map((p: Position, i: number) => (
-                      <div className="vp-op-row" key={i}>
-                        <span className="mkt">{p.market}</span>
-                        <span className="yel">{p.side}</span>
-                        <span>{p.size}</span>
-                        <span>{p.entry}</span>
-                        <span className={p.pnlPositive ? 'grn' : 'red'}>{p.pnl}</span>
-                        <span className="tim">{p.time}</span>
-                      </div>
-                    ))}
-                    <div className="vp-op-total">
-                      <span className="lbl">Total Unrealised</span>
-                      <span className={u.positive ? 'val-g' : 'val-r'}>{u.text}</span>
-                    </div>
-                  </div>
-
-                  {/* Closed Trades */}
-                  <div className="vp-trade-history">
-                    <div className="vp-th-head">
-                      <span className="vp-th-title">Closed Trades</span>
-                      <span className="vp-th-count">Showing {d.closedTrades.length} of {d.stats.trades}</span>
-                    </div>
-                    <div className="vp-th-cols">
-                      <span>Market</span><span>Entry / Exit</span><span>Size</span>
-                      <span>PnL</span><span>Status</span><span>When</span>
-                    </div>
-                    {d.closedTrades.map((t: Trade, i: number) => (
-                      <div className="vp-th-row" key={i}>
-                        <span className="mkt">{t.market}</span>
-                        <span>{t.entry}</span>
-                        <span>{t.size}</span>
-                        <span className={t.status === 'win' ? 'win' : 'loss'}>{t.pnl}</span>
-                        <span className={t.status === 'win' ? 'win' : 'loss'}>
-                          {t.status === 'win' ? '✓ Won' : '✗ Lost'}
-                        </span>
-                        <span className="tim">{t.time}</span>
-                      </div>
-                    ))}
-                  </div>
-
+            {/* Stats row */}
+            <div className="vp-vd-stats">
+              <div className="vp-vd-stat">
+                <div className="vp-vd-stat-v green">
+                  {isLoading ? <Skel size="sm" /> : `${av.stats.winRate}%`}
                 </div>
-              );
-            })}
+                <div className="vp-vd-stat-l">Win Rate</div>
+              </div>
+              <div className="vp-vd-stat">
+                <div className="vp-vd-stat-v white">
+                  {isLoading ? <Skel size="md" /> : fmtUsd(av.stats.capitalDeployed30d)}
+                </div>
+                <div className="vp-vd-stat-l">Avg Capital 30D</div>
+              </div>
+              <div className="vp-vd-stat">
+                <div className="vp-vd-stat-v white">
+                  {isLoading ? <Skel size="sm" /> : `${av.stats.daysWonRate}%`}
+                </div>
+                <div className="vp-vd-stat-l">Days Winning</div>
+              </div>
+              <div className="vp-vd-stat">
+                <div className={`vp-vd-stat-v ${unr.positive ? 'green' : 'red'}`}>
+                  {isLoading ? <Skel size="sm" /> : unr.text}
+                </div>
+                <div className="vp-vd-stat-l">Unrealised PnL</div>
+              </div>
+            </div>
+
+            {/* PnL Chart */}
+            <div className="vp-vd-chart">
+              <VaultChart points={av.chartPoints} gradId={`vg-${activeVault}`} />
+            </div>
+
+            {/* Open Positions */}
+            <div className="vp-open-positions">
+              <div className="vp-op-head">
+                <span className="vp-op-title"><span className="vp-op-dot" /> Open Positions</span>
+                <span className="vp-op-count">
+                  {av.positions.length} active
+                  {av.stats.openPositionsValue > 0 && (
+                    <> · <span className="vp-op-val">{fmtUsd(av.stats.openPositionsValue)}</span> deployed</>
+                  )}
+                </span>
+              </div>
+              <div className="vp-op-cols">
+                <span>Market</span><span>Position</span><span>Size</span>
+                <span>Entry</span><span>Unrealised PnL</span><span>Opened</span>
+              </div>
+              {av.positions.map((p: Position, i: number) => (
+                <div className="vp-op-row" key={i}>
+                  <span className="mkt">{p.market}</span>
+                  <span className={p.side === 'YES' ? 'yes' : p.side === 'NO' ? 'no' : 'side'}>{p.side}</span>
+                  <span>{p.size}</span>
+                  <span>{p.entry}</span>
+                  <span className={p.pnlPositive ? 'grn' : 'red'}>{p.pnl}</span>
+                  <span className="tim">{p.time}</span>
+                </div>
+              ))}
+              <div className="vp-op-total">
+                <span className="lbl">Total Unrealised</span>
+                <span className={unr.positive ? 'val-g' : 'val-r'}>{unr.text}</span>
+              </div>
+            </div>
+
+            {/* Closed Trades */}
+            <div className="vp-trade-history">
+              <div className="vp-th-head">
+                <span className="vp-th-title">Closed Trades</span>
+                <span className="vp-th-count">Showing {av.closedTrades.length} of {av.stats.trades}</span>
+              </div>
+              <div className="vp-th-cols">
+                <span>Market</span><span>Entry / Exit</span><span>Size</span>
+                <span>PnL</span><span>Status</span><span>When</span>
+              </div>
+              {av.closedTrades.map((t: Trade, i: number) => (
+                <div className="vp-th-row" key={i}>
+                  <span className="mkt">{t.market}</span>
+                  <span>{t.entry}</span>
+                  <span>{t.size}</span>
+                  <span className={t.status === 'win' ? 'win' : 'loss'}>{t.pnl}</span>
+                  <span className={t.status === 'win' ? 'win' : 'loss'}>
+                    {t.status === 'win' ? '✓ Won' : '✗ Lost'}
+                  </span>
+                  <span className="tim">{t.time}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* ── Right Column ── */}
           <div>
-            {/* Urgency bar */}
-            <div className="vp-urgency-bar">
-              <div className="vp-ub-text">
-                ⏳ Tier 1 pricing ends May 31st · Next tier is 2x FDV
+            {/* Whitelist Card */}
+            <div className="vp-wl-card">
+              <div className="vp-wl-h">Whitelist This Vault</div>
+              <div className="vp-wl-sub">
+                Earn 10K–100K $YLDR at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
               </div>
-            </div>
+              <div className="vp-wl-counter">{WHITELIST_COUNTS[activeVault]} wallets whitelisted</div>
 
-            {/* CTA Box */}
-            <div className="vp-cta-box" id="buy">
-              <div className="vp-cta-h">Get Early Access</div>
-              <div className="vp-cta-sub">
-                Every $100 deposited = $50 into a Base USDC vault earning 4.5% APY from day one (migrates to your chosen agent trading vault at Q3 2026 launch) + $50 in YLDR token allocation at $9M FDV.
-              </div>
-              <div className="vp-cta-split">
-                <div className="vp-cta-split-item">
-                  <div className="vp-cta-split-v">50%</div>
-                  <div className="vp-cta-split-l">USDC Vault (4.5% APY)</div>
+              {wlState === 'connect' && (
+                <button className="vp-wl-btn" onClick={() => openConnectModal?.()}>Connect Wallet to Whitelist</button>
+              )}
+              {wlState === 'confirm' && (
+                <>
+                  <div className="vp-wl-addr-row">
+                    <span className="lbl">Wallet</span>
+                    <span className="val"><span className="vp-wl-addr-dot" />{truncAddr}</span>
+                  </div>
+                  <button className="vp-wl-btn" onClick={handleConfirmWhitelist}>Confirm Whitelist ↗</button>
+                  <div className="vp-wl-fine">No deposit taken now.</div>
+                </>
+              )}
+              {wlState === 'success' && (
+                <div className="vp-wl-success">
+                  <div className="vp-wl-check">✓</div>
+                  <div className="vp-wl-success-title">Wallet whitelisted</div>
+                  <p>You&apos;re in for {meta.name}. We&apos;ll notify this wallet at beta launch.</p>
                 </div>
-                <div className="vp-cta-split-item">
-                  <div className="vp-cta-split-v">50%</div>
-                  <div className="vp-cta-split-l">YLDR @ $9M FDV</div>
-                </div>
-              </div>
-              <div className="vp-cta-note">⚡ USDC earning from day 1 → moves to agent vault at Q3 launch</div>
-
-              <Link href="/buy" className="vp-cta-btn">
-                Buy YLDR — Early Access ↗
-              </Link>
-              <div className="vp-cta-fine">
-                Min $100 USDC on Base • USDC vault: withdraw anytime • YLDR: 12-month vest from TGE Q1 2027
-              </div>
+              )}
             </div>
 
             {/* Trust Box */}
             <div className="vp-trust-box">
               <div className="vp-tb-title">Trust &amp; Security</div>
               {[
-                { lbl: 'Base Batches',      val: '002 Winner ✓', green: true  },
-                { lbl: 'Treasury',          val: 'Multisig',      green: false },
-                { lbl: 'Build Log',         val: 'Public ✓',      green: true  },
-                { lbl: 'Vault Subscribers', val: isLoading ? '…' : String(global.totalSubscribers || '—'), green: false },
-                { lbl: 'Telegram',          val: '2,400 members', green: false },
+                { lbl: 'Base Batches', val: '002 Winner ✓', green: true },
+                { lbl: 'Treasury',     val: 'Multisig',      green: false },
+                { lbl: 'Build Log',    val: 'Public ✓',      green: true },
               ].map((item) => (
                 <div className="vp-tb-item" key={item.lbl}>
                   <span className="lbl">{item.lbl}</span>
@@ -513,73 +426,31 @@ function VaultsPageInner() {
               ))}
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
-                {(() => {
-                  const wallets: Record<string, { full: string; short: string }> = {
-                    geo:         { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
-                    nba:         { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
-                    soccerAlpha: { full: '0x1ba1bb6aa2490adbbbbb314bc07ff21a8cc71ce4', short: '0x1ba1…1ce4' },
-                  };
-                  const w = wallets[activeVault];
-                  const href = activeVault === 'geo'
-                    ? `https://polygonscan.com/address/${w.full}`
-                    : undefined;
-                  return w ? (
-                    href ? (
-                      <a href={href} target="_blank" rel="noopener noreferrer" className="val green" style={{ textDecoration: 'none' }}>
-                        {w.short} ✓
-                      </a>
-                    ) : (
-                      <span className="val green">{w.short} ✓</span>
-                    )
-                  ) : (
-                    <span className="val green">Verifiable ✓</span>
-                  );
-                })()}
+                <a
+                  href={`https://polygonscan.com/address/${WALLETS[activeVault].full}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="val green"
+                  style={{ textDecoration: 'none' }}
+                >
+                  {WALLETS[activeVault].short} ✓
+                </a>
               </div>
             </div>
 
-            {/* Agent Chat */}
-            <div className="vp-agent-chat">
-              <div className="vp-ac-head">
-                <span className="vp-ac-dot" />
-                <span className="vp-ac-title">Chat with Vault Agent — Ask anything</span>
+            {/* Similar Vault */}
+            <Link href={`/vaults?vault=${otherVault}`} className="vp-similar-card">
+              <div className="vp-sc-title">Similar Vault</div>
+              <div className="vp-sc-name">{otherMeta.emoji} {otherMeta.name}</div>
+              <div className="vp-sc-stats">
+                <div><span className="v">{otherData.stats.winRate}%</span><span className="l">Win Rate</span></div>
+                <div><span className={`v ${otherRoi >= 0 ? 'green' : 'red'}`}>{otherRoi >= 0 ? '+' : ''}{otherRoi.toFixed(1)}%</span><span className="l">ROI</span></div>
               </div>
-              <div className="vp-ac-messages">
-                {chatMessages.map((msg: { type: string; text: string }, i: number) => (
-                  <div key={i} className={`vp-ac-msg ${msg.type}`}>
-                    {msg.type === 'system' ? (
-                      <><span className="ck">⚡</span> {msg.text}</>
-                    ) : (
-                      <span dangerouslySetInnerHTML={{ __html: msg.text }} />
-                    )}
-                  </div>
-                ))}
-                <div ref={chatEndRef} />
-              </div>
-              <div className="vp-ac-input">
-                <input
-                  type="text"
-                  placeholder="Ask about strategy, performance, early access..."
-                  value={chatInput}
-                  onChange={(e: { target: { value: string } }) => setChatInput(e.target.value)}
-                  onKeyDown={(e: { key: string }) => e.key === 'Enter' && sendChat()}
-                />
-                <button onClick={sendChat}>Send</button>
-              </div>
-            </div>
+              <div className="vp-sc-cta">View Vault →</div>
+            </Link>
           </div>
 
         </div>
       </main>
-
-      {/* Sticky mobile CTA bar */}
-      <div className="vp-sticky-cta">
-        <div className="vp-sct-left">
-          <div className="vp-sct-label">Get Early Access</div>
-          <div className="vp-sct-sub">50% USDC APY · 50% YLDR @$9M FDV</div>
-        </div>
-        <Link href="/buy" className="vp-sct-btn">Buy YLDR ↗</Link>
-      </div>
 
       <footer className="vp-footer">
         <div className="vp-footer-txt">
