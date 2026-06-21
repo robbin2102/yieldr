@@ -254,7 +254,7 @@ function VaultsPageInner() {
           <span className="vp-nav-brand">YIELDR</span>
         </Link>
         <div className="vp-nav-r">
-          <NavLinks cta={{ href: '#whitelist', label: 'Whitelist Wallet ↓' }} />
+          <NavLinks />
         </div>
       </nav>
 
@@ -382,7 +382,7 @@ function VaultsPageInner() {
           {/* ── Right Column ── */}
           <div>
             {/* Whitelist Card */}
-            <div className="vp-wl-card" id="whitelist">
+            <div className="vp-wl-card">
               <div className="vp-wl-h">Whitelist This Vault</div>
               <div className="vp-wl-sub">
                 Earn 10K–100K $YLDR at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.

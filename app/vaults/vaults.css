@@ -186,7 +186,6 @@
 
 /* ── Whitelist Card ── */
 .vp-wl-card {
-  scroll-margin-top: 70px;
   border: 1px solid rgba(0,232,123,.2);
   background: linear-gradient(180deg, rgba(0,232,123,.04), var(--bg2));
   padding: 1.25rem; margin-bottom: 1rem;
