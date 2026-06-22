@@ -76,26 +76,73 @@ const FILTERS: Array<{ key: string; label: string; sep?: boolean }> = [
   { key: 'memecoins', label: 'Memecoins' },
 ];
 
-const RESPONSES: Record<string, { text: string; filter?: string }> = {
-  live: { text: 'We have 2 live vaults right now: the 🌐 Geopolitics Vault (+41.8% 30D, 82% win rate) and the 🏀 NBA Edge Vault (+18.7% 7D, 74% win rate). Both run on Polymarket prediction markets with real project capital.', filter: 'live' },
-  perps: { text: 'The ⚡ Funding Arbs Vault captures the funding-rate premium on Avantis & Hyperliquid with zero directional bias. It\'s on the waitlist — whitelist your wallet now to be first in at launch.', filter: 'perps' },
-  prediction: { text: 'Our prediction-market vaults scan Polymarket for wallets with statistically abnormal win rates, then mirror their highest-conviction positions within trader-set risk rules.', filter: 'predictions' },
-  lp: { text: 'The 🪙 AERO Accumulator Vault DCAs into Aerodrome\'s native token using top LP and trader signals — a way to gain exposure to Base\'s largest DEX without manual timing.', filter: 'lp' },
-  rwa: { text: 'The 🚀 SpaceX RWA Vault accumulates tokenised SpaceX equity on Uniswap and Aerodrome, following wallets with the highest spot edge on real-world assets.', filter: 'rwa' },
-  tge: { text: '⚡ $YLDR TGE launches on Virtuals in July 2026. Whitelist any vault now and you can earn 10K–100K $YLDR at beta launch, claimable after a $100 min deposit for 30 days.' },
-  yldr: { text: '$YLDR is the Yieldr protocol token, launching on Virtuals July 2026 at a $9M FDV (genesis). Whitelisting a vault wallet now earns you an allocation at beta launch.' },
-  whitelist: { text: 'Click "Whitelist Wallet" on any vault card to connect your wallet and reserve your spot. No deposit is taken at whitelist time — only at launch.' },
-};
+// The Yieldr Agent is still under construction — full allocation-agent
+// capabilities (vault discovery, matching, and capital routing) ship in beta.
+// Until then, every answer points back to whitelisting for early access.
+const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = [
+  {
+    triggers: ['hello', 'hi', 'hey', 'sup', 'what can you do', 'who are you', 'what are you', 'help'],
+    text: "I'm the Yieldr Agent — still under construction. Once live in beta, I'll help you discover vaults, explain strategies, and allocate capital across agent vaults automatically. For now, whitelist your wallet on any vault below for early access.",
+  },
+  {
+    triggers: ['live vault', 'live', 'geopolitics', 'nba'],
+    text: "Allocation agents aren't live yet, so I can't route capital into the live vaults for you — but the 🌐 Geopolitics Vault and 🏀 NBA Edge Vault are trading real project capital on Polymarket right now. Whitelist a waitlisted vault below to be ready for what's next.",
+    filter: 'live',
+  },
+  {
+    triggers: ['perp', 'funding', 'avantis', 'hyperliquid'],
+    text: "Rotating capital across perps strategies is on my roadmap, but I'm still in beta build. The ⚡ Funding Arbs Vault captures the funding-rate premium on Avantis & Hyperliquid — whitelist it now to be first in at launch.",
+    filter: 'perps',
+  },
+  {
+    triggers: ['predict', 'polymarket'],
+    text: "Comparing prediction-market vaults by edge and win rate is exactly what I'll do once live — that logic isn't built yet. In the meantime, check out the live Polymarket vaults above or whitelist a waitlisted one for early access.",
+    filter: 'predictions',
+  },
+  {
+    triggers: ['lp', 'liquidity', 'aerodrome', 'uniswap'],
+    text: "I'll eventually help you evaluate LP and liquidity vaults automatically, but that's still being built. Whitelist the 🪙 AERO Accumulator Vault now to get early access when it launches.",
+    filter: 'lp',
+  },
+  {
+    triggers: ['rwa', 'real world', 'spacex'],
+    text: "RWA vault allocation is part of what I'll handle once live — still under construction for now. Whitelist the 🚀 SpaceX RWA Vault to be considered for early access at launch.",
+    filter: 'rwa',
+  },
+  {
+    triggers: ['project coin', 'memecoin', 'bankr', 'virtuals', 'base ecosystem', 'meme'],
+    text: "Tracking project-coin and memecoin vault edge is on my roadmap, but I'm not live yet. Whitelist the 🌐 Base Ecosystem Vault or 🎲 Memecoin Momentum Vault below for early access.",
+    filter: 'project-coins',
+  },
+  {
+    triggers: ['launch', 'start a vault', 'create a vault', 'become a trader'],
+    text: "Helping traders launch their own agent vault is one of my core jobs — but that flow is still in beta build. Join the Fund Launch Waitlist or check the docs for what launching a vault involves.",
+  },
+  {
+    triggers: ['allocate', 'allocation', 'rotate', 'deposit', 'capital'],
+    text: "Routing depositor capital across agent vaults based on risk and return targets is exactly what I'll do once live — that feature is still under construction. Whitelist your wallet on any vault now to be ready when allocation agents go live.",
+  },
+  {
+    triggers: ['tge', 'token', 'yldr', 'airdrop'],
+    text: "⚡ $YLDR TGE is planned on Base in July 2026. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
+  },
+  {
+    triggers: ['whitelist', 'waitlist', 'early access'],
+    text: 'Click "Whitelist Wallet" on any vault card to connect your wallet and reserve your spot. No deposit is taken at whitelist time — only at launch. That\'s the fastest way in while I\'m still under construction.',
+  },
+];
 
 function processQuery(t: string): { text: string; filter?: string } {
   const lower = t.toLowerCase();
-  for (const key of Object.keys(RESPONSES)) {
-    if (lower.includes(key)) return RESPONSES[key];
+  for (const { triggers, text, filter } of RESPONSES) {
+    if (triggers.some((kw) => lower.includes(kw))) return { text, filter };
   }
-  return { text: "I can tell you about live vaults, perps, predictions, LP, RWA strategies, the $YLDR TGE, or how whitelisting works. What would you like to know?" };
+  return {
+    text: "I'm still under construction — full allocation-agent capabilities go live in beta. Ask me about live vaults, perps, predictions, LP, RWA, the $YLDR TGE, or whitelisting, or just whitelist your wallet on any agent vault below for early access.",
+  };
 }
 
-const QUICK_REPLIES = ['Live vaults', 'Perps', 'Predictions', 'LP', 'TGE', 'Earn $YLDR'];
+const QUICK_REPLIES = ['Live vaults', 'Perps', 'Predictions', 'LP', 'TGE', 'Whitelist'];
 
 type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string };
 

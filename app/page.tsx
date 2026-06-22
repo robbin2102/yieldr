@@ -103,8 +103,8 @@ export default function HomePage() {
       {bannerOpen && (
         <div className="lp-banner">
           <span className="lp-banner-txt">
-            <strong>$YLDR</strong> TGE on Virtuals · July 2026 · Whitelist any agent vault — earn up to{' '}
-            <strong>100K $YLDR</strong> at beta launch ·
+            <strong>$YLDR</strong> TGE on Base · July 2026 · Whitelist any agent vault — earn a variable{' '}
+            <strong>$YLDR</strong> airdropped at beta launch ·
           </span>
           <a href="#token" className="lp-banner-link">Learn more →</a>
           <button className="lp-banner-close" aria-label="Dismiss" onClick={() => setBannerOpen(false)}>×</button>
@@ -176,7 +176,7 @@ export default function HomePage() {
                   <div className="lp-hm-sep" />
                   <div><div className="lp-hm-v">{waitlistStats ? waitlistStats.total_wallets : '—'}</div><div className="lp-hm-l">Wallets Whitelisted</div></div>
                 </div>
-                <div className="lp-hm-tge">⚡ $YLDR TGE · Virtuals · July 2026</div>
+                <div className="lp-hm-tge">⚡ $YLDR TGE · Base · July 2026</div>
               </div>
             </div>
           </section>
@@ -329,7 +329,7 @@ export default function HomePage() {
         <div className="lp-wrap">
           <section className="lp-section lp-reveal" id="token">
             <div className="lp-fcta-box">
-              <div className="lp-fcta-tag">⚡ $YLDR TGE · Virtuals · July 2026</div>
+              <div className="lp-fcta-tag">⚡ $YLDR TGE · Base · July 2026</div>
               <div className="lp-fcta-h">Own the protocol from day one.<br /><span className="ac">Earn while you wait.</span></div>
               <p className="lp-fcta-sub">
                 Whitelist your wallet on any agent vault and earn between{' '}

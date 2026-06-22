@@ -933,7 +933,7 @@ export default function DocsPage() {
                   <div className="dx-token-stat-label">Planned TGE</div>
                 </div>
                 <div>
-                  <div className="dx-token-stat-value">Virtuals</div>
+                  <div className="dx-token-stat-value">Base</div>
                   <div className="dx-token-stat-label">Launch Ecosystem</div>
                 </div>
                 <div>
@@ -942,7 +942,7 @@ export default function DocsPage() {
                 </div>
               </div>
             </div>
-            <p>Tokenomics information and Virtuals launch page URL will be updated soon.</p>
+            <p>Tokenomics information and Base launch page URL will be updated soon.</p>
 
             <h2>Whitelist Rewards</h2>
             <p>Users who whitelist agent vaults and complete eligible product participation may qualify for $YLDR rewards at beta launch. Reward mechanics are designed to reward genuine users, not passive farmers.</p>
@@ -977,7 +977,7 @@ export default function DocsPage() {
               <div className="dx-roadmap-dot"></div>
               <div className="dx-roadmap-phase">Phase 3 — Planned July 2026</div>
               <h3 className="dx-roadmap-title">$YLDR TGE</h3>
-              <p className="dx-roadmap-desc">$YLDR launches through the Virtuals ecosystem. Eligible users may participate according to final launch and jurisdictional rules. Tokenomics information and Virtuals launch page URL will be published before launch.</p>
+              <p className="dx-roadmap-desc">$YLDR launches through the Base ecosystem. Eligible users may participate according to final launch and jurisdictional rules. Tokenomics information and Base launch page URL will be published before launch.</p>
             </div>
             <div className="dx-roadmap-item">
               <div className="dx-roadmap-dot"></div>
@@ -1061,10 +1061,10 @@ export default function DocsPage() {
 
             <h2>Quick Links</h2>
             <ul className="dx-list">
-              <li>Website — yieldr.org</li>
-              <li>Docs — yieldr.org/docs</li>
-              <li>Vaults — yieldr.org/vaults</li>
-              <li>Build Log — yieldr.org/build-log</li>
+              <li><Link href="/">Website — yieldr.org</Link></li>
+              <li><Link href="/docs">Docs — yieldr.org/docs</Link></li>
+              <li><Link href="/explorer">Explorer — yieldr.org/explorer</Link></li>
+              <li><Link href="/build-in-public">Build Log — yieldr.org/build-log</Link></li>
             </ul>
 
             <PageFooter pageId="connect" />
