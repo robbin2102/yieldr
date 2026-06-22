@@ -114,7 +114,7 @@ export default function HomePage() {
       {/* ── Nav ── */}
       <nav className="lp-nav">
         <Link href="/" className="lp-nav-l">
-          <svg width="18" height="22" viewBox="0 0 100 120" fill="none">
+          <svg width="20" height="24" viewBox="0 0 100 120" fill="none">
             <path d="M50 8Q72 28 82 60Q72 92 50 112Q28 92 18 60Q28 28 50 8Z" fill="#00E87B" />
             <ellipse cx="50" cy="60" rx="16" ry="22" fill="#000" opacity=".25" />
             <circle cx="50" cy="60" r="9" fill="#fff" opacity=".88" />

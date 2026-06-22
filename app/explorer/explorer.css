@@ -17,7 +17,7 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 2.5rem; height: var(--nav-h);
   background: rgba(2,2,4,.92); backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .ex-nav-l { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
 .ex-nav-brand { font-family: var(--mono); font-weight: 700; font-size: .95rem; letter-spacing: 3px; color: var(--text); }
@@ -84,6 +84,11 @@ a.ex-vc:hover { border-color: var(--g); }
   padding: .35rem .7rem; cursor: pointer; transition: opacity .15s;
 }
 .ex-vc-wl-btn:hover { opacity: .85; }
+.ex-vc-wl-done {
+  font-family: var(--mono); font-size: .58rem; font-weight: 600; letter-spacing: .3px;
+  color: var(--g); background: var(--g-dim); border-radius: var(--r);
+  padding: .35rem .7rem;
+}
 .ex-vc-proto { font-family: var(--mono); font-size: .62rem; color: var(--text-dim); }
 .ex-vc-name { font-size: .98rem; font-weight: 600; color: var(--text); }
 .ex-vc-desc { font-size: .78rem; color: var(--text-dim); line-height: 1.5; margin: 0; }

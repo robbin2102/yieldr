@@ -193,6 +193,22 @@ function VaultsPageInner() {
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
 
+  useEffect(() => {
+    if (!isConnected || !address) return;
+    fetch(`/api/whitelist/mine?wallet=${address}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && d.data) {
+          setWhitelisted((prev) => {
+            const next = new Set(prev);
+            for (const id of d.data as ShownVaultId[]) next.add(id);
+            return next;
+          });
+        }
+      })
+      .catch(() => {});
+  }, [isConnected, address]);
+
   // ── Fetch live data ────────────────────────────────────────────────────
   useEffect(() => {
     async function load() {

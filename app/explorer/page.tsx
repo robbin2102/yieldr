@@ -163,6 +163,7 @@ export default function ExplorerPage() {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [targetAums, setTargetAums] = useState<Record<string, number>>({});
   const [liveStats, setLiveStats] = useState<Record<string, LiveStats>>({});
+  const [myWhitelists, setMyWhitelists] = useState<Set<string>>(new Set());
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -198,6 +199,17 @@ export default function ExplorerPage() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (!isConnected || !address) {
+      setMyWhitelists(new Set());
+      return;
+    }
+    fetch(`/api/whitelist/mine?wallet=${address}`)
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setMyWhitelists(new Set(d.data)); })
+      .catch(() => {});
+  }, [isConnected, address]);
+
   const [chatMessages, setChatMessages] = useState<ChatMsg[]>([
     { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me what Yieldr is, about any live or waitlisted vault, the $YLDR TGE, or how whitelisting works — full auto-allocation is still under construction, so until then, whitelist your wallet on any agent vault for early access.' },
   ]);
@@ -217,7 +229,7 @@ export default function ExplorerPage() {
 
   function openWhitelist(v: Vault) {
     setModalVault(v);
-    setModalState(isConnected ? 'confirm' : 'connect');
+    setModalState(myWhitelists.has(v.id) ? 'success' : isConnected ? 'confirm' : 'connect');
   }
   function closeModal() {
     setModalVault(null);
@@ -236,6 +248,7 @@ export default function ExplorerPage() {
         if (d.ok && d.data) setCounts((prev) => ({ ...prev, [modalVault.id]: d.data.count }));
       })
       .catch(() => {});
+    setMyWhitelists((prev) => new Set(prev).add(modalVault.id));
   }
 
   function resolveStats(v: Vault): Array<{ v: string; l: string }> {
@@ -284,7 +297,7 @@ export default function ExplorerPage() {
       {/* ── Nav ── */}
       <nav className="ex-nav">
         <Link href="/" className="ex-nav-l">
-          <svg width="18" height="22" viewBox="0 0 100 120" fill="none">
+          <svg width="20" height="24" viewBox="0 0 100 120" fill="none">
             <path d="M50 8Q72 28 82 60Q72 92 50 112Q28 92 18 60Q28 28 50 8Z" fill="#00E87B" />
             <ellipse cx="50" cy="60" rx="16" ry="22" fill="#000" opacity=".25" />
             <circle cx="50" cy="60" r="9" fill="#fff" opacity=".88" />
@@ -323,7 +336,7 @@ export default function ExplorerPage() {
               <div className="ex-section-label">Live</div>
               <div className="ex-vault-grid">
                 {liveVaults.map((v) => (
-                  <VaultCard key={v.id} v={v} count={counts[v.id]} stats={resolveStats(v)} onWhitelist={() => openWhitelist(v)} />
+                  <VaultCard key={v.id} v={v} count={counts[v.id]} stats={resolveStats(v)} whitelisted={myWhitelists.has(v.id)} onWhitelist={() => openWhitelist(v)} />
                 ))}
               </div>
             </>
@@ -334,7 +347,7 @@ export default function ExplorerPage() {
               <div className="ex-section-label">Waitlist</div>
               <div className="ex-vault-grid">
                 {waitlistVaults.map((v) => (
-                  <VaultCard key={v.id} v={v} count={counts[v.id]} stats={resolveStats(v)} onWhitelist={() => openWhitelist(v)} />
+                  <VaultCard key={v.id} v={v} count={counts[v.id]} stats={resolveStats(v)} whitelisted={myWhitelists.has(v.id)} onWhitelist={() => openWhitelist(v)} />
                 ))}
               </div>
             </>
@@ -468,19 +481,23 @@ export default function ExplorerPage() {
   );
 }
 
-function VaultCard({ v, count, stats, onWhitelist }: { v: Vault; count?: number; stats: Array<{ v: string; l: string }>; onWhitelist: () => void }) {
+function VaultCard({ v, count, stats, whitelisted, onWhitelist }: { v: Vault; count?: number; stats: Array<{ v: string; l: string }>; whitelisted: boolean; onWhitelist: () => void }) {
   const body = (
     <>
       <div className="ex-vc-top">
         <span className={`ex-vc-badge ${v.status}`}>
           <span className="ex-vc-dot" />{v.status === 'live' ? 'Live' : 'Waitlist'}
         </span>
-        <button
-          className="ex-vc-wl-btn"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onWhitelist(); }}
-        >
-          Whitelist Wallet
-        </button>
+        {whitelisted ? (
+          <span className="ex-vc-wl-done">✓ Whitelisted</span>
+        ) : (
+          <button
+            className="ex-vc-wl-btn"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onWhitelist(); }}
+          >
+            Whitelist Wallet
+          </button>
+        )}
       </div>
       <div className="ex-vc-proto">{v.proto}</div>
       <div className="ex-vc-name">{v.name}</div>

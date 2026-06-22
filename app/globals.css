@@ -5961,11 +5961,11 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 52px;
-  background: rgba(0,0,0,.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #1a1a1a;
+  padding: 0 2.5rem;
+  height: 54px;
+  background: rgba(2,2,4,.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
   font-family: 'JetBrains Mono', monospace;
 }
 .snav-logo-link {
@@ -5975,12 +5975,12 @@ html {
   text-decoration: none;
   flex-shrink: 0;
 }
-.snav-logo-svg { width: 22px; height: 26px; }
+.snav-logo-svg { width: 20px; height: 24px; }
 .snav-brand {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 2px;
+  font-size: .95rem;
+  letter-spacing: 3px;
   color: #e0e0e0;
 }
 .snav-right {
@@ -6022,7 +6022,7 @@ html {
   font-weight: 600;
   letter-spacing: .5px;
   padding: .45rem 1.2rem;
-  background: #00C805;
+  background: #00E87B;
   color: #000;
   border: none;
   cursor: pointer;
@@ -6032,7 +6032,7 @@ html {
   display: inline-block;
   white-space: nowrap;
 }
-.snav-cta:hover { background: #00e006; text-decoration: none; }
+.snav-cta:hover { background: #00ff94; text-decoration: none; }
 .snav-hamburger {
   display: none;
   background: none;
