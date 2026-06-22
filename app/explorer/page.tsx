@@ -146,11 +146,19 @@ const QUICK_REPLIES = ['Live vaults', 'Perps', 'Predictions', 'LP', 'TGE', 'Whit
 
 type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string };
 
+type LiveStats = { aum: number; winRate: number; returnPct: number };
+
+function fmtAUM(n: number): string {
+  return n >= 1000 ? `$${(n / 1000).toFixed(1)}K` : `$${n}`;
+}
+
 export default function ExplorerPage() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [modalVault, setModalVault] = useState<Vault | null>(null);
   const [modalState, setModalState] = useState<'connect' | 'confirm' | 'success'>('connect');
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [targetAums, setTargetAums] = useState<Record<string, number>>({});
+  const [liveStats, setLiveStats] = useState<Record<string, LiveStats>>({});
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -159,6 +167,30 @@ export default function ExplorerPage() {
     fetch('/api/whitelist')
       .then((r) => r.json())
       .then((d) => { if (d.ok && d.data) setCounts((prev) => ({ ...prev, ...d.data })); })
+      .catch(() => {});
+
+    fetch('/api/whitelist/aum')
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setTargetAums(d.data); })
+      .catch(() => {});
+
+    fetch('/api/vaults/data')
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d.ok || !d.data) return;
+        const next: Record<string, LiveStats> = {};
+        for (const id of ['geo', 'nba']) {
+          const v = d.data[id];
+          if (!v?.stats) continue;
+          const { capitalDeployed30d, winRate, pnl30d } = v.stats;
+          next[id] = {
+            aum: capitalDeployed30d ?? 0,
+            winRate: winRate ?? 0,
+            returnPct: capitalDeployed30d > 0 ? (pnl30d / capitalDeployed30d) * 100 : 0,
+          };
+        }
+        setLiveStats(next);
+      })
       .catch(() => {});
   }, []);
 
@@ -200,6 +232,25 @@ export default function ExplorerPage() {
         if (d.ok && d.data) setCounts((prev) => ({ ...prev, [modalVault.id]: d.data.count }));
       })
       .catch(() => {});
+  }
+
+  function resolveStats(v: Vault): Array<{ v: string; l: string }> {
+    const live = liveStats[v.id];
+    const targetAum = targetAums[v.id];
+    return v.stats.map((s) => {
+      if (s.l === 'Waitlisted') return s;
+      if (v.status === 'live' && live) {
+        if (s.l === 'AUM') return { ...s, v: fmtAUM(live.aum) };
+        if (s.l === 'Win Rate') return { ...s, v: `${live.winRate.toFixed(0)}%` };
+        if (s.l === '30D Return' || s.l === '7D Return') {
+          return { ...s, v: `${live.returnPct >= 0 ? '+' : ''}${live.returnPct.toFixed(1)}%` };
+        }
+      }
+      if (v.status === 'waitlist' && s.l === 'Target AUM' && targetAum != null) {
+        return { ...s, v: fmtAUM(targetAum) };
+      }
+      return s;
+    });
   }
 
   function sendQuery(raw: string) {
@@ -268,7 +319,7 @@ export default function ExplorerPage() {
               <div className="ex-section-label">Live</div>
               <div className="ex-vault-grid">
                 {liveVaults.map((v) => (
-                  <VaultCard key={v.id} v={v} count={counts[v.id]} onWhitelist={() => openWhitelist(v)} />
+                  <VaultCard key={v.id} v={v} count={counts[v.id]} stats={resolveStats(v)} onWhitelist={() => openWhitelist(v)} />
                 ))}
               </div>
             </>
@@ -279,7 +330,7 @@ export default function ExplorerPage() {
               <div className="ex-section-label">Waitlist</div>
               <div className="ex-vault-grid">
                 {waitlistVaults.map((v) => (
-                  <VaultCard key={v.id} v={v} count={counts[v.id]} onWhitelist={() => openWhitelist(v)} />
+                  <VaultCard key={v.id} v={v} count={counts[v.id]} stats={resolveStats(v)} onWhitelist={() => openWhitelist(v)} />
                 ))}
               </div>
             </>
@@ -348,7 +399,7 @@ export default function ExplorerPage() {
               <div className="ex-wm-name">{modalVault.name}</div>
               <div className="ex-wm-proto">{modalVault.proto}</div>
               <div className="ex-wm-stats">
-                {modalVault.stats.map((s) => (
+                {resolveStats(modalVault).map((s) => (
                   <div key={s.l}><div className="ex-wm-sv">{s.v}</div><div className="ex-wm-sl">{s.l}</div></div>
                 ))}
               </div>
@@ -356,7 +407,7 @@ export default function ExplorerPage() {
 
             <div className="ex-wm-body">
               <div className="ex-wm-reward">
-                <em>Earn 10K–100K $YLDR</em> at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
+                <em>Earn a variable $YLDR reward</em> at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
                 <div className="ex-wm-fine">*T&amp;Cs apply.</div>
               </div>
               <div className="ex-wm-counter">
@@ -413,7 +464,7 @@ export default function ExplorerPage() {
   );
 }
 
-function VaultCard({ v, count, onWhitelist }: { v: Vault; count?: number; onWhitelist: () => void }) {
+function VaultCard({ v, count, stats, onWhitelist }: { v: Vault; count?: number; stats: Array<{ v: string; l: string }>; onWhitelist: () => void }) {
   const body = (
     <>
       <div className="ex-vc-top">
@@ -431,7 +482,7 @@ function VaultCard({ v, count, onWhitelist }: { v: Vault; count?: number; onWhit
       <div className="ex-vc-name">{v.name}</div>
       <p className="ex-vc-desc">{v.desc}</p>
       <div className="ex-vc-stats">
-        {v.stats.map((s) => (
+        {stats.map((s) => (
           <div className="ex-vc-stat" key={s.l}>
             <div className="ex-vc-sv">{s.l === 'Waitlisted' ? (count ?? '—') : s.v}</div>
             <div className="ex-vc-sl">{s.l}</div>

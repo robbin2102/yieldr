@@ -402,7 +402,7 @@ function VaultsPageInner() {
             <div className="vp-wl-card">
               <div className="vp-wl-h">Whitelist This Vault</div>
               <div className="vp-wl-sub">
-                Earn 10K–100K $YLDR at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
+                Earn a variable $YLDR reward at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
               </div>
               <div className="vp-wl-counter">
                 {whitelistCounts[activeVault] != null ? `${whitelistCounts[activeVault]} wallets whitelisted` : 'Loading whitelist count…'}

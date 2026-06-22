@@ -332,8 +332,8 @@ export default function HomePage() {
               <div className="lp-fcta-tag">⚡ $YLDR TGE · Base · July 2026</div>
               <div className="lp-fcta-h">Own the protocol from day one.<br /><span className="ac">Earn while you wait.</span></div>
               <p className="lp-fcta-sub">
-                Whitelist your wallet on any agent vault and earn between{' '}
-                <strong>10K–100K $YLDR</strong>, claimable at beta launch Q1 &apos;27.
+                Whitelist your wallet on any agent vault and earn a{' '}
+                <strong>variable $YLDR reward</strong>, claimable at beta launch Q1 &apos;27.
               </p>
               <p className="lp-fcta-fine">
                 <em>We love degen farmers — but our agents don&apos;t.</em> A minimum $100 USDC
