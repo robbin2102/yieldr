@@ -7,6 +7,7 @@ import './landing.css';
 
 const LIVE_VAULTS = [
   {
+    id: 'geo',
     href: '/explorer',
     proto: 'Polymarket · Predictions',
     name: '🌐 Geopolitics Vault',
@@ -14,6 +15,7 @@ const LIVE_VAULTS = [
     stats: [{ v: '+41.8%', l: '30D Return' }, { v: '82%', l: 'Win Rate' }],
   },
   {
+    id: 'nba',
     href: '/explorer',
     proto: 'Polymarket · Predictions',
     name: '🏀 NBA Edge Vault',
@@ -24,24 +26,28 @@ const LIVE_VAULTS = [
 
 const WAITLIST_VAULTS = [
   {
+    id: 'funding',
     proto: 'Avantis · Hyperliquid · Perps',
     name: '⚡ Funding Arbs Vault',
     desc: 'Captures funding rate premium on Avantis & Hyperliquid by holding long/short pairs where funding diverges from historical mean. Zero directional bias.',
     stats: [{ v: '$75K', l: 'Target AUM' }, { v: '312', l: 'Waitlisted' }],
   },
   {
+    id: 'aero',
     proto: 'Aerodrome · LP',
     name: '🪙 AERO Accumulator Vault',
     desc: "DCA into Base's largest DEX token using top Aerodrome LP and trader signals. Agents execute and pace.",
     stats: [{ v: '$48K', l: 'Target AUM' }, { v: '234', l: 'Waitlisted' }],
   },
   {
+    id: 'base',
     proto: 'Virtuals · Bankr · Project Coins',
     name: '🌐 Base Ecosystem Vault',
     desc: 'Curated basket of Virtuals, Bankr, and Base ecosystem tokens following highest-edge wallets.',
     stats: [{ v: '$32K', l: 'Target AUM' }, { v: '189', l: 'Waitlisted' }],
   },
   {
+    id: 'spacex',
     proto: 'Uniswap · Aerodrome · RWA',
     name: '🚀 SpaceX RWA Vault',
     desc: 'Accumulates SpaceX tokenised equity on Uniswap and Aerodrome, following wallets with the highest RWA spot edge.',
@@ -49,22 +55,26 @@ const WAITLIST_VAULTS = [
   },
 ];
 
-const TICKER_ITEMS = [
+function tickerItems(waitlistStats: { total_wallets: number } | null) {
+  return [
   { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
   { label: 'NBA EDGE VAULT', value: '+18.7% 7D', up: true },
   { label: 'YLDR TGE', value: 'JULY 2026', up: true },
   { label: 'GENESIS FDV', value: '$9M', up: true },
   { label: 'BASE BATCHES 002', value: 'WINNER', up: true },
-  { label: '102 WALLETS', value: 'WHITELISTED', up: true },
+  { label: waitlistStats ? `${waitlistStats.total_wallets} WALLETS` : '— WALLETS', value: 'WHITELISTED', up: true },
   { label: 'FUNDING ARBS VAULT', value: 'WAITLIST OPEN', up: true },
   { label: 'SPACEX RWA VAULT', value: 'WAITLIST OPEN', up: true },
-];
+  ];
+}
 
 function formatAUM(n: number): string {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `$${Math.round(n / 1_000)}K`;
   return `$${n}`;
 }
+
+type LiveStats = { winRate: number; returnPct: number };
 
 export default function HomePage() {
   const [bannerOpen, setBannerOpen] = useState(true);
@@ -73,13 +83,61 @@ export default function HomePage() {
     total_wallets: number;
     vault_count: number;
   } | null>(null);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [targetAums, setTargetAums] = useState<Record<string, number>>({});
+  const [liveStats, setLiveStats] = useState<Record<string, LiveStats>>({});
 
   useEffect(() => {
     fetch('/api/whitelist/stats')
       .then((r) => r.json())
       .then((d) => { if (d.ok && d.data) setWaitlistStats(d.data); })
       .catch(() => {});
+
+    fetch('/api/whitelist')
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setCounts(d.data); })
+      .catch(() => {});
+
+    fetch('/api/whitelist/aum')
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setTargetAums(d.data); })
+      .catch(() => {});
+
+    fetch('/api/vaults/data')
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d.ok || !d.data) return;
+        const next: Record<string, LiveStats> = {};
+        for (const id of ['geo', 'nba']) {
+          const v = d.data[id];
+          if (!v?.stats) continue;
+          const { capitalDeployed30d, winRate, pnl30d } = v.stats;
+          next[id] = {
+            winRate: winRate ?? 0,
+            returnPct: capitalDeployed30d > 0 ? (pnl30d / capitalDeployed30d) * 100 : 0,
+          };
+        }
+        setLiveStats(next);
+      })
+      .catch(() => {});
   }, []);
+
+  function resolveStats(v: { id: string; stats: Array<{ v: string; l: string }> }): Array<{ v: string; l: string }> {
+    const live = liveStats[v.id];
+    const targetAum = targetAums[v.id];
+    const count = counts[v.id];
+    return v.stats.map((s) => {
+      if (s.l === 'Waitlisted') return count != null ? { ...s, v: String(count) } : s;
+      if (s.l === 'Target AUM') return targetAum != null ? { ...s, v: formatAUM(targetAum) } : s;
+      if (live) {
+        if (s.l === 'Win Rate') return { ...s, v: `${live.winRate.toFixed(0)}%` };
+        if (s.l === '30D Return' || s.l === '7D Return') {
+          return { ...s, v: `${live.returnPct >= 0 ? '+' : ''}${live.returnPct.toFixed(1)}%` };
+        }
+      }
+      return s;
+    });
+  }
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -129,7 +187,7 @@ export default function HomePage() {
       {/* ── Ticker ── */}
       <div className="lp-ticker">
         <div className="lp-ticker-track">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+          {[...tickerItems(waitlistStats), ...tickerItems(waitlistStats)].map((item, i) => (
             <span key={i} style={{ display: 'contents' }}>
               <span className="lp-ti">
                 {item.label}
@@ -260,7 +318,7 @@ export default function HomePage() {
                   <div className="lp-vs-name">{v.name}</div>
                   <p className="lp-vs-desc">{v.desc}</p>
                   <div className="lp-vs-stats">
-                    {v.stats.map((s) => (
+                    {resolveStats(v).map((s) => (
                       <div className="lp-vs-stat" key={s.l}><div className="lp-vs-sv">{s.v}</div><div className="lp-vs-sl">{s.l}</div></div>
                     ))}
                   </div>
@@ -274,7 +332,7 @@ export default function HomePage() {
                   <div className="lp-vs-name">{v.name}</div>
                   <p className="lp-vs-desc">{v.desc}</p>
                   <div className="lp-vs-stats">
-                    {v.stats.map((s) => (
+                    {resolveStats(v).map((s) => (
                       <div className="lp-vs-stat" key={s.l}><div className="lp-vs-sv">{s.v}</div><div className="lp-vs-sl">{s.l}</div></div>
                     ))}
                   </div>
