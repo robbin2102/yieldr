@@ -36,7 +36,6 @@ const WALLETS: Record<ShownVaultId, { full: string; short: string }> = {
   nba: { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
 };
 
-const WHITELIST_COUNTS: Record<ShownVaultId, number> = { geo: 312, nba: 187 };
 
 // ── Skeleton helper ────────────────────────────────────────────────────────
 function Skel({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' | 'xl' }) {
@@ -178,10 +177,18 @@ function VaultsPageInner() {
   const [isLoading, setIsLoading]   = useState(true);
   const [vaultData, setVaultData]   = useState<Record<ShownVaultId, VaultState>>(buildFallbackState);
   const [whitelisted, setWhitelisted] = useState<Set<ShownVaultId>>(new Set());
+  const [whitelistCounts, setWhitelistCounts] = useState<Partial<Record<ShownVaultId, number>>>({});
 
   useEffect(() => {
     if (vaultParam && VAULT_IDS.includes(vaultParam)) setActiveVault(vaultParam);
   }, [vaultParam]);
+
+  useEffect(() => {
+    fetch('/api/whitelist')
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setWhitelistCounts((prev) => ({ ...prev, ...d.data })); })
+      .catch(() => {});
+  }, []);
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -221,8 +228,18 @@ function VaultsPageInner() {
   }, []);
 
   function handleConfirmWhitelist() {
-    // ← Hook: sign whitelist message + POST to backend here
+    if (!address) return;
     setWhitelisted((prev) => new Set(prev).add(activeVault));
+    fetch('/api/whitelist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wallet_address: address, vault_id: activeVault }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && d.data) setWhitelistCounts((prev) => ({ ...prev, [activeVault]: d.data.count }));
+      })
+      .catch(() => {});
   }
 
   const av   = vaultData[activeVault];
@@ -387,7 +404,9 @@ function VaultsPageInner() {
               <div className="vp-wl-sub">
                 Earn 10K–100K $YLDR at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
               </div>
-              <div className="vp-wl-counter">{WHITELIST_COUNTS[activeVault]} wallets whitelisted</div>
+              <div className="vp-wl-counter">
+                {whitelistCounts[activeVault] != null ? `${whitelistCounts[activeVault]} wallets whitelisted` : 'Loading whitelist count…'}
+              </div>
 
               {wlState === 'connect' && (
                 <button className="vp-wl-btn" onClick={() => openConnectModal?.()}>Connect Wallet to Whitelist</button>

@@ -94,6 +94,7 @@ a.ex-vc:hover { border-color: var(--g); }
 }
 .ex-vc-sv { font-family: var(--mono); font-size: .78rem; font-weight: 600; color: var(--text); }
 .ex-vc-sl { font-size: .58rem; color: var(--text-faint); margin-top: 2px; }
+.ex-vc-wl-count { font-family: var(--mono); font-size: .62rem; color: var(--text-faint); margin-top: -2px; }
 
 /* ── Agent panel ── */
 .ex-agent-panel {

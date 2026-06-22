@@ -7,6 +7,36 @@ import { UserProfile } from '../components/UserProfile';
 import { usePayment } from '../context/PaymentContext';
 import { useAccount } from 'wagmi';
 
+const PAGE_ORDER = [
+  'what-is-yieldr',
+  'the-problem',
+  'the-solution',
+  'agent-vaults',
+  'fund-launch-waitlist',
+  'community-project-vaults',
+  'allocation-agents',
+  'depositor-whitelist',
+  'yldr-token',
+  'roadmap',
+  'risk-restrictions',
+  'connect',
+] as const;
+
+const PAGE_TITLES: Record<string, string> = {
+  'what-is-yieldr': 'What is Yieldr?',
+  'the-problem': 'The Problem',
+  'the-solution': 'The Solution',
+  'agent-vaults': 'Agent Vaults',
+  'fund-launch-waitlist': 'Fund Launch Waitlist',
+  'community-project-vaults': 'Community & Project Vaults',
+  'allocation-agents': 'Allocation Agents',
+  'depositor-whitelist': 'Depositor Whitelist',
+  'yldr-token': '$YLDR Token',
+  roadmap: 'Roadmap',
+  'risk-restrictions': 'Risk & Restrictions',
+  connect: 'Connect',
+};
+
 export default function DocsPage() {
   const [activePage, setActivePage] = useState('what-is-yieldr');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -57,6 +87,71 @@ export default function DocsPage() {
     setSidebarOpen(false);
   };
 
+  const prevNext = (pageId: string) => {
+    const i = PAGE_ORDER.indexOf(pageId as typeof PAGE_ORDER[number]);
+    return {
+      prev: i > 0 ? PAGE_ORDER[i - 1] : null,
+      next: i < PAGE_ORDER.length - 1 ? PAGE_ORDER[i + 1] : null,
+    };
+  };
+
+  const PageFooter = ({ pageId }: { pageId: string }) => {
+    const { prev, next } = prevNext(pageId);
+    return (
+      <div className="page-footer">
+        <div className="footer-nav">
+          {prev ? (
+            <a className="footer-nav-btn prev" onClick={() => showPage(prev)}>
+              <div className="footer-nav-label">Previous</div>
+              <div className="footer-nav-title">&larr; {PAGE_TITLES[prev]}</div>
+            </a>
+          ) : <div></div>}
+          {next ? (
+            <a className="footer-nav-btn next" onClick={() => showPage(next)}>
+              <div className="footer-nav-label">Next</div>
+              <div className="footer-nav-title">{PAGE_TITLES[next]} &rarr;</div>
+            </a>
+          ) : <div></div>}
+        </div>
+      </div>
+    );
+  };
+
+  const NAV_SECTIONS: Array<{ icon: string; title: string; items: Array<{ id: string; label: string }> }> = [
+    {
+      icon: '📖', title: 'Getting Started', items: [
+        { id: 'what-is-yieldr', label: 'What is Yieldr?' },
+        { id: 'the-problem', label: 'The Problem' },
+        { id: 'the-solution', label: 'The Solution' },
+      ],
+    },
+    {
+      icon: '🏦', title: 'Agent Vaults', items: [
+        { id: 'agent-vaults', label: 'Agent Vaults' },
+        { id: 'fund-launch-waitlist', label: 'Fund Launch Waitlist' },
+        { id: 'community-project-vaults', label: 'Community & Project Vaults' },
+      ],
+    },
+    {
+      icon: '🧭', title: 'Depositors', items: [
+        { id: 'allocation-agents', label: 'Allocation Agents' },
+        { id: 'depositor-whitelist', label: 'Depositor Whitelist' },
+      ],
+    },
+    {
+      icon: '🪙', title: 'YLDR Token', items: [
+        { id: 'yldr-token', label: 'Token Overview' },
+        { id: 'roadmap', label: 'Roadmap' },
+      ],
+    },
+    {
+      icon: '📚', title: 'Resources', items: [
+        { id: 'risk-restrictions', label: 'Risk & Restrictions' },
+        { id: 'connect', label: 'Connect' },
+      ],
+    },
+  ];
+
   return (
     <>
       {/* Sidebar Overlay for mobile */}
@@ -78,41 +173,20 @@ export default function DocsPage() {
               <button className="mobile-menu-close" onClick={closeSidebar}>✕</button>
             </div>
             <div className="mobile-menu-content">
-              {/* Docs Navigation */}
-              <div className="mobile-menu-section">
-                <div className="mobile-menu-section-title">📖 Getting Started</div>
-                <a className={'mobile-menu-sublink ' + (activePage === 'what-is-yieldr' ? 'active' : '')} onClick={() => navigateAndClose('what-is-yieldr')}>What is Yieldr?</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'the-problem' ? 'active' : '')} onClick={() => navigateAndClose('the-problem')}>The Problem</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'quick-start' ? 'active' : '')} onClick={() => navigateAndClose('quick-start')}>Quick Start</a>
-              </div>
-
-              <div className="mobile-menu-section">
-                <div className="mobile-menu-section-title">🤖 Product</div>
-                <a className={'mobile-menu-sublink ' + (activePage === 'how-it-works' ? 'active' : '')} onClick={() => navigateAndClose('how-it-works')}>How It Works</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'ai-agents' ? 'active' : '')} onClick={() => navigateAndClose('ai-agents')}>AI Agents</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'for-investors' ? 'active' : '')} onClick={() => navigateAndClose('for-investors')}>For Investors</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'for-traders' ? 'active' : '')} onClick={() => navigateAndClose('for-traders')}>For Traders</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'for-lps' ? 'active' : '')} onClick={() => navigateAndClose('for-lps')}>For LPs</a>
-              </div>
-
-              <div className="mobile-menu-section">
-                <div className="mobile-menu-section-title">🗺️ Platform</div>
-                <a className={'mobile-menu-sublink ' + (activePage === 'roadmap' ? 'active' : '')} onClick={() => navigateAndClose('roadmap')}>Roadmap</a>
-              </div>
-
-              <div className="mobile-menu-section">
-                <div className="mobile-menu-section-title">🪙 YLDR Token</div>
-                <a className={'mobile-menu-sublink ' + (activePage === 'token-overview' ? 'active' : '')} onClick={() => navigateAndClose('token-overview')}>Token Overview</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'token-utility' ? 'active' : '')} onClick={() => navigateAndClose('token-utility')}>Utility</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'tokenomics' ? 'active' : '')} onClick={() => navigateAndClose('tokenomics')}>Tokenomics</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'how-to-participate' ? 'active' : '')} onClick={() => navigateAndClose('how-to-participate')}>How to Participate</a>
-              </div>
-
-              <div className="mobile-menu-section">
-                <div className="mobile-menu-section-title">📚 Resources</div>
-                <a className={'mobile-menu-sublink ' + (activePage === 'faq' ? 'active' : '')} onClick={() => navigateAndClose('faq')}>FAQ</a>
-                <a className={'mobile-menu-sublink ' + (activePage === 'glossary' ? 'active' : '')} onClick={() => navigateAndClose('glossary')}>Glossary</a>
-              </div>
+              {NAV_SECTIONS.map((section) => (
+                <div className="mobile-menu-section" key={section.title}>
+                  <div className="mobile-menu-section-title">{section.icon} {section.title}</div>
+                  {section.items.map((item) => (
+                    <a
+                      key={item.id}
+                      className={'mobile-menu-sublink ' + (activePage === item.id ? 'active' : '')}
+                      onClick={() => navigateAndClose(item.id)}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              ))}
 
               {/* Get Early Access CTA */}
               {hasCompletedPayment && isConnected ? (
@@ -179,45 +253,20 @@ export default function DocsPage() {
       {/* Sidebar */}
       <nav className={'sidebar ' + (sidebarOpen ? 'open' : '')}>
         <div className="sidebar-content">
-          {/* Getting Started */}
-          <div className="nav-section">
-            <div className="nav-section-title"><span className="nav-section-icon">📖</span> Getting Started</div>
-            <a className={'nav-link ' + (activePage === 'what-is-yieldr' ? 'active' : '')} onClick={() => showPage('what-is-yieldr')}>What is Yieldr?</a>
-            <a className={'nav-link ' + (activePage === 'the-problem' ? 'active' : '')} onClick={() => showPage('the-problem')}>The Problem</a>
-            <a className={'nav-link ' + (activePage === 'quick-start' ? 'active' : '')} onClick={() => showPage('quick-start')}>Quick Start</a>
-          </div>
-
-          {/* Product */}
-          <div className="nav-section">
-            <div className="nav-section-title"><span className="nav-section-icon">🤖</span> Product</div>
-            <a className={'nav-link ' + (activePage === 'how-it-works' ? 'active' : '')} onClick={() => showPage('how-it-works')}>How It Works</a>
-            <a className={'nav-link ' + (activePage === 'ai-agents' ? 'active' : '')} onClick={() => showPage('ai-agents')}>AI Agents</a>
-            <a className={'nav-link ' + (activePage === 'for-investors' ? 'active' : '')} onClick={() => showPage('for-investors')}>For Investors</a>
-            <a className={'nav-link ' + (activePage === 'for-traders' ? 'active' : '')} onClick={() => showPage('for-traders')}>For Traders</a>
-            <a className={'nav-link ' + (activePage === 'for-lps' ? 'active' : '')} onClick={() => showPage('for-lps')}>For LPs</a>
-          </div>
-
-          {/* Platform */}
-          <div className="nav-section">
-            <div className="nav-section-title"><span className="nav-section-icon">🗺️</span> Platform</div>
-            <a className={'nav-link ' + (activePage === 'roadmap' ? 'active' : '')} onClick={() => showPage('roadmap')}>Roadmap</a>
-          </div>
-
-          {/* Token */}
-          <div className="nav-section">
-            <div className="nav-section-title"><span className="nav-section-icon">🪙</span> YLDR Token</div>
-            <a className={'nav-link ' + (activePage === 'token-overview' ? 'active' : '')} onClick={() => showPage('token-overview')}>Token Overview</a>
-            <a className={'nav-link ' + (activePage === 'token-utility' ? 'active' : '')} onClick={() => showPage('token-utility')}>Utility</a>
-            <a className={'nav-link ' + (activePage === 'tokenomics' ? 'active' : '')} onClick={() => showPage('tokenomics')}>Tokenomics</a>
-            <a className={'nav-link ' + (activePage === 'how-to-participate' ? 'active' : '')} onClick={() => showPage('how-to-participate')}>How to Participate</a>
-          </div>
-
-          {/* Resources */}
-          <div className="nav-section">
-            <div className="nav-section-title"><span className="nav-section-icon">📚</span> Resources</div>
-            <a className={'nav-link ' + (activePage === 'faq' ? 'active' : '')} onClick={() => showPage('faq')}>FAQ</a>
-            <a className={'nav-link ' + (activePage === 'glossary' ? 'active' : '')} onClick={() => showPage('glossary')}>Glossary</a>
-          </div>
+          {NAV_SECTIONS.map((section) => (
+            <div className="nav-section" key={section.title}>
+              <div className="nav-section-title"><span className="nav-section-icon">{section.icon}</span> {section.title}</div>
+              {section.items.map((item) => (
+                <a
+                  key={item.id}
+                  className={'nav-link ' + (activePage === item.id ? 'active' : '')}
+                  onClick={() => showPage(item.id)}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          ))}
         </div>
       </nav>
 
@@ -225,1251 +274,684 @@ export default function DocsPage() {
       <main className="main-content">
         <div className="content-wrapper">
 
-          {/* PAGE: What is Yieldr? */}
+          {/* PAGE 01: What is Yieldr? */}
           <section className={'page-section ' + (activePage === 'what-is-yieldr' ? 'active' : '')} id="page-what-is-yieldr">
             <h1>What is Yieldr?</h1>
-            <p className="page-subtitle">AI-enabled decentralized asset management.</p>
-
-            <p>Yieldr is a platform where <strong>investors can discover top Traders & Fund Managers onchain</strong> while <strong>Traders can validate performance, raise capital, and scale to fund management</strong> — all powered by AI agents and secured by smart contracts.</p>
+            <p className="page-subtitle">Documentation · v2.0 · Updated July 2026</p>
 
             <div className="callout callout-success">
-              <div className="callout-title">💡 The Vision</div>
-              <p>A two-sided marketplace where investors discover top trading alpha while traders build track records and raise capital. AI agents power discovery, research & analysis, execution and portfolio management — becoming autonomous over time. Smart contracts enable trustless execution. Think of it as AI-powered asset management infrastructure for DeFi — accessible to everyone.</p>
+              <div className="callout-title">The agent stack for onchain funds.</div>
+              <p>Connect your wallet, prove your edge, and launch an agent vault — turning your onchain performance into recurring revenue.</p>
             </div>
 
-            <h2>What You Get</h2>
+            <p>Yieldr helps traders, project communities, DAOs, and depositors use agents to launch, operate, monitor, and allocate across onchain funds.</p>
+            <p>Agents identify edge, match capital, handle communication, monitor performance, and rotate allocation when edge changes.</p>
 
-            <p><strong>Intelligence Layer</strong> — AI agents that deliver standalone value while we build toward the full platform:</p>
+            <h2>Yieldr is the agent OS for onchain funds</h2>
+            <p>Onchain performance is public. Wallets reveal trading history, PnL, market selection, sizing, drawdowns, and execution behavior. But a wallet alone is not a fund.</p>
+            <p>Yieldr turns verifiable onchain performance into agent vaults.</p>
+            <p>An agent vault is an onchain fund structure powered by smart contracts and operated through agents. The vault handles capital, execution rules, performance tracking, and accounting. The agents handle the work around it: edge detection, discovery, depositor matching, communication, monitoring, and allocation intelligence.</p>
 
-            <ul className="feature-list">
-              <li><strong>Discover</strong> — Find top traders across Avantis, Hyperliquid, Aerodrome, Uniswap, and more</li>
-              <li><strong>Analyze</strong> — Understand what drives alpha: win rates, risk profiles, trading styles</li>
-              <li><strong>Advise</strong> — Get recommendations on your portfolio, positions, and timing</li>
-              <li><strong>Monitor</strong> — Track your positions and get alerts when things need attention</li>
-            </ul>
-
-            <h2>The Full Platform</h2>
-
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th>Phase</th>
-                  <th>For Investors</th>
-                  <th>For Traders</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span className="stage-badge stage-now">BETA</span></td>
-                  <td>Discovery, analysis, advice, monitoring</td>
-                  <td>Benchmarking, risk & position management advice</td>
-                </tr>
-                <tr>
-                  <td><span className="stage-badge stage-beta">V1.0</span></td>
-                  <td>Fine-tuned PM (portfolio manager) agents</td>
-                  <td>Fine-tuned trade execution agents</td>
-                </tr>
-                <tr>
-                  <td><span className="stage-badge stage-later">V2.0</span></td>
-                  <td>Semi-autonomous portfolio management</td>
-                  <td>Raise capital, fund management, earn fees</td>
-                </tr>
-                <tr>
-                  <td><span className="stage-badge stage-later">V3.0+</span></td>
-                  <td>Autonomous portfolio management</td>
-                  <td>Agent-powered funds at scale</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h2>Who It&apos;s For</h2>
-
-            <div className="cards-grid">
-              <div className="card">
-                <div className="card-icon">💰</div>
-                <div className="card-title">Investors</div>
-                <p className="card-desc">Discover top traders, understand their strategies, deploy capital with confidence.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">📈</div>
-                <div className="card-title">Traders</div>
-                <p className="card-desc">Build verified track records, benchmark & improve your edge, scale to fund management.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">💧</div>
-                <div className="card-title">LPs</div>
-                <p className="card-desc">Monitor IL, optimize yields, get alerts across protocols.</p>
-              </div>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <div></div>
-                <a className="footer-nav-btn next" onClick={() => showPage('the-problem')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">The Problem →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-          {/* PAGE: The Problem */}
-          <section className={'page-section ' + (activePage === 'the-problem' ? 'active' : '')} id="page-the-problem">
-            <h1>The Problem</h1>
-            <p className="page-subtitle">Why earning and scaling alpha in DeFi is harder than it should be.</p>
-
-            <h2>For Investors</h2>
-            <p>You want to earn alpha by following top DeFi traders. But you face two problems:</p>
-
-            <h3>🔍 Discovery Problem</h3>
-            <p>Finding top traders across DeFi protocols is fragmented and manual. There&apos;s no unified view of who&apos;s actually generating alpha across Avantis, Hyperliquid, Polymarket, Kalshi, Aerodrome, Uniswap, and other protocols.</p>
-            <div className="solution-callout">
-              <p><strong>→ Solved by:</strong> AI agents discover and rank top traders across protocols <span className="stage-badge stage-now">BETA</span></p>
-            </div>
-
-            <h3>🤝 Trust Problem</h3>
-            <p>Copy trading platforms exist, but there&apos;s no way to validate the performance they claim. Even when wallet addresses are provided, there&apos;s massive friction to pull transaction data and do true analysis. Without understanding what actually drives a trader&apos;s alpha, investing is blind guesswork.</p>
-            <div className="solution-callout">
-              <p><strong>→ Solved by:</strong> AI analyzes on-chain transactions, explains alpha drivers <span className="stage-badge stage-now">BETA</span></p>
-            </div>
-
-            <h2>For Traders</h2>
-            <p>Traders who generate consistent alpha have no way to scale:</p>
-
-            <h3>✓ Validation Problem</h3>
-            <p>No place to publicly validate performance in a verifiable way. No path from managing $200K personal capital to $2M+ with outside investors. You&apos;re stuck trading your own capital with no way to prove your edge to potential investors.</p>
-            <div className="solution-callout blue">
-              <p><strong>→ Solved by:</strong> AI agent-driven onchain performance validation + Fund management <span className="stage-badge stage-beta">V1.0</span> <span className="stage-badge stage-later">V2.0</span></p>
-            </div>
-
-            <h3>🔒 Edge Preservation Problem</h3>
-            <p>Top traders don&apos;t want their wallet transactions parsed and strategies reverse-engineered. No incentive structure exists for them to let their alpha be accessible to investors. Why would they share their edge for free?</p>
-            <div className="solution-callout blue">
-              <p><strong>→ Solved by:</strong> Transparency levels (performance-only vs full) + Compensation for alpha <span className="stage-badge stage-later">V2.0</span></p>
-            </div>
-
-            <h2>Why Current Solutions Fail</h2>
-
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th>Platform</th>
-                  <th>Discovery</th>
-                  <th>Verification</th>
-                  <th>Intelligence</th>
-                  <th>Trader Incentives</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>CEX Copy Trading</td>
-                  <td>Limited</td>
-                  <td><span className="cross">✗</span> No on-chain proof</td>
-                  <td><span className="cross">✗</span> None</td>
-                  <td><span className="cross">⚠</span> Standard or no comp.</td>
-                </tr>
-                <tr>
-                  <td>DeFi Vaults</td>
-                  <td>Limited</td>
-                  <td><span className="partial">⚠</span> Protocol-specific</td>
-                  <td><span className="cross">✗</span> None</td>
-                  <td><span className="partial">⚠</span> Basic fees only</td>
-                </tr>
-                <tr>
-                  <td>Aggregators</td>
-                  <td>Limited</td>
-                  <td><span className="cross">✗</span> No verification</td>
-                  <td><span className="cross">✗</span> None</td>
-                  <td><span className="cross">✗</span> No structure</td>
-                </tr>
-                <tr className="highlight">
-                  <td><strong style={{ color: 'var(--accent-green)' }}>Yieldr</strong></td>
-                  <td><span className="check">✓</span> AI-powered</td>
-                  <td><span className="check">✓</span> On-chain verified</td>
-                  <td><span className="check">✓</span> AI analysis</td>
-                  <td><span className="check">✓</span> Compensation + privacy</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div className="callout callout-warning">
-              <div className="callout-title">The Two Missing Layers</div>
-              <p><strong>Intelligence Layer:</strong> Even if all wallet data were indexed, alpha isn&apos;t constant. Traders have hot and cold streaks. Markets change. You&apos;d need to constantly monitor and rotate capital — a full-time job. AI agents solve this.</p>
-              <p><strong>Trust Layer:</strong> Even with intelligence, there&apos;s no way to execute trustlessly. Smart contracts with coded risk limits, transparency options, and compensation structures solve this. This is what enables traders to participate without giving away their edge for free.</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('what-is-yieldr')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← What is Yieldr?</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('quick-start')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">Quick Start →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-          {/* PAGE: Quick Start */}
-          <section className={'page-section ' + (activePage === 'quick-start' ? 'active' : '')} id="page-quick-start">
-            <h1>Quick Start</h1>
-            <p className="page-subtitle">Get started in 30 seconds.</p>
-
-            <div className="flow">
-              <div className="flow-step"><strong>1.</strong> Name Your Agent</div>
-              <div className="flow-arrow">→</div>
-              <div className="flow-step"><strong>2.</strong> Connect Wallet</div>
-              <div className="flow-arrow">→</div>
-              <div className="flow-step"><strong>3.</strong> Start Chatting</div>
-            </div>
-
-            <h2>Step 1: Name Your Agent</h2>
-            <p>Give your AI agent a name. This creates emotional ownership and makes the experience personal from the start.</p>
-
-            <h2>Step 2: Connect Wallet</h2>
-            <p>Connect your wallet so your agent can scan your positions across perps, LPs, and tokens. Your agent uses this to personalize recommendations from message #1.</p>
-
-            <h2>Step 3: Start Chatting</h2>
-            <p>Your agent will show a summary of your positions and highlight anything that needs attention. From there, just ask questions:</p>
-
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Find traders with &gt;60% win rate and &lt;15% max drawdown&quot;</div>
-            </div>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;ETH SHORTS on Avantis are up 75%, good time to take profits?&quot;</div>
-            </div>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;What are top wallets doing with $DEGEN?&quot;</div>
-            </div>
-
-            <div className="callout callout-success">
-              <div className="callout-title">No Goal Selection Required</div>
-              <p>Your agent infers your context from your positions. If you have perp positions, it knows you&apos;re trading. If you have LP positions, it helps with IL management. If you hold meme coins, it tracks what top wallets are doing. (memecoins integration is coming in v1)</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('the-problem')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← The Problem</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('how-it-works')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">How It Works →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-          {/* PAGE: How It Works */}
-          <section className={'page-section ' + (activePage === 'how-it-works' ? 'active' : '')} id="page-how-it-works">
-            <h1>How It Works</h1>
-            <p className="page-subtitle">Two layers that power decentralized asset management.</p>
-
-            <p>Yieldr combines two layers to enable trustless asset management at scale:</p>
-
-            <div className="cards-grid">
-              <div className="card highlight">
-                <div className="card-icon">🧠</div>
-                <div className="card-title">Intelligence Layer <span className="stage-badge stage-now">BETA</span></div>
-                <p className="card-desc">AI agents that discover top traders, analyze alpha drivers, advise on positions, and monitor your portfolio. This is what makes institutional-grade intelligence accessible to everyone.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🔐</div>
-                <div className="card-title">Trust Layer <span className="stage-badge stage-later">V1.0</span></div>
-                <p className="card-desc">Smart contracts that enable trustless execution — auto trading, fund management, risk controls, and compensation. This is what makes it safe for traders to share alpha and investors to deploy capital.</p>
-              </div>
-            </div>
-
-            <h2>Intelligence Layer (BETA)</h2>
-
-            <p>The AI agent is your interface to DeFi&apos;s best traders & fund managers:</p>
-
-            <div className="cards-grid">
-              <div className="card">
-                <div className="card-icon">🔗</div>
-                <div className="card-title">On-Chain Data</div>
-                <p className="card-desc">Real transactions from Base protocols — Avantis, Aerodrome, Uniswap. Can&apos;t be faked.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🔍</div>
-                <div className="card-title">AI Analysis</div>
-                <p className="card-desc">Parses transactions to extract performance, style, risk profile, and alpha drivers.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">💬</div>
-                <div className="card-title">Natural Language</div>
-                <p className="card-desc">Ask questions in plain English. Get answers backed by data.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🔔</div>
-                <div className="card-title">Proactive Alerts</div>
-                <p className="card-desc">Your agent monitors positions and notifies you when action is needed.</p>
-              </div>
-            </div>
-
-            <h2>Trust Layer (V1.0)</h2>
-
-            <p>Smart contracts that make execution trustless for both sides:</p>
-
-            <h3>For Investors</h3>
-            <ul className="feature-list">
-              <li><strong>Non-custodial</strong> — Funds deployed directly from your wallet, you keep custody</li>
-              <li><strong>Risk controls coded in</strong> — Max drawdown, position limits, asset whitelists enforced by code</li>
-              <li><strong>Transparent execution</strong> — Every trade verifiable on-chain</li>
-            </ul>
+            <h2>What Yieldr does</h2>
 
             <h3>For Traders</h3>
-            <ul className="feature-list">
-              <li><strong>Raise capital</strong> — Investors can deploy capital to follow your strategy</li>
-              <li><strong>Earn performance fees</strong> — Programmable compensation for alpha delivery</li>
-              <li><strong>Control transparency</strong> — Choose performance-only or full disclosure</li>
-              <li><strong>Edge preservation</strong> — Get paid for alpha, don&apos;t give it away for free</li>
-            </ul>
+            <p>Launch an agent vault from verifiable onchain edge.</p>
+            <p>Yieldr helps traders prove their edge, package it into a strategy, define risk limits, attract aligned depositors, communicate performance, and monitor drift.</p>
+            <p>The trader keeps trading. Agents handle the rest.</p>
 
-            <div className="callout callout-info">
-              <div className="callout-title">💡 Why Two Layers?</div>
-              <p><strong>Intelligence without trust</strong> = You know who&apos;s good but can&apos;t safely invest with them.</p>
-              <p><strong>Trust without intelligence</strong> = You can execute safely but don&apos;t know who to invest with.</p>
-              <p><strong>Both layers together</strong> = True decentralized asset management.</p>
-            </div>
+            <h3>For Project Communities</h3>
+            <p>Agent vaults help projects and their communities deploy publicly transparent strategies to grow token liquidity and market depth.</p>
+            <p>Projects can use agent vaults to coordinate liquidity, deepen markets, accumulate ecosystem exposure, and give communities a transparent view into strategy execution.</p>
+            <p>Another use case is treasury deployment.</p>
+            <p>DAOs and project treasuries can deploy funds into proven agent strategies with targeted risk-return goals across asset classes that are unavailable to most DAOs today, including perps, predictions, upcoming Base project coins, liquidity strategies, RWAs, and ecosystem baskets.</p>
 
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('quick-start')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← Quick Start</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('ai-agents')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">AI Agents →</div>
-                </a>
-              </div>
-            </div>
+            <h3>For Depositors</h3>
+            <p>Depositors can launch allocation agents that discover and allocate capital across agent vaults based on asset class, risk goals, and return targets.</p>
+            <p>Allocation agents monitor positions across vaults 24/7. They detect edge gain or edge loss in real time, evaluate every trade, and can decide when to rotate capital from a vault losing edge into a vault showing stronger performance.</p>
+            <p>Agent vaults and allocation agents create a new passive investing primitive onchain.</p>
+            <p>This is not possible with primitive DeFi vaults, where users deposit into static strategies and monitor risk manually.</p>
+
+            <h3>For the Market</h3>
+            <p>Yieldr removes the wall between verified edge and scalable capital.</p>
+            <p>Without Yieldr, strong traders stay trapped inside their own wallet. Their track record is public, but hard to discover. Depositors cannot easily evaluate or trust the edge. Communication breaks down during drawdowns. Scaling means taking more personal risk.</p>
+            <p>With Yieldr, agents make the edge legible, match it with the right capital, communicate through volatility, and monitor decay before it shows up in PnL.</p>
+            <p>The constraint moves from fund operations to verified edge.</p>
+
+            <PageFooter pageId="what-is-yieldr" />
           </section>
 
+          {/* PAGE 02: The Problem */}
+          <section className={'page-section ' + (activePage === 'the-problem' ? 'active' : '')} id="page-the-problem">
+            <h1>Great traders should run onchain funds. Most never do.</h1>
+            <p className="page-subtitle">Your wallet is public. Your PnL is onchain. Your edge is more verifiable than anything in traditional finance.</p>
 
-          {/* PAGE: AI Agents */}
-          <section className={'page-section ' + (activePage === 'ai-agents' ? 'active' : '')} id="page-ai-agents">
-            <h1>AI Agents</h1>
-            <p className="page-subtitle">How your AI agent helps you earn alpha.</p>
+            <p>But you are still only trading your own capital.</p>
+            <p>A trader may have strong performance, but performance alone does not create a fund. A fund needs discovery, trust, capital matching, depositor communication, drawdown management, monitoring, reporting, and risk controls.</p>
+            <p>Most traders do not want to run that operation. They want to trade.</p>
 
-            <h2>What Your Agent Does</h2>
+            <h2>Without Yieldr</h2>
+            <p>Strong traders face the same wall:</p>
+            <ul className="feature-list">
+              <li>Nobody outside their circle knows their track record exists.</li>
+              <li>Depositors have no way to find them or trust their edge.</li>
+              <li>There is no structured way to match with the right capital.</li>
+              <li>Every depositor question pulls the trader out of their positions.</li>
+              <li>Drawdowns create noise that must be managed manually.</li>
+              <li>Scaling means risking more personal capital instead of scaling through aligned depositors.</li>
+            </ul>
 
-            <p>Your AI agent is your personal copilot for DeFi. It handles the work that would take you hours:</p>
+            <h2>The Wall</h2>
+            <ul className="feature-list">
+              <li>No discovery layer.</li>
+              <li>No depositor matching.</li>
+              <li>No communication when markets move.</li>
+              <li>No monitoring when strategy drifts.</li>
+              <li>No way to scale edge without scaling personal risk.</li>
+            </ul>
 
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th>Capability</th>
-                  <th>What It Means</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Discover</strong></td>
-                  <td>Find top traders across protocols based on verified on-chain performance</td>
-                  <td><span className="stage-badge stage-now">BETA</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Analyze</strong></td>
-                  <td>Parses transactions to explain win rates, styles, risk profiles, alpha drivers</td>
-                  <td><span className="stage-badge stage-now">BETA</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Advise</strong></td>
-                  <td>Recommends actions on your positions based on data, not emotion</td>
-                  <td><span className="stage-badge stage-now">BETA</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Monitor</strong></td>
-                  <td>Tracks your positions and alerts you when something needs attention</td>
-                  <td><span className="stage-badge stage-now">BETA</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Learn</strong></td>
-                  <td>Trains from top traders, YOUR preferences and goals to become personalized PM & trading copilot</td>
-                  <td><span className="stage-badge stage-beta">V1.0</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Execute</strong></td>
-                  <td>Based on learning and risk/return goals set by user, trades and manages funds via smart contracts</td>
-                  <td><span className="stage-badge stage-later">V1.0</span></td>
-                </tr>
-              </tbody>
-            </table>
+            <h2>Yieldr Removes the Wall</h2>
+            <p>With Yieldr:</p>
+            <ul className="feature-list">
+              <li><strong>Quant Agent</strong> identifies edge from wallet history.</li>
+              <li><strong>Matching Agent</strong> surfaces vaults to the right depositors.</li>
+              <li><strong>Comms Agent</strong> handles depositor queries through volatile periods.</li>
+              <li><strong>Monitoring Agent</strong> tracks edge decay before it shows up in PnL.</li>
+              <li><strong>Allocation Agent</strong> helps depositors rotate capital toward vaults gaining edge.</li>
+            </ul>
 
-            <h2>How Your Agent Learns</h2>
-
-            <p>Your agent gets smarter the more you use it:</p>
-
-            <div className="flow">
-              <div className="flow-step"><strong>Day 1</strong><br />Top traders data</div>
-              <div className="flow-arrow">→</div>
-              <div className="flow-step"><strong>Week 1</strong><br />Understands goals</div>
-              <div className="flow-arrow">→</div>
-              <div className="flow-step"><strong>Month 1</strong><br />Anticipates needs</div>
-              <div className="flow-arrow">→</div>
-              <div className="flow-step"><strong>Month 3+</strong><br />Deeply personalized</div>
+            <div className="callout callout-success">
+              <p>The trader keeps trading. Agents handle the rest.</p>
             </div>
 
-            <p>The agent learns from:</p>
+            <PageFooter pageId="the-problem" />
+          </section>
+
+          {/* PAGE 03: The Solution */}
+          <section className={'page-section ' + (activePage === 'the-solution' ? 'active' : '')} id="page-the-solution">
+            <h1>The Solution</h1>
+            <p className="page-subtitle">Yieldr gives every verified onchain edge an agent stack.</p>
+
+            <p>The vault is the capital layer. The agents are the operating layer. Together, they turn onchain performance into recurring revenue.</p>
+
+            <h2>The Yieldr Agent Stack</h2>
+
+            <h3>Quant Agent</h3>
+            <p>The Quant Agent analyzes wallet history and strategy performance. It identifies:</p>
             <ul className="feature-list">
-              <li><strong>Top traders</strong> — Patterns that drive alpha across protocols</li>
-              <li><strong>Your positions</strong> — Your allocation, risk tolerance, trading style</li>
-              <li><strong>Market context</strong> — Current conditions, trends, sentiment</li>
-              <li><strong>Your conversations</strong> — Your preferences, goals, philosophy</li>
+              <li>Where the edge exists</li>
+              <li>Which markets the wallet performs best in</li>
+              <li>Entry and exit behavior</li>
+              <li>Position sizing</li>
+              <li>Holding periods</li>
+              <li>Drawdown history</li>
+              <li>Win rate and loss profile</li>
+              <li>Regime sensitivity</li>
+              <li>Repeatability of returns</li>
+              <li>Whether performance is edge, beta, luck, or insider-like timing</li>
             </ul>
+            <p>The goal is not just to show PnL. The goal is to explain why the edge exists and whether it can scale.</p>
+
+            <h3>Matching Agent</h3>
+            <p>The Matching Agent connects agent vaults with depositors whose goals fit the strategy. It evaluates:</p>
+            <ul className="feature-list">
+              <li>Asset class preference</li>
+              <li>Risk tolerance</li>
+              <li>Return target</li>
+              <li>Drawdown tolerance</li>
+              <li>Holding period</li>
+              <li>Market exposure</li>
+              <li>Liquidity needs</li>
+              <li>Strategy type</li>
+              <li>Vault performance</li>
+              <li>Edge strength</li>
+            </ul>
+            <p>Instead of relying on noisy leaderboards or social clout, capital is matched to vaults based on fit.</p>
+
+            <h3>Comms Agent</h3>
+            <p>The Comms Agent handles depositor communication. It can:</p>
+            <ul className="feature-list">
+              <li>Answer depositor questions</li>
+              <li>Summarize weekly performance</li>
+              <li>Explain drawdowns</li>
+              <li>Describe strategy changes</li>
+              <li>Report market context</li>
+              <li>Explain risk events</li>
+              <li>Translate trading activity into simple updates</li>
+              <li>Keep depositors informed through volatility</li>
+            </ul>
+            <p>This keeps the trader focused on positions while depositors stay informed.</p>
+
+            <h3>Monitoring Agent</h3>
+            <p>The Monitoring Agent tracks risk, edge decay, and strategy drift. It watches:</p>
+            <ul className="feature-list">
+              <li>Whether the vault is still following its stated strategy</li>
+              <li>Whether edge is improving or degrading</li>
+              <li>Whether position sizing is changing</li>
+              <li>Whether drawdown exceeds historical norms</li>
+              <li>Whether liquidity risk is increasing</li>
+              <li>Whether leverage is creeping up</li>
+              <li>Whether AUM is becoming too large for the strategy</li>
+              <li>Whether recent performance is repeatable or luck-driven</li>
+            </ul>
+            <p>The Monitoring Agent flags problems before they become obvious in PnL.</p>
+
+            <h3>Allocation Agent</h3>
+            <p>The Allocation Agent works for depositors. It discovers vaults, monitors open allocations, compares strategies, and rotates capital based on depositor goals. It can track:</p>
+            <ul className="feature-list">
+              <li>Which vaults are gaining edge</li>
+              <li>Which vaults are losing edge</li>
+              <li>Which strategies fit the depositor&apos;s risk-return target</li>
+              <li>Whether allocation should be increased, reduced, or exited</li>
+              <li>Whether a different vault offers better risk-adjusted opportunity</li>
+            </ul>
+            <p>This creates passive onchain investing across active agent vaults.</p>
+
+            <h2>The Outcome</h2>
+            <p>Traders can scale edge without becoming fund operators.</p>
+            <p>Project communities can run transparent liquidity and accumulation strategies.</p>
+            <p>DAOs can deploy treasury capital into asset classes they could not previously access.</p>
+            <p>Depositors can allocate through agents instead of manually monitoring every vault.</p>
+            <p>Yieldr becomes the operating system for onchain funds.</p>
+
+            <PageFooter pageId="the-solution" />
+          </section>
+
+          {/* PAGE 04: Agent Vaults */}
+          <section className={'page-section ' + (activePage === 'agent-vaults' ? 'active' : '')} id="page-agent-vaults">
+            <h1>What are Agent Vaults?</h1>
+            <p className="page-subtitle">Onchain funds operated through the Yieldr agent stack.</p>
+
+            <p>Agent vaults combine smart contract vault infrastructure with agents that identify edge, support execution, communicate performance, monitor risk, and help capital move toward strategies that are working.</p>
+            <p>A primitive DeFi vault usually does one thing: it holds capital and follows a fixed strategy. An agent vault is different. It is dynamic, monitored, explainable, and connected to an agent network.</p>
+
+            <h2>Agent Vault = Capital Layer + Strategy Layer + Agent Layer</h2>
+
+            <h3>1. Capital Layer</h3>
+            <p>The vault holds and tracks capital onchain. It is designed to support:</p>
+            <ul className="feature-list">
+              <li>Deposits</li>
+              <li>Withdrawals</li>
+              <li>Strategy accounting</li>
+              <li>Performance tracking</li>
+              <li>Fee logic</li>
+              <li>Risk limits</li>
+              <li>Public reporting</li>
+              <li>Vault status</li>
+              <li>Onchain transparency</li>
+            </ul>
+            <p>The vault is where capital lives.</p>
+
+            <h3>2. Strategy Layer</h3>
+            <p>Each vault has a strategy domain. Examples:</p>
+            <ul className="feature-list">
+              <li>Prediction markets</li>
+              <li>Perps strategies</li>
+              <li>Funding-rate arbitrage</li>
+              <li>Base memecoin trading</li>
+              <li>Project coin accumulation</li>
+              <li>Virtuals ecosystem strategies</li>
+              <li>Bankr project coin strategies</li>
+              <li>Aerodrome liquidity strategies</li>
+              <li>Uniswap liquidity strategies</li>
+              <li>RWA accumulation</li>
+              <li>DAO treasury strategies</li>
+            </ul>
+            <p>The strategy defines what the vault is trying to do.</p>
+
+            <h3>3. Agent Layer</h3>
+            <p>Agents operate around the vault. They help with:</p>
+            <ul className="feature-list">
+              <li>Edge detection</li>
+              <li>Depositor matching</li>
+              <li>Performance communication</li>
+              <li>Risk monitoring</li>
+              <li>Strategy drift alerts</li>
+              <li>Trade explanation</li>
+              <li>Allocation rotation</li>
+              <li>Vault comparison</li>
+              <li>Depositor updates</li>
+              <li>Fund readiness analysis</li>
+            </ul>
+            <p>The agents make the vault intelligent.</p>
+
+            <h2>How Agent Vaults Work</h2>
+
+            <div className="prompt-card">
+              <div className="prompt-text">Step 1 — Connect Wallet</div>
+              <p className="prompt-desc">A trader, project, DAO, or strategy operator connects a wallet. Yieldr uses wallet activity and linked strategy data to understand past performance, market exposure, and potential edge.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 2 — Prove Edge</div>
+              <p className="prompt-desc">The Quant Agent analyzes the wallet for patterns in PnL, entry/exit timing, sizing, market selection, holding period, drawdown control, repeatability, liquidity conditions, and risk-adjusted returns. The output is an edge profile.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 3 — Define Vault Strategy</div>
+              <p className="prompt-desc">The strategy is packaged into an agent vault, defining market, asset class, target AUM, risk level, execution approach, fees, withdrawal terms, max drawdown, max position size, liquidity constraints, and disclosure requirements.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 4 — Match Depositors</div>
+              <p className="prompt-desc">The Matching Agent identifies depositors whose goals fit the vault based on asset class, return target, risk tolerance, drawdown limits, time horizon, liquidity preference, and strategy type. Capital is matched to strategy fit, not noise.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 5 — Run and Monitor</div>
+              <p className="prompt-desc">Once active, the vault executes its strategy according to defined rules. Agents continuously monitor performance, risk, edge gain or loss, strategy drift, depositor alignment, liquidity, market changes, and position behavior.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 6 — Communicate</div>
+              <p className="prompt-desc">The Comms Agent keeps depositors informed with weekly updates, trade summaries, drawdown explanations, strategy notes, risk alerts, market context, and performance reviews — without forcing the trader to become a full-time IR desk.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 7 — Allocate and Rotate</div>
+              <p className="prompt-desc">Depositors can use Allocation Agents to monitor vaults continuously. If a vault loses edge, risk increases, or another vault better matches the depositor&apos;s target, the Allocation Agent can recommend or execute rotation according to user-defined rules.</p>
+            </div>
+
+            <h2>Why Agent Vaults Matter</h2>
+            <p>Agent vaults make onchain funds scalable. They solve the missing operating layer:</p>
+            <ul className="feature-list">
+              <li>Discovery</li>
+              <li>Matching</li>
+              <li>Communication</li>
+              <li>Monitoring</li>
+              <li>Reporting</li>
+              <li>Risk intelligence</li>
+              <li>Capital rotation</li>
+              <li>Edge validation</li>
+            </ul>
+            <p>This is what primitive vaults cannot do. Primitive vaults hold capital. Agent vaults operate strategies.</p>
+
+            <h2>Agent Vault Categories</h2>
+
+            <h3>Prediction Vaults</h3>
+            <p>Vaults that trade prediction markets using wallet intelligence, implied probability, market pricing, and category-specific edge. Example venues: Polymarket.</p>
+
+            <h3>Perps Vaults</h3>
+            <p>Vaults that trade perps strategies such as directional trades, funding-rate arbitrage, basis trades, or market-neutral setups. Example venues: Avantis and Hyperliquid.</p>
+
+            <h3>Liquidity Vaults</h3>
+            <p>Vaults that deploy into LP strategies across concentrated liquidity, incentive programs, and ecosystem liquidity campaigns. Example venues: Aerodrome and Uniswap.</p>
+
+            <h3>Project Coin Vaults</h3>
+            <p>Vaults that accumulate or rotate across project tokens using transparent rules and agent-monitored execution. Example ecosystems: Virtuals, Bankr, and Base project coins.</p>
+
+            <h3>Memecoin Vaults</h3>
+            <p>Vaults that trade high-volatility Base-native assets using wallet signals, liquidity filters, momentum signals, and risk limits.</p>
+
+            <h3>RWA Vaults</h3>
+            <p>Vaults that accumulate or trade tokenized real-world asset exposure where onchain liquidity and pricing data are available.</p>
+
+            <h3>DAO Treasury Vaults</h3>
+            <p>Vaults that help DAOs and project treasuries deploy funds into agent-monitored strategies across asset classes and risk profiles.</p>
 
             <div className="callout callout-warning">
-              <div className="callout-title">Coming in Beta: Train Your Agent</div>
-              <p>In the Beta release, you&apos;ll be able to explicitly train your agent on your trading style and investment preferences. This makes your agent truly personalized — it learns what matters to YOU and tailors its discovery and advice accordingly.</p>
+              <div className="callout-title">Important</div>
+              <p>Agent vaults are experimental. They may involve market risk, smart contract risk, execution risk, liquidity risk, strategy risk, agent error, and regulatory risk. Past performance is not indicative of future results. Agent outputs are not guarantees.</p>
             </div>
 
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('how-it-works')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← How It Works</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('for-investors')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">For Investors →</div>
-                </a>
-              </div>
-            </div>
+            <PageFooter pageId="agent-vaults" />
           </section>
 
+          {/* PAGE 05: Fund Launch Waitlist */}
+          <section className={'page-section ' + (activePage === 'fund-launch-waitlist' ? 'active' : '')} id="page-fund-launch-waitlist">
+            <h1>Fund Launch Waitlist</h1>
+            <p className="page-subtitle">Coming around the $YLDR TGE in July 2026.</p>
 
-          {/* PAGE: For Investors */}
-          <section className={'page-section ' + (activePage === 'for-investors' ? 'active' : '')} id="page-for-investors">
-            <h1>For Investors</h1>
-            <p className="page-subtitle">Find top traders, understand their alpha, deploy capital.</p>
+            <p>The waitlist is for traders, project communities, DAOs, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
 
-            <div className="callout callout-success">
-              <div className="callout-title">Problems Solved</div>
-              <p><strong>Discovery:</strong> AI finds top traders across protocols.</p>
-              <p><strong>Trust:</strong> AI analyzes transactions, explains alpha drivers.</p>
-            </div>
+            <h2>Who Should Apply?</h2>
+            <p>You should apply if you have:</p>
+            <ul className="feature-list">
+              <li>Verifiable onchain trading history</li>
+              <li>A strong X, Telegram, Discord, or project community</li>
+              <li>A project token or ecosystem strategy</li>
+              <li>Repeatable edge in memecoins, perps, predictions, LP strategies, or project coins</li>
+              <li>A DAO or treasury looking for agent-monitored allocation</li>
+              <li>Interest in launching a transparent agent vault</li>
+              <li>Willingness to operate through public rules, risk limits, and agent monitoring</li>
+            </ul>
 
-            <h2>Some use cases</h2>
-
-            <h3>Find & Compare Traders</h3>
+            <h2>Application Flow</h2>
             <div className="prompt-card">
-              <div className="prompt-text">&quot;Find traders with &gt;60% win rate, &lt;15% max drawdown, $100K+ volume&quot;</div>
-              <p className="prompt-desc">Agent searches the trader database with your criteria and returns ranked results with detailed metrics.</p>
+              <div className="prompt-text">01 — Connect Wallet</div>
+              <p className="prompt-desc">Connect the wallet that best represents your trading, project, or strategy history.</p>
             </div>
             <div className="prompt-card">
-              <div className="prompt-text">&quot;Compare these 3 traders: risk-adjusted returns, style, correlation&quot;</div>
-              <p className="prompt-desc">Agent performs comparative analysis to help you diversify across uncorrelated strategies.</p>
+              <div className="prompt-text">02 — Select Market</div>
+              <p className="prompt-desc">Choose the market where you want to launch an agent vault: Project Coins (Bankr + Virtuals), Memecoins (Base), Perps (Avantis + Hyperliquid), Predictions (Polymarket), Liquidity (Aerodrome + Uniswap), RWAs, or DAO Treasury Strategies.</p>
             </div>
-
-            <h3>Simulate & Allocate</h3>
             <div className="prompt-card">
-              <div className="prompt-text">&quot;Search for top 3 perp traders in BTC, ETH, SOL and simulate allocation of $100K capital to each over 90d period&quot;</div>
-              <p className="prompt-desc">Agent finds top performers by asset, runs historical simulations across their actual trades, and projects returns with risk metrics for different allocation scenarios.</p>
+              <div className="prompt-text">03 — Select Target AUM</div>
+              <p className="prompt-desc">Choose the amount of capital the vault is designed to support: $0–$100K, $100K–$250K, $250K–$500K, $500K–$1M, or $1M+.</p>
             </div>
-
-            <h3>Market Analysis</h3>
             <div className="prompt-card">
-              <div className="prompt-text">&quot;What are the chances of ETH dump on BOJ rate hike? Is it a good time to go SHORT?&quot;</div>
-              <p className="prompt-desc">Agent analyzes macro correlations, historical price reactions to similar events, current market positioning, and what top traders are doing to provide directional insights.</p>
+              <div className="prompt-text">04 — Add Community Links</div>
+              <p className="prompt-desc">Add X, Telegram, Discord, website, project page, or DAO links.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">05 — Submit Strategy Intent</div>
+              <p className="prompt-desc">Describe what the agent vault will do and why the wallet, project, DAO, or community has an edge.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">06 — Join Waitlist</div>
+              <p className="prompt-desc">Your wallet is added to the fund launch waitlist.</p>
             </div>
 
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('ai-agents')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← AI Agents</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('for-traders')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">For Traders →</div>
-                </a>
-              </div>
-            </div>
+            <h2>What Happens After Signup?</h2>
+            <p>Yieldr reviews the wallet, strategy, and community profile. Applicants may receive:</p>
+            <ul className="feature-list">
+              <li>Fund readiness status</li>
+              <li>Strategy feedback</li>
+              <li>Agent vault category recommendation</li>
+              <li>Whitelist campaign support</li>
+              <li>Beta launch eligibility</li>
+              <li>Access to agent vault tooling as it rolls out</li>
+            </ul>
+
+            <PageFooter pageId="fund-launch-waitlist" />
           </section>
 
+          {/* PAGE 06: Community and Project Vaults */}
+          <section className={'page-section ' + (activePage === 'community-project-vaults' ? 'active' : '')} id="page-community-project-vaults">
+            <h1>Community and Project Vaults</h1>
+            <p className="page-subtitle">Agent vaults designed for projects, token communities, DAOs, and ecosystem operators.</p>
 
-          {/* PAGE: For Traders */}
-          <section className={'page-section ' + (activePage === 'for-traders' ? 'active' : '')} id="page-for-traders">
-            <h1>For Traders</h1>
-            <p className="page-subtitle">Build your track record, benchmark your edge, scale to fund management.</p>
+            <p>They help communities run transparent strategies around liquidity, accumulation, treasury deployment, or ecosystem growth.</p>
 
-            <div className="callout callout-success">
-              <div className="callout-title">Problems Solved</div>
-              <p><strong>Validation:</strong> On-chain verified performance that proves your edge.</p>
-              <p><strong>Path to scale:</strong> Tools to raise capital and manage outside investors.</p>
-              <p><strong>Edge preservation:</strong> You control what&apos;s shared and get compensated for alpha.</p>
-            </div>
+            <h2>Use Cases</h2>
 
-            <h2>Benchmark & Improve <span className="stage-badge stage-now">BETA</span></h2>
-
-            <p>Your AI agent helps you understand and improve your trading:</p>
-
-            <h3>Analyze Your Performance</h3>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Analyze my last 20 trades — patterns in winners vs losers?&quot;</div>
-              <p className="prompt-desc">Agent examines your trade history to identify what differentiates your winning trades from losing ones.</p>
-            </div>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Compare my win rate and R:R to top BTC traders&quot;</div>
-              <p className="prompt-desc">Agent benchmarks your metrics against top performers to show where you stand and where to improve.</p>
-            </div>
-
-            <h3>Get Trade Advice</h3>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Position -15% underwater — cut, hold, or add?&quot;</div>
-              <p className="prompt-desc">Agent analyzes the position, market context, and how top traders handle similar situations.</p>
-            </div>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;What would my P&L look like with better stop discipline?&quot;</div>
-              <p className="prompt-desc">Agent simulates your historical trades with tighter stops to show potential improvements.</p>
-            </div>
-
-            <h2>Coming: Build Your Track Record <span className="stage-badge stage-beta">V1.0</span></h2>
-
-            <p>Your on-chain performance becomes your verified track record:</p>
+            <h3>Token Liquidity and Depth</h3>
+            <p>Projects can use agent vaults to deploy transparent strategies that grow token liquidity and market depth. These vaults may support:</p>
             <ul className="feature-list">
-              <li>Performance metrics calculated from actual transactions</li>
-              <li>Verifiable by anyone — can&apos;t fake Basescan</li>
-              <li>Shareable profile for potential investors</li>
-              <li>AI-generated performance reports</li>
+              <li>Liquidity accumulation</li>
+              <li>Market depth improvement</li>
+              <li>Ecosystem token exposure</li>
+              <li>LP strategies</li>
+              <li>Treasury diversification</li>
+              <li>Onchain reporting</li>
             </ul>
 
-            <h2>Coming: Scale to Fund Management <span className="stage-badge stage-later">V2.0</span></h2>
-
-            <p>Turn your edge into a business:</p>
+            <h3>Project Coin Accumulation</h3>
+            <p>Communities can coordinate transparent accumulation strategies around project coins or ecosystem baskets. These vaults should define:</p>
             <ul className="feature-list">
-              <li><strong>Raise capital</strong> — Investors deploy capital to follow your trades</li>
-              <li><strong>Earn performance fees</strong> — Get paid for the alpha you deliver</li>
-              <li><strong>Control transparency</strong> — Choose what&apos;s visible (performance-only vs full disclosure)</li>
-              <li><strong>Preserve your edge</strong> — Compensation structure rewards you, not copycats</li>
-              <li><strong>Non-custodial</strong> — Smart contracts handle execution, you never touch investor funds</li>
+              <li>Target asset or basket</li>
+              <li>Target AUM</li>
+              <li>Execution pacing</li>
+              <li>Liquidity limits</li>
+              <li>Risk controls</li>
+              <li>Reporting cadence</li>
+              <li>Conflict disclosures</li>
             </ul>
+
+            <h3>DAO and Treasury Deployment</h3>
+            <p>DAOs and project treasuries can use agent vaults to deploy funds into strategies with defined risk-return goals. This can include asset classes most DAOs do not actively access today, such as:</p>
+            <ul className="feature-list">
+              <li>Perps</li>
+              <li>Predictions</li>
+              <li>Base project coins</li>
+              <li>Virtuals ecosystem tokens</li>
+              <li>Bankr launches</li>
+              <li>Aerodrome LP strategies</li>
+              <li>RWA exposure</li>
+              <li>Funding-rate strategies</li>
+            </ul>
+
+            <h3>Community Strategy Vaults</h3>
+            <p>Communities with strong distribution can launch agent vaults around a specific thesis. Examples:</p>
+            <ul className="feature-list">
+              <li>Base ecosystem rotation</li>
+              <li>Virtuals agent token basket</li>
+              <li>Bankr project coin basket</li>
+              <li>Aerodrome LP income strategy</li>
+              <li>Prediction-market strategy</li>
+              <li>Perps funding arbitrage strategy</li>
+            </ul>
+
+            <h2>Required Transparency</h2>
+            <p>If a project, DAO, or community is affiliated with assets inside the vault, that relationship should be clearly disclosed.</p>
+            <p>Community and project vaults should define:</p>
+            <ul className="feature-list">
+              <li>Strategy objective</li>
+              <li>Asset universe</li>
+              <li>Execution rules</li>
+              <li>Liquidity constraints</li>
+              <li>Risk limits</li>
+              <li>Treasury or project affiliation</li>
+              <li>Reporting cadence</li>
+              <li>Withdrawal terms</li>
+              <li>Vault status</li>
+            </ul>
+            <p>The goal is transparent strategy deployment, not opaque promotion.</p>
+
+            <PageFooter pageId="community-project-vaults" />
+          </section>
+
+          {/* PAGE 07: Depositor Allocation Agents */}
+          <section className={'page-section ' + (activePage === 'allocation-agents' ? 'active' : '')} id="page-allocation-agents">
+            <h1>Depositor Allocation Agents</h1>
+            <p className="page-subtitle">Discover, monitor, and allocate across agent vaults.</p>
+
+            <p>Instead of manually checking every vault, depositor goals are set once and agents continuously monitor opportunities.</p>
+
+            <h2>How Allocation Agents Work</h2>
+
+            <div className="prompt-card">
+              <div className="prompt-text">Step 1 — Set Goals</div>
+              <p className="prompt-desc">Depositors define asset classes, risk tolerance, return target, drawdown tolerance, preferred markets, liquidity needs, and time horizon.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 2 — Discover Vaults</div>
+              <p className="prompt-desc">The Allocation Agent scans available agent vaults and identifies strategies that match the depositor&apos;s goals.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 3 — Allocate Capital</div>
+              <p className="prompt-desc">The agent can suggest or execute allocations based on user-defined permissions.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 4 — Monitor 24/7</div>
+              <p className="prompt-desc">The agent monitors open vault positions, vault-level performance, trade-level performance, edge gain or loss, strategy drift, drawdown, liquidity, and risk changes.</p>
+            </div>
+            <div className="prompt-card">
+              <div className="prompt-text">Step 5 — Rotate When Needed</div>
+              <p className="prompt-desc">If a vault loses edge or no longer fits the depositor&apos;s goals, the Allocation Agent can recommend or execute capital rotation into stronger-fit vaults.</p>
+            </div>
+
+            <h2>Why It Matters</h2>
+            <p>This creates a new onchain passive investing model.</p>
+            <p>Depositors no longer need to chase the loudest vault, manually monitor every strategy, or exit only after drawdowns become obvious.</p>
+            <p>Agents can continuously detect which vaults are gaining or losing edge.</p>
+
+            <PageFooter pageId="allocation-agents" />
+          </section>
+
+          {/* PAGE 08: Depositor Whitelist */}
+          <section className={'page-section ' + (activePage === 'depositor-whitelist' ? 'active' : '')} id="page-depositor-whitelist">
+            <h1>Depositor Whitelist</h1>
+            <p className="page-subtitle">Whitelist your wallet for upcoming agent vaults.</p>
+
+            <p>Depositors can whitelist wallets for upcoming agent vaults. Whitelisting signals interest in vault access before beta launch.</p>
+
+            <h2>What Depositors Can Do</h2>
+            <ul className="feature-list">
+              <li>Explore agent vault categories</li>
+              <li>Whitelist any agent vault</li>
+              <li>Track waitlist growth</li>
+              <li>Follow vault updates</li>
+              <li>Join beta launch eligibility</li>
+              <li>Participate in product trials where available</li>
+            </ul>
+
+            <h2>$YLDR Whitelist Rewards</h2>
+            <p>Eligible users who whitelist and participate in qualifying agent vault product trials may earn $YLDR rewards at beta launch.</p>
+            <p>Reward ranges, eligibility, minimum participation, and claim conditions are subject to final product and token launch rules.</p>
+            <p>A minimum USDC participation requirement may apply to prevent low-quality farming and encourage genuine product usage.</p>
 
             <div className="callout callout-warning">
-              <div className="callout-title">💡 The Path from $200K → $2M+</div>
-              <p>Today you&apos;re trading $200K of your own capital with no way to scale. Yieldr gives you the infrastructure to build a verified track record, attract investors, and manage outside capital — all trustlessly through smart contracts. Top traders on the platform will be able to raise and manage 10x their personal capital.</p>
+              <div className="callout-title">Important</div>
+              <p>Whitelist participation does not guarantee profit, vault access, token allocation, or future rewards. Rewards may be limited by eligibility, jurisdiction, product usage, and final launch terms.</p>
             </div>
 
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('for-investors')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← For Investors</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('for-lps')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">For LPs →</div>
-                </a>
-              </div>
-            </div>
+            <PageFooter pageId="depositor-whitelist" />
           </section>
 
+          {/* PAGE 09: $YLDR Token */}
+          <section className={'page-section ' + (activePage === 'yldr-token' ? 'active' : '')} id="page-yldr-token">
+            <h1>$YLDR Token</h1>
+            <p className="page-subtitle">The protocol token for the Yieldr agent OS.</p>
 
-          {/* PAGE: For LPs */}
-          <section className={'page-section ' + (activePage === 'for-lps' ? 'active' : '')} id="page-for-lps">
-            <h1>For Liquidity Providers</h1>
-            <p className="page-subtitle">Monitor IL, optimize yields, get proactive alerts.</p>
+            <p>The token is designed around agent access, agent trading, protocol participation, and future protocol utility.</p>
 
-            <div className="callout callout-success">
-              <div className="callout-title">Problems Solved</div>
-              <p><strong>Multi-protocol monitoring:</strong> AI tracks positions across Aerodrome, Uniswap, and more.</p>
-              <p><strong>Constant monitoring burden:</strong> AI alerts and advises so you don&apos;t have to watch 24/7.</p>
-            </div>
-
-            <h2>Some use cases</h2>
-
-            <h3>Monitor Positions</h3>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;What&apos;s my current IL and what&apos;s driving it?&quot;</div>
-              <p className="prompt-desc">Agent calculates your impermanent loss across positions and explains which price movements are causing it.</p>
-            </div>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Is my position still in range? Alert if it goes out&quot;</div>
-              <p className="prompt-desc">Agent monitors your concentrated liquidity positions and alerts you when they need attention.</p>
-            </div>
-
-            <h3>Optimize Yields</h3>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Best APR pools for ETH/USDC right now?&quot;</div>
-              <p className="prompt-desc">Agent compares pools across protocols, factoring in APR, TVL, volume, and IL risk.</p>
-            </div>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;Compare my LP performance to top providers&quot;</div>
-              <p className="prompt-desc">Agent benchmarks your positions against the best LPs to show where you can improve.</p>
-            </div>
-
-            <h3>Manage Risk</h3>
-            <div className="prompt-card">
-              <div className="prompt-text">&quot;How would I hedge this position to reduce IL?&quot;</div>
-              <p className="prompt-desc">Agent suggests hedging strategies (shorts, options) to neutralize directional exposure.</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('for-traders')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← For Traders</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('roadmap')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">Roadmap →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-          {/* PAGE: Roadmap */}
-          <section className={'page-section ' + (activePage === 'roadmap' ? 'active' : '')} id="page-roadmap">
-            <h1>Product Roadmap</h1>
-            <p className="page-subtitle">Building AI-enabled decentralized asset management.</p>
-
-            <div className="roadmap-item current">
-              <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase BETA</div>
-              <h3 className="roadmap-title">Intelligence Layer</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Discovery, analysis, advice, monitoring.<br /><strong>Traders:</strong> Benchmarking, risk & position management advice.</p>
-            </div>
-            <div className="roadmap-item">
-              <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase V1.0</div>
-              <h3 className="roadmap-title">Personalization</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Fine-tuned PM (portfolio manager) agents.<br /><strong>Traders:</strong> Fine-tuned trade execution agents.</p>
-            </div>
-            <div className="roadmap-item">
-              <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase V2.0</div>
-              <h3 className="roadmap-title">Trust Layer</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Semi-autonomous portfolio management.<br /><strong>Traders:</strong> Raise capital, fund management, earn fees.</p>
-            </div>
-            <div className="roadmap-item">
-              <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Phase V3.0+</div>
-              <h3 className="roadmap-title">Agent Economy</h3>
-              <p className="roadmap-desc"><strong>Investors:</strong> Autonomous portfolio management.<br /><strong>Traders:</strong> Agent-powered funds at scale.</p>
-            </div>
-
-            <h2>The Vision</h2>
-
-            <p>We&apos;re building <strong>AI-enabled decentralized asset management</strong> — a two-sided marketplace where:</p>
-
+            <h2>Planned Utility</h2>
+            <p>$YLDR may be used for:</p>
             <ul className="feature-list">
-              <li><strong>Investors</strong> get access to verified top traders and can deploy capital trustlessly</li>
-              <li><strong>Traders</strong> can validate their edge, raise outside capital, and scale to fund management</li>
-              <li><strong>AI agents</strong> power discovery, analysis, personalization, and eventually autonomous execution</li>
-              <li><strong>Smart contracts</strong> enable trustless execution with coded risk controls and compensation</li>
+              <li>Agent inference access</li>
+              <li>Agent trading fees</li>
+              <li>Protocol participation</li>
+              <li>Future fee-related utilities</li>
             </ul>
+            <p>Final utility may evolve as the product and legal structure mature.</p>
 
-            <div className="callout callout-success">
-              <div className="callout-title">💡 The Long-Term Vision (5-10 Years)</div>
-              <p>In the future, AI agents evolve into autonomous asset managers — continuously learning from top traders, finding and delivering alpha, and operating on both sides of the marketplace. Agents will trade, invest, and allocate capital for users in constant search of alpha. This is what &quot;AI-native&quot; truly means: AI as the fundamental layer through which capital allocation happens.</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('for-lps')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← For LPs</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('token-overview')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">YLDR Token →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-          {/* PAGE: Token Overview */}
-          <section className={'page-section ' + (activePage === 'token-overview' ? 'active' : '')} id="page-token-overview">
-            <h1>YLDR Token</h1>
-            <p className="page-subtitle">The utility token powering Yieldr&apos;s AI trading platform.</p>
-
+            <h2>TGE</h2>
             <div className="token-hero">
               <div className="token-symbol">⚡</div>
               <div className="token-name">YLDR</div>
-              <p className="token-tagline">Use Yieldr = Burn YLDR</p>
               <div className="token-stats">
                 <div className="token-stat">
-                  <div className="token-stat-value">210M</div>
-                  <div className="token-stat-label">Total Supply</div>
+                  <div className="token-stat-value">Jul 2026</div>
+                  <div className="token-stat-label">Planned TGE</div>
                 </div>
                 <div className="token-stat">
-                  <div className="token-stat-value">11.9%</div>
-                  <div className="token-stat-label">Public Allocation</div>
+                  <div className="token-stat-value">Virtuals</div>
+                  <div className="token-stat-label">Launch Ecosystem</div>
                 </div>
                 <div className="token-stat">
-                  <div className="token-stat-value">~$5.06M</div>
-                  <div className="token-stat-label">Target Raise</div>
-                </div>
-                <div className="token-stat">
-                  <div className="token-stat-value">BASE</div>
-                  <div className="token-stat-label">Network</div>
+                  <div className="token-stat-value">&lt;$200K</div>
+                  <div className="token-stat-label">Genesis FDV</div>
                 </div>
               </div>
             </div>
+            <p>Tokenomics information and Virtuals launch page URL will be updated soon.</p>
 
-            <div className="callout callout-info">
-              <div className="callout-title">📅 TGE: Q1 2027</div>
-              <p>Token Generation Event with ICO and Tier-1 CEX listing (Coinbase, Bybit, OKX). Early contributors receive YLDR allocations at TGE. Until then, contribute USDC to lock in your allocation at current tier pricing.</p>
-            </div>
-
-            <h2>Key Properties</h2>
-            <div className="cards-grid">
-              <div className="card">
-                <div className="card-icon">🔒</div>
-                <div className="card-title">Fixed Supply</div>
-                <p className="card-desc">210 million YLDR. Hardcoded in the contract at TGE, immutable. No inflation, ever.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🔥</div>
-                <div className="card-title">Deflationary</div>
-                <p className="card-desc">Tokens burned when used for AI compute. Total supply only decreases over time.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">👥</div>
-                <div className="card-title">Community First</div>
-                <p className="card-desc">Public allocation tiers open now. Early believers get lowest prices and immediate product access.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">⏳</div>
-                <div className="card-title">Team Vested</div>
-                <p className="card-desc">All team tokens: 1-year cliff + 3-year monthly vesting. Full alignment.</p>
-              </div>
-            </div>
-
-            <h2>The Model</h2>
-            <div className="architecture-diagram">
-              <pre dangerouslySetInnerHTML={{__html: `   <span class="arch-highlight">NOW</span>                                              <span class="arch-highlight">TGE (Q1 2027)</span>
-
-   ┌─────────────────┐                            ┌─────────────────────────┐
-   │                 │                            │                         │
-   │   Contribute    │       12-15 months         │   Token Generation      │
-   │   USDC          │ ─────────────────────────▶ │   + ICO                 │
-   │                 │                            │   + Tier-1 CEX Listing  │
-   │                 │                            │                         │
-   └─────────────────┘                            └─────────────────────────┘
-
-   You receive:                                   At TGE:
-   • Allocation locked at tier price              • YLDR distributed to wallet
-   • AI credits (immediate)                       • Trading begins
-   • Snapshot voting rights                       • Burn mechanism activates
-   • Monthly transparency reports                 • All allocations vest
-`}} />
-            </div>
-
-            <div className="callout callout-success">
-              <div className="callout-title">💡 Why This Model</div>
-              <p>No token until TGE means 100% focus on building the best AI agent. Early contributors are true believers who want the product, not speculators chasing quick flips. When YLDR launches, it launches with real utility, CEX liquidity, and a proven platform.</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('roadmap')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← Roadmap</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('token-utility')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">Utility →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-          {/* PAGE: Token Utility */}
-          <section className={'page-section ' + (activePage === 'token-utility' ? 'active' : '')} id="page-token-utility">
-            <h1>Utility</h1>
-            <p className="page-subtitle">YLDR tokens are burned to access Yieldr&apos;s AI capabilities.</p>
-
-            <h2>How It Works <span className="tge-badge">At TGE</span></h2>
-            <div className="architecture-diagram">
-              <pre dangerouslySetInnerHTML={{__html: `
-┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
-│                 │      │                 │      │                 │
-│  <span class="arch-highlight">Acquire YLDR</span>   │─────▶│   <span class="arch-highlight">Burn YLDR</span>    │─────▶│    <span class="arch-highlight">Use AI</span>       │
-│  (CEX or DEX)   │      │  (Market Rate)  │      │  (Train Agent)  │
-│                 │      │                 │      │                 │
-└─────────────────┘      └─────────────────┘      └─────────────────┘
-`}} />
-            </div>
-
-            <ol>
-              <li><strong>Acquire YLDR</strong> — Purchase on Coinbase, DEX, or receive at TGE</li>
-              <li><strong>Burn YLDR</strong> — Convert to AI credits at current market rate</li>
-              <li><strong>Use AI</strong> — Train agents, run backtests, execute strategies</li>
-            </ol>
-
-            <h2>What YLDR Powers</h2>
-            <div className="cards-grid">
-              <div className="card">
-                <div className="card-icon">🤖</div>
-                <div className="card-title">Agent Training</div>
-                <p className="card-desc">Train your AI agent on trading patterns, market data, and personalized strategies.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">📊</div>
-                <div className="card-title">Analysis & Insights</div>
-                <p className="card-desc">Portfolio analysis, trader comparisons, performance breakdowns, and alpha discovery.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🔔</div>
-                <div className="card-title">Proactive Alerts</div>
-                <p className="card-desc">Real-time notifications on position risks, trader alignments, and market opportunities.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">⚡</div>
-                <div className="card-title">Execution (v1.0)</div>
-                <p className="card-desc">Copy trading, auto-rebalancing, and fund management coming in Trust Layer release.</p>
-              </div>
-            </div>
-
-            <h2>Pre-TGE: AI Credits</h2>
-            <p>Before TGE, the platform uses off-chain AI credits:</p>
-            <ul>
-              <li><strong>All users</strong> — 100K free credits to try the product</li>
-              <li><strong>Contributors</strong> — Additional credits proportional to USDC contributed</li>
-            </ul>
-            <p>At TGE, the burn mechanism activates and YLDR becomes the sole way to acquire AI credits.</p>
-
-            <h2>Deflationary Mechanics <span className="tge-badge">At TGE</span></h2>
-            <div className="cards-grid">
-              <div className="card">
-                <div className="card-icon">🔥</div>
-                <div className="card-title">Permanent Burns</div>
-                <p className="card-desc">Burned tokens sent to dead address. Irrecoverable by anyone, ever.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">📉</div>
-                <div className="card-title">Supply Shrinks</div>
-                <p className="card-desc">Total supply only decreases. More usage = faster deflation.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">⚖️</div>
-                <div className="card-title">Self-Balancing</div>
-                <p className="card-desc">Higher price = fewer tokens burned per transaction. Supply approaches but never reaches zero.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🔗</div>
-                <div className="card-title">On-Chain Proof</div>
-                <p className="card-desc">All burns visible on Basescan. Transparent and verifiable.</p>
-              </div>
-            </div>
-
-            <div className="callout callout-info">
-              <div className="callout-title">💡 Why Burn-for-Access Works</div>
-              <p>Unlike buyback models that get overwhelmed by sell pressure, burn-for-access creates structural demand. To use the product, you must acquire and burn tokens. This is how ETH gas works — and why usage drives value.</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('token-overview')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← Token Overview</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('tokenomics')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">Tokenomics →</div>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-          {/* PAGE: Tokenomics */}
-          <section className={'page-section ' + (activePage === 'tokenomics' ? 'active' : '')} id="page-tokenomics">
-            <h1>Tokenomics</h1>
-            <p className="page-subtitle">Supply structure and public allocation tiers.</p>
-
-            <h2>Supply Structure</h2>
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Amount</th>
-                  <th>%</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Total Fixed Supply</strong></td>
-                  <td>210,000,000 YLDR</td>
-                  <td>100%</td>
-                  <td>Hardcoded at TGE</td>
-                </tr>
-                <tr>
-                  <td><strong>Public Allocation</strong></td>
-                  <td>25,000,000 YLDR</td>
-                  <td>11.9%</td>
-                  <td>Contribution tiers open</td>
-                </tr>
-                <tr>
-                  <td><strong>Remaining</strong></td>
-                  <td>185,000,000 YLDR</td>
-                  <td>88.1%</td>
-                  <td>Allocated at TGE</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h2>Public Allocation Tiers</h2>
-            <p>Early contributors lock in YLDR allocations at increasing valuations. Contribute USDC now, receive YLDR at TGE:</p>
-
-            <table className="stage-table">
-              <thead>
-                <tr>
-                  <th>Tier</th>
-                  <th>Tokens</th>
-                  <th>% Supply</th>
-                  <th>Price</th>
-                  <th>FDV</th>
-                  <th>Raise</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="stage-name">Genesis</td>
-                  <td>2.0M</td>
-                  <td>0.95%</td>
-                  <td className="tokens">$0.043</td>
-                  <td>$9M</td>
-                  <td>$86K</td>
-                </tr>
-                <tr>
-                  <td className="stage-name">Pre-Seed</td>
-                  <td>2.5M</td>
-                  <td>1.19%</td>
-                  <td className="tokens">$0.075</td>
-                  <td>$15.75M</td>
-                  <td>$187K</td>
-                </tr>
-                <tr>
-                  <td className="stage-name">Seed</td>
-                  <td>4.0M</td>
-                  <td>1.90%</td>
-                  <td className="tokens">$0.15</td>
-                  <td>$31.5M</td>
-                  <td>$600K</td>
-                </tr>
-                <tr>
-                  <td className="stage-name">Growth</td>
-                  <td>6.0M</td>
-                  <td>2.86%</td>
-                  <td className="tokens">$0.225</td>
-                  <td>$47.25M</td>
-                  <td>$1.35M</td>
-                </tr>
-                <tr>
-                  <td className="stage-name">Scale</td>
-                  <td>10.5M</td>
-                  <td>5.0%</td>
-                  <td className="tokens">$0.27</td>
-                  <td>$56.7M</td>
-                  <td>$2.84M</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-              <strong>Total:</strong> 25M YLDR (11.9%) &nbsp;|&nbsp; <strong>Target Raise:</strong> ~$5.06M
-            </p>
-
-            <h2>Early Contributor ROI</h2>
-            <p>Potential returns based on TGE listing FDV:</p>
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th>Entry Point</th>
-                  <th>→ $150M TGE</th>
-                  <th>→ $300M</th>
-                  <th>→ $500M</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Genesis</strong> ($0.043)</td>
-                  <td><span className="check">16.7x</span></td>
-                  <td><span className="check">33x</span></td>
-                  <td><span className="check">56x</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Pre-Seed</strong> ($0.075)</td>
-                  <td><span className="check">9.5x</span></td>
-                  <td><span className="check">19x</span></td>
-                  <td><span className="check">32x</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Seed</strong> ($0.15)</td>
-                  <td><span className="check">4.8x</span></td>
-                  <td><span className="check">9.5x</span></td>
-                  <td><span className="check">16x</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Growth</strong> ($0.225)</td>
-                  <td><span className="check">3.2x</span></td>
-                  <td><span className="check">6.3x</span></td>
-                  <td><span className="check">11x</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Scale</strong> ($0.27)</td>
-                  <td><span className="check">2.6x</span></td>
-                  <td><span className="check">5.3x</span></td>
-                  <td><span className="check">8.8x</span></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h2>Remaining Supply</h2>
-            <p>The 88.1% remaining supply will be allocated at TGE to:</p>
-            <ul>
-              <li><strong>Team & Contributors</strong> — 1yr cliff + 3yr monthly vesting</li>
-              <li><strong>Treasury & Operations</strong> — Protocol development and growth</li>
-              <li><strong>Ecosystem Incentives</strong> — User rewards and partnerships</li>
-              <li><strong>Liquidity Provision</strong> — CEX and DEX liquidity</li>
-              <li><strong>Strategic Investors (SAFT)</strong> — Institutional rounds</li>
-            </ul>
+            <h2>Whitelist Rewards</h2>
+            <p>Users who whitelist agent vaults and complete eligible product participation may qualify for $YLDR rewards at beta launch.</p>
+            <p>Reward mechanics are designed to reward genuine users, not passive farmers.</p>
 
             <div className="callout callout-warning">
-              <div className="callout-title">📋 Pre-TGE Disclosure</div>
-              <p>Full allocation breakdown will be published <strong>30 days before TGE</strong>. All team and strategic allocations follow 1-year cliff + 3-year monthly vesting.</p>
+              <div className="callout-title">Important</div>
+              <p>$YLDR details are subject to change. Nothing in these docs constitutes an offer to sell or solicitation to buy any security or financial instrument. Token access and rewards may be restricted by jurisdiction.</p>
             </div>
 
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('token-utility')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← Utility</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('how-to-participate')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">How to Participate →</div>
-                </a>
-              </div>
-            </div>
+            <PageFooter pageId="yldr-token" />
           </section>
 
+          {/* PAGE 10: Roadmap */}
+          <section className={'page-section ' + (activePage === 'roadmap' ? 'active' : '')} id="page-roadmap">
+            <h1>Roadmap</h1>
+            <p className="page-subtitle">From live agent trading to the open agent fund network.</p>
 
-          {/* PAGE: How to Participate */}
-          <section className={'page-section ' + (activePage === 'how-to-participate' ? 'active' : '')} id="page-how-to-participate">
-            <h1>How to Participate</h1>
-            <p className="page-subtitle">Contribute USDC now, receive YLDR at TGE.</p>
-
-            <h2>Contribution Flow</h2>
-            <div className="architecture-diagram">
-              <pre dangerouslySetInnerHTML={{__html: `
-┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
-│   1. <span class="arch-highlight">CONTRIBUTE</span>                                                        │
-│      • Send USDC to published treasury wallet (Base network)            │
-│      • Current tier pricing locked at time of contribution              │
-│                                                                         │
-│   2. <span class="arch-highlight">RECEIVE CONFIRMATION</span>                                              │
-│      • Wallet address recorded                                          │
-│      • Tier + allocation rate locked                                    │
-│      • Entry in public allocation table                                 │
-│      • AI credits added to your account                                 │
-│                                                                         │
-│   3. <span class="arch-highlight">USE PRODUCT</span>                                                       │
-│      • Access AI agent with credited balance                            │
-│      • Participate in Snapshot governance                               │
-│      • Receive monthly transparency updates                             │
-│                                                                         │
-│   4. <span class="arch-highlight">TGE (Q1 2027)</span>                                                     │
-│      • YLDR tokens distributed to your wallet                           │
-│      • Trading begins on Coinbase, Bybit, OKX                           │
-│      • Burn mechanism activates                                         │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
-`}} />
-            </div>
-
-            <h2>What Contributors Get</h2>
-            <div className="cards-grid">
-              <div className="card">
-                <div className="card-icon">🎯</div>
-                <div className="card-title">Locked-In Allocation</div>
-                <p className="card-desc">Price fixed at contribution tier. Genesis at $0.043 vs potential $0.50+ at TGE.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🤖</div>
-                <div className="card-title">Immediate AI Credits</div>
-                <p className="card-desc">Use the product from day one. Credits proportional to USDC contributed.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">🗳️</div>
-                <div className="card-title">Governance Voice</div>
-                <p className="card-desc">Snapshot polls on product features and development priorities.</p>
-              </div>
-              <div className="card">
-                <div className="card-icon">📊</div>
-                <div className="card-title">Monthly Transparency</div>
-                <p className="card-desc">Treasury balance, fund usage breakdown, and development progress.</p>
-              </div>
-            </div>
-
-            <h2>Timeline</h2>
             <div className="roadmap-item current">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Now</div>
-              <h3 className="roadmap-title">Genesis Tier Open</h3>
-              <p className="roadmap-desc">Contribute USDC at $9M FDV. Earliest access, lowest price, highest conviction required.</p>
+              <div className="roadmap-phase">Phase 1 — Live</div>
+              <h3 className="roadmap-title">Live Agent Trading</h3>
+              <p className="roadmap-desc">Yieldr operates live agent trading strategies using project capital. Current focus: Polymarket prediction trading, wallet edge detection, agent research workflows, public performance reporting, trading analytics, and build-in-public transparency.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">On Fill / Milestone</div>
-              <h3 className="roadmap-title">Tier Progression</h3>
-              <p className="roadmap-desc">Pre-Seed → Seed → Growth → Scale. Each tier at higher FDV as product develops.</p>
+              <div className="roadmap-phase">Phase 2 — Coming around $YLDR TGE in July 2026</div>
+              <h3 className="roadmap-title">Whitelist and Fund Launch Applications</h3>
+              <p className="roadmap-desc">Users can whitelist wallets on upcoming agent vaults. Traders, projects, DAOs, and communities can apply to launch agent vaults. Yieldr begins forming the early vault pipeline across project coins, memecoins, perps, predictions, LP strategies, RWAs, and DAO treasury strategies.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">30 Days Before TGE</div>
-              <h3 className="roadmap-title">Full Disclosure</h3>
-              <p className="roadmap-desc">Complete allocation breakdown published. Token contract deployed on Base.</p>
+              <div className="roadmap-phase">Phase 3 — Planned July 2026</div>
+              <h3 className="roadmap-title">$YLDR TGE</h3>
+              <p className="roadmap-desc">$YLDR launches through the Virtuals ecosystem. Eligible users may participate according to final launch and jurisdictional rules. Tokenomics information and Virtuals launch page URL will be published before launch.</p>
             </div>
             <div className="roadmap-item">
               <div className="roadmap-dot"></div>
-              <div className="roadmap-phase">Q1 2027</div>
-              <h3 className="roadmap-title">TGE + Listing</h3>
-              <p className="roadmap-desc">Token generation event. YLDR distributed. ICO. Coinbase, Bybit, OKX listing. Trading begins.</p>
+              <div className="roadmap-phase">Phase 4 — Planned Q1–Q2 2027</div>
+              <h3 className="roadmap-title">Beta Launch</h3>
+              <p className="roadmap-desc">Whitelisted users begin participating in selected agent vaults. Selected launch applicants begin operating early agent vaults under controlled beta conditions. Agents begin supporting matching, comms, monitoring, reporting, risk alerts, and allocation intelligence.</p>
+            </div>
+            <div className="roadmap-item">
+              <div className="roadmap-dot"></div>
+              <div className="roadmap-phase">Phase 5 — Planned</div>
+              <h3 className="roadmap-title">Multi-Venue Expansion</h3>
+              <p className="roadmap-desc">Yieldr expands agent vault support across Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, Bankr, and selected RWA venues.</p>
+            </div>
+            <div className="roadmap-item">
+              <div className="roadmap-dot"></div>
+              <div className="roadmap-phase">Phase 6 — Vision</div>
+              <h3 className="roadmap-title">Open Agent Fund Network</h3>
+              <p className="roadmap-desc">Anyone with verified edge can apply to launch an agent vault. Eligible depositors can discover, monitor, and allocate to agent vaults through allocation agents. Yieldr becomes the agent OS for onchain funds.</p>
             </div>
 
-            <div className="callout callout-success">
-              <div className="callout-title">🔒 Your Allocation is Guaranteed</div>
-              <p>Once you contribute, your allocation is locked at that tier&apos;s price. Even if future tiers are higher, you receive YLDR at your entry price. Allocations are distributed at TGE.</p>
-            </div>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('tokenomics')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← Tokenomics</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('faq')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">FAQ →</div>
-                </a>
-              </div>
-            </div>
+            <PageFooter pageId="roadmap" />
           </section>
 
+          {/* PAGE 11: Risk and Restrictions */}
+          <section className={'page-section ' + (activePage === 'risk-restrictions' ? 'active' : '')} id="page-risk-restrictions">
+            <h1>Risk and Restrictions</h1>
+            <p className="page-subtitle">Yieldr is experimental onchain infrastructure.</p>
 
-          {/* PAGE: FAQ */}
-          <section className={'page-section ' + (activePage === 'faq' ? 'active' : '')} id="page-faq">
-            <h1>FAQ</h1>
-            <p className="page-subtitle">Frequently asked questions.</p>
+            <p>Agent vaults and agent trading strategies may involve significant risk, including:</p>
+            <ul className="feature-list">
+              <li>Market risk</li>
+              <li>Smart contract risk</li>
+              <li>Liquidity risk</li>
+              <li>Oracle risk</li>
+              <li>Execution risk</li>
+              <li>Strategy risk</li>
+              <li>Impermanent loss</li>
+              <li>Leverage risk</li>
+              <li>Counterparty or protocol risk</li>
+              <li>Regulatory risk</li>
+              <li>Agent error or model risk</li>
+            </ul>
 
-            <h2>General</h2>
+            <p>Past performance is not indicative of future results. Live performance may reflect Yieldr project capital only.</p>
+            <p>Agent outputs are informational and operational. They are not guarantees.</p>
+            <p>Depositors should understand the vault strategy, risks, restrictions, and eligibility requirements before participating.</p>
+            <p>Yieldr may restrict access in certain jurisdictions.</p>
 
-            <h3>What is Yieldr?</h3>
-            <p>Yieldr is an AI-powered platform that helps you find top DeFi traders, analyze their performance, and make better investment decisions. Your AI agent discovers top traders, explains their alpha, and advises on your positions.</p>
-
-            <h3>How does it work?</h3>
-            <p>You connect your wallet and start chatting with your AI agent. It scans your positions, finds top traders across protocols like Avantis and Aerodrome, and gives you personalized advice based on verified on-chain data.</p>
-
-            <h3>Is my wallet safe?</h3>
-            <p>Yes. We only read your wallet data — we never have access to your private keys. In the future execution layer, funds are deployed through smart contracts with coded risk controls, not custodied by Yieldr.</p>
-
-            <h3>Which protocols are supported?</h3>
-            <p>Currently: Avantis (perps), Aerodrome (LP), Uniswap (LP/swaps), and spot token holdings on Base. More protocols coming soon.</p>
-
-            <h2>Token & Participation</h2>
-
-            <h3>When is the token launch?</h3>
-            <p>TGE (Token Generation Event) is planned for Q1 2027, coinciding with ICO and Tier-1 CEX listing (Coinbase, Bybit, OKX). Until then, you can contribute USDC to lock in allocations at current tier pricing.</p>
-
-            <h3>Why is there no token yet?</h3>
-            <p>No token until TGE means 100% focus on building the best AI agent. Early contributors are true believers who want the product, not speculators. When YLDR launches, it launches with real utility and proven product-market fit.</p>
-
-            <h3>What is the YLDR token used for?</h3>
-            <p>YLDR is burned to access AI capabilities — training, analysis, alerts, and execution. This creates structural demand tied to product usage. More usage = more burns = deflationary supply.</p>
-
-            <h3>How do I participate in the public allocation?</h3>
-            <p>Contribute USDC to the treasury wallet on Base. Your allocation is locked at the current tier price. At TGE, YLDR tokens are distributed to your wallet. Contributors also get immediate AI credits and governance rights.</p>
-
-            <h3>What happens to my allocation if the tier fills?</h3>
-            <p>Once a tier fills (e.g., Genesis), the next tier opens at a higher price. Your allocation is locked at whatever tier you contributed to — you benefit from contributing early.</p>
-
-            <h3>Is there vesting for public contributors?</h3>
-            <p>No vesting for public allocation. YLDR is distributed to your wallet at TGE. Team and strategic investor tokens have 1-year cliff + 3-year monthly vesting.</p>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('how-to-participate')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← How to Participate</div>
-                </a>
-                <a className="footer-nav-btn next" onClick={() => showPage('glossary')}>
-                  <div className="footer-nav-label">Next</div>
-                  <div className="footer-nav-title">Glossary →</div>
-                </a>
-              </div>
+            <div className="callout callout-warning">
+              <div className="callout-title">Important</div>
+              <p>Nothing in these docs is financial advice, investment advice, or an offer to sell or solicitation to buy any security, financial instrument, or investment product.</p>
             </div>
+
+            <PageFooter pageId="risk-restrictions" />
           </section>
 
+          {/* PAGE 12: Connect */}
+          <section className={'page-section ' + (activePage === 'connect' ? 'active' : '')} id="page-connect">
+            <h1>Connect</h1>
+            <p className="page-subtitle">Follow the build.</p>
 
-          {/* PAGE: Glossary */}
-          <section className={'page-section ' + (activePage === 'glossary' ? 'active' : '')} id="page-glossary">
-            <h1>Glossary</h1>
-            <p className="page-subtitle">Key terms and definitions.</p>
-
-            <h3>Alpha</h3>
-            <p>Returns above a benchmark. If the market returns 10% and you return 15%, your alpha is 5%.</p>
-
-            <h3>APR/APY</h3>
-            <p>Annual Percentage Rate / Yield. The annualized return on an investment or liquidity position.</p>
-
-            <h3>Burn-for-Access</h3>
-            <p>Token mechanism where YLDR is permanently destroyed when used for AI compute. Creates structural demand tied to product usage.</p>
-
-            <h3>Copilot</h3>
-            <p>An AI assistant that helps you make decisions but doesn&apos;t act autonomously. Current Yieldr agents are copilots.</p>
-
-            <h3>FDV (Fully Diluted Valuation)</h3>
-            <p>Total value of all tokens if every token were in circulation. FDV = token price × total supply.</p>
-
-            <h3>IL (Impermanent Loss)</h3>
-            <p>The difference between holding tokens vs providing liquidity. Occurs when token prices diverge.</p>
-
-            <h3>Intelligence Layer</h3>
-            <p>AI agents that power discovery, analysis, and advice. The first layer of the Yieldr platform, available now.</p>
-
-            <h3>LP (Liquidity Provider)</h3>
-            <p>Someone who deposits tokens into a DEX pool to enable trading, earning fees in return.</p>
-
-            <h3>Non-Custodial</h3>
-            <p>You maintain control of your private keys and funds. The protocol never takes custody.</p>
-
-            <h3>Perpetuals (Perps)</h3>
-            <p>Derivative contracts that let you trade with leverage without an expiration date.</p>
-
-            <h3>TGE (Token Generation Event)</h3>
-            <p>The moment when YLDR tokens are created and distributed. Planned for Q1 2027 with Tier-1 CEX listing.</p>
-
-            <h3>Trust Layer</h3>
-            <p>Smart contracts that enforce rules, verify performance, and enable trustless execution. Coming in v1.0.</p>
-
-            <h3>Win Rate</h3>
-            <p>Percentage of trades that are profitable. A 70% win rate means 7 of 10 trades made money.</p>
-
-            <div className="page-footer">
-              <div className="footer-nav">
-                <a className="footer-nav-btn prev" onClick={() => showPage('faq')}>
-                  <div className="footer-nav-label">Previous</div>
-                  <div className="footer-nav-title">← FAQ</div>
-                </a>
-                <div></div>
-              </div>
+            <div className="cards-grid">
+              <a className="card" href="https://t.me/+KhZW5qgC" target="_blank" rel="noopener noreferrer">
+                <div className="card-icon">💬</div>
+                <div className="card-title">Telegram</div>
+                <p className="card-desc">Community, announcements, support.</p>
+              </a>
+              <a className="card" href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">
+                <div className="card-icon">𝕏</div>
+                <div className="card-title">X / Twitter</div>
+                <p className="card-desc">Build updates, vault performance, agent vault pipeline, and market takes.</p>
+              </a>
+              <a className="card" href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer">
+                <div className="card-icon">🐙</div>
+                <div className="card-title">GitHub</div>
+                <p className="card-desc">Open-source build logs, commits, and shipped modules.</p>
+              </a>
             </div>
+
+            <h2>Quick Links</h2>
+            <ul className="feature-list">
+              <li>Website — yieldr.org</li>
+              <li>Docs — yieldr.org/docs</li>
+              <li>Vaults — yieldr.org/vaults</li>
+              <li>Build Log — yieldr.org/build-log</li>
+            </ul>
+
+            <PageFooter pageId="connect" />
           </section>
 
         </div>

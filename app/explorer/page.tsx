@@ -17,7 +17,6 @@ type Vault = {
   status: VaultStatus;
   cat: VaultCat;
   stats: Array<{ v: string; l: string }>;
-  counter: string;
 };
 
 const VAULTS: Vault[] = [
@@ -26,49 +25,42 @@ const VAULTS: Vault[] = [
     desc: 'Agent identifies wallets with abnormal win rates vs implied probability on geopolitical events.',
     status: 'live', cat: 'predictions',
     stats: [{ v: '+41.8%', l: '30D Return' }, { v: '$59.2K', l: 'AUM' }, { v: '82%', l: 'Win Rate' }],
-    counter: '312 wallets whitelisted',
   },
   {
     id: 'nba', name: '🏀 NBA Edge Vault', proto: '🔮 Polymarket · Predictions',
     desc: 'Agent ranks top NBA prediction market traders by statistical edge, mirrors highest-conviction positions.',
     status: 'live', cat: 'predictions',
     stats: [{ v: '+18.7%', l: '7D Return' }, { v: '$22.4K', l: 'AUM' }, { v: '74%', l: 'Win Rate' }],
-    counter: '187 wallets whitelisted',
   },
   {
     id: 'funding', name: '⚡ Funding Arbs Vault', proto: '📈 Avantis · Hyperliquid · Perps',
     desc: 'Captures funding rate premium on Avantis & Hyperliquid by holding long/short pairs where funding diverges from historical mean. Zero directional bias.',
     status: 'waitlist', cat: 'perps',
-    stats: [{ v: '$75K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '312', l: 'Waitlisted' }],
-    counter: '312 wallets waitlisted',
+    stats: [{ v: '$75K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'aero', name: '🪙 AERO Accumulator Vault', proto: '💧 Aerodrome · LP',
     desc: "DCA into Base's largest DEX token using top Aerodrome LP and trader signals. Agents execute and pace.",
     status: 'waitlist', cat: 'lp',
-    stats: [{ v: '$48K', l: 'Target AUM' }, { v: '≤15%', l: 'Perf Fee' }, { v: '234', l: 'Waitlisted' }],
-    counter: '234 wallets waitlisted',
+    stats: [{ v: '$48K', l: 'Target AUM' }, { v: '≤15%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'base', name: '🌐 Base Ecosystem Vault', proto: '🤖 Virtuals · Bankr · Project Coins',
     desc: 'Curated basket of Virtuals, Bankr, and Base ecosystem tokens following highest-edge wallets.',
     status: 'waitlist', cat: 'project-coins',
-    stats: [{ v: '$32K', l: 'Target AUM' }, { v: '≤18%', l: 'Perf Fee' }, { v: '189', l: 'Waitlisted' }],
-    counter: '189 wallets waitlisted',
+    stats: [{ v: '$32K', l: 'Target AUM' }, { v: '≤18%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'spacex', name: '🚀 SpaceX RWA Vault', proto: '🦄 Uniswap · Aerodrome · RWA',
     desc: 'Accumulates SpaceX tokenised equity on Uniswap and Aerodrome, following wallets with the highest RWA spot edge.',
     status: 'waitlist', cat: 'rwa',
-    stats: [{ v: '$28K', l: 'Target AUM' }, { v: '≤25%', l: 'Perf Fee' }, { v: '112', l: 'Waitlisted' }],
-    counter: '112 wallets waitlisted',
+    stats: [{ v: '$28K', l: 'Target AUM' }, { v: '≤25%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'meme', name: '🎲 Memecoin Momentum Vault', proto: '🎰 Base · Memecoins',
     desc: 'Tracks top Base memecoin traders by realised edge and mirrors entries/exits with strict position sizing.',
     status: 'waitlist', cat: 'memecoins',
-    stats: [{ v: '$19K', l: 'Target AUM' }, { v: '98', l: 'Waitlisted' }],
-    counter: '98 wallets waitlisted',
+    stats: [{ v: '$19K', l: 'Target AUM' }, { v: '', l: 'Waitlisted' }],
   },
 ];
 
@@ -111,9 +103,17 @@ export default function ExplorerPage() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [modalVault, setModalVault] = useState<Vault | null>(null);
   const [modalState, setModalState] = useState<'connect' | 'confirm' | 'success'>('connect');
+  const [counts, setCounts] = useState<Record<string, number>>({});
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
+
+  useEffect(() => {
+    fetch('/api/whitelist')
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setCounts((prev) => ({ ...prev, ...d.data })); })
+      .catch(() => {});
+  }, []);
 
   const [chatMessages, setChatMessages] = useState<ChatMsg[]>([
     { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me about any live or waitlisted vault, the $YLDR TGE, or how whitelisting works.' },
@@ -141,8 +141,18 @@ export default function ExplorerPage() {
     setModalState('connect');
   }
   function handleConfirm() {
-    // ← Hook: sign whitelist message + POST to backend here
+    if (!modalVault || !address) return;
     setModalState('success');
+    fetch('/api/whitelist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wallet_address: address, vault_id: modalVault.id }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok && d.data) setCounts((prev) => ({ ...prev, [modalVault.id]: d.data.count }));
+      })
+      .catch(() => {});
   }
 
   function sendQuery(raw: string) {
@@ -211,7 +221,7 @@ export default function ExplorerPage() {
               <div className="ex-section-label">Live</div>
               <div className="ex-vault-grid">
                 {liveVaults.map((v) => (
-                  <VaultCard key={v.id} v={v} onWhitelist={() => openWhitelist(v)} />
+                  <VaultCard key={v.id} v={v} count={counts[v.id]} onWhitelist={() => openWhitelist(v)} />
                 ))}
               </div>
             </>
@@ -222,7 +232,7 @@ export default function ExplorerPage() {
               <div className="ex-section-label">Waitlist</div>
               <div className="ex-vault-grid">
                 {waitlistVaults.map((v) => (
-                  <VaultCard key={v.id} v={v} onWhitelist={() => openWhitelist(v)} />
+                  <VaultCard key={v.id} v={v} count={counts[v.id]} onWhitelist={() => openWhitelist(v)} />
                 ))}
               </div>
             </>
@@ -302,7 +312,9 @@ export default function ExplorerPage() {
                 <em>Earn 10K–100K $YLDR</em> at beta launch. Deposit min. $100 USDC for 30 days at launch to claim.
                 <div className="ex-wm-fine">*T&amp;Cs apply.</div>
               </div>
-              <div className="ex-wm-counter">{modalVault.counter}</div>
+              <div className="ex-wm-counter">
+                {counts[modalVault.id] != null ? `${counts[modalVault.id]} wallets whitelisted` : 'Loading whitelist count…'}
+              </div>
 
               {modalState === 'connect' && (
                 <div>
@@ -354,7 +366,7 @@ export default function ExplorerPage() {
   );
 }
 
-function VaultCard({ v, onWhitelist }: { v: Vault; onWhitelist: () => void }) {
+function VaultCard({ v, count, onWhitelist }: { v: Vault; count?: number; onWhitelist: () => void }) {
   const body = (
     <>
       <div className="ex-vc-top">
@@ -373,9 +385,13 @@ function VaultCard({ v, onWhitelist }: { v: Vault; onWhitelist: () => void }) {
       <p className="ex-vc-desc">{v.desc}</p>
       <div className="ex-vc-stats">
         {v.stats.map((s) => (
-          <div className="ex-vc-stat" key={s.l}><div className="ex-vc-sv">{s.v}</div><div className="ex-vc-sl">{s.l}</div></div>
+          <div className="ex-vc-stat" key={s.l}>
+            <div className="ex-vc-sv">{s.l === 'Waitlisted' ? (count ?? '—') : s.v}</div>
+            <div className="ex-vc-sl">{s.l}</div>
+          </div>
         ))}
       </div>
+      <div className="ex-vc-wl-count">{count != null ? `${count} wallets whitelisted` : 'Loading…'}</div>
     </>
   );
 
