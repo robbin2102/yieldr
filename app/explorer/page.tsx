@@ -81,8 +81,12 @@ const FILTERS: Array<{ key: string; label: string; sep?: boolean }> = [
 // Until then, every answer points back to whitelisting for early access.
 const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = [
   {
+    triggers: ['what is yieldr', 'what\'s yieldr', 'about yieldr'],
+    text: "Yieldr is an agent stack for onchain funds — AI agents run trading strategies, vet wallets, and will soon route capital across agent vaults on behalf of traders, depositors, and communities. The allocation agent itself is still under construction; meanwhile you can whitelist your wallet on any agent vault below for early access.",
+  },
+  {
     triggers: ['hello', 'hi', 'hey', 'sup', 'what can you do', 'who are you', 'what are you', 'help'],
-    text: "I'm the Yieldr Agent — still under construction. Once live in beta, I'll help you discover vaults, explain strategies, and allocate capital across agent vaults automatically. For now, whitelist your wallet on any vault below for early access.",
+    text: "I'm the Yieldr Agent. Once live in beta, I'll help you discover vaults, explain strategies, and allocate capital across agent vaults automatically — I'm still under construction, so I can talk you through vaults, the $YLDR TGE, or whitelisting today. Whitelist your wallet on any vault below for early access in the meantime.",
   },
   {
     triggers: ['live vault', 'live', 'geopolitics', 'nba'],
@@ -138,7 +142,7 @@ function processQuery(t: string): { text: string; filter?: string } {
     if (triggers.some((kw) => lower.includes(kw))) return { text, filter };
   }
   return {
-    text: "I'm still under construction — full allocation-agent capabilities go live in beta. Ask me about live vaults, perps, predictions, LP, RWA, the $YLDR TGE, or whitelisting, or just whitelist your wallet on any agent vault below for early access.",
+    text: "I can tell you about Yieldr, live vaults, perps, predictions, LP, RWA, project coins, launching a vault, or the $YLDR TGE — try asking about one of those. Full allocation-agent capabilities (auto-routing your capital) are still under construction, so for now whitelist your wallet on any agent vault below for early access.",
   };
 }
 
@@ -195,7 +199,7 @@ export default function ExplorerPage() {
   }, []);
 
   const [chatMessages, setChatMessages] = useState<ChatMsg[]>([
-    { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me about any live or waitlisted vault, the $YLDR TGE, or how whitelisting works.' },
+    { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me what Yieldr is, about any live or waitlisted vault, the $YLDR TGE, or how whitelisting works — full auto-allocation is still under construction, so until then, whitelist your wallet on any agent vault for early access.' },
   ]);
   const [chatInput, setChatInput] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
