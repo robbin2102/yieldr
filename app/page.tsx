@@ -60,8 +60,26 @@ const TICKER_ITEMS = [
   { label: 'SPACEX RWA VAULT', value: 'WAITLIST OPEN', up: true },
 ];
 
+function formatAUM(n: number): string {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `$${Math.round(n / 1_000)}K`;
+  return `$${n}`;
+}
+
 export default function HomePage() {
   const [bannerOpen, setBannerOpen] = useState(true);
+  const [waitlistStats, setWaitlistStats] = useState<{
+    total_aum: number;
+    total_wallets: number;
+    vault_count: number;
+  } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/whitelist/stats')
+      .then((r) => r.json())
+      .then((d) => { if (d.ok && d.data) setWaitlistStats(d.data); })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -152,9 +170,11 @@ export default function HomePage() {
               <div className="lp-hm-panel">
                 <div className="lp-hm-label"><span className="lp-hm-dot waitlist" />On waitlist</div>
                 <div className="lp-hm-stats">
-                  <div><div className="lp-hm-v">$5.2M</div><div className="lp-hm-l">Target AUM</div></div>
+                  <div><div className="lp-hm-v">{waitlistStats ? formatAUM(waitlistStats.total_aum) : '—'}</div><div className="lp-hm-l">Target AUM</div></div>
                   <div className="lp-hm-sep" />
-                  <div><div className="lp-hm-v">102</div><div className="lp-hm-l">Wallets Whitelisted</div></div>
+                  <div><div className="lp-hm-v">{waitlistStats ? waitlistStats.vault_count : '—'}</div><div className="lp-hm-l">Agent Vaults</div></div>
+                  <div className="lp-hm-sep" />
+                  <div><div className="lp-hm-v">{waitlistStats ? waitlistStats.total_wallets : '—'}</div><div className="lp-hm-l">Wallets Whitelisted</div></div>
                 </div>
                 <div className="lp-hm-tge">⚡ $YLDR TGE · Virtuals · July 2026</div>
               </div>
