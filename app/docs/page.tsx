@@ -262,42 +262,41 @@ export default function DocsPage() {
           {/* PAGE 01: What is Yieldr? */}
           <section className={'dx-page ' + (activePage === 'what-is-yieldr' ? 'active' : '')} id="page-what-is-yieldr">
             <div className="dx-badge">Documentation · v2.0 · Updated July 2026</div>
-            <h1>The platform for <span className="ac">AI-native hedge funds</span> onchain.</h1>
-            <p className="dx-subtitle">Top traders launch vaults and let agents run the fund. Investors deploy capital and let agents run the portfolio. <strong>Every part of fund operations and capital allocation that doesn&apos;t require a human is handled by the agent stack.</strong></p>
-
-            <SectionTag pageId="what-is-yieldr" />
-            <h2>A new asset management primitive — the agent-managed fund.</h2>
-            <p>Built to scale to a million operators. Open to anyone with verified edge or capital to allocate.</p>
-
+            <h1>The <span className="ac">agent stack</span> for onchain funds.</h1>
+            <p className="dx-subtitle">Connect your wallet, prove your edge, and launch an agent vault — turning your onchain performance into recurring revenue.</p>
             <p>Yieldr helps traders, project communities, DAOs, and depositors use agents to launch, operate, monitor, and allocate across onchain funds.</p>
             <p>Agents identify edge, match capital, handle communication, monitor performance, and rotate allocation when edge changes.</p>
 
+            <SectionTag pageId="what-is-yieldr" />
+            <h2>Yieldr is the agent OS for onchain funds.</h2>
+            <p>Onchain performance is public. Wallets reveal trading history, PnL, market selection, sizing, drawdowns, and execution behavior. But a wallet alone is not a fund.</p>
+            <p>Yieldr turns verifiable onchain performance into agent vaults.</p>
+            <p>An agent vault is an onchain fund structure powered by smart contracts and operated through agents. The vault handles capital, execution rules, performance tracking, and accounting. The agents handle the work around it: edge detection, discovery, depositor matching, communication, monitoring, and allocation intelligence.</p>
+
             <h2>What Yieldr does</h2>
 
-            <div className="dx-cards-grid">
-              <div className="dx-card">
-                <div className="dx-card-title">For Traders</div>
-                <p className="dx-card-desc">Launch a vault. Agents handle investor matching, communication, and retention. Stay in your seat.</p>
-              </div>
-              <div className="dx-card">
-                <div className="dx-card-title">For Investors</div>
-                <p className="dx-card-desc">Set your risk-return target. Agents allocate across vaults continuously and rotate as performance shifts.</p>
-              </div>
-              <div className="dx-card">
-                <div className="dx-card-title">For Project Communities</div>
-                <p className="dx-card-desc">Deploy publicly transparent strategies to grow token liquidity, market depth, and treasury exposure.</p>
-              </div>
-              <div className="dx-card">
-                <div className="dx-card-title">For Depositors</div>
-                <p className="dx-card-desc">Launch allocation agents that discover, monitor, and rotate capital across agent vaults 24/7.</p>
-              </div>
-            </div>
+            <h3>For Traders</h3>
+            <p>Launch an agent vault from verifiable onchain edge.</p>
+            <p>Yieldr helps traders prove their edge, package it into a strategy, define risk limits, attract aligned depositors, communicate performance, and monitor drift.</p>
+            <p>The trader keeps trading. Agents handle the rest.</p>
 
-            <h2>What&apos;s live today</h2>
-            <p>Three vaults trading project capital on Polymarket — <strong>NBA Edge, Soccer Alpha, Geopolitics</strong>. Real performance, public onchain. The proving ground for the agent stack.</p>
+            <h3>For Project Communities</h3>
+            <p>Agent vaults help projects and their communities deploy publicly transparent strategies to grow token liquidity and market depth.</p>
+            <p>Projects can use agent vaults to coordinate liquidity, deepen markets, accumulate ecosystem exposure, and give communities a transparent view into strategy execution.</p>
+            <p>Another use case is treasury deployment.</p>
+            <p>DAOs and project treasuries can deploy funds into proven agent strategies with targeted risk-return goals across asset classes that are unavailable to most DAOs today, including perps, predictions, upcoming Base project coins, liquidity strategies, RWAs, and ecosystem baskets.</p>
 
-            <h2>Why now</h2>
-            <p>Verifiable trader performance at scale. Agents capable of real operational and allocation decisions. Smart contracts for non-custodial fund structures. <strong>The pieces exist. Yieldr is the assembly.</strong></p>
+            <h3>For Depositors</h3>
+            <p>Depositors can launch allocation agents that discover and allocate capital across agent vaults based on asset class, risk goals, and return targets.</p>
+            <p>Allocation agents monitor positions across vaults 24/7. They detect edge gain or edge loss in real time, evaluate every trade, and can decide when to rotate capital from a vault losing edge into a vault showing stronger performance.</p>
+            <p>Agent vaults and allocation agents create a new passive investing primitive onchain.</p>
+            <p>This is not possible with primitive DeFi vaults, where users deposit into static strategies and monitor risk manually.</p>
+
+            <h3>For the Market</h3>
+            <p>Yieldr removes the wall between verified edge and scalable capital.</p>
+            <p>Without Yieldr, strong traders stay trapped inside their own wallet. Their track record is public, but hard to discover. Depositors cannot easily evaluate or trust the edge. Communication breaks down during drawdowns. Scaling means taking more personal risk.</p>
+            <p>With Yieldr, agents make the edge legible, match it with the right capital, communicate through volatility, and monitor decay before it shows up in PnL.</p>
+            <p>The constraint moves from fund operations to verified edge.</p>
 
             <PageFooter pageId="what-is-yieldr" />
           </section>
@@ -305,29 +304,44 @@ export default function DocsPage() {
           {/* PAGE 02: The Problem */}
           <section className={'dx-page ' + (activePage === 'the-problem' ? 'active' : '')} id="page-the-problem">
             <SectionTag pageId="the-problem" />
-            <h1>The hedge fund is broken — and DeFi hasn&apos;t fixed it.</h1>
-            <p className="dx-subtitle">For 70 years, the hedge fund has been the highest-performing structure in finance. Access has stayed locked behind accreditation walls, million-dollar minimums, and jurisdictional moats. The world has produced ~10,000 funds. Millions of traders could run one. Almost none ever will.</p>
+            <h1>Great traders should run onchain funds. Most never do.</h1>
+            <p className="dx-subtitle">Your wallet is public. Your PnL is onchain. Your edge is more verifiable than anything in traditional finance. But you are still only trading your own capital.</p>
 
-            <p><strong>DeFi was supposed to fix this. It hasn&apos;t.</strong> Vaults exist as a primitive, but a vault is not a fund.</p>
-
-            <div className="dx-prompt-card">
-              <div className="dx-prompt-text">01</div>
-              <p className="dx-prompt-desc"><strong>Traders can launch vaults but can&apos;t grow them.</strong> Code handles execution. It doesn&apos;t bring in investors, explain the strategy, or hold the relationship through drawdowns. Top traders don&apos;t want to spend time on this, so they don&apos;t scale — and most onchain alpha stays capped at personal capital.</p>
-            </div>
-            <div className="dx-prompt-card">
-              <div className="dx-prompt-text">02</div>
-              <p className="dx-prompt-desc"><strong>Investors can&apos;t allocate across vaults at scale.</strong> Picking one vault isn&apos;t the job — continuous allocation against a risk-return target is. Which vaults fit my profile? How much in each? When to rotate? No one does this manually, so capital chases the loudest vault instead of the best-fit one.</p>
-            </div>
+            <p>A trader may have strong performance, but performance alone does not create a fund. A fund needs discovery, trust, capital matching, depositor communication, drawdown management, monitoring, reporting, and risk controls.</p>
+            <p>Most traders do not want to run that operation.</p>
+            <p>They want to trade.</p>
 
             <h2>Without Yieldr</h2>
+            <p>Strong traders face the same wall:</p>
             <ul className="dx-list">
-              <li>Nobody outside their circle knows a trader&apos;s track record exists.</li>
-              <li>Depositors have no way to find traders or trust their edge.</li>
-              <li>There is no structured way to match capital with strategy fit.</li>
+              <li>Nobody outside their circle knows their track record exists.</li>
+              <li>Depositors have no way to find them or trust their edge.</li>
+              <li>There is no structured way to match with the right capital.</li>
               <li>Every depositor question pulls the trader out of their positions.</li>
               <li>Drawdowns create noise that must be managed manually.</li>
               <li>Scaling means risking more personal capital instead of scaling through aligned depositors.</li>
             </ul>
+
+            <h2>The Wall</h2>
+            <ul className="dx-list">
+              <li>No discovery layer.</li>
+              <li>No depositor matching.</li>
+              <li>No communication when markets move.</li>
+              <li>No monitoring when strategy drifts.</li>
+              <li>No way to scale edge without scaling personal risk.</li>
+            </ul>
+
+            <h2>Yieldr Removes the Wall</h2>
+            <p>With Yieldr:</p>
+            <ul className="dx-list">
+              <li>Quant Agent identifies edge from wallet history.</li>
+              <li>Matching Agent surfaces vaults to the right depositors.</li>
+              <li>Comms Agent handles depositor queries through volatile periods.</li>
+              <li>Monitoring Agent tracks edge decay before it shows up in PnL.</li>
+              <li>Allocation Agent helps depositors rotate capital toward vaults gaining edge.</li>
+            </ul>
+            <p>The trader keeps trading.</p>
+            <p>Agents handle the rest.</p>
 
             <PageFooter pageId="the-problem" />
           </section>
@@ -335,33 +349,94 @@ export default function DocsPage() {
           {/* PAGE 03: The Solution */}
           <section className={'dx-page ' + (activePage === 'the-solution' ? 'active' : '')} id="page-the-solution">
             <SectionTag pageId="the-solution" />
-            <h1>The Solution</h1>
-            <p className="dx-subtitle">Yieldr gives every verified onchain edge an agent stack. The vault is the capital layer. The agents are the operating layer. Together, they turn onchain performance into recurring revenue.</p>
+            <h1>Yieldr gives every verified onchain edge an agent stack.</h1>
+            <p className="dx-subtitle">The vault is the capital layer. The agents are the operating layer. Together, they turn onchain performance into recurring revenue.</p>
 
             <h2>The Yieldr Agent Stack</h2>
 
             <h3>Quant Agent</h3>
-            <p>Analyzes wallet history and strategy performance — entry/exit behavior, sizing, drawdown history, win rate, regime sensitivity, and whether performance is edge, beta, luck, or insider-like timing. The goal is not just to show PnL, but to explain why the edge exists and whether it can scale.</p>
+            <p>The Quant Agent analyzes wallet history and strategy performance.</p>
+            <p>It identifies:</p>
+            <ul className="dx-list">
+              <li>Where the edge exists</li>
+              <li>Which markets the wallet performs best in</li>
+              <li>Entry and exit behavior</li>
+              <li>Position sizing</li>
+              <li>Holding periods</li>
+              <li>Drawdown history</li>
+              <li>Win rate and loss profile</li>
+              <li>Regime sensitivity</li>
+              <li>Repeatability of returns</li>
+              <li>Whether performance is edge, beta, luck, or insider-like timing</li>
+            </ul>
+            <p>The goal is not just to show PnL.</p>
+            <p>The goal is to explain why the edge exists and whether it can scale.</p>
 
             <h3>Matching Agent</h3>
-            <p>Connects agent vaults with depositors whose goals fit the strategy — asset class, risk tolerance, return target, drawdown tolerance, and liquidity needs. Capital is matched to fit, not noise.</p>
+            <p>The Matching Agent connects agent vaults with depositors whose goals fit the strategy.</p>
+            <p>It evaluates:</p>
+            <ul className="dx-list">
+              <li>Asset class preference</li>
+              <li>Risk tolerance</li>
+              <li>Return target</li>
+              <li>Drawdown tolerance</li>
+              <li>Holding period</li>
+              <li>Market exposure</li>
+              <li>Liquidity needs</li>
+              <li>Strategy type</li>
+              <li>Vault performance</li>
+              <li>Edge strength</li>
+            </ul>
+            <p>Instead of relying on noisy leaderboards or social clout, capital is matched to vaults based on fit.</p>
 
             <h3>Comms Agent</h3>
-            <p>Handles depositor communication: weekly performance summaries, drawdown explanations, strategy notes, and risk alerts — keeping the trader focused on positions while depositors stay informed.</p>
+            <p>The Comms Agent handles depositor communication.</p>
+            <p>It can:</p>
+            <ul className="dx-list">
+              <li>Answer depositor questions</li>
+              <li>Summarize weekly performance</li>
+              <li>Explain drawdowns</li>
+              <li>Describe strategy changes</li>
+              <li>Report market context</li>
+              <li>Explain risk events</li>
+              <li>Translate trading activity into simple updates</li>
+              <li>Keep depositors informed through volatility</li>
+            </ul>
+            <p>This keeps the trader focused on positions while depositors stay informed.</p>
 
             <h3>Monitoring Agent</h3>
-            <p>Tracks risk, edge decay, and strategy drift — watching position sizing, drawdown, leverage, and AUM scale — and flags problems before they become obvious in PnL.</p>
+            <p>The Monitoring Agent tracks risk, edge decay, and strategy drift.</p>
+            <p>It watches:</p>
+            <ul className="dx-list">
+              <li>Whether the vault is still following its stated strategy</li>
+              <li>Whether edge is improving or degrading</li>
+              <li>Whether position sizing is changing</li>
+              <li>Whether drawdown exceeds historical norms</li>
+              <li>Whether liquidity risk is increasing</li>
+              <li>Whether leverage is creeping up</li>
+              <li>Whether AUM is becoming too large for the strategy</li>
+              <li>Whether recent performance is repeatable or luck-driven</li>
+            </ul>
+            <p>The Monitoring Agent flags problems before they become obvious in PnL.</p>
 
             <h3>Allocation Agent</h3>
-            <p>Works for depositors: discovers vaults, monitors open allocations, compares strategies, and rotates capital based on depositor goals — creating passive onchain investing across active agent vaults.</p>
+            <p>The Allocation Agent works for depositors.</p>
+            <p>It discovers vaults, monitors open allocations, compares strategies, and rotates capital based on depositor goals.</p>
+            <p>It can track:</p>
+            <ul className="dx-list">
+              <li>Which vaults are gaining edge</li>
+              <li>Which vaults are losing edge</li>
+              <li>Which strategies fit the depositor&apos;s risk-return target</li>
+              <li>Whether allocation should be increased, reduced, or exited</li>
+              <li>Whether a different vault offers better risk-adjusted opportunity</li>
+            </ul>
+            <p>This creates passive onchain investing across active agent vaults.</p>
 
             <h2>The Outcome</h2>
-            <ul className="dx-list">
-              <li>Traders can scale edge without becoming fund operators.</li>
-              <li>Project communities can run transparent liquidity and accumulation strategies.</li>
-              <li>DAOs can deploy treasury capital into asset classes they could not previously access.</li>
-              <li>Depositors can allocate through agents instead of manually monitoring every vault.</li>
-            </ul>
+            <p>Traders can scale edge without becoming fund operators.</p>
+            <p>Project communities can run transparent liquidity and accumulation strategies.</p>
+            <p>DAOs can deploy treasury capital into asset classes they could not previously access.</p>
+            <p>Depositors can allocate through agents instead of manually monitoring every vault.</p>
             <p>Yieldr becomes the operating system for onchain funds.</p>
 
             <PageFooter pageId="the-solution" />
@@ -371,60 +446,216 @@ export default function DocsPage() {
           <section className={'dx-page ' + (activePage === 'agent-vaults' ? 'active' : '')} id="page-agent-vaults">
             <SectionTag pageId="agent-vaults" />
             <h1>What are Agent Vaults?</h1>
-            <p className="dx-subtitle">Onchain funds operated through the Yieldr agent stack. A primitive DeFi vault usually does one thing: it holds capital and follows a fixed strategy. An agent vault is dynamic, monitored, explainable, and connected to an agent network.</p>
+            <p className="dx-subtitle">Agent vaults are onchain funds operated through the Yieldr agent stack.</p>
+            <p>They combine smart contract vault infrastructure with agents that identify edge, support execution, communicate performance, monitor risk, and help capital move toward strategies that are working.</p>
+            <p>A primitive DeFi vault usually does one thing: it holds capital and follows a fixed strategy.</p>
+            <p>An agent vault is different.</p>
+            <p>It is dynamic, monitored, explainable, and connected to an agent network.</p>
 
             <h2>Agent Vault = Capital Layer + Strategy Layer + Agent Layer</h2>
 
             <h3>1. Capital Layer</h3>
-            <p>The vault holds and tracks capital onchain — deposits, withdrawals, strategy accounting, performance tracking, fee logic, risk limits, and public reporting. The vault is where capital lives.</p>
+            <p>The vault holds and tracks capital onchain.</p>
+            <p>It is designed to support:</p>
+            <ul className="dx-list">
+              <li>Deposits</li>
+              <li>Withdrawals</li>
+              <li>Strategy accounting</li>
+              <li>Performance tracking</li>
+              <li>Fee logic</li>
+              <li>Risk limits</li>
+              <li>Public reporting</li>
+              <li>Vault status</li>
+              <li>Onchain transparency</li>
+            </ul>
+            <p>The vault is where capital lives.</p>
 
             <h3>2. Strategy Layer</h3>
-            <p>Each vault has a strategy domain: prediction markets, perps strategies, funding-rate arbitrage, Base memecoin trading, project coin accumulation, liquidity strategies, RWA accumulation, or DAO treasury strategies. The strategy defines what the vault is trying to do.</p>
+            <p>Each vault has a strategy domain.</p>
+            <p>Examples:</p>
+            <ul className="dx-list">
+              <li>Prediction markets</li>
+              <li>Perps strategies</li>
+              <li>Funding-rate arbitrage</li>
+              <li>Base memecoin trading</li>
+              <li>Project coin accumulation</li>
+              <li>Virtuals ecosystem strategies</li>
+              <li>Bankr project coin strategies</li>
+              <li>Aerodrome liquidity strategies</li>
+              <li>Uniswap liquidity strategies</li>
+              <li>RWA accumulation</li>
+              <li>DAO treasury strategies</li>
+            </ul>
+            <p>The strategy defines what the vault is trying to do.</p>
 
             <h3>3. Agent Layer</h3>
-            <p>Agents operate around the vault — edge detection, depositor matching, performance communication, risk monitoring, strategy drift alerts, and allocation rotation. The agents make the vault intelligent.</p>
+            <p>Agents operate around the vault.</p>
+            <p>They help with:</p>
+            <ul className="dx-list">
+              <li>Edge detection</li>
+              <li>Depositor matching</li>
+              <li>Performance communication</li>
+              <li>Risk monitoring</li>
+              <li>Strategy drift alerts</li>
+              <li>Trade explanation</li>
+              <li>Allocation rotation</li>
+              <li>Vault comparison</li>
+              <li>Depositor updates</li>
+              <li>Fund readiness analysis</li>
+            </ul>
+            <p>The agents make the vault intelligent.</p>
 
             <h2>How Agent Vaults Work</h2>
 
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 1 — Connect Wallet</div>
-              <p className="dx-prompt-desc">A trader, project, DAO, or strategy operator connects a wallet. Yieldr uses wallet activity and linked strategy data to understand past performance, market exposure, and potential edge.</p>
+              <div className="dx-prompt-desc">
+                <p>A trader, project, DAO, or strategy operator connects a wallet.</p>
+                <p>Yieldr uses wallet activity and linked strategy data to understand past performance, market exposure, and potential edge.</p>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 2 — Prove Edge</div>
-              <p className="dx-prompt-desc">The Quant Agent analyzes the wallet for patterns in PnL, entry/exit timing, sizing, market selection, holding period, drawdown control, repeatability, liquidity conditions, and risk-adjusted returns. The output is an edge profile.</p>
+              <div className="dx-prompt-desc">
+                <p>The Quant Agent analyzes the wallet.</p>
+                <p>It looks for patterns in:</p>
+                <ul className="dx-list">
+                  <li>PnL</li>
+                  <li>Entry timing</li>
+                  <li>Exit timing</li>
+                  <li>Sizing</li>
+                  <li>Market selection</li>
+                  <li>Holding period</li>
+                  <li>Drawdown control</li>
+                  <li>Repeatability</li>
+                  <li>Liquidity conditions</li>
+                  <li>Risk-adjusted returns</li>
+                </ul>
+                <p>The output is an edge profile.</p>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 3 — Define Vault Strategy</div>
-              <p className="dx-prompt-desc">The strategy is packaged into an agent vault, defining market, asset class, target AUM, risk level, execution approach, fees, withdrawal terms, max drawdown, max position size, liquidity constraints, and disclosure requirements.</p>
+              <div className="dx-prompt-desc">
+                <p>The strategy is packaged into an agent vault.</p>
+                <p>The vault defines:</p>
+                <ul className="dx-list">
+                  <li>Market</li>
+                  <li>Asset class</li>
+                  <li>Target AUM</li>
+                  <li>Risk level</li>
+                  <li>Execution approach</li>
+                  <li>Fees</li>
+                  <li>Withdrawal terms</li>
+                  <li>Max drawdown</li>
+                  <li>Max position size</li>
+                  <li>Liquidity constraints</li>
+                  <li>Disclosure requirements</li>
+                </ul>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 4 — Match Depositors</div>
-              <p className="dx-prompt-desc">The Matching Agent identifies depositors whose goals fit the vault based on asset class, return target, risk tolerance, drawdown limits, time horizon, liquidity preference, and strategy type.</p>
+              <div className="dx-prompt-desc">
+                <p>The Matching Agent identifies depositors whose goals fit the vault.</p>
+                <p>It matches based on:</p>
+                <ul className="dx-list">
+                  <li>Asset class</li>
+                  <li>Return target</li>
+                  <li>Risk tolerance</li>
+                  <li>Drawdown limits</li>
+                  <li>Time horizon</li>
+                  <li>Liquidity preference</li>
+                  <li>Strategy type</li>
+                </ul>
+                <p>Capital is matched to strategy fit, not noise.</p>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 5 — Run and Monitor</div>
-              <p className="dx-prompt-desc">Once active, the vault executes its strategy according to defined rules. Agents continuously monitor performance, risk, edge gain or loss, strategy drift, depositor alignment, liquidity, and position behavior.</p>
+              <div className="dx-prompt-desc">
+                <p>Once active, the vault executes its strategy according to defined rules.</p>
+                <p>Agents continuously monitor:</p>
+                <ul className="dx-list">
+                  <li>Performance</li>
+                  <li>Risk</li>
+                  <li>Edge gain or loss</li>
+                  <li>Strategy drift</li>
+                  <li>Depositor alignment</li>
+                  <li>Liquidity</li>
+                  <li>Market changes</li>
+                  <li>Position behavior</li>
+                </ul>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 6 — Communicate</div>
-              <p className="dx-prompt-desc">The Comms Agent keeps depositors informed with weekly updates, trade summaries, drawdown explanations, strategy notes, risk alerts, and market context — without forcing the trader to become a full-time IR desk.</p>
+              <div className="dx-prompt-desc">
+                <p>The Comms Agent keeps depositors informed.</p>
+                <p>It can generate:</p>
+                <ul className="dx-list">
+                  <li>Weekly updates</li>
+                  <li>Trade summaries</li>
+                  <li>Drawdown explanations</li>
+                  <li>Strategy notes</li>
+                  <li>Risk alerts</li>
+                  <li>Market context</li>
+                  <li>Performance reviews</li>
+                </ul>
+                <p>This keeps the vault transparent without forcing the trader to become a full-time IR desk.</p>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 7 — Allocate and Rotate</div>
-              <p className="dx-prompt-desc">Depositors can use Allocation Agents to monitor vaults continuously. If a vault loses edge, risk increases, or another vault better matches the depositor&apos;s target, the Allocation Agent can recommend or execute rotation according to user-defined rules.</p>
+              <div className="dx-prompt-desc">
+                <p>Depositors can use Allocation Agents to monitor vaults continuously.</p>
+                <p>If a vault loses edge, risk increases, or another vault better matches the depositor&apos;s target, the Allocation Agent can recommend or execute rotation according to user-defined rules.</p>
+              </div>
             </div>
 
-            <h2>Agent Vault Categories</h2>
+            <h2>Why Agent Vaults Matter</h2>
+            <p>Agent vaults make onchain funds scalable.</p>
+            <p>They solve the missing operating layer:</p>
             <ul className="dx-list">
-              <li><strong>Prediction Vaults</strong> — wallet intelligence and implied probability on Polymarket.</li>
-              <li><strong>Perps Vaults</strong> — directional, funding-rate, and market-neutral strategies on Avantis and Hyperliquid.</li>
-              <li><strong>Liquidity Vaults</strong> — concentrated liquidity and incentive campaigns on Aerodrome and Uniswap.</li>
-              <li><strong>Project Coin Vaults</strong> — transparent accumulation across Virtuals, Bankr, and Base project coins.</li>
-              <li><strong>Memecoin Vaults</strong> — high-volatility Base-native assets using wallet signals and risk limits.</li>
-              <li><strong>RWA Vaults</strong> — tokenized real-world asset exposure where onchain liquidity and pricing data are available.</li>
-              <li><strong>DAO Treasury Vaults</strong> — agent-monitored deployment across asset classes and risk profiles.</li>
+              <li>Discovery</li>
+              <li>Matching</li>
+              <li>Communication</li>
+              <li>Monitoring</li>
+              <li>Reporting</li>
+              <li>Risk intelligence</li>
+              <li>Capital rotation</li>
+              <li>Edge validation</li>
             </ul>
+            <p>This is what primitive vaults cannot do.</p>
+            <p>Primitive vaults hold capital.</p>
+            <p>Agent vaults operate strategies.</p>
+
+            <h2>Agent Vault Categories</h2>
+
+            <h3>Prediction Vaults</h3>
+            <p>Vaults that trade prediction markets using wallet intelligence, implied probability, market pricing, and category-specific edge.</p>
+            <p>Example venues: Polymarket.</p>
+
+            <h3>Perps Vaults</h3>
+            <p>Vaults that trade perps strategies such as directional trades, funding-rate arbitrage, basis trades, or market-neutral setups.</p>
+            <p>Example venues: Avantis and Hyperliquid.</p>
+
+            <h3>Liquidity Vaults</h3>
+            <p>Vaults that deploy into LP strategies across concentrated liquidity, incentive programs, and ecosystem liquidity campaigns.</p>
+            <p>Example venues: Aerodrome and Uniswap.</p>
+
+            <h3>Project Coin Vaults</h3>
+            <p>Vaults that accumulate or rotate across project tokens using transparent rules and agent-monitored execution.</p>
+            <p>Example ecosystems: Virtuals, Bankr, and Base project coins.</p>
+
+            <h3>Memecoin Vaults</h3>
+            <p>Vaults that trade high-volatility Base-native assets using wallet signals, liquidity filters, momentum signals, and risk limits.</p>
+
+            <h3>RWA Vaults</h3>
+            <p>Vaults that accumulate or trade tokenized real-world asset exposure where onchain liquidity and pricing data are available.</p>
+
+            <h3>DAO Treasury Vaults</h3>
+            <p>Vaults that help DAOs and project treasuries deploy funds into agent-monitored strategies across asset classes and risk profiles.</p>
 
             <div className="dx-callout dx-callout-warning">
               <div className="dx-callout-title">Important</div>
@@ -437,16 +668,18 @@ export default function DocsPage() {
           {/* PAGE 05: Fund Launch Waitlist */}
           <section className={'dx-page ' + (activePage === 'fund-launch-waitlist' ? 'active' : '')} id="page-fund-launch-waitlist">
             <SectionTag pageId="fund-launch-waitlist" />
-            <h1>Fund Launch Waitlist</h1>
-            <p className="dx-subtitle">Coming around the $YLDR TGE in July 2026. For traders, project communities, DAOs, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
+            <h1>The fund launch waitlist is coming around the $YLDR TGE in July 2026.</h1>
+            <p className="dx-subtitle">The waitlist is for traders, project communities, DAOs, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
 
             <h2>Who Should Apply?</h2>
+            <p>You should apply if you have:</p>
             <ul className="dx-list">
               <li>Verifiable onchain trading history</li>
               <li>A strong X, Telegram, Discord, or project community</li>
               <li>A project token or ecosystem strategy</li>
               <li>Repeatable edge in memecoins, perps, predictions, LP strategies, or project coins</li>
               <li>A DAO or treasury looking for agent-monitored allocation</li>
+              <li>Interest in launching a transparent agent vault</li>
               <li>Willingness to operate through public rules, risk limits, and agent monitoring</li>
             </ul>
 
@@ -457,11 +690,31 @@ export default function DocsPage() {
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">02 — Select Market</div>
-              <p className="dx-prompt-desc">Choose the market where you want to launch an agent vault: Project Coins (Bankr + Virtuals), Memecoins (Base), Perps (Avantis + Hyperliquid), Predictions (Polymarket), Liquidity (Aerodrome + Uniswap), RWAs, or DAO Treasury Strategies.</p>
+              <div className="dx-prompt-desc">
+                <p>Choose the market where you want to launch an agent vault:</p>
+                <ul className="dx-list">
+                  <li>Project Coins — Bankr + Virtuals</li>
+                  <li>Memecoins — Base</li>
+                  <li>Perps — Avantis + Hyperliquid</li>
+                  <li>Predictions — Polymarket</li>
+                  <li>Liquidity — Aerodrome + Uniswap</li>
+                  <li>RWAs — selected onchain RWA venues</li>
+                  <li>DAO Treasury Strategies — multi-asset agent allocation</li>
+                </ul>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">03 — Select Target AUM</div>
-              <p className="dx-prompt-desc">Choose the amount of capital the vault is designed to support: $0–$100K, $100K–$250K, $250K–$500K, $500K–$1M, or $1M+.</p>
+              <div className="dx-prompt-desc">
+                <p>Choose the amount of capital the vault is designed to support:</p>
+                <ul className="dx-list">
+                  <li>$0–$100K</li>
+                  <li>$100K–$250K</li>
+                  <li>$250K–$500K</li>
+                  <li>$500K–$1M</li>
+                  <li>$1M+</li>
+                </ul>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">04 — Add Community Links</div>
@@ -477,7 +730,16 @@ export default function DocsPage() {
             </div>
 
             <h2>What Happens After Signup?</h2>
-            <p>Yieldr reviews the wallet, strategy, and community profile. Applicants may receive fund readiness status, strategy feedback, agent vault category recommendation, whitelist campaign support, beta launch eligibility, and access to agent vault tooling as it rolls out.</p>
+            <p>Yieldr reviews the wallet, strategy, and community profile.</p>
+            <p>Applicants may receive:</p>
+            <ul className="dx-list">
+              <li>Fund readiness status</li>
+              <li>Strategy feedback</li>
+              <li>Agent vault category recommendation</li>
+              <li>Whitelist campaign support</li>
+              <li>Beta launch eligibility</li>
+              <li>Access to agent vault tooling as it rolls out</li>
+            </ul>
 
             <PageFooter pageId="fund-launch-waitlist" />
           </section>
@@ -491,19 +753,70 @@ export default function DocsPage() {
             <h2>Use Cases</h2>
 
             <h3>Token Liquidity and Depth</h3>
-            <p>Projects can deploy transparent strategies that grow token liquidity and market depth — liquidity accumulation, market depth improvement, LP strategies, treasury diversification, and onchain reporting.</p>
+            <p>Projects can use agent vaults to deploy transparent strategies that grow token liquidity and market depth.</p>
+            <p>These vaults may support:</p>
+            <ul className="dx-list">
+              <li>Liquidity accumulation</li>
+              <li>Market depth improvement</li>
+              <li>Ecosystem token exposure</li>
+              <li>LP strategies</li>
+              <li>Treasury diversification</li>
+              <li>Onchain reporting</li>
+            </ul>
 
             <h3>Project Coin Accumulation</h3>
-            <p>Communities can coordinate transparent accumulation strategies around project coins or ecosystem baskets, defining target asset, target AUM, execution pacing, liquidity limits, risk controls, and reporting cadence.</p>
+            <p>Communities can coordinate transparent accumulation strategies around project coins or ecosystem baskets.</p>
+            <p>These vaults should define:</p>
+            <ul className="dx-list">
+              <li>Target asset or basket</li>
+              <li>Target AUM</li>
+              <li>Execution pacing</li>
+              <li>Liquidity limits</li>
+              <li>Risk controls</li>
+              <li>Reporting cadence</li>
+              <li>Conflict disclosures</li>
+            </ul>
 
             <h3>DAO and Treasury Deployment</h3>
-            <p>DAOs and project treasuries can deploy funds into strategies with defined risk-return goals, including asset classes most DAOs do not actively access today — perps, predictions, Base project coins, Virtuals ecosystem tokens, Bankr launches, Aerodrome LP strategies, RWA exposure, and funding-rate strategies.</p>
+            <p>DAOs and project treasuries can use agent vaults to deploy funds into strategies with defined risk-return goals.</p>
+            <p>This can include asset classes most DAOs do not actively access today, such as:</p>
+            <ul className="dx-list">
+              <li>Perps</li>
+              <li>Predictions</li>
+              <li>Base project coins</li>
+              <li>Virtuals ecosystem tokens</li>
+              <li>Bankr launches</li>
+              <li>Aerodrome LP strategies</li>
+              <li>RWA exposure</li>
+              <li>Funding-rate strategies</li>
+            </ul>
 
             <h3>Community Strategy Vaults</h3>
-            <p>Communities with strong distribution can launch agent vaults around a specific thesis: Base ecosystem rotation, Virtuals agent token basket, Bankr project coin basket, Aerodrome LP income strategy, prediction-market strategy, or perps funding arbitrage strategy.</p>
+            <p>Communities with strong distribution can launch agent vaults around a specific thesis.</p>
+            <p>Examples:</p>
+            <ul className="dx-list">
+              <li>Base ecosystem rotation</li>
+              <li>Virtuals agent token basket</li>
+              <li>Bankr project coin basket</li>
+              <li>Aerodrome LP income strategy</li>
+              <li>Prediction-market strategy</li>
+              <li>Perps funding arbitrage strategy</li>
+            </ul>
 
             <h2>Required Transparency</h2>
-            <p>If a project, DAO, or community is affiliated with assets inside the vault, that relationship should be clearly disclosed. Community and project vaults should define strategy objective, asset universe, execution rules, liquidity constraints, risk limits, treasury or project affiliation, reporting cadence, withdrawal terms, and vault status.</p>
+            <p>If a project, DAO, or community is affiliated with assets inside the vault, that relationship should be clearly disclosed.</p>
+            <p>Community and project vaults should define:</p>
+            <ul className="dx-list">
+              <li>Strategy objective</li>
+              <li>Asset universe</li>
+              <li>Execution rules</li>
+              <li>Liquidity constraints</li>
+              <li>Risk limits</li>
+              <li>Treasury or project affiliation</li>
+              <li>Reporting cadence</li>
+              <li>Withdrawal terms</li>
+              <li>Vault status</li>
+            </ul>
             <p>The goal is transparent strategy deployment, not opaque promotion.</p>
 
             <PageFooter pageId="community-project-vaults" />
@@ -519,7 +832,18 @@ export default function DocsPage() {
 
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 1 — Set Goals</div>
-              <p className="dx-prompt-desc">Depositors define asset classes, risk tolerance, return target, drawdown tolerance, preferred markets, liquidity needs, and time horizon.</p>
+              <div className="dx-prompt-desc">
+                <p>Depositors define:</p>
+                <ul className="dx-list">
+                  <li>Asset classes</li>
+                  <li>Risk tolerance</li>
+                  <li>Return target</li>
+                  <li>Drawdown tolerance</li>
+                  <li>Preferred markets</li>
+                  <li>Liquidity needs</li>
+                  <li>Time horizon</li>
+                </ul>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 2 — Discover Vaults</div>
@@ -531,7 +855,19 @@ export default function DocsPage() {
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 4 — Monitor 24/7</div>
-              <p className="dx-prompt-desc">The agent monitors open vault positions, vault-level performance, trade-level performance, edge gain or loss, strategy drift, drawdown, liquidity, and risk changes.</p>
+              <div className="dx-prompt-desc">
+                <p>The agent monitors:</p>
+                <ul className="dx-list">
+                  <li>Open vault positions</li>
+                  <li>Vault-level performance</li>
+                  <li>Trade-level performance</li>
+                  <li>Edge gain or edge loss</li>
+                  <li>Strategy drift</li>
+                  <li>Drawdown</li>
+                  <li>Liquidity</li>
+                  <li>Risk changes</li>
+                </ul>
+              </div>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 5 — Rotate When Needed</div>
