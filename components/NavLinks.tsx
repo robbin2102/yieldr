@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -21,7 +22,10 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [hasContributions, setHasContributions] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { setMounted(true); }, []);
 
   // Check if user has contributions
   useEffect(() => {
@@ -119,8 +123,9 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
         <span /><span /><span />
       </button>
 
-      {/* Mobile menu overlay */}
-      {menuOpen && (
+      {/* Mobile menu overlay — portaled to body so ancestor backdrop-filter/transform
+          can't trap this fixed-position element inside the nav bar's containing block */}
+      {mounted && menuOpen && createPortal(
         <div className="ynav-overlay" onClick={() => setMenuOpen(false)}>
           <div className="ynav-menu" onClick={e => e.stopPropagation()}>
             <div className="ynav-menu-head">
@@ -170,7 +175,8 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
