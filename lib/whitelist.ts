@@ -60,6 +60,28 @@ export async function getBaseAUM(vaultId: string): Promise<number> {
   return base_aum;
 }
 
+export async function registerWallet(
+  walletAddress: string,
+  vaultId: string,
+  ipAddress?: string,
+  userAgent?: string
+): Promise<number> {
+  try {
+    await Whitelist.create({
+      wallet_address: walletAddress.toLowerCase(),
+      vault_id: vaultId,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+    });
+  } catch (err: unknown) {
+    const isDuplicate = err instanceof Error && (err as { code?: number }).code === 11000;
+    if (!isDuplicate) throw err;
+    // already whitelisted for this vault — not an error
+  }
+
+  return getDisplayCount(vaultId);
+}
+
 export async function getWhitelistStats(): Promise<{
   total_aum: number;
   total_wallets: number;

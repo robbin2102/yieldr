@@ -1,35 +1,22 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import { KNOWN_VAULT_IDS, getDisplayCount, registerWallet } from '@/lib/whitelist';
+import { registerWallet } from '@/lib/whitelist';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
-  try {
-    await connectDB();
-    const { searchParams } = new URL(request.url);
-    const vaultId = searchParams.get('vault_id');
-
-    if (vaultId) {
-      const count = await getDisplayCount(vaultId);
-      return NextResponse.json({ ok: true, data: { [vaultId]: count } });
-    }
-
-    const counts: Record<string, number> = {};
-    await Promise.all(
-      KNOWN_VAULT_IDS.map(async (id) => {
-        counts[id] = await getDisplayCount(id);
-      })
-    );
-
-    return NextResponse.json({ ok: true, data: counts });
-  } catch (err) {
-    console.error('[/api/whitelist GET]', err);
-    return NextResponse.json({ ok: false, data: null }, { status: 500 });
-  }
-}
-
+// Third-party integration endpoint — same Mongo collection as /api/whitelist,
+// gated by a static API key instead of relying on same-origin browser calls.
 export async function POST(request: Request) {
+  const expectedKey = process.env.WHITELIST_API_KEY;
+  if (!expectedKey) {
+    return NextResponse.json({ ok: false, message: 'External whitelist API is not configured' }, { status: 500 });
+  }
+
+  const providedKey = request.headers.get('x-api-key');
+  if (providedKey !== expectedKey) {
+    return NextResponse.json({ ok: false, message: 'Invalid or missing API key' }, { status: 401 });
+  }
+
   try {
     await connectDB();
     const { wallet_address, vault_id } = await request.json();
@@ -47,7 +34,7 @@ export async function POST(request: Request) {
     const count = await registerWallet(wallet_address, vault_id, ip_address, user_agent);
     return NextResponse.json({ ok: true, data: { count } });
   } catch (err) {
-    console.error('[/api/whitelist POST]', err);
+    console.error('[/api/whitelist/external POST]', err);
     return NextResponse.json({ ok: false, message: 'Something went wrong' }, { status: 500 });
   }
 }
