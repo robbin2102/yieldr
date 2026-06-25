@@ -30,28 +30,28 @@ const WAITLIST_VAULTS = [
     proto: 'Avantis · Hyperliquid · Perps',
     name: '⚡ Funding Arbs Vault',
     desc: 'Captures funding rate premium on Avantis & Hyperliquid by holding long/short pairs where funding diverges from historical mean. Zero directional bias.',
-    stats: [{ v: '$75K', l: 'Target AUM' }, { v: '312', l: 'Waitlisted' }],
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
   {
     id: 'aero',
     proto: 'Aerodrome · LP',
     name: '🪙 AERO Accumulator Vault',
     desc: "DCA into Base's largest DEX token using top Aerodrome LP and trader signals. Agents execute and pace.",
-    stats: [{ v: '$48K', l: 'Target AUM' }, { v: '234', l: 'Waitlisted' }],
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
   {
     id: 'base',
     proto: 'Virtuals · Bankr · Project Coins',
     name: '🌐 Base Ecosystem Vault',
     desc: 'Curated basket of Virtuals, Bankr, and Base ecosystem tokens following highest-edge wallets.',
-    stats: [{ v: '$32K', l: 'Target AUM' }, { v: '189', l: 'Waitlisted' }],
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
   {
     id: 'spacex',
     proto: 'Uniswap · Aerodrome · RWA',
     name: '🚀 SpaceX RWA Vault',
     desc: 'Accumulates SpaceX tokenised equity on Uniswap and Aerodrome, following wallets with the highest RWA spot edge.',
-    stats: [{ v: '$28K', l: 'Target AUM' }, { v: '112', l: 'Waitlisted' }],
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
 ];
 
