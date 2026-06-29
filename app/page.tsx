@@ -60,7 +60,7 @@ function tickerItems(waitlistStats: { total_wallets: number } | null) {
   { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
   { label: 'NBA EDGE VAULT', value: '+18.7% 7D', up: true },
   { label: 'YLDR TGE', value: 'JULY 2026', up: true },
-  { label: 'GENESIS FDV', value: '$9M', up: true },
+  { label: 'GENESIS FDV', value: '<$200K', up: true },
   { label: 'BASE BATCHES 002', value: 'WINNER', up: true },
   { label: waitlistStats ? `${waitlistStats.total_wallets} WALLETS` : '— WALLETS', value: 'WHITELISTED', up: true },
   { label: 'FUNDING ARBS VAULT', value: 'WAITLIST OPEN', up: true },
