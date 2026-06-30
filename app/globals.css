@@ -5994,45 +5994,46 @@ html {
   gap: 1.5rem;
 }
 .snav-links a {
-  font-size: .7rem;
-  color: #555;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  color: #8888a0;
   text-decoration: none;
   letter-spacing: .5px;
   text-transform: uppercase;
   transition: color .2s;
 }
-.snav-links a:hover { color: #e0e0e0; text-decoration: none; }
-.snav-links a.snav-active { color: #e0e0e0; }
+.snav-links a:hover { color: #e8e8f0; text-decoration: none; }
+.snav-links a.snav-active { color: #e8e8f0; }
 .snav-soc {
   display: flex;
-  gap: .75rem;
+  gap: .8rem;
   align-items: center;
 }
 .snav-soc a { display: flex; align-items: center; }
 .snav-soc svg {
   width: 16px;
   height: 16px;
-  fill: #555;
+  fill: #55556a;
   transition: fill .2s;
 }
-.snav-soc a:hover svg { fill: #e0e0e0; }
+.snav-soc a:hover svg { fill: #e8e8f0; }
 .snav-cta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .7rem;
-  font-weight: 600;
+  font-size: .65rem;
+  font-weight: 700;
   letter-spacing: .5px;
-  padding: .45rem 1.2rem;
+  padding: .5rem 1.2rem;
   background: #00E87B;
   color: #000;
   border: none;
   cursor: pointer;
   text-transform: uppercase;
-  transition: all .2s;
+  transition: opacity .2s;
   text-decoration: none;
   display: inline-block;
   white-space: nowrap;
 }
-.snav-cta:hover { background: #00ff94; text-decoration: none; }
+.snav-cta:hover { opacity: .9; text-decoration: none; }
 .snav-hamburger {
   display: none;
   background: none;

@@ -22,20 +22,20 @@
 .dx-nav-logo-svg { width: 20px; height: 24px; }
 .dx-nav-brand { font-family: var(--fd); font-weight: 700; font-size: .95rem; letter-spacing: 3px; color: var(--t1); }
 .dx-nav-links { display: flex; align-items: center; gap: 1.6rem; }
-.dx-nav-links a { font-family: var(--fm); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--t2); text-decoration: none; transition: color .15s; }
-.dx-nav-links a:hover { color: var(--t1); }
+.dx-nav-links a { font-family: 'JetBrains Mono', monospace; font-size: .6rem; letter-spacing: .5px; text-transform: uppercase; color: #8888a0; text-decoration: none; transition: color .2s; }
+.dx-nav-links a:hover { color: #e8e8f0; }
 .dx-nav-links a.dx-active { color: var(--g); }
 .dx-nav-r { display: flex; align-items: center; gap: 1.4rem; }
-.dx-nav-soc { display: flex; gap: 12px; }
-.dx-nav-soc a { display: flex; align-items: center; color: var(--t3); transition: color .15s; }
-.dx-nav-soc svg { width: 15px; height: 15px; fill: currentColor; }
-.dx-nav-soc a:hover { color: var(--t1); }
+.dx-nav-soc { display: flex; gap: .8rem; align-items: center; }
+.dx-nav-soc a { display: flex; align-items: center; color: #55556a; transition: color .2s; }
+.dx-nav-soc svg { width: 16px; height: 16px; fill: currentColor; }
+.dx-nav-soc a:hover { color: #e8e8f0; }
 .dx-nav-cta {
-  font-family: var(--fm); font-weight: 700; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--bg); background: var(--g); padding: 9px 18px; border-radius: var(--rad);
-  text-decoration: none; border: 1px solid var(--g); transition: all .15s;
+  font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: .65rem; letter-spacing: .5px; text-transform: uppercase;
+  color: #000; background: #00E87B; padding: .5rem 1.2rem;
+  text-decoration: none; border: none; transition: opacity .2s;
 }
-.dx-nav-cta:hover { box-shadow: 0 0 20px rgba(0,232,123,.3); }
+.dx-nav-cta:hover { opacity: .9; }
 .dx-nav-hamburger { display: none; background: none; border: 1px solid var(--b2); color: var(--t1); width: 34px; height: 34px; border-radius: var(--rad); cursor: pointer; }
 
 /* ---- Layout ---- */
