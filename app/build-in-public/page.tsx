@@ -61,7 +61,7 @@ export default function BuildInPublicPage() {
       <div className="grid-overlay" />
       <div className="scanline" />
 
-      <nav>
+      <nav className="bip-nav">
         <div className="nav-l">
           <svg className="nav-logo" viewBox="0 0 100 120"><path d="M50 10Q70 30 80 60Q70 90 50 110Q30 90 20 60Q30 30 50 10Z" fill="#00E87B"/><ellipse cx="50" cy="60" rx="15" ry="20" fill="#000" opacity=".3"/><circle cx="50" cy="60" r="8" fill="#FFF" opacity=".9"/></svg>
           <span className="nav-brand">YIELDR</span>

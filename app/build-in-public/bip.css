@@ -18,7 +18,7 @@ background-image:linear-gradient(rgba(0,232,123,.018) 1px,transparent 1px),linea
 background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.015) 2px,rgba(0,0,0,.015) 4px)}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:54px;background:rgba(2,2,4,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
+.bip-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:54px;background:rgba(2,2,4,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
 .nav-l{display:flex;align-items:center;gap:.6rem}
 .nav-logo{width:20px;height:24px}
 .nav-brand{font-family:var(--fd);font-weight:700;font-size:.95rem;letter-spacing:3px;color:var(--t1)}
@@ -135,7 +135,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .reveal.visible{opacity:1;transform:translateY(0)}
 
 @media(max-width:768px){
-nav{padding:0 1rem}
+.bip-nav{padding:0 1rem}
 .nav-links{display:none}
 .ov-grid{grid-template-columns:repeat(3,1fr)}
 .dm-grid{grid-template-columns:repeat(4,1fr)}

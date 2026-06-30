@@ -231,7 +231,7 @@ export default function DocsPage() {
           {hasCompletedPayment && isConnected ? (
             <UserProfile />
           ) : (
-            <a href="https://app.yieldr.org/demo" className="dx-nav-cta">Enter Vaults &nearr;</a>
+            <Link href="/vaults" className="dx-nav-cta">Enter Vaults &nearr;</Link>
           )}
           <button className="dx-nav-hamburger" onClick={toggleSidebar} aria-label="Open menu">☰</button>
         </div>
