@@ -231,7 +231,7 @@ export default function DocsPage() {
           {hasCompletedPayment && isConnected ? (
             <UserProfile />
           ) : (
-            <Link href="/vaults" className="dx-nav-cta">Enter Vaults &nearr;</Link>
+            <Link href="/explorer" className="dx-nav-cta">Explore Vaults &nearr;</Link>
           )}
           <button className="dx-nav-hamburger" onClick={toggleSidebar} aria-label="Open menu">☰</button>
         </div>
