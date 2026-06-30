@@ -462,8 +462,8 @@ function VaultsPageInner() {
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
                 <span
-                  className="val green"
-                  title="Wallet address hidden to protect trader privacy and prevent copy-trading. Traders can choose to make their wallet public."
+                  className="val green vp-tooltip"
+                  data-tooltip="Wallet address hidden to protect trader privacy and prevent copy-trading. Traders can choose to make their wallet public."
                 >
                   {WALLETS[activeVault].short} ✓
                 </span>
