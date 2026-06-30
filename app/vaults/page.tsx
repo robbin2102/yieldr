@@ -461,14 +461,12 @@ function VaultsPageInner() {
               ))}
               <div className="vp-tb-item">
                 <span className="lbl">Onchain Proof</span>
-                <a
-                  href={`https://polygonscan.com/address/${WALLETS[activeVault].full}`}
-                  target="_blank" rel="noopener noreferrer"
+                <span
                   className="val green"
-                  style={{ textDecoration: 'none' }}
+                  title="Wallet address hidden to protect trader privacy and prevent copy-trading. Traders can choose to make their wallet public."
                 >
                   {WALLETS[activeVault].short} ✓
-                </a>
+                </span>
               </div>
             </div>
 
