@@ -7,8 +7,9 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import NavLinks from '@/components/NavLinks';
 import './explorer.css';
 
-type VaultCat = 'predictions' | 'perps' | 'lp' | 'project-coins' | 'rwa' | 'memecoins';
+type VaultCat = 'predictions' | 'perps' | 'lp' | 'project-coins' | 'rwa' | 'memecoins' | 'stock-tokens';
 type VaultStatus = 'live' | 'waitlist';
+type VaultChain = 'polygon' | 'base' | 'hood';
 type Vault = {
   id: string;
   name: string;
@@ -16,6 +17,7 @@ type Vault = {
   desc: string;
   status: VaultStatus;
   cat: VaultCat;
+  chain: VaultChain;
   stats: Array<{ v: string; l: string }>;
 };
 
@@ -23,43 +25,55 @@ const VAULTS: Vault[] = [
   {
     id: 'geo', name: '🌐 Geopolitics Vault', proto: '🔮 Polymarket · Predictions',
     desc: 'Agent identifies wallets with abnormal win rates vs implied probability on geopolitical events.',
-    status: 'live', cat: 'predictions',
+    status: 'live', cat: 'predictions', chain: 'polygon',
     stats: [{ v: '+41.8%', l: '30D Return' }, { v: '$59.2K', l: 'AUM' }, { v: '82%', l: 'Win Rate' }],
   },
   {
     id: 'nba', name: '🏀 NBA Edge Vault', proto: '🔮 Polymarket · Predictions',
     desc: 'Agent ranks top NBA prediction market traders by statistical edge, mirrors highest-conviction positions.',
-    status: 'live', cat: 'predictions',
+    status: 'live', cat: 'predictions', chain: 'polygon',
     stats: [{ v: '+18.7%', l: '7D Return' }, { v: '$22.4K', l: 'AUM' }, { v: '74%', l: 'Win Rate' }],
   },
   {
     id: 'funding', name: '⚡ Funding Arbs Vault', proto: '📈 Avantis · Hyperliquid · Perps',
     desc: 'Captures funding rate premium on Avantis & Hyperliquid by holding long/short pairs where funding diverges from historical mean. Zero directional bias.',
-    status: 'waitlist', cat: 'perps',
+    status: 'waitlist', cat: 'perps', chain: 'base',
     stats: [{ v: '$75K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'aero', name: '🪙 AERO Accumulator Vault', proto: '💧 Aerodrome · LP',
     desc: "DCA into Base's largest DEX token using top Aerodrome LP and trader signals. Agents execute and pace.",
-    status: 'waitlist', cat: 'lp',
+    status: 'waitlist', cat: 'lp', chain: 'base',
     stats: [{ v: '$48K', l: 'Target AUM' }, { v: '≤15%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'base', name: '🌐 Base Ecosystem Vault', proto: '🤖 Virtuals · Bankr · Project Coins',
     desc: 'Curated basket of Virtuals, Bankr, and Base ecosystem tokens following highest-edge wallets.',
-    status: 'waitlist', cat: 'project-coins',
+    status: 'waitlist', cat: 'project-coins', chain: 'base',
     stats: [{ v: '$32K', l: 'Target AUM' }, { v: '≤18%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
-    id: 'spacex', name: '🚀 SpaceX RWA Vault', proto: '🦄 Uniswap · Aerodrome · RWA',
-    desc: 'Accumulates SpaceX tokenised equity on Uniswap and Aerodrome, following wallets with the highest RWA spot edge.',
-    status: 'waitlist', cat: 'rwa',
+    id: 'spacex', name: '🚀 SpaceX RWA Vault', proto: '🏦 HOOD Chain · Robinhood Chain · RWA',
+    desc: 'Accumulates SPCX tokenized equity natively on Robinhood Chain, following wallets with the highest post-IPO RWA spot edge.',
+    status: 'waitlist', cat: 'rwa', chain: 'hood',
     stats: [{ v: '$28K', l: 'Target AUM' }, { v: '≤25%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
+  },
+  {
+    id: 'nvda', name: '🤖 NVDA AI Momentum Vault', proto: '🏦 HOOD Chain · Stock Tokens',
+    desc: 'Follows top wallets accumulating NVIDIA tokenized stock on Robinhood Chain. Agent rides AI infrastructure cycles with 24/7 onchain liquidity.',
+    status: 'waitlist', cat: 'stock-tokens', chain: 'hood',
+    stats: [{ v: '$65K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
+  },
+  {
+    id: 'tsla', name: '⚡ TSLA Volatility Vault', proto: '🏦 HOOD Chain · Stock Tokens',
+    desc: 'Captures Tesla volatility cycles using tokenized TSLA on Robinhood Chain. Agent mirrors highest-conviction entries from top TSLA spot traders.',
+    status: 'waitlist', cat: 'stock-tokens', chain: 'hood',
+    stats: [{ v: '$55K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'meme', name: '🎲 Memecoin Momentum Vault', proto: '🎰 Base · Memecoins',
     desc: 'Tracks top Base memecoin traders by realised edge and mirrors entries/exits with strict position sizing.',
-    status: 'waitlist', cat: 'memecoins',
+    status: 'waitlist', cat: 'memecoins', chain: 'base',
     stats: [{ v: '$19K', l: 'Target AUM' }, { v: '', l: 'Waitlisted' }],
   },
 ];
@@ -73,7 +87,15 @@ const FILTERS: Array<{ key: string; label: string; sep?: boolean }> = [
   { key: 'lp', label: 'LP' },
   { key: 'project-coins', label: 'Project Coins' },
   { key: 'rwa', label: 'RWA' },
+  { key: 'stock-tokens', label: 'Stock Tokens' },
   { key: 'memecoins', label: 'Memecoins' },
+];
+
+const CHAIN_FILTERS: Array<{ key: string; label: string }> = [
+  { key: 'all', label: 'All Chains' },
+  { key: 'polygon', label: 'Polygon' },
+  { key: 'base', label: 'Base' },
+  { key: 'hood', label: 'HOOD Chain' },
 ];
 
 // The Yieldr Agent is still under construction — full allocation-agent
@@ -109,9 +131,14 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
     filter: 'lp',
   },
   {
-    triggers: ['rwa', 'real world', 'spacex'],
-    text: "RWA vault allocation is part of what I'll handle once live — still under construction for now. Whitelist the 🚀 SpaceX RWA Vault to be considered for early access at launch.",
+    triggers: ['rwa', 'real world', 'spacex', 'spcx'],
+    text: "RWA vault allocation is part of what I'll handle once live — still under construction for now. Whitelist the 🚀 SpaceX RWA Vault on HOOD Chain to be considered for early access at launch.",
     filter: 'rwa',
+  },
+  {
+    triggers: ['nvda', 'nvidia', 'tsla', 'tesla', 'stock token', 'stock', 'hood chain', 'hood', 'robinhood chain'],
+    text: "Stock token vaults on HOOD Chain (Robinhood Chain) are a new frontier for Yieldr — 24/7 tokenized equity, 120+ countries. Whitelist the 🤖 NVDA AI Momentum Vault or ⚡ TSLA Volatility Vault for early access when they launch.",
+    filter: 'stock-tokens',
   },
   {
     triggers: ['project coin', 'memecoin', 'bankr', 'virtuals', 'base ecosystem', 'meme'],
@@ -128,7 +155,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   },
   {
     triggers: ['tge', 'token', 'yldr', 'airdrop'],
-    text: "⚡ $YLDR TGE is planned on Base in July 2026. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
+    text: "⚡ $YLDR TGE is on HOOD Chain on July 7. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
   },
   {
     triggers: ['whitelist', 'waitlist', 'early access'],
@@ -158,6 +185,7 @@ function fmtAUM(n: number): string {
 
 export default function ExplorerPage() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [chainFilter, setChainFilter] = useState('all');
   const [modalVault, setModalVault] = useState<Vault | null>(null);
   const [modalState, setModalState] = useState<'connect' | 'confirm' | 'success'>('connect');
   const [counts, setCounts] = useState<Record<string, number>>({});
@@ -283,9 +311,12 @@ export default function ExplorerPage() {
   }
 
   const filtered = VAULTS.filter((v) => {
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'live' || activeFilter === 'waitlist') return v.status === activeFilter;
-    return v.cat === activeFilter;
+    const matchChain = chainFilter === 'all' || v.chain === chainFilter;
+    const matchStatus =
+      activeFilter === 'all' ? true :
+      activeFilter === 'live' || activeFilter === 'waitlist' ? v.status === activeFilter :
+      v.cat === activeFilter;
+    return matchChain && matchStatus;
   });
   const liveVaults = filtered.filter((v) => v.status === 'live');
   const waitlistVaults = filtered.filter((v) => v.status === 'waitlist');
@@ -328,6 +359,17 @@ export default function ExplorerPage() {
                   {f.label}
                 </button>
               </span>
+            ))}
+          </div>
+          <div className="ex-filter-bar ex-chain-filter-bar">
+            {CHAIN_FILTERS.map((f) => (
+              <button
+                key={f.key}
+                className={`ex-filter-btn ex-chain-btn${chainFilter === f.key ? ' active' : ''}`}
+                onClick={() => setChainFilter(f.key)}
+              >
+                {f.label}
+              </button>
             ))}
           </div>
 
@@ -481,6 +523,8 @@ export default function ExplorerPage() {
   );
 }
 
+const CHAIN_LABELS: Record<string, string> = { polygon: 'Polygon', base: 'Base', hood: 'HOOD Chain' };
+
 function VaultCard({ v, count, stats, whitelisted, onWhitelist }: { v: Vault; count?: number; stats: Array<{ v: string; l: string }>; whitelisted: boolean; onWhitelist: () => void }) {
   const body = (
     <>
@@ -488,6 +532,7 @@ function VaultCard({ v, count, stats, whitelisted, onWhitelist }: { v: Vault; co
         <span className={`ex-vc-badge ${v.status}`}>
           <span className="ex-vc-dot" />{v.status === 'live' ? 'Live' : 'Waitlist'}
         </span>
+        <span className={`ex-vc-chain ex-vc-chain-${v.chain}`}>{CHAIN_LABELS[v.chain]}</span>
         {whitelisted ? (
           <span className="ex-vc-wl-done">✓ Whitelisted</span>
         ) : (

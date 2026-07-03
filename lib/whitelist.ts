@@ -2,7 +2,7 @@ import { Whitelist } from '@/models/Whitelist';
 import { VaultWhitelistBase } from '@/models/VaultWhitelistBase';
 
 // Agent vault ids surfaced for whitelisting on /explorer and /vaults
-export const KNOWN_VAULT_IDS = ['geo', 'nba', 'funding', 'aero', 'base', 'spacex', 'meme'];
+export const KNOWN_VAULT_IDS = ['geo', 'nba', 'funding', 'aero', 'base', 'spacex', 'meme', 'nvda', 'tsla'];
 
 // Once a vault's real whitelist count passes this, the randomized base count
 // is dropped entirely and only the real count is shown.

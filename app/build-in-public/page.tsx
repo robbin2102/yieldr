@@ -75,7 +75,7 @@ export default function BuildInPublicPage() {
 
         {/* PAGE HERO */}
         <div className="page-hero">
-          <div className="updated">Updated monthly &middot; Week 1 Mar 2026 &middot; 275+ commits shipped</div>
+          <div className="updated">Updated monthly &middot; Week 1 Jul 2026 &middot; 300+ commits shipped</div>
           <h1>Building in Public</h1>
           <div className="sub">Transparent development. <strong>No bullshit.</strong> Real treasury data, real trading performance, real commit history. Every module, every expense, tracked openly from day one.</div>
           <div className="badges">
@@ -141,10 +141,23 @@ export default function BuildInPublicPage() {
 
           <div className="timeline">
 
+            {/* JULY 2026 */}
+            <div className="tl-month">
+              <div className="tl-month-head">
+                <span className="tl-month-name">July 2026</span>
+                <span className="tl-month-badge active">&#9679; In Progress</span>
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">Multi-Chain Expansion — HOOD Chain</div>
+                <div className="tl-item-p">Expanded Yieldr to HOOD Chain (Robinhood Chain), an Arbitrum L2 with native 24/7 tokenized stock trading. SpaceX (SPCX), NVDA, and TSLA stock token vaults added to the waitlist. $YLDR TGE scheduled July 7 on HOOD Chain.</div>
+                <div className="tl-tags"><span className="tl-tag green">HOOD Chain</span><span className="tl-tag">Stock Tokens</span><span className="tl-tag">Multi-Chain</span></div>
+              </div>
+            </div>
+
             {/* APRIL 2026 */}
             <div className="tl-month">
               <div className="tl-month-head">
-                <span className="tl-month-name">April – Q3 2026</span>
+                <span className="tl-month-name">April – June 2026</span>
                 <span className="tl-month-badge active">&#9679; In Progress</span>
               </div>
               <div className="tl-item">
@@ -159,7 +172,7 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">YLDR Token Sale — Early Access</div>
-                <div className="tl-item-p">Tier 1 early access at $9M FDV. 50% into Base USDC vault earning 4.5% APY, 50% YLDR allocation. Token consumed by agent cycles — deflationary by design.</div>
+                <div className="tl-item-p">Tier 1 early access at &lt;$200K FDV. 50% into Base USDC vault earning 4.5% APY, 50% YLDR allocation. Token consumed by agent cycles — deflationary by design.</div>
                 <div className="tl-tags"><span className="tl-tag green">Token</span><span className="tl-tag">Live</span></div>
               </div>
             </div>

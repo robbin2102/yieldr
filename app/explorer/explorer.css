@@ -50,6 +50,8 @@
 .ex-filter-btn:hover { color: var(--text); border-color: var(--line-3); }
 .ex-filter-btn.active { color: #000; background: var(--g); border-color: var(--g); }
 .ex-filter-sep { width: 1px; height: 16px; background: var(--line-2); margin: 0 .3rem; }
+.ex-chain-filter-bar { margin-top: -12px; border-bottom: none; padding-bottom: 0; margin-bottom: 24px; }
+.ex-chain-btn.active { color: #000; background: var(--g); border-color: var(--g); }
 
 .ex-section-label {
   font-family: var(--mono); font-size: .62rem; letter-spacing: 1px; text-transform: uppercase;
@@ -70,7 +72,7 @@
 .ex-vc:hover { border-color: var(--line-3); }
 a.ex-vc { cursor: pointer; }
 a.ex-vc:hover { border-color: var(--g); }
-.ex-vc-top { display: flex; align-items: center; justify-content: space-between; }
+.ex-vc-top { display: flex; align-items: center; justify-content: space-between; gap: .4rem; flex-wrap: wrap; }
 .ex-vc-badge {
   font-family: var(--mono); font-size: .58rem; letter-spacing: .5px; text-transform: uppercase;
   padding: .2rem .55rem; border-radius: var(--r); display: flex; align-items: center; gap: .35rem;
@@ -78,6 +80,13 @@ a.ex-vc:hover { border-color: var(--g); }
 .ex-vc-badge.live { color: var(--g); background: var(--g-dim); }
 .ex-vc-badge.waitlist { color: var(--amber); background: rgba(245,166,35,.1); }
 .ex-vc-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.ex-vc-chain {
+  font-family: var(--mono); font-size: .56rem; letter-spacing: .5px; text-transform: uppercase;
+  padding: .2rem .5rem; border-radius: var(--r); border: 1px solid;
+}
+.ex-vc-chain-polygon { color: #8247e5; background: rgba(130,71,229,.1); border-color: rgba(130,71,229,.25); }
+.ex-vc-chain-base { color: #0052ff; background: rgba(0,82,255,.08); border-color: rgba(0,82,255,.2); }
+.ex-vc-chain-hood { color: var(--g); background: var(--g-dim); border-color: rgba(0,232,123,.25); }
 .ex-vc-wl-btn {
   font-family: var(--mono); font-size: .58rem; font-weight: 600; letter-spacing: .3px;
   color: #000; background: var(--g); border: none; border-radius: var(--r);

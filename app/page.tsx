@@ -48,9 +48,23 @@ const WAITLIST_VAULTS = [
   },
   {
     id: 'spacex',
-    proto: 'Uniswap · Aerodrome · RWA',
+    proto: 'HOOD Chain · Robinhood Chain · RWA',
     name: '🚀 SpaceX RWA Vault',
-    desc: 'Accumulates SpaceX tokenised equity on Uniswap and Aerodrome, following wallets with the highest RWA spot edge.',
+    desc: 'Accumulates SPCX tokenized equity natively on Robinhood Chain, following wallets with the highest post-IPO RWA spot edge.',
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
+  },
+  {
+    id: 'nvda',
+    proto: 'HOOD Chain · Stock Tokens',
+    name: '🤖 NVDA AI Momentum Vault',
+    desc: 'Follows top wallets accumulating NVIDIA tokenized stock on Robinhood Chain. Agent rides AI infrastructure cycles with 24/7 onchain liquidity.',
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
+  },
+  {
+    id: 'tsla',
+    proto: 'HOOD Chain · Stock Tokens',
+    name: '⚡ TSLA Volatility Vault',
+    desc: 'Captures Tesla volatility cycles using tokenized TSLA on Robinhood Chain. Agent mirrors highest-conviction entries from top TSLA spot traders.',
     stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
 ];
@@ -59,12 +73,15 @@ function tickerItems(waitlistStats: { total_wallets: number } | null) {
   return [
   { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
   { label: 'NBA EDGE VAULT', value: '+18.7% 7D', up: true },
-  { label: 'YLDR TGE', value: 'JULY 2026', up: true },
+  { label: 'YLDR TGE', value: 'JULY 7', up: true },
+  { label: 'HOOD CHAIN', value: 'NOW LIVE', up: true },
   { label: 'GENESIS FDV', value: '<$200K', up: true },
   { label: 'BASE BATCHES 002', value: 'WINNER', up: true },
   { label: waitlistStats ? `${waitlistStats.total_wallets} WALLETS` : '— WALLETS', value: 'WHITELISTED', up: true },
   { label: 'FUNDING ARBS VAULT', value: 'WAITLIST OPEN', up: true },
   { label: 'SPACEX RWA VAULT', value: 'WAITLIST OPEN', up: true },
+  { label: 'NVDA AI VAULT', value: 'WAITLIST OPEN', up: true },
+  { label: 'TSLA VOLATILITY VAULT', value: 'WAITLIST OPEN', up: true },
   ];
 }
 
@@ -161,7 +178,7 @@ export default function HomePage() {
       {bannerOpen && (
         <div className="lp-banner">
           <span className="lp-banner-txt">
-            <strong>$YLDR</strong> TGE on Base · July 2026 · Whitelist any agent vault — earn a variable{' '}
+            <strong>$YLDR</strong> TGE on HOOD Chain · July 7 · Whitelist any agent vault — earn a variable{' '}
             <strong>$YLDR</strong> airdropped at beta launch ·
           </span>
           <a href="#token" className="lp-banner-link">Learn more →</a>
@@ -234,7 +251,7 @@ export default function HomePage() {
                   <div className="lp-hm-sep" />
                   <div><div className="lp-hm-v">{waitlistStats ? waitlistStats.total_wallets : '—'}</div><div className="lp-hm-l">Wallets Whitelisted</div></div>
                 </div>
-                <div className="lp-hm-tge">⚡ $YLDR TGE · Base · July 2026</div>
+                <div className="lp-hm-tge">⚡ $YLDR TGE · HOOD Chain · July 7</div>
               </div>
             </div>
           </section>
@@ -292,21 +309,20 @@ export default function HomePage() {
         <div className="lp-wrap">
           <section className="lp-section lp-reveal" id="vaults">
             <div className="lp-sec-head">
-              <div className="lp-sec-tag">Agent Vaults</div>
-              <div className="lp-sec-title"><span className="ac">Any edge. Any venue.</span> One agent vault.</div>
+              <div className="lp-sec-tag">Agent Vaults · Multi-Chain</div>
+              <div className="lp-sec-title"><span className="ac">Any edge. Any chain.</span> One agent vault.</div>
               <p className="lp-sec-sub">
-                Predictions, perps, LP strategies, project coins, RWAs — any verifiable onchain edge
-                can power a vault. Here&apos;s what&apos;s live and what&apos;s launching.
+                Started on Base, expanded to Polygon — now building on HOOD Chain. Predictions, perps, LP, stock tokens, RWAs — any verifiable onchain edge can power a vault.
               </p>
               <div className="lp-proto-row">
                 <span className="lp-proto-label">On</span>
                 <span className="lp-proto-pill live">🔮 Polymarket</span>
                 <span className="lp-proto-pill live">📈 Hyperliquid</span>
+                <span className="lp-proto-pill live">🏦 HOOD Chain</span>
                 <span className="lp-proto-pill">⚡ Avantis</span>
                 <span className="lp-proto-pill">💧 Aerodrome</span>
                 <span className="lp-proto-pill">🦄 Uniswap</span>
                 <span className="lp-proto-pill">🤖 Virtuals</span>
-                <span className="lp-proto-pill">🏦 Bankr</span>
               </div>
             </div>
 
@@ -387,7 +403,7 @@ export default function HomePage() {
         <div className="lp-wrap">
           <section className="lp-section lp-reveal" id="token">
             <div className="lp-fcta-box">
-              <div className="lp-fcta-tag">⚡ $YLDR TGE · Base · July 2026</div>
+              <div className="lp-fcta-tag">⚡ $YLDR TGE · HOOD Chain · July 7</div>
               <div className="lp-fcta-h">Own the protocol from day one.<br /><span className="ac">Earn while you wait.</span></div>
               <p className="lp-fcta-sub">
                 Whitelist your wallet on any agent vault and earn a{' '}
