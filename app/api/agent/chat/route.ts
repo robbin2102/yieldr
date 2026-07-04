@@ -130,15 +130,23 @@ type TradeDoc = {
 };
 
 async function queryVaultData(withPositions: boolean): Promise<string> {
+  let step = 'connect';
   try {
     await connectDB();
+    console.log('[vault query] DB connected');
 
+    step = 'find vaults';
     const vaults = await VaultStats
       .find({ status: 'active' })
       .select('wallet traderLabel status totalPnlAllTime initial_capital_usdc vault_size_usdc win_rate last_polled_activity_ts')
       .lean() as unknown as VaultStatDoc[];
 
-    if (!vaults.length) return 'No active vault data found.';
+    console.log(`[vault query] found ${vaults.length} vaults with status=active`);
+    if (!vaults.length) {
+      const total = await VaultStats.countDocuments();
+      console.log(`[vault query] total docs in vaults collection: ${total}`);
+      return 'No active vault data found.';
+    }
 
     const lines: string[] = [];
 
@@ -187,7 +195,7 @@ async function queryVaultData(withPositions: boolean): Promise<string> {
 
     return lines.join('\n');
   } catch (e) {
-    console.error('[vault query error]', e);
+    console.error(`[vault query error at step="${step}"]`, String(e));
     return 'Vault data temporarily unavailable.';
   }
 }

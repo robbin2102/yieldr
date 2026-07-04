@@ -353,7 +353,7 @@ export default function ExplorerPage() {
       if (!res.ok || !data.text) throw new Error(data.error ?? 'No response');
       chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: data.text }].slice(-8);
       setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: data.text!, liveData: data.toolCalled }]);
-      if (data.filter) setActiveFilter(data.filter);
+      if (data.filter) { setActiveFilter(data.filter); setChainFilter('all'); }
     } catch {
       clearTimeout(liveDataHint);
       setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: "I'm having trouble connecting right now — ask me about any vault, the $YLDR TGE, or whitelisting and I'll answer once I'm back online." }]);
