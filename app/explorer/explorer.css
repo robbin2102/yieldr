@@ -125,10 +125,12 @@ a.ex-vc:hover { border-color: var(--g); }
 .ex-agent-status { display: flex; align-items: center; gap: .3rem; font-size: .62rem; color: var(--text-dim); margin-top: 1px; }
 .ex-agent-status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--g); }
 
-.ex-token-meter { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; min-width: 72px; }
-.ex-token-bar { width: 72px; height: 3px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
-.ex-token-fill { height: 100%; border-radius: 2px; transition: width .4s; }
-.ex-token-label { font-family: var(--mono); font-size: .56rem; color: var(--text-faint); white-space: nowrap; }
+.ex-token-meter { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 80px; }
+.ex-token-bar { width: 80px; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.ex-token-fill { height: 100%; border-radius: 2px; transition: width .4s; min-width: 2px; }
+.ex-token-label { font-family: var(--mono); font-size: .60rem; color: var(--text-dim); white-space: nowrap; }
+.ex-token-hint { font-family: var(--mono); font-size: .55rem; color: var(--g); white-space: nowrap; cursor: pointer; opacity: .75; }
+.ex-token-hint:hover { opacity: 1; }
 
 .ex-token-limit-msg {
   margin: 12px 16px; padding: 14px; border-radius: var(--r);

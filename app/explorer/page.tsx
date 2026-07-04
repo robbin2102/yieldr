@@ -486,9 +486,10 @@ export default function ExplorerPage() {
             </div>
             <div className="ex-token-meter">
               <div className="ex-token-bar">
-                <div className="ex-token-fill" style={{ width: `${Math.min(agentTokens / FREE_TOKEN_LIMIT * 100, 100)}%`, background: agentTokens >= FREE_TOKEN_LIMIT * 0.9 ? '#f97316' : 'var(--g)' }} />
+                <div className="ex-token-fill" style={{ width: `${Math.max(Math.min(agentTokens / FREE_TOKEN_LIMIT * 100, 100), agentTokens > 0 ? 2 : 0)}%`, background: agentTokens >= FREE_TOKEN_LIMIT * 0.9 ? '#f97316' : 'var(--g)' }} />
               </div>
-              <div className="ex-token-label">{agentTokens.toLocaleString()} / 100K</div>
+              <div className="ex-token-label">{agentTokens.toLocaleString()} / 100K free</div>
+              <div className="ex-token-hint">More access with $YLDR →</div>
             </div>
           </div>
 
