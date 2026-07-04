@@ -413,12 +413,112 @@ a.ex-vc:hover { border-color: var(--g); }
 }
 
 /* ── Responsive ── */
-@media (max-width: 1000px) {
-  .ex-agent-panel { display: none; }
-  .ex-explorer-panel { margin-right: 0; }
+
+/* iOS dynamic viewport height */
+@supports (height: 100dvh) {
+  .ex-root { height: 100dvh; }
 }
+
+/* ── Mobile: agent panel as bottom sheet ── */
+@media (max-width: 1000px) {
+  .ex-explorer-panel { margin-right: 0; }
+
+  .ex-agent-panel {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 72dvh;
+    border-left: none;
+    border-top: 1px solid var(--line-2);
+    border-radius: 14px 14px 0 0;
+    transform: translateY(100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    z-index: 200;
+  }
+  .ex-agent-panel.open { transform: translateY(0); }
+
+  /* drag handle visual hint */
+  .ex-agent-hdr::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--line-3);
+  }
+  .ex-agent-hdr { position: relative; }
+
+  .ex-agent-close-mobile { display: flex; }
+
+  /* backdrop */
+  .ex-agent-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 190;
+    animation: ex-backdrop-in .2s ease;
+  }
+  @keyframes ex-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+
+  /* chat input safe area */
+  .ex-chat-input-area {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  /* FAB visible */
+  .ex-chat-fab { display: flex; }
+}
+
+/* Mobile FAB (hidden on desktop) */
+.ex-chat-fab {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--g);
+  border: none;
+  color: #000;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 150;
+  box-shadow: 0 4px 24px rgba(0,232,123,.35);
+  transition: opacity .2s, transform .2s;
+}
+.ex-chat-fab:hover { opacity: .9; transform: scale(1.05); }
+.ex-chat-fab.fab-hidden { opacity: 0; pointer-events: none; }
+
+/* Mobile close button inside agent header (hidden on desktop) */
+.ex-agent-close-mobile {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: .85rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+.ex-agent-close-mobile:hover { color: var(--text); }
+
 @media (max-width: 640px) {
   .ex-nav { padding: 0 1.2rem; }
-  .ex-explorer-panel { padding: 18px 14px 32px; }
+  .ex-explorer-panel { padding: 18px 14px 96px; } /* extra bottom padding so FAB doesn't overlap last card */
   .ex-vault-grid { grid-template-columns: 1fr; }
+  .ex-agent-panel { height: 80dvh; }
+
+  /* $YLDR modal: stack tiers vertically on small screens */
+  .ex-yldr-tiers { grid-template-columns: 1fr; }
+  .ex-yldr-tier-badge { top: auto; right: auto; position: static; margin-bottom: 6px; display: inline-flex; width: fit-content; }
 }

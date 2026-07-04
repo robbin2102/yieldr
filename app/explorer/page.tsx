@@ -232,6 +232,7 @@ export default function ExplorerPage() {
   const [myWhitelists, setMyWhitelists] = useState<Set<string>>(new Set());
   const [agentTokens, setAgentTokens] = useState(0);
   const [showYldrModal, setShowYldrModal] = useState(false);
+  const [agentPanelOpen, setAgentPanelOpen] = useState(false);
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -475,7 +476,8 @@ export default function ExplorerPage() {
         </div>
 
         {/* ── Agent panel ── */}
-        <div className="ex-agent-panel">
+        {agentPanelOpen && <div className="ex-agent-backdrop" onClick={() => setAgentPanelOpen(false)} />}
+        <div className={`ex-agent-panel${agentPanelOpen ? ' open' : ''}`}>
           <div className="ex-agent-hdr">
             <svg className="ex-agent-avatar" width="26" height="26" viewBox="0 0 100 120">
               <path d="M50 10Q70 30 80 60Q70 90 50 110Q30 90 20 60Q30 30 50 10Z" fill="#00E87B" />
@@ -492,6 +494,7 @@ export default function ExplorerPage() {
               <div className="ex-token-label">{agentTokens.toLocaleString()} / 100K free</div>
               <div className="ex-token-hint" onClick={() => setShowYldrModal(true)}>More access with $YLDR →</div>
             </div>
+            <button className="ex-agent-close-mobile" onClick={() => setAgentPanelOpen(false)} aria-label="Close agent">✕</button>
           </div>
 
           <div className="ex-chat-messages">
@@ -544,6 +547,17 @@ export default function ExplorerPage() {
           )}
         </div>
       </div>
+
+      {/* ── Mobile chat FAB ── */}
+      <button
+        className={`ex-chat-fab${agentPanelOpen ? ' fab-hidden' : ''}`}
+        onClick={() => setAgentPanelOpen(true)}
+        aria-label="Open AI agent"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
 
       {/* ── $YLDR access modal ── */}
       {showYldrModal && (

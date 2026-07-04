@@ -302,3 +302,14 @@
   .vp-op-cols, .vp-op-row { grid-template-columns: 2fr 1fr .8fr .8fr 1fr; }
   .vp-op-cols span:nth-child(4), .vp-op-row span:nth-child(4) { display: none; }
 }
+
+@media (max-width: 640px) {
+  .vp-main { padding-top: 48px; }
+  .vp-breadcrumb, .vp-vd-header, .vp-vault-detail { padding-left: .9rem; padding-right: .9rem; }
+  .vp-vd-stats { grid-template-columns: repeat(2, 1fr); }
+
+  /* Make positions / trade tables horizontally scrollable */
+  .vp-open-positions, .vp-trade-history { overflow-x: auto; }
+  .vp-op-cols, .vp-op-row { min-width: 560px; }
+  .vp-th-cols, .vp-th-row { min-width: 560px; }
+}
