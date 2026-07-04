@@ -76,10 +76,12 @@ Primitive DeFi vaults hold capital and follow fixed strategies. Agent vaults are
 
 Outcome: traders scale edge without becoming fund operators. Depositors allocate through agents instead of manually monitoring every vault. Yieldr becomes the operating system for onchain funds.
 
-HOW TO LAUNCH A VAULT (Aug 2026 via Quant Agent)
-1. Connect wallet → 2. Prove edge (Quant Agent analyzes PnL, timing, sizing, market selection, drawdown, repeatability → edge profile) → 3. Define vault (market, target AUM, risk level, fees, max drawdown, withdrawal terms) → 4. Match depositors → 5. Run + monitor → 6. Communicate → 7. Allocate + rotate
+HOW TO LAUNCH A VAULT
+Vault launch goes live August 2026 — not available yet. Always tell users this when they ask about launching. The Quant Agent (self-serve test release August 2026) handles edge analysis; vault launch applications open around TGE (July 9 2026).
 
-Fund launch waitlist application: Connect wallet → Select market (predictions/perps/LP/memecoins/project coins/RWAs) → Select target AUM ($0–100K / $100–250K / $250–500K / $500K–$1M / $1M+) → Add community links → Submit strategy intent → Join waitlist. Opens around TGE.
+Steps when live: 1. Connect wallet → 2. Prove edge (Quant Agent analyzes PnL, timing, sizing, market selection, drawdown, repeatability → edge profile) → 3. Define vault (market, target AUM, risk level, fees, max drawdown, withdrawal terms) → 4. Match depositors → 5. Run + monitor → 6. Communicate → 7. Allocate + rotate
+
+Fund launch waitlist application (open now around TGE): Connect wallet → Select market (predictions/perps/LP/memecoins/project coins/RWAs) → Select target AUM ($0–100K / $100–250K / $250–500K / $500K–$1M / $1M+) → Add community links → Submit strategy intent → Join waitlist.
 
 After signup: Yieldr reviews wallet, strategy, community. Applicants may receive fund readiness status, strategy feedback, vault category recommendation, whitelist campaign support, beta launch eligibility.
 
