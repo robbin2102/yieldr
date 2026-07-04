@@ -215,6 +215,9 @@ function formatAgentText(text: string): string {
     .replace(/\n/g, '<br>');
 }
 
+const FREE_TOKEN_LIMIT = 100_000;
+const TOKEN_KEY = 'yieldr_agent_tokens';
+
 function fmtAUM(n: number): string {
   return n >= 1000 ? `$${(n / 1000).toFixed(1)}K` : `$${n}`;
 }
@@ -228,11 +231,14 @@ export default function ExplorerPage() {
   const [targetAums, setTargetAums] = useState<Record<string, number>>({});
   const [liveStats, setLiveStats] = useState<Record<string, LiveStats>>({});
   const [myWhitelists, setMyWhitelists] = useState<Set<string>>(new Set());
+  const [agentTokens, setAgentTokens] = useState(0);
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
 
   useEffect(() => {
+    setAgentTokens(parseInt(localStorage.getItem(TOKEN_KEY) ?? '0', 10) || 0);
+
     fetch('/api/whitelist')
       .then((r) => r.json())
       .then((d) => { if (d.ok && d.data) setCounts((prev) => ({ ...prev, ...d.data })); })
@@ -338,7 +344,7 @@ export default function ExplorerPage() {
 
   async function sendQuery(raw: string) {
     const text = raw.trim();
-    if (!text) return;
+    if (!text || agentTokens >= FREE_TOKEN_LIMIT) return;
     setChatMessages((m) => [...m, { type: 'user', text }, { type: 'typing', text: '…' }]);
     setChatInput('');
 
@@ -357,11 +363,18 @@ export default function ExplorerPage() {
         body: JSON.stringify({ message: text, history: chatHistoryRef.current.slice(0, -1) }),
       });
       clearTimeout(liveDataHint);
-      const data = await res.json() as { text?: string; filter?: string; toolCalled?: boolean; error?: string };
+      const data = await res.json() as { text?: string; filter?: string; toolCalled?: boolean; tokensUsed?: number; error?: string };
       if (!res.ok || !data.text) throw new Error(data.error ?? 'No response');
       chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: data.text }].slice(-8);
       setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: data.text!, liveData: data.toolCalled }]);
       if (data.filter) { setActiveFilter(data.filter); setChainFilter('all'); }
+      if (data.tokensUsed) {
+        setAgentTokens((prev) => {
+          const next = prev + data.tokensUsed!;
+          localStorage.setItem(TOKEN_KEY, String(next));
+          return next;
+        });
+      }
     } catch {
       clearTimeout(liveDataHint);
       setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: "I'm having trouble connecting right now — ask me about any vault, the $YLDR TGE, or whitelisting and I'll answer once I'm back online." }]);
@@ -465,9 +478,15 @@ export default function ExplorerPage() {
               <path d="M50 10Q70 30 80 60Q70 90 50 110Q30 90 20 60Q30 30 50 10Z" fill="#00E87B" />
               <circle cx="50" cy="60" r="8" fill="#000" opacity=".3" />
             </svg>
-            <div>
+            <div style={{ flex: 1 }}>
               <div className="ex-agent-name">YIELDR AGENT</div>
               <div className="ex-agent-status"><span className="ex-agent-status-dot" />Online</div>
+            </div>
+            <div className="ex-token-meter">
+              <div className="ex-token-bar">
+                <div className="ex-token-fill" style={{ width: `${Math.min(agentTokens / FREE_TOKEN_LIMIT * 100, 100)}%`, background: agentTokens >= FREE_TOKEN_LIMIT * 0.9 ? '#f97316' : 'var(--g)' }} />
+              </div>
+              <div className="ex-token-label">{agentTokens.toLocaleString()} / 100K</div>
             </div>
           </div>
 
@@ -491,26 +510,34 @@ export default function ExplorerPage() {
             ))}
           </div>
 
-          <div className="ex-chat-input-area">
-            <div className="ex-chat-input-box">
-              <textarea
-                rows={1}
-                placeholder="Ask the agent anything..."
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuery(chatInput); }
-                }}
-              />
-              <button
-                className={`ex-chat-send${chatInput.trim() ? ' active' : ''}`}
-                onClick={() => sendQuery(chatInput)}
-                aria-label="Send"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </button>
+          {agentTokens >= FREE_TOKEN_LIMIT ? (
+            <div className="ex-token-limit-msg">
+              <div className="ex-token-limit-title">Free tier reached</div>
+              <div className="ex-token-limit-body">$YLDR token holders get unlimited agent access. Token launch Aug 2026 — whitelist your wallet now for early access.</div>
+              <button className="ex-token-limit-cta" onClick={() => { setActiveFilter('live'); setChainFilter('all'); }}>Whitelist a vault →</button>
             </div>
-          </div>
+          ) : (
+            <div className="ex-chat-input-area">
+              <div className="ex-chat-input-box">
+                <textarea
+                  rows={1}
+                  placeholder="Ask the agent anything..."
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuery(chatInput); }
+                  }}
+                />
+                <button
+                  className={`ex-chat-send${chatInput.trim() ? ' active' : ''}`}
+                  onClick={() => sendQuery(chatInput)}
+                  aria-label="Send"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -253,6 +253,7 @@ export async function POST(req: NextRequest) {
 
   let responseText = '';
   let toolCalled = false;
+  let tokensUsed = completion.usage?.total_tokens ?? 0;
   const choice = completion.choices[0];
 
   if (choice.message.tool_calls && choice.message.tool_calls.length > 0) {
@@ -278,6 +279,7 @@ export async function POST(req: NextRequest) {
       max_completion_tokens: 400,
       temperature: 0.4,
     });
+    tokensUsed += followup.usage?.total_tokens ?? 0;
     responseText = followup.choices[0]?.message?.content ?? '';
   } else {
     responseText = choice.message.content ?? '';
@@ -292,5 +294,5 @@ export async function POST(req: NextRequest) {
     responseText = responseText.replace(/FILTER:\S+/, '').trim();
   }
 
-  return NextResponse.json({ text: responseText, filter, toolCalled });
+  return NextResponse.json({ text: responseText, filter, toolCalled, tokensUsed });
 }
