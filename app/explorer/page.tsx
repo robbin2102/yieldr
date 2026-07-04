@@ -326,16 +326,32 @@ export default function ExplorerPage() {
     });
   }
 
-  function sendQuery(raw: string) {
+  const chatHistoryRef = useRef<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
+
+  async function sendQuery(raw: string) {
     const text = raw.trim();
     if (!text) return;
     setChatMessages((m) => [...m, { type: 'user', text }, { type: 'typing', text: '…' }]);
     setChatInput('');
-    setTimeout(() => {
-      const res = processQuery(text);
-      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: res.text }]);
-      if (res.filter) setActiveFilter(res.filter);
-    }, 500);
+
+    chatHistoryRef.current = [...chatHistoryRef.current, { role: 'user' as const, content: text }].slice(-8);
+
+    try {
+      const res = await fetch('/api/agent/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history: chatHistoryRef.current.slice(0, -1) }),
+      });
+      const data = await res.json() as { text?: string; filter?: string; error?: string };
+      const agentText = data.text ?? processQuery(text).text;
+      chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: agentText }].slice(-8);
+      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: agentText }]);
+      if (data.filter) setActiveFilter(data.filter);
+    } catch {
+      const fallback = processQuery(text);
+      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: fallback.text }]);
+      if (fallback.filter) setActiveFilter(fallback.filter);
+    }
   }
 
   const filtered = VAULTS.filter((v) => {
