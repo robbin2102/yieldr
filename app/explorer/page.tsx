@@ -231,6 +231,7 @@ export default function ExplorerPage() {
   const [liveStats, setLiveStats] = useState<Record<string, LiveStats>>({});
   const [myWhitelists, setMyWhitelists] = useState<Set<string>>(new Set());
   const [agentTokens, setAgentTokens] = useState(0);
+  const [showYldrModal, setShowYldrModal] = useState(false);
 
   const { isConnected, address } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -489,7 +490,7 @@ export default function ExplorerPage() {
                 <div className="ex-token-fill" style={{ width: `${Math.max(Math.min(agentTokens / FREE_TOKEN_LIMIT * 100, 100), agentTokens > 0 ? 2 : 0)}%`, background: agentTokens >= FREE_TOKEN_LIMIT * 0.9 ? '#f97316' : 'var(--g)' }} />
               </div>
               <div className="ex-token-label">{agentTokens.toLocaleString()} / 100K free</div>
-              <div className="ex-token-hint">More access with $YLDR →</div>
+              <div className="ex-token-hint" onClick={() => setShowYldrModal(true)}>More access with $YLDR →</div>
             </div>
           </div>
 
@@ -543,6 +544,84 @@ export default function ExplorerPage() {
           )}
         </div>
       </div>
+
+      {/* ── $YLDR access modal ── */}
+      {showYldrModal && (
+        <div className="ex-modal-overlay" onClick={() => setShowYldrModal(false)}>
+          <div className="ex-yldr-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="ex-yldr-close" onClick={() => setShowYldrModal(false)} aria-label="Close">✕</button>
+
+            <div className="ex-yldr-header">
+              <div className="ex-yldr-scanline" />
+              <div className="ex-yldr-eyebrow">// ACCESS_CONTROL.md</div>
+              <div className="ex-yldr-title">
+                <span className="ex-yldr-title-free">FREE</span>
+                <span className="ex-yldr-title-sep"> → </span>
+                <span className="ex-yldr-title-paid">$YLDR</span>
+              </div>
+              <div className="ex-yldr-subtitle">You&apos;ve used your free compute. Stack $YLDR, unlock the grid.</div>
+            </div>
+
+            <div className="ex-yldr-tiers">
+              <div className="ex-yldr-tier ex-yldr-tier--free">
+                <div className="ex-yldr-tier-label">FREE TIER</div>
+                <ul className="ex-yldr-tier-list">
+                  <li><span className="ex-yldr-check ex-yldr-check--amber">✓</span> 100K tokens/lifetime</li>
+                  <li><span className="ex-yldr-check ex-yldr-check--amber">✓</span> Basic vault explorer</li>
+                  <li><span className="ex-yldr-x">✗</span> AI vault analyst</li>
+                  <li><span className="ex-yldr-x">✗</span> Live position data</li>
+                  <li><span className="ex-yldr-x">✗</span> Priority vault access</li>
+                </ul>
+                <div className="ex-yldr-tier-footer">gm anon. thats all u get.</div>
+              </div>
+
+              <div className="ex-yldr-tier ex-yldr-tier--paid">
+                <div className="ex-yldr-tier-badge">SOON™</div>
+                <div className="ex-yldr-tier-label">$YLDR HOLDER</div>
+                <ul className="ex-yldr-tier-list">
+                  <li><span className="ex-yldr-check">✓</span> Unlimited AI queries</li>
+                  <li><span className="ex-yldr-check">✓</span> Full vault explorer</li>
+                  <li><span className="ex-yldr-check">✓</span> Live position data</li>
+                  <li><span className="ex-yldr-check">✓</span> Priority vault access</li>
+                  <li><span className="ex-yldr-check">✓</span> Alpha before the plebs</li>
+                </ul>
+                <div className="ex-yldr-tier-footer">ngmi without it ngl.</div>
+              </div>
+            </div>
+
+            <div className="ex-yldr-timeline">
+              <div className="ex-yldr-tl-label">ROADMAP</div>
+              <div className="ex-yldr-tl-track">
+                <div className="ex-yldr-tl-node ex-yldr-tl-node--done">
+                  <div className="ex-yldr-tl-dot" />
+                  <div className="ex-yldr-tl-text">
+                    <div className="ex-yldr-tl-date">Jul 9, 2026</div>
+                    <div className="ex-yldr-tl-event">$YLDR TGE</div>
+                  </div>
+                </div>
+                <div className="ex-yldr-tl-line" />
+                <div className="ex-yldr-tl-node">
+                  <div className="ex-yldr-tl-dot ex-yldr-tl-dot--future" />
+                  <div className="ex-yldr-tl-text">
+                    <div className="ex-yldr-tl-date">Aug 2026</div>
+                    <div className="ex-yldr-tl-event">Holder access live</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="ex-yldr-cta-wrap">
+              <button
+                className="ex-yldr-cta"
+                onClick={() => { setShowYldrModal(false); setModalVault(VAULTS[0] ?? null); }}
+              >
+                Whitelist a vault now → earn $YLDR at launch
+              </button>
+              <div className="ex-yldr-cta-sub">Whitelist any vault today. No deposit required.</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Whitelist modal ── */}
       {modalVault && (
