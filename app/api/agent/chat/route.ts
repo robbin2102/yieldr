@@ -34,49 +34,7 @@ When asked about whitelisting: users click "Whitelist Wallet" on any vault card,
 
 When a vault filter is relevant, include a filter hint in your response by ending with FILTER:<filter_key> where filter_key is one of: live, waitlist, predictions, perps, lp, project-coins, rwa, stock-tokens, memecoins.`;
 
-const MCP_BASE = process.env.MCP_SERVER_URL ?? 'https://yieldr-mcp-demo-production-59da.up.railway.app';
-
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
-
-async function fetchMCPTools(): Promise<OpenAI.Chat.ChatCompletionTool[]> {
-  try {
-    const res = await fetch(`${MCP_BASE}/mcp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', method: 'tools/list', id: 1 }),
-      signal: AbortSignal.timeout(4000),
-    });
-    if (!res.ok) return [];
-    const json = await res.json() as { result?: { tools?: Array<{ name: string; description?: string; inputSchema?: object }> } };
-    const tools = json?.result?.tools ?? [];
-    return tools.map((t) => ({
-      type: 'function' as const,
-      function: {
-        name: t.name,
-        description: t.description ?? '',
-        parameters: (t.inputSchema as Record<string, unknown>) ?? { type: 'object', properties: {} },
-      },
-    }));
-  } catch {
-    return [];
-  }
-}
-
-async function callMCPTool(name: string, args: Record<string, unknown>): Promise<string> {
-  try {
-    const res = await fetch(`${MCP_BASE}/mcp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', method: 'tools/call', id: 2, params: { name, arguments: args } }),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) return 'Tool call failed';
-    const json = await res.json() as { result?: { content?: Array<{ text?: string }> } };
-    return json?.result?.content?.map((c) => c.text ?? '').join('\n') ?? 'No result';
-  } catch {
-    return 'Tool call timed out';
-  }
-}
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GPT_API_KEY;
@@ -99,41 +57,14 @@ export async function POST(req: NextRequest) {
     { role: 'user', content: userMessage },
   ];
 
-  const mcpTools = await fetchMCPTools();
-
   const completion = await client.chat.completions.create({
     model: process.env.GPT_MODEL ?? 'gpt-4o-mini',
     messages,
-    tools: mcpTools.length > 0 ? mcpTools : undefined,
-    tool_choice: mcpTools.length > 0 ? 'auto' : undefined,
     max_tokens: 300,
     temperature: 0.4,
   });
 
-  let responseText = '';
-  const choice = completion.choices[0];
-
-  if (choice.message.tool_calls && choice.message.tool_calls.length > 0) {
-    const toolMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
-      ...messages,
-      choice.message,
-    ];
-    for (const tc of choice.message.tool_calls) {
-      const fn = (tc as { id: string; function: { name: string; arguments: string } }).function;
-      const args = JSON.parse(fn.arguments || '{}') as Record<string, unknown>;
-      const result = await callMCPTool(fn.name, args);
-      toolMessages.push({ role: 'tool', tool_call_id: (tc as { id: string }).id, content: result });
-    }
-    const followup = await client.chat.completions.create({
-      model: process.env.GPT_MODEL ?? 'gpt-4o-mini',
-      messages: toolMessages,
-      max_tokens: 300,
-      temperature: 0.4,
-    });
-    responseText = followup.choices[0]?.message?.content ?? '';
-  } else {
-    responseText = choice.message.content ?? '';
-  }
+  let responseText = completion.choices[0]?.message?.content ?? '';
 
   let filter: string | undefined;
   const filterMatch = responseText.match(/FILTER:(\S+)/);
