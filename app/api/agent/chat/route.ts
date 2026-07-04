@@ -115,9 +115,16 @@ async function callMCPTool(name: string): Promise<string> {
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return 'Tool unavailable';
-    const json = await res.json() as { result?: { content?: Array<{ text?: string }> } };
-    const raw = json?.result?.content?.map((c) => c.text ?? '').join('\n') ?? 'No data';
-    return scrubWallets(raw);
+    const json = await res.json() as Record<string, unknown>;
+    // Handle standard JSON-RPC wrapper ({result:{content:[...]}}) and direct response ({content:[...]})
+    const result = json?.result as Record<string, unknown> | undefined;
+    const content = (result?.content ?? json?.content) as Array<{ text?: string }> | undefined;
+    if (Array.isArray(content) && content.length > 0) {
+      return scrubWallets(content.map((c) => c.text ?? '').join('\n'));
+    }
+    // Last resort: return raw JSON so the LLM can still parse it
+    const raw = JSON.stringify(json);
+    return raw === '{}' || raw === 'null' ? 'Tool returned no data' : scrubWallets(raw);
   } catch {
     return 'Tool timed out';
   }
