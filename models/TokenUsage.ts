@@ -7,7 +7,6 @@ export interface ITokenUsage extends Document {
   cost: number;
   inputTokens: number;
   outputTokens: number;
-  model: string;
   requestCount: number;
   toolCalls: number;
   createdAt: Date;
