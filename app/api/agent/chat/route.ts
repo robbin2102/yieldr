@@ -36,6 +36,25 @@ When a vault filter is relevant, include a filter hint in your response by endin
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
+export async function GET() {
+  const apiKey = process.env.GPT_API_KEY;
+  const model = process.env.GPT_MODEL ?? 'gpt-4o-mini';
+  if (!apiKey) {
+    return NextResponse.json({ ok: false, error: 'GPT_API_KEY not set', model });
+  }
+  try {
+    const client = new OpenAI({ apiKey });
+    const res = await client.chat.completions.create({
+      model,
+      messages: [{ role: 'user', content: 'ping' }],
+      max_tokens: 5,
+    });
+    return NextResponse.json({ ok: true, model, reply: res.choices[0]?.message?.content });
+  } catch (e) {
+    return NextResponse.json({ ok: false, model, error: String(e) });
+  }
+}
+
 export async function POST(req: NextRequest) {
   const apiKey = process.env.GPT_API_KEY;
   if (!apiKey) {
