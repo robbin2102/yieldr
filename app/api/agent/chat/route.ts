@@ -47,7 +47,7 @@ export async function GET() {
     const res = await client.chat.completions.create({
       model,
       messages: [{ role: 'user', content: 'ping' }],
-      max_tokens: 5,
+      max_completion_tokens: 5,
     });
     return NextResponse.json({ ok: true, model, reply: res.choices[0]?.message?.content });
   } catch (e) {
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
   const completion = await client.chat.completions.create({
     model: process.env.GPT_MODEL ?? 'gpt-4o-mini',
     messages,
-    max_tokens: 300,
+    max_completion_tokens: 300,
     temperature: 0.4,
   });
 
