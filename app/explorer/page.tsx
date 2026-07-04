@@ -343,14 +343,12 @@ export default function ExplorerPage() {
         body: JSON.stringify({ message: text, history: chatHistoryRef.current.slice(0, -1) }),
       });
       const data = await res.json() as { text?: string; filter?: string; error?: string };
-      const agentText = data.text ?? processQuery(text).text;
-      chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: agentText }].slice(-8);
-      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: agentText }]);
+      if (!res.ok || !data.text) throw new Error(data.error ?? 'No response');
+      chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: data.text }].slice(-8);
+      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: data.text! }]);
       if (data.filter) setActiveFilter(data.filter);
     } catch {
-      const fallback = processQuery(text);
-      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: fallback.text }]);
-      if (fallback.filter) setActiveFilter(fallback.filter);
+      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: "I'm having trouble connecting right now — ask me about any vault, the $YLDR TGE, or whitelisting and I'll answer once I'm back online." }]);
     }
   }
 
