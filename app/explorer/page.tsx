@@ -216,7 +216,6 @@ function formatAgentText(text: string): string {
 }
 
 const FREE_TOKEN_LIMIT = 100_000;
-const TOKEN_KEY = 'yieldr_agent_tokens';
 
 function fmtAUM(n: number): string {
   return n >= 1000 ? `$${(n / 1000).toFixed(1)}K` : `$${n}`;
@@ -237,8 +236,6 @@ export default function ExplorerPage() {
   const { openConnectModal } = useConnectModal();
 
   useEffect(() => {
-    setAgentTokens(parseInt(localStorage.getItem(TOKEN_KEY) ?? '0', 10) || 0);
-
     fetch('/api/whitelist')
       .then((r) => r.json())
       .then((d) => { if (d.ok && d.data) setCounts((prev) => ({ ...prev, ...d.data })); })
@@ -279,6 +276,14 @@ export default function ExplorerPage() {
       .then((d) => { if (d.ok && d.data) setMyWhitelists(new Set(d.data)); })
       .catch(() => {});
   }, [isConnected, address]);
+
+  useEffect(() => {
+    const url = address ? `/api/agent/tokens?wallet=${address}` : '/api/agent/tokens';
+    fetch(url)
+      .then((r) => r.json())
+      .then((d) => { if (d.ok) setAgentTokens(d.tokensUsed ?? 0); })
+      .catch(() => {});
+  }, [address]);
 
   const [chatMessages, setChatMessages] = useState<ChatMsg[]>([
     { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me what Yieldr is, about any live or waitlisted vault, the $YLDR TGE, or how whitelisting works — full auto-allocation is still under construction, so until then, whitelist your wallet on any agent vault for early access.' },
@@ -360,20 +365,17 @@ export default function ExplorerPage() {
       const res = await fetch('/api/agent/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history: chatHistoryRef.current.slice(0, -1) }),
+        body: JSON.stringify({ message: text, history: chatHistoryRef.current.slice(0, -1), walletAddress: address ?? null }),
       });
       clearTimeout(liveDataHint);
       const data = await res.json() as { text?: string; filter?: string; toolCalled?: boolean; tokensUsed?: number; error?: string };
+      if (res.status === 429) { setAgentTokens(FREE_TOKEN_LIMIT); setChatMessages((m) => m.filter((msg) => msg.type !== 'typing')); return; }
       if (!res.ok || !data.text) throw new Error(data.error ?? 'No response');
       chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: data.text }].slice(-8);
       setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: data.text!, liveData: data.toolCalled }]);
       if (data.filter) { setActiveFilter(data.filter); setChainFilter('all'); }
       if (data.tokensUsed) {
-        setAgentTokens((prev) => {
-          const next = prev + data.tokensUsed!;
-          localStorage.setItem(TOKEN_KEY, String(next));
-          return next;
-        });
+        setAgentTokens((prev) => prev + data.tokensUsed!);
       }
     } catch {
       clearTimeout(liveDataHint);

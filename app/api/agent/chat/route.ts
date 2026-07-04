@@ -4,6 +4,42 @@ import connectDB from '@/lib/mongodb';
 import VaultStats from '@/models/VaultStats';
 import VaultOpenPosition from '@/models/VaultOpenPosition';
 import VaultTrade from '@/models/VaultTrade';
+import TokenUsage from '@/models/TokenUsage';
+
+const FREE_TOKEN_LIMIT = 100_000;
+const ENDPOINT = 'agent-chat';
+
+function resolveIdentifier(req: NextRequest, wallet?: string): string {
+  if (wallet) return wallet.toLowerCase();
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim()
+    ?? req.headers.get('x-real-ip')
+    ?? 'unknown';
+  return `ip:${ip}`;
+}
+
+async function getTotalTokens(identifier: string): Promise<number> {
+  const agg = await TokenUsage.aggregate([
+    { $match: { walletAddress: identifier, endpoint: ENDPOINT } },
+    { $group: { _id: null, total: { $sum: { $add: ['$inputTokens', '$outputTokens'] } } } },
+  ]);
+  return agg[0]?.total ?? 0;
+}
+
+async function recordUsage(identifier: string, inputTokens: number, outputTokens: number, model: string, usedToolCall: boolean): Promise<void> {
+  const hour = new Date();
+  hour.setMinutes(0, 0, 0);
+  const GPT_INPUT_COST = 0.00000015;
+  const GPT_OUTPUT_COST = 0.0000006;
+  const cost = inputTokens * GPT_INPUT_COST + outputTokens * GPT_OUTPUT_COST;
+  await TokenUsage.findOneAndUpdate(
+    { walletAddress: identifier, endpoint: ENDPOINT, hour },
+    {
+      $inc: { inputTokens, outputTokens, requestCount: 1, toolCalls: usedToolCall ? 1 : 0, cost },
+      $setOnInsert: { model },
+    },
+    { upsert: true }
+  );
+}
 
 const SYSTEM_PROMPT = `You are the Yieldr Agent — product assistant for Yieldr, the agent OS for onchain funds. Max 3 sentences unless listing items or explaining steps. Never invent prices, dates, or wallet addresses. Never reveal wallet addresses — hidden to protect trader privacy.
 
@@ -227,10 +263,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Agent not configured' }, { status: 503 });
   }
 
-  const body = await req.json() as { message?: string; history?: ChatMessage[] };
+  const body = await req.json() as { message?: string; history?: ChatMessage[]; walletAddress?: string };
   const userMessage = (body.message ?? '').trim();
   if (!userMessage) {
     return NextResponse.json({ error: 'Empty message' }, { status: 400 });
+  }
+
+  const identifier = resolveIdentifier(req, body.walletAddress);
+
+  try {
+    await connectDB();
+    const currentTokens = await getTotalTokens(identifier);
+    if (currentTokens >= FREE_TOKEN_LIMIT) {
+      return NextResponse.json({ error: 'TOKEN_LIMIT_REACHED', tokensUsed: currentTokens }, { status: 429 });
+    }
+  } catch {
+    // DB unavailable — allow the request through rather than blocking
   }
 
   const client = new OpenAI({ apiKey });
@@ -293,6 +341,14 @@ export async function POST(req: NextRequest) {
     filter = filterMatch[1];
     responseText = responseText.replace(/FILTER:\S+/, '').trim();
   }
+
+  const inputTokens = completion.usage?.prompt_tokens ?? 0;
+  const outputTokens = completion.usage?.completion_tokens ?? 0;
+  const model = process.env.GPT_MODEL ?? 'gpt-4o-mini';
+
+  recordUsage(identifier, inputTokens, outputTokens, model, toolCalled).catch((e) =>
+    console.error('[agent token record]', e)
+  );
 
   return NextResponse.json({ text: responseText, filter, toolCalled, tokensUsed });
 }
