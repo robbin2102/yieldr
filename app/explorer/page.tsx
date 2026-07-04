@@ -203,7 +203,7 @@ function processQuery(t: string): { text: string; filter?: string } {
 
 const QUICK_REPLIES = ['What is Yieldr?', 'Live vaults', 'HOOD Chain', 'Launch a vault', 'TGE & $YLDR', 'How to whitelist'];
 
-type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string };
+type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string; liveData?: boolean };
 
 type LiveStats = { aum: number; winRate: number; returnPct: number };
 
@@ -336,18 +336,26 @@ export default function ExplorerPage() {
 
     chatHistoryRef.current = [...chatHistoryRef.current, { role: 'user' as const, content: text }].slice(-8);
 
+    const liveDataHint = setTimeout(() => {
+      setChatMessages((m) => m.map((msg) =>
+        msg.type === 'typing' ? { ...msg, text: 'Fetching live vault data…' } : msg
+      ));
+    }, 2200);
+
     try {
       const res = await fetch('/api/agent/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, history: chatHistoryRef.current.slice(0, -1) }),
       });
-      const data = await res.json() as { text?: string; filter?: string; error?: string };
+      clearTimeout(liveDataHint);
+      const data = await res.json() as { text?: string; filter?: string; toolCalled?: boolean; error?: string };
       if (!res.ok || !data.text) throw new Error(data.error ?? 'No response');
       chatHistoryRef.current = [...chatHistoryRef.current, { role: 'assistant' as const, content: data.text }].slice(-8);
-      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: data.text! }]);
+      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: data.text!, liveData: data.toolCalled }]);
       if (data.filter) setActiveFilter(data.filter);
     } catch {
+      clearTimeout(liveDataHint);
       setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: "I'm having trouble connecting right now — ask me about any vault, the $YLDR TGE, or whitelisting and I'll answer once I'm back online." }]);
     }
   }
@@ -457,7 +465,14 @@ export default function ExplorerPage() {
 
           <div className="ex-chat-messages">
             {chatMessages.map((m, i) => (
-              <div key={i} className={`ex-chat-msg ${m.type}`}>{m.text}</div>
+              <div key={i} className={`ex-chat-msg ${m.type}`}>
+                {m.type === 'typing'
+                  ? <span className="ex-typing-text">{m.text}</span>
+                  : m.text}
+                {m.liveData && (
+                  <span className="ex-live-badge">⚡ live data</span>
+                )}
+              </div>
             ))}
             <div ref={chatEndRef} />
           </div>

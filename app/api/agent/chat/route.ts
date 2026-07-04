@@ -133,13 +133,12 @@ async function queryVaultData(withPositions: boolean): Promise<string> {
   try {
     await connectDB();
 
-    const vaults = await VaultStats.find(
-      { status: 'active' },
-      { wallet: 1, traderLabel: 1, status: 1, totalPnlAllTime: 1,
-        initial_capital_usdc: 1, vault_size_usdc: 1, win_rate: 1, last_polled_activity_ts: 1 }
-    ).lean() as unknown as VaultStatDoc[];
+    const vaults = await VaultStats
+      .find({ status: 'active' })
+      .select('wallet traderLabel status totalPnlAllTime initial_capital_usdc vault_size_usdc win_rate last_polled_activity_ts')
+      .lean() as unknown as VaultStatDoc[];
 
-    if (!vaults.length) return 'No vault data available.';
+    if (!vaults.length) return 'No active vault data found.';
 
     const lines: string[] = [];
 
@@ -155,12 +154,12 @@ async function queryVaultData(withPositions: boolean): Promise<string> {
       lines.push(`ROI: ${roi}% | Win Rate: ${winRate}% | All-time PnL: ${pnlStr} | AUM: $${aum}`);
 
       if (withPositions) {
-        const posDoc = await VaultOpenPosition.findOne(
-          { wallet: v.wallet },
-          { topOpenPositions: { $slice: 3 }, _id: 0 }
-        ).lean() as unknown as OpenPosDoc | null;
+        const posDoc = await VaultOpenPosition
+          .findOne({ wallet: v.wallet })
+          .select('topOpenPositions')
+          .lean() as unknown as OpenPosDoc | null;
 
-        const positions = posDoc?.topOpenPositions ?? [];
+        const positions = (posDoc?.topOpenPositions ?? []).slice(0, 3);
         if (positions.length) {
           lines.push('Open Positions:');
           for (const p of positions) {
@@ -170,10 +169,12 @@ async function queryVaultData(withPositions: boolean): Promise<string> {
         }
       }
 
-      const trades = await VaultTrade.find(
-        { wallet: v.wallet, status: { $in: ['win', 'loss'] } },
-        { market: 1, side: 1, pnl_usdc: 1, status: 1, opened_at: 1, _id: 0 }
-      ).sort({ opened_at: -1 }).limit(5).lean() as unknown as TradeDoc[];
+      const trades = await VaultTrade
+        .find({ wallet: v.wallet, status: { $in: ['win', 'loss'] } })
+        .select('market side pnl_usdc status opened_at')
+        .sort({ opened_at: -1 })
+        .limit(5)
+        .lean() as unknown as TradeDoc[];
 
       if (trades.length) {
         lines.push('Recent Trades:');
@@ -186,7 +187,7 @@ async function queryVaultData(withPositions: boolean): Promise<string> {
 
     return lines.join('\n');
   } catch (e) {
-    console.error('[vault query]', e);
+    console.error('[vault query error]', e);
     return 'Vault data temporarily unavailable.';
   }
 }
@@ -243,9 +244,11 @@ export async function POST(req: NextRequest) {
   });
 
   let responseText = '';
+  let toolCalled = false;
   const choice = completion.choices[0];
 
   if (choice.message.tool_calls && choice.message.tool_calls.length > 0) {
+    toolCalled = true;
     const toolMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [...messages, choice.message];
 
     for (const tc of choice.message.tool_calls) {
@@ -281,5 +284,5 @@ export async function POST(req: NextRequest) {
     responseText = responseText.replace(/FILTER:\S+/, '').trim();
   }
 
-  return NextResponse.json({ text: responseText, filter });
+  return NextResponse.json({ text: responseText, filter, toolCalled });
 }

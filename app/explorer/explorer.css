@@ -132,7 +132,17 @@ a.ex-vc:hover { border-color: var(--g); }
 }
 .ex-chat-msg.agent { background: var(--bg-3); border: 1px solid var(--line); color: var(--text); align-self: flex-start; }
 .ex-chat-msg.user { background: var(--g-dim); border: 1px solid rgba(0,232,123,.25); color: var(--text); align-self: flex-end; }
-.ex-chat-msg.typing { color: var(--text-faint); font-style: italic; }
+.ex-chat-msg.typing { color: var(--text-faint); font-style: italic; align-self: flex-start; }
+
+@keyframes ex-pulse { 0%,100% { opacity: .4 } 50% { opacity: 1 } }
+.ex-typing-text { animation: ex-pulse 1.4s ease-in-out infinite; }
+
+.ex-live-badge {
+  display: inline-block; margin-left: 8px; margin-top: 6px;
+  font-size: .58rem; font-family: var(--mono); letter-spacing: .04em;
+  color: var(--g); background: var(--g-dim); border: 1px solid rgba(0,232,123,.3);
+  border-radius: 4px; padding: 1px 5px; vertical-align: middle;
+}
 
 .ex-quick-replies { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 12px; }
 .ex-qr-btn {
