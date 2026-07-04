@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import connectDB from '@/lib/mongodb';
+import VaultStats from '@/models/VaultStats';
+import VaultOpenPosition from '@/models/VaultOpenPosition';
+import VaultTrade from '@/models/VaultTrade';
 
 const SYSTEM_PROMPT = `You are the Yieldr Agent — product assistant for Yieldr, the agent OS for onchain funds. Max 3 sentences unless listing items or explaining steps. Never invent prices, dates, or wallet addresses. Never reveal wallet addresses — hidden to protect trader privacy.
 
@@ -81,8 +85,6 @@ Click "Whitelist Wallet" on any vault card, connect wallet — no deposit taken 
 FILTER HINTS — end response with FILTER:<key> when a vault category is relevant
 Keys: live · waitlist · predictions · perps · lp · project-coins · rwa · stock-tokens · memecoins`;
 
-const MCP_BASE = 'https://mcp-demo-production-59da.up.railway.app';
-
 const AGENT_TOOLS: OpenAI.Chat.ChatCompletionTool[] = [
   {
     type: 'function',
@@ -106,50 +108,86 @@ function scrubWallets(text: string): string {
   return text.replace(/0x[a-fA-F0-9]{40}/g, '[wallet hidden]');
 }
 
-function trimVaultResponse(raw: string): string {
-  try {
-    const data = JSON.parse(raw) as { vaults?: Array<Record<string, unknown>> };
-    if (!Array.isArray(data?.vaults)) return raw.slice(0, 3000);
-    const trimmed = data.vaults.map((v) => ({
-      name: v.name,
-      specialty: v.specialty,
-      status: v.status,
-      performance: v.performance,
-      positionSummary: v.positionSummary,
-      openPositions: (v.openPositions as unknown[])?.slice(0, 3),
-      recentTrades: (v.recentTrades as unknown[])?.slice(0, 5),
-    }));
-    return JSON.stringify({ vaults: trimmed });
-  } catch {
-    return raw.slice(0, 3000);
-  }
-}
+type VaultStatDoc = {
+  wallet: string;
+  traderLabel: string;
+  status: string;
+  totalPnlAllTime: number;
+  initial_capital_usdc: number;
+  vault_size_usdc: number;
+  win_rate: number;
+  last_polled_activity_ts: number;
+};
 
-async function callMCPTool(name: string): Promise<string> {
+type OpenPosDoc = {
+  topOpenPositions?: Array<{
+    title: string; outcome: string; currentValue: number; cashPnl: number; curPrice: number;
+  }>;
+};
+
+type TradeDoc = {
+  market: string; side: string; pnl_usdc: number | null; status: string; opened_at: Date;
+};
+
+async function queryVaultData(withPositions: boolean): Promise<string> {
   try {
-    const res = await fetch(`${MCP_BASE}/mcp`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jsonrpc: '2.0', method: 'tools/call', id: 1, params: { name, arguments: {} } }),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) return 'Tool unavailable';
-    const json = await res.json() as Record<string, unknown>;
-    // Handle standard JSON-RPC wrapper ({result:{content:[...]}}) and direct response ({content:[...]})
-    const result = json?.result as Record<string, unknown> | undefined;
-    const content = (result?.content ?? json?.content) as Array<{ text?: string }> | undefined;
-    if (Array.isArray(content) && content.length > 0) {
-      const raw = content.map((c) => c.text ?? '').join('\n');
-      const trimmed = name === 'get_vault_performance' || name === 'get_vault_trades'
-        ? trimVaultResponse(raw)
-        : raw.slice(0, 3000);
-      return scrubWallets(trimmed);
+    await connectDB();
+
+    const vaults = await VaultStats.find(
+      { status: 'active' },
+      { wallet: 1, traderLabel: 1, status: 1, totalPnlAllTime: 1,
+        initial_capital_usdc: 1, vault_size_usdc: 1, win_rate: 1, last_polled_activity_ts: 1 }
+    ).lean() as unknown as VaultStatDoc[];
+
+    if (!vaults.length) return 'No vault data available.';
+
+    const lines: string[] = [];
+
+    for (const v of vaults) {
+      const initialCap = v.initial_capital_usdc || 1;
+      const totalPnl = v.totalPnlAllTime ?? 0;
+      const roi = ((totalPnl / initialCap) * 100).toFixed(1);
+      const aum = (v.vault_size_usdc ?? 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+      const winRate = (v.win_rate ?? 0).toFixed(1);
+      const pnlStr = `${totalPnl >= 0 ? '+' : ''}$${Math.abs(totalPnl).toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+
+      lines.push(`\n${v.traderLabel} (${v.status})`);
+      lines.push(`ROI: ${roi}% | Win Rate: ${winRate}% | All-time PnL: ${pnlStr} | AUM: $${aum}`);
+
+      if (withPositions) {
+        const posDoc = await VaultOpenPosition.findOne(
+          { wallet: v.wallet },
+          { topOpenPositions: { $slice: 3 }, _id: 0 }
+        ).lean() as unknown as OpenPosDoc | null;
+
+        const positions = posDoc?.topOpenPositions ?? [];
+        if (positions.length) {
+          lines.push('Open Positions:');
+          for (const p of positions) {
+            const pnl = `${p.cashPnl >= 0 ? '+' : ''}$${Math.abs(p.cashPnl).toFixed(0)}`;
+            lines.push(`  • ${p.title} [${p.outcome}] $${(p.currentValue ?? 0).toFixed(0)} @ $${(p.curPrice ?? 0).toFixed(2)} (${pnl})`);
+          }
+        }
+      }
+
+      const trades = await VaultTrade.find(
+        { wallet: v.wallet, status: { $in: ['win', 'loss'] } },
+        { market: 1, side: 1, pnl_usdc: 1, status: 1, opened_at: 1, _id: 0 }
+      ).sort({ opened_at: -1 }).limit(5).lean() as unknown as TradeDoc[];
+
+      if (trades.length) {
+        lines.push('Recent Trades:');
+        for (const t of trades) {
+          const pnl = t.pnl_usdc != null ? `${t.pnl_usdc >= 0 ? '+' : ''}$${Math.abs(t.pnl_usdc).toFixed(0)}` : '—';
+          lines.push(`  • ${t.market} [${t.side}] ${t.status === 'win' ? 'win' : 'loss'} ${pnl}`);
+        }
+      }
     }
-    // Last resort: return raw JSON so the LLM can still parse it
-    const raw = JSON.stringify(json);
-    return raw === '{}' || raw === 'null' ? 'Tool returned no data' : scrubWallets(raw.slice(0, 3000));
-  } catch {
-    return 'Tool timed out';
+
+    return lines.join('\n');
+  } catch (e) {
+    console.error('[vault query]', e);
+    return 'Vault data temporarily unavailable.';
   }
 }
 
@@ -212,7 +250,14 @@ export async function POST(req: NextRequest) {
 
     for (const tc of choice.message.tool_calls) {
       const fn = (tc as { id: string; function: { name: string } }).function;
-      const result = await callMCPTool(fn.name);
+      let result: string;
+      if (fn.name === 'get_vault_performance') {
+        result = await queryVaultData(true);
+      } else if (fn.name === 'get_vault_trades') {
+        result = await queryVaultData(false);
+      } else {
+        result = 'Tool unavailable';
+      }
       toolMessages.push({ role: 'tool', tool_call_id: (tc as { id: string }).id, content: result });
     }
 
