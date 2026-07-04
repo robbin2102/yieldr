@@ -149,7 +149,7 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">Multi-Chain Expansion — HOOD Chain</div>
-                <div className="tl-item-p">Expanded Yieldr to HOOD Chain (Robinhood Chain), an Arbitrum L2 with native 24/7 tokenized stock trading. SpaceX (SPCX), NVDA, and TSLA stock token vaults added to the waitlist. $YLDR TGE scheduled July 7 on HOOD Chain.</div>
+                <div className="tl-item-p">Expanded Yieldr to HOOD Chain (Robinhood Chain), an Arbitrum L2 with native 24/7 tokenized stock trading. SpaceX (SPCX), NVDA, TSLA, Virtuals HOOD Agents, and HOOD Carry Trade vaults added to the waitlist. $YLDR TGE coming via Virtuals on HOOD Chain.</div>
                 <div className="tl-tags"><span className="tl-tag green">HOOD Chain</span><span className="tl-tag">Stock Tokens</span><span className="tl-tag">Multi-Chain</span></div>
               </div>
             </div>

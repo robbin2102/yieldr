@@ -40,10 +40,10 @@ const WAITLIST_VAULTS = [
     stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
   {
-    id: 'base',
-    proto: 'Virtuals · Bankr · Project Coins',
-    name: '🌐 Base Ecosystem Vault',
-    desc: 'Curated basket of Virtuals, Bankr, and Base ecosystem tokens following highest-edge wallets.',
+    id: 'virtuals-robotics',
+    proto: 'Virtuals · Base · Robotics Infra',
+    name: '🦾 Virtuals Robotics Infra Vault',
+    desc: 'Agent researches new Virtuals launches on Base, monitors project milestones, detects degen-sell signals from top wallets, and accumulates high-conviction robotics and AI infrastructure tokens for long-term value growth.',
     stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
   {
@@ -67,21 +67,43 @@ const WAITLIST_VAULTS = [
     desc: 'Captures Tesla volatility cycles using tokenized TSLA on Robinhood Chain. Agent mirrors highest-conviction entries from top TSLA spot traders.',
     stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
   },
+  {
+    id: 'hood-agents',
+    proto: 'HOOD Chain · Virtuals · Agentic AI',
+    name: '🤖 Virtuals HOOD Agents Vault',
+    desc: 'Agent identifies and accumulates early agentic trading AI projects launching on HOOD Chain via Virtuals. Monitors top wallet accumulation signals and project progress to build positions in agentic finance tokens.',
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
+  },
+  {
+    id: 'hood-meme',
+    proto: 'HOOD Chain · Memecoins',
+    name: '🎲 HOOD Memecoin Momentum Vault',
+    desc: 'Tracks top HOOD Chain memecoin traders by realised edge and mirrors entries/exits with strict position sizing. Agent monitors new launches and exit signals continuously.',
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
+  },
+  {
+    id: 'hood-carry',
+    proto: 'HOOD Chain · Lighter · Carry Trade',
+    name: '📊 HOOD Carry Trade Vault',
+    desc: 'Agent monitors funding rate gaps between spot DEX prices and Lighter perpetuals on HOOD Chain. Enters carry positions when annualised rate arbitrage exceeds 30% — buys spot, shorts perps, earns the spread.',
+    stats: [{ v: '—', l: 'Target AUM' }, { v: '—', l: 'Waitlisted' }],
+  },
 ];
 
 function tickerItems(waitlistStats: { total_wallets: number } | null) {
   return [
   { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
   { label: 'NBA EDGE VAULT', value: '+18.7% 7D', up: true },
-  { label: 'YLDR TGE', value: 'JULY 7', up: true },
+  { label: 'YLDR TGE', value: 'ON VIRTUALS', up: true },
   { label: 'HOOD CHAIN', value: 'NOW LIVE', up: true },
   { label: 'GENESIS FDV', value: '<$200K', up: true },
   { label: 'BASE BATCHES 002', value: 'WINNER', up: true },
   { label: waitlistStats ? `${waitlistStats.total_wallets} WALLETS` : '— WALLETS', value: 'WHITELISTED', up: true },
-  { label: 'FUNDING ARBS VAULT', value: 'WAITLIST OPEN', up: true },
-  { label: 'SPACEX RWA VAULT', value: 'WAITLIST OPEN', up: true },
+  { label: 'VIRTUALS ROBOTICS VAULT', value: 'WAITLIST OPEN', up: true },
+  { label: 'HOOD AGENTS VAULT', value: 'WAITLIST OPEN', up: true },
   { label: 'NVDA AI VAULT', value: 'WAITLIST OPEN', up: true },
   { label: 'TSLA VOLATILITY VAULT', value: 'WAITLIST OPEN', up: true },
+  { label: 'HOOD CARRY VAULT', value: 'WAITLIST OPEN', up: true },
   ];
 }
 
@@ -251,7 +273,7 @@ export default function HomePage() {
                   <div className="lp-hm-sep" />
                   <div><div className="lp-hm-v">{waitlistStats ? waitlistStats.total_wallets : '—'}</div><div className="lp-hm-l">Wallets Whitelisted</div></div>
                 </div>
-                <div className="lp-hm-tge">⚡ $YLDR TGE · HOOD Chain · July 7</div>
+                <div className="lp-hm-tge">⚡ $YLDR TGE · HOOD Chain · via Virtuals</div>
               </div>
             </div>
           </section>
@@ -403,7 +425,7 @@ export default function HomePage() {
         <div className="lp-wrap">
           <section className="lp-section lp-reveal" id="token">
             <div className="lp-fcta-box">
-              <div className="lp-fcta-tag">⚡ $YLDR TGE · HOOD Chain · July 7</div>
+              <div className="lp-fcta-tag">⚡ $YLDR TGE · HOOD Chain · via Virtuals</div>
               <div className="lp-fcta-h">Own the protocol from day one.<br /><span className="ac">Earn while you wait.</span></div>
               <p className="lp-fcta-sub">
                 Whitelist your wallet on any agent vault and earn a{' '}

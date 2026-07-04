@@ -47,10 +47,10 @@ const VAULTS: Vault[] = [
     stats: [{ v: '$48K', l: 'Target AUM' }, { v: '≤15%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
-    id: 'base', name: '🌐 Base Ecosystem Vault', proto: '🤖 Virtuals · Bankr · Project Coins',
-    desc: 'Curated basket of Virtuals, Bankr, and Base ecosystem tokens following highest-edge wallets.',
+    id: 'virtuals-robotics', name: '🦾 Virtuals Robotics Infra Vault', proto: '🤖 Virtuals · Base · Robotics Infra',
+    desc: 'Agent researches new Virtuals launches on Base, monitors project milestones, detects degen-sell signals from top wallets, and accumulates high-conviction robotics and AI infrastructure tokens for long-term value growth.',
     status: 'waitlist', cat: 'project-coins', chain: 'base',
-    stats: [{ v: '$32K', l: 'Target AUM' }, { v: '≤18%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
+    stats: [{ v: '$40K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'spacex', name: '🚀 SpaceX RWA Vault', proto: '🏦 HOOD Chain · Robinhood Chain · RWA',
@@ -75,6 +75,24 @@ const VAULTS: Vault[] = [
     desc: 'Tracks top Base memecoin traders by realised edge and mirrors entries/exits with strict position sizing.',
     status: 'waitlist', cat: 'memecoins', chain: 'base',
     stats: [{ v: '$19K', l: 'Target AUM' }, { v: '', l: 'Waitlisted' }],
+  },
+  {
+    id: 'hood-agents', name: '🤖 Virtuals HOOD Agents Vault', proto: '🏦 HOOD Chain · Virtuals · Agentic AI',
+    desc: 'Agent identifies and accumulates early agentic trading AI projects launching on HOOD Chain via Virtuals. Monitors top wallet accumulation signals and project progress to build positions in agentic finance tokens.',
+    status: 'waitlist', cat: 'project-coins', chain: 'hood',
+    stats: [{ v: '$45K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
+  },
+  {
+    id: 'hood-meme', name: '🎲 HOOD Memecoin Momentum Vault', proto: '🏦 HOOD Chain · Memecoins',
+    desc: 'Tracks top HOOD Chain memecoin traders by realised edge and mirrors entries/exits with strict position sizing. Agent monitors new launches and exit signals continuously.',
+    status: 'waitlist', cat: 'memecoins', chain: 'hood',
+    stats: [{ v: '$22K', l: 'Target AUM' }, { v: '', l: 'Waitlisted' }],
+  },
+  {
+    id: 'hood-carry', name: '📊 HOOD Carry Trade Vault', proto: '🏦 HOOD Chain · Lighter · Carry Trade',
+    desc: 'Agent monitors funding rate gaps between spot DEX prices and Lighter perpetuals on HOOD Chain. Enters carry positions when annualised rate arbitrage exceeds 30% — buys spot, shorts perps, earns the spread.',
+    status: 'waitlist', cat: 'perps', chain: 'hood',
+    stats: [{ v: '$60K', l: 'Target AUM' }, { v: '≤18%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
 ];
 
@@ -141,9 +159,19 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
     filter: 'stock-tokens',
   },
   {
-    triggers: ['project coin', 'memecoin', 'bankr', 'virtuals', 'base ecosystem', 'meme'],
-    text: "Tracking project-coin and memecoin vault edge is on my roadmap, but I'm not live yet. Whitelist the 🌐 Base Ecosystem Vault or 🎲 Memecoin Momentum Vault below for early access.",
+    triggers: ['virtuals', 'robotics', 'infra', 'base ecosystem', 'project coin'],
+    text: "Yieldr has two Virtuals vaults in the pipeline — 🦾 Virtuals Robotics Infra Vault on Base (VC-style accumulator, researches launches, detects degen-sell signals) and 🤖 Virtuals HOOD Agents Vault on HOOD Chain (agentic finance AI projects). Whitelist either below for early access.",
     filter: 'project-coins',
+  },
+  {
+    triggers: ['memecoin', 'meme', 'hood meme'],
+    text: "Memecoin vaults are available on both Base and HOOD Chain. 🎲 Memecoin Momentum Vault (Base) and 🎲 HOOD Memecoin Momentum Vault (HOOD Chain) — both mirror top traders by realised edge with strict position sizing. Whitelist below.",
+    filter: 'memecoins',
+  },
+  {
+    triggers: ['carry', 'lighter', 'funding rate', 'hood carry'],
+    text: "The 📊 HOOD Carry Trade Vault on HOOD Chain buys spot and shorts perps on Lighter when annualised funding rate arb exceeds 30%. Pure carry — no directional exposure. Whitelist below for early access.",
+    filter: 'perps',
   },
   {
     triggers: ['launch', 'start a vault', 'create a vault', 'become a trader'],
@@ -155,7 +183,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   },
   {
     triggers: ['tge', 'token', 'yldr', 'airdrop'],
-    text: "⚡ $YLDR TGE is on HOOD Chain on July 7. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
+    text: "⚡ $YLDR TGE is coming on HOOD Chain via Virtuals — no date confirmed yet. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
   },
   {
     triggers: ['whitelist', 'waitlist', 'early access'],

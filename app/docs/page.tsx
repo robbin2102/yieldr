@@ -668,7 +668,7 @@ export default function DocsPage() {
           {/* PAGE 05: Fund Launch Waitlist */}
           <section className={'dx-page ' + (activePage === 'fund-launch-waitlist' ? 'active' : '')} id="page-fund-launch-waitlist">
             <SectionTag pageId="fund-launch-waitlist" />
-            <h1>The fund launch waitlist is coming around the $YLDR TGE in July 2026.</h1>
+            <h1>The fund launch waitlist is coming around the $YLDR TGE via Virtuals on HOOD Chain.</h1>
             <p className="dx-subtitle">The waitlist is for traders, project communities, DAOs, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
 
             <h2>Who Should Apply?</h2>
@@ -929,11 +929,11 @@ export default function DocsPage() {
               <div className="dx-token-name">YLDR</div>
               <div className="dx-token-stats">
                 <div>
-                  <div className="dx-token-stat-value">Jul 2026</div>
+                  <div className="dx-token-stat-value">Soon</div>
                   <div className="dx-token-stat-label">Planned TGE</div>
                 </div>
                 <div>
-                  <div className="dx-token-stat-value">Base</div>
+                  <div className="dx-token-stat-value">HOOD Chain</div>
                   <div className="dx-token-stat-label">Launch Ecosystem</div>
                 </div>
                 <div>
@@ -942,7 +942,7 @@ export default function DocsPage() {
                 </div>
               </div>
             </div>
-            <p>Tokenomics information and Base launch page URL will be updated soon.</p>
+            <p>Tokenomics information and HOOD Chain launch details via Virtuals will be published before launch.</p>
 
             <h2>Whitelist Rewards</h2>
             <p>Users who whitelist agent vaults and complete eligible product participation may qualify for $YLDR rewards at beta launch. Reward mechanics are designed to reward genuine users, not passive farmers.</p>
@@ -969,15 +969,15 @@ export default function DocsPage() {
             </div>
             <div className="dx-roadmap-item">
               <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 2 — Coming around $YLDR TGE in July 2026</div>
+              <div className="dx-roadmap-phase">Phase 2 — Coming around $YLDR TGE via Virtuals on HOOD Chain</div>
               <h3 className="dx-roadmap-title">Whitelist and Fund Launch Applications</h3>
               <p className="dx-roadmap-desc">Users can whitelist wallets on upcoming agent vaults. Traders, projects, DAOs, and communities can apply to launch agent vaults. Yieldr begins forming the early vault pipeline across project coins, memecoins, perps, predictions, LP strategies, RWAs, and DAO treasury strategies.</p>
             </div>
             <div className="dx-roadmap-item">
               <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 3 — Planned July 2026</div>
+              <div className="dx-roadmap-phase">Phase 3 — Coming via Virtuals on HOOD Chain</div>
               <h3 className="dx-roadmap-title">$YLDR TGE</h3>
-              <p className="dx-roadmap-desc">$YLDR launches through the Base ecosystem. Eligible users may participate according to final launch and jurisdictional rules. Tokenomics information and Base launch page URL will be published before launch.</p>
+              <p className="dx-roadmap-desc">$YLDR launches on HOOD Chain via Virtuals. Eligible users may participate according to final launch and jurisdictional rules. Tokenomics information and launch page will be published before launch.</p>
             </div>
             <div className="dx-roadmap-item">
               <div className="dx-roadmap-dot"></div>
