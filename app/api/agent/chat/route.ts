@@ -106,6 +106,25 @@ function scrubWallets(text: string): string {
   return text.replace(/0x[a-fA-F0-9]{40}/g, '[wallet hidden]');
 }
 
+function trimVaultResponse(raw: string): string {
+  try {
+    const data = JSON.parse(raw) as { vaults?: Array<Record<string, unknown>> };
+    if (!Array.isArray(data?.vaults)) return raw.slice(0, 3000);
+    const trimmed = data.vaults.map((v) => ({
+      name: v.name,
+      specialty: v.specialty,
+      status: v.status,
+      performance: v.performance,
+      positionSummary: v.positionSummary,
+      openPositions: (v.openPositions as unknown[])?.slice(0, 3),
+      recentTrades: (v.recentTrades as unknown[])?.slice(0, 5),
+    }));
+    return JSON.stringify({ vaults: trimmed });
+  } catch {
+    return raw.slice(0, 3000);
+  }
+}
+
 async function callMCPTool(name: string): Promise<string> {
   try {
     const res = await fetch(`${MCP_BASE}/mcp`, {
@@ -120,11 +139,15 @@ async function callMCPTool(name: string): Promise<string> {
     const result = json?.result as Record<string, unknown> | undefined;
     const content = (result?.content ?? json?.content) as Array<{ text?: string }> | undefined;
     if (Array.isArray(content) && content.length > 0) {
-      return scrubWallets(content.map((c) => c.text ?? '').join('\n'));
+      const raw = content.map((c) => c.text ?? '').join('\n');
+      const trimmed = name === 'get_vault_performance' || name === 'get_vault_trades'
+        ? trimVaultResponse(raw)
+        : raw.slice(0, 3000);
+      return scrubWallets(trimmed);
     }
     // Last resort: return raw JSON so the LLM can still parse it
     const raw = JSON.stringify(json);
-    return raw === '{}' || raw === 'null' ? 'Tool returned no data' : scrubWallets(raw);
+    return raw === '{}' || raw === 'null' ? 'Tool returned no data' : scrubWallets(raw.slice(0, 3000));
   } catch {
     return 'Tool timed out';
   }
