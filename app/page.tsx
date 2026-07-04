@@ -178,7 +178,7 @@ export default function HomePage() {
       {bannerOpen && (
         <div className="lp-banner">
           <span className="lp-banner-txt">
-            <strong>$YLDR</strong> TGE on HOOD Chain · July 7 · Whitelist any agent vault — earn a variable{' '}
+            <strong>$YLDR</strong> TGE coming on HOOD Chain via Virtuals — soon · Whitelist any agent vault — earn a variable{' '}
             <strong>$YLDR</strong> airdropped at beta launch ·
           </span>
           <a href="#token" className="lp-banner-link">Learn more →</a>
