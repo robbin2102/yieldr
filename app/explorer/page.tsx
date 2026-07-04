@@ -201,7 +201,7 @@ function processQuery(t: string): { text: string; filter?: string } {
   };
 }
 
-const QUICK_REPLIES = ['Live vaults', 'Perps', 'Predictions', 'LP', 'TGE', 'Whitelist'];
+const QUICK_REPLIES = ['What is Yieldr?', 'Live vaults', 'HOOD Chain', 'Launch a vault', 'TGE & $YLDR', 'How to whitelist'];
 
 type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string };
 
