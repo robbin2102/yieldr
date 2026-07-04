@@ -207,6 +207,14 @@ type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string; liveData?: boo
 
 type LiveStats = { aum: number; winRate: number; returnPct: number };
 
+function formatAgentText(text: string): string {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[ \t]*[•·-] (.+)$/gm, '<span class="ex-chat-bullet">$1</span>')
+    .replace(/\n/g, '<br>');
+}
+
 function fmtAUM(n: number): string {
   return n >= 1000 ? `$${(n / 1000).toFixed(1)}K` : `$${n}`;
 }
@@ -240,14 +248,14 @@ export default function ExplorerPage() {
       .then((d) => {
         if (!d.ok || !d.data) return;
         const next: Record<string, LiveStats> = {};
-        for (const id of ['geo', 'nba']) {
+        for (const id of ['geo', 'nba', 'soccerAlpha']) {
           const v = d.data[id];
           if (!v?.stats) continue;
-          const { capitalDeployed30d, winRate, pnl30d } = v.stats;
+          const { vaultSize, winRate, totalPnl, initialCapital } = v.stats;
           next[id] = {
-            aum: capitalDeployed30d ?? 0,
+            aum: vaultSize ?? 0,
             winRate: winRate ?? 0,
-            returnPct: capitalDeployed30d > 0 ? (pnl30d / capitalDeployed30d) * 100 : 0,
+            returnPct: initialCapital > 0 ? (totalPnl / initialCapital) * 100 : 0,
           };
         }
         setLiveStats(next);
@@ -468,7 +476,7 @@ export default function ExplorerPage() {
               <div key={i} className={`ex-chat-msg ${m.type}`}>
                 {m.type === 'typing'
                   ? <span className="ex-typing-text">{m.text}</span>
-                  : m.text}
+                  : <span dangerouslySetInnerHTML={{ __html: formatAgentText(m.text) }} />}
                 {m.liveData && (
                   <span className="ex-live-badge">⚡ live data</span>
                 )}
