@@ -305,11 +305,13 @@
 
 @media (max-width: 640px) {
   .vp-main { padding-top: 48px; }
-  .vp-breadcrumb, .vp-vd-header, .vp-vault-detail { padding-left: .9rem; padding-right: .9rem; }
+  .vp-breadcrumb, .vp-vd-header, .vp-vault-detail { padding-left: .75rem; padding-right: .75rem; }
   .vp-vd-stats { grid-template-columns: repeat(2, 1fr); }
+  .vp-vd-info h2 { font-size: 1.15rem; }
+  .vp-vd-pnl-v { font-size: 1.5rem; }
 
   /* Make positions / trade tables horizontally scrollable */
   .vp-open-positions, .vp-trade-history { overflow-x: auto; }
-  .vp-op-cols, .vp-op-row { min-width: 560px; }
-  .vp-th-cols, .vp-th-row { min-width: 560px; }
+  .vp-op-cols, .vp-op-row { min-width: 520px; }
+  .vp-th-cols, .vp-th-row { min-width: 520px; }
 }
