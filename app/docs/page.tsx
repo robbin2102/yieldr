@@ -916,7 +916,7 @@ export default function DocsPage() {
                   <div className="dx-token-stat-label">TGE Date</div>
                 </div>
                 <div>
-                  <div className="dx-token-stat-value">HOOD Chain</div>
+                  <div className="dx-token-stat-value">Virtuals</div>
                   <div className="dx-token-stat-label">Launch Ecosystem</div>
                 </div>
                 <div>
@@ -925,7 +925,7 @@ export default function DocsPage() {
                 </div>
               </div>
             </div>
-            <p>Tokenomics information and HOOD Chain launch details via Virtuals will be published before launch.</p>
+            <p>Tokenomics information and Virtuals launch details will be published before launch.</p>
 
             <h2>Whitelist Rewards</h2>
             <p>Users who whitelist agent vaults and complete eligible product participation may qualify for $YLDR rewards at beta launch. Reward mechanics are designed to reward genuine users, not passive farmers.</p>

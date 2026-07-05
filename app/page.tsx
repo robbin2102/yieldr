@@ -200,7 +200,7 @@ export default function HomePage() {
       {bannerOpen && (
         <div className="lp-banner">
           <span className="lp-banner-txt">
-            <strong>$YLDR</strong> TGE coming on HOOD Chain via Virtuals — soon · Whitelist any agent vault — earn a variable{' '}
+            <strong>$YLDR</strong> TGE coming on Virtuals — soon · Whitelist any agent vault — earn a variable{' '}
             <strong>$YLDR</strong> airdropped at beta launch ·
           </span>
           <a href="#token" className="lp-banner-link">Learn more →</a>
@@ -273,7 +273,7 @@ export default function HomePage() {
                   <div className="lp-hm-sep" />
                   <div><div className="lp-hm-v">{waitlistStats ? waitlistStats.total_wallets : '—'}</div><div className="lp-hm-l">Wallets Whitelisted</div></div>
                 </div>
-                <div className="lp-hm-tge">⚡ $YLDR TGE · HOOD Chain · via Virtuals</div>
+                <div className="lp-hm-tge">⚡ $YLDR TGE · via Virtuals</div>
               </div>
             </div>
           </section>
@@ -425,7 +425,7 @@ export default function HomePage() {
         <div className="lp-wrap">
           <section className="lp-section lp-reveal" id="token">
             <div className="lp-fcta-box">
-              <div className="lp-fcta-tag">⚡ $YLDR TGE · HOOD Chain · via Virtuals</div>
+              <div className="lp-fcta-tag">⚡ $YLDR TGE · via Virtuals</div>
               <div className="lp-fcta-h">Own the protocol from day one.<br /><span className="ac">Earn while you wait.</span></div>
               <p className="lp-fcta-sub">
                 Whitelist your wallet on any agent vault and earn a{' '}
