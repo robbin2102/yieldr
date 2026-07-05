@@ -100,25 +100,14 @@ export default function BuildInPublicPage() {
         </div>
 
         {/* 01 OVERVIEW */}
-        <div className="overview reveal">
+        <div className="dev-metrics reveal">
           <div className="sec-num">01 — Overview</div>
           <div className="ov-label">By the numbers — running totals since October 2025</div>
-          <div className="ov-grid">
-            <div className="ov-card"><div className="ov-v white">9</div><div className="ov-l">Months Building</div></div>
-            <div className="ov-card"><div className="ov-v">+85K</div><div className="ov-l">Lines of Code</div></div>
-            <div className="ov-card"><div className="ov-v white">$10K</div><div className="ov-l">Base Grant</div><div className="ov-sub">Batches 002</div></div>
-            <div className="ov-card"><div className="ov-v white">3</div><div className="ov-l">Vaults in Testing</div><div className="ov-sub">$100K capital</div></div>
-          </div>
-        </div>
-
-        {/* DEV METRICS */}
-        <div className="dev-metrics reveal">
-          <div className="ov-label">Development Metrics</div>
           <div className="dm-grid">
             <div className="dm-card"><div className="dm-v">~1,089</div><div className="dm-l">Commits</div></div>
-            <div className="dm-card"><div className="dm-v">80+</div><div className="dm-l">Features</div></div>
+            <div className="dm-card"><div className="dm-v">+85K</div><div className="dm-l">Lines of Code</div></div>
+            <div className="dm-card"><div className="dm-v">80+</div><div className="dm-l">Features Shipped</div></div>
             <div className="dm-card"><div className="dm-v">200+</div><div className="dm-l">Bug Fixes</div></div>
-            <div className="dm-card"><div className="dm-v">2</div><div className="dm-l">Contributors</div></div>
           </div>
         </div>
 
@@ -258,7 +247,7 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">AI Hedge Fund — Trader Profiler v2</div>
-                <div className="tl-item-p">Deep profiling of Polymarket traders: corrected win rate, cashflow-based profit factor, ROCE per timeframe (1d/7d/15d/30d), PnL consistency scoring. Insider detection score, whale classification, category sub-leagues. With profiling complete, Polymarket trading agents went live — capital deployed gradually through testing, now running as an internal onchain fund with up to $100K cap.</div>
+                <div className="tl-item-p">Deep profiling of Polymarket traders: corrected win rate, cashflow-based profit factor, ROCE per timeframe (1d/7d/15d/30d), PnL consistency scoring. Insider detection score, whale classification, category sub-leagues. With profiling complete, Polymarket trading agents went live — capital deployed gradually through internal testing.</div>
                 <div className="tl-tags"><span className="tl-tag">AI</span><span className="tl-tag">Polymarket</span><span className="tl-tag">Research</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/fa032549b35b29b9a2e9ac4ecb600cd8abe680fe" />
               </div>
@@ -289,7 +278,7 @@ export default function BuildInPublicPage() {
                 <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
               <div className="tl-highlight win">&#127942; Base Batches 002 — Builder Track Winner</div>
-              <div className="tl-summary">Won the Base Batches 002 Builder Track. Deployed the market intelligence service — hourly ingestion of 20+ technical indicators across the top 100 crypto assets from TAAPI, CoinGlass, and Coinbase. Wired 7 new MCP tools giving agents complete real-time market context across price, funding, derivatives, and macro data.</div>
+              <div className="tl-summary">Won the Base Batches 002 Builder Track. Deployed the market intelligence service — hourly ingestion of 20+ technical indicators across the top 100 crypto assets from TAAPI, CoinGlass, and Coinbase. Wired 7 new MCP tools giving agents complete real-time market context. This market context layer fed directly into the Trader Profiler v2 that shipped in March.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Market Intelligence Service</div>
                 <div className="tl-item-p">Hourly technical data ingestion for top 100 crypto assets. TAAPI: 20+ indicators per coin (RSI, MACD, EMA, Bollinger, ADX, Ichimoku, Supertrend, Fibonacci, 60+ candlestick patterns). CoinGlass: liquidation data, taker volume, basis. Coinbase OHLCV candles. Daily macro: BTC/ETH ETF flows, Fear &amp; Greed, stablecoin mcap. Dynamic coin list from top 100 by OI. Deployed to Railway.</div>
@@ -310,7 +299,7 @@ export default function BuildInPublicPage() {
                 <span className="tl-month-name">January 2026</span>
                 <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
-              <div className="tl-summary">Built the real-time event indexers — Avantis onchain trade events streaming as they happen, and a Hyperliquid backfiller tracking live positions across top wallets. Wallet performance metrics service went live computing PnL consistency, ROCE trends, and 30-day analytics per wallet, powering the get_top_perp_traders MCP tool.</div>
+              <div className="tl-summary">Built the real-time event indexers — Avantis onchain trade events streaming as they happen, and a Hyperliquid backfiller tracking live positions across top wallets. Wallet performance metrics service went live computing PnL consistency, ROCE trends, and 30-day analytics per wallet — the data foundation for the Trader Profiler that shipped in March.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Top Wallets Swap Monitoring</div>
                 <div className="tl-item-p">Avantis event listener: real-time onchain trade event indexing (open/close/liquidation). Hyperliquid indexer: backfiller + live position tracking for top wallets on Hyperliquid.</div>
@@ -318,9 +307,9 @@ export default function BuildInPublicPage() {
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/ddffeba" />
               </div>
               <div className="tl-item">
-                <div className="tl-item-h">Wallet Performance Metrics Service</div>
-                <div className="tl-item-p">PnL consistency scoring, ROCE trending, trading-day frequency analysis. Per-wallet 30d metrics powering the get_top_perp_traders MCP tool.</div>
-                <div className="tl-tags"><span className="tl-tag">Analytics</span><span className="tl-tag">LLM Tooling</span></div>
+                <div className="tl-item-h">Trader Profiler v1 — Performance Metrics Foundation</div>
+                <div className="tl-item-p">PnL consistency scoring, ROCE trending, trading-day frequency analysis. Per-wallet 30d metrics powering the get_top_perp_traders MCP tool. First pass at trader profiling across Avantis and Hyperliquid — extended to Polymarket deep profiling in March.</div>
+                <div className="tl-tags"><span className="tl-tag">Analytics</span><span className="tl-tag">LLM Tooling</span><span className="tl-tag">Avantis</span><span className="tl-tag">Hyperliquid</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/e690115" />
               </div>
             </div>
@@ -392,7 +381,6 @@ export default function BuildInPublicPage() {
                 <div className="tl-item-h">AI Trading Test Launch</div>
                 <div className="tl-item-p">Claude AI-allocated $5K account for live perp trading validation. Foundation for verifying the agent-assisted trading thesis.</div>
                 <div className="tl-tags"><span className="tl-tag">Claude AI</span><span className="tl-tag">Avantis</span></div>
-                <GhLink url="https://github.com/robbin2102/yieldr-app/commit/d041ae0" />
               </div>
             </div>
 
