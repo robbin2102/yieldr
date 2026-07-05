@@ -29,7 +29,7 @@ const PAGE_TITLES: Record<string, string> = {
   'the-solution': 'The Solution',
   'agent-vaults': 'Agent Vaults',
   'fund-launch-waitlist': 'Fund Launch Waitlist',
-  'community-project-vaults': 'Community & Project Vaults',
+  'community-project-vaults': 'DAO & Treasury Depositors',
   'allocation-agents': 'Allocation Agents',
   'depositor-whitelist': 'Depositor Whitelist',
   'yldr-token': '$YLDR Token',
@@ -124,7 +124,7 @@ export default function DocsPage() {
       title: 'Agent Vaults', items: [
         { id: 'agent-vaults', label: 'Agent Vaults' },
         { id: 'fund-launch-waitlist', label: 'Fund Launch Waitlist' },
-        { id: 'community-project-vaults', label: 'Community & Project Vaults' },
+        { id: 'community-project-vaults', label: 'DAO & Treasury Depositors' },
       ],
     },
     {
@@ -264,7 +264,7 @@ export default function DocsPage() {
             <div className="dx-badge">Documentation · v2.0 · Updated July 2026</div>
             <h1>The <span className="ac">agent stack</span> for onchain funds.</h1>
             <p className="dx-subtitle">Connect your wallet, prove your edge, and launch an agent vault — turning your onchain performance into recurring revenue.</p>
-            <p>Yieldr helps traders, project communities, DAOs, and depositors use agents to launch, operate, monitor, and allocate across onchain funds.</p>
+            <p>Yieldr helps traders and depositors use agents to launch, operate, monitor, and allocate across onchain funds.</p>
             <p>Agents identify edge, match capital, handle communication, monitor performance, and rotate allocation when edge changes.</p>
 
             <SectionTag pageId="what-is-yieldr" />
@@ -280,13 +280,8 @@ export default function DocsPage() {
             <p>Yieldr helps traders prove their edge, package it into a strategy, define risk limits, attract aligned depositors, communicate performance, and monitor drift.</p>
             <p>The trader keeps trading. Agents handle the rest.</p>
 
-            <h3>For Project Communities</h3>
-            <p>Agent vaults help projects and their communities deploy publicly transparent strategies to grow token liquidity and market depth.</p>
-            <p>Projects can use agent vaults to coordinate liquidity, deepen markets, accumulate ecosystem exposure, and give communities a transparent view into strategy execution.</p>
-            <p>Another use case is treasury deployment.</p>
-            <p>DAOs and project treasuries can deploy funds into proven agent strategies with targeted risk-return goals across asset classes that are unavailable to most DAOs today, including perps, predictions, upcoming Base project coins, liquidity strategies, RWAs, and ecosystem baskets.</p>
-
             <h3>For Depositors</h3>
+            <p>Depositors range from individuals to DAOs and treasuries allocating pooled capital into vetted onchain trading strategies across asset classes — perps, predictions, RWAs, and ecosystem baskets — that were previously hard to access with confidence.</p>
             <p>Depositors can launch allocation agents that discover and allocate capital across agent vaults based on asset class, risk goals, and return targets.</p>
             <p>Allocation agents monitor positions across vaults 24/7. They detect edge gain or edge loss in real time, evaluate every trade, and can decide when to rotate capital from a vault losing edge into a vault showing stronger performance.</p>
             <p>Agent vaults and allocation agents create a new passive investing primitive onchain.</p>
@@ -434,8 +429,6 @@ export default function DocsPage() {
 
             <h2>The Outcome</h2>
             <p>Traders can scale edge without becoming fund operators.</p>
-            <p>Project communities can run transparent liquidity and accumulation strategies.</p>
-            <p>DAOs can deploy treasury capital into asset classes they could not previously access.</p>
             <p>Depositors can allocate through agents instead of manually monitoring every vault.</p>
             <p>Yieldr becomes the operating system for onchain funds.</p>
 
@@ -510,7 +503,7 @@ export default function DocsPage() {
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">Step 1 — Connect Wallet</div>
               <div className="dx-prompt-desc">
-                <p>A trader, project, DAO, or strategy operator connects a wallet.</p>
+                <p>A trader or strategy operator connects a wallet.</p>
                 <p>Yieldr uses wallet activity and linked strategy data to understand past performance, market exposure, and potential edge.</p>
               </div>
             </div>
@@ -669,7 +662,7 @@ export default function DocsPage() {
           <section className={'dx-page ' + (activePage === 'fund-launch-waitlist' ? 'active' : '')} id="page-fund-launch-waitlist">
             <SectionTag pageId="fund-launch-waitlist" />
             <h1>The fund launch waitlist is coming around the $YLDR TGE via Virtuals on HOOD Chain.</h1>
-            <p className="dx-subtitle">The waitlist is for traders, project communities, DAOs, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
+            <p className="dx-subtitle">The waitlist is for traders, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
 
             <h2>Who Should Apply?</h2>
             <p>You should apply if you have:</p>
@@ -678,7 +671,6 @@ export default function DocsPage() {
               <li>A strong X, Telegram, Discord, or project community</li>
               <li>A project token or ecosystem strategy</li>
               <li>Repeatable edge in memecoins, perps, predictions, LP strategies, or project coins</li>
-              <li>A DAO or treasury looking for agent-monitored allocation</li>
               <li>Interest in launching a transparent agent vault</li>
               <li>Willingness to operate through public rules, risk limits, and agent monitoring</li>
             </ul>
@@ -722,7 +714,7 @@ export default function DocsPage() {
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">05 — Submit Strategy Intent</div>
-              <p className="dx-prompt-desc">Describe what the agent vault will do and why the wallet, project, DAO, or community has an edge.</p>
+              <p className="dx-prompt-desc">Describe what the agent vault will do and why the wallet or strategy has an edge.</p>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">06 — Join Waitlist</div>
@@ -744,80 +736,64 @@ export default function DocsPage() {
             <PageFooter pageId="fund-launch-waitlist" />
           </section>
 
-          {/* PAGE 06: Community and Project Vaults */}
+          {/* PAGE 06: DAO & Treasury Depositors */}
           <section className={'dx-page ' + (activePage === 'community-project-vaults' ? 'active' : '')} id="page-community-project-vaults">
             <SectionTag pageId="community-project-vaults" />
-            <h1>Community and Project Vaults</h1>
-            <p className="dx-subtitle">Agent vaults designed for projects, token communities, DAOs, and ecosystem operators — built to run transparent strategies around liquidity, accumulation, treasury deployment, or ecosystem growth.</p>
+            <h1>DAO &amp; Treasury Depositors</h1>
+            <p className="dx-subtitle">DAOs and protocol treasuries can allocate pooled capital across agent vaults — accessing asset classes and active strategies that were previously out of reach for most treasury operators.</p>
 
-            <h2>Use Cases</h2>
+            <h2>Why DAOs Deposit Into Agent Vaults</h2>
+            <p>Most DAO treasuries sit in stablecoins or native tokens. Active deployment into perps, prediction markets, LP strategies, RWAs, or project coins requires expertise, monitoring, and operational overhead that most DAOs cannot sustain internally.</p>
+            <p>Agent vaults change that equation.</p>
+            <p>A DAO can allocate treasury capital into a vetted agent vault — where a verified trader or strategy operates the edge, agents monitor risk and performance continuously, and the DAO can exit according to vault withdrawal terms. No internal trading desk required.</p>
 
-            <h3>Token Liquidity and Depth</h3>
-            <p>Projects can use agent vaults to deploy transparent strategies that grow token liquidity and market depth.</p>
-            <p>These vaults may support:</p>
+            <h2>Asset Classes DAOs Can Access</h2>
+            <p>Through agent vaults, DAOs and treasuries can allocate into strategies that most treasury operators cannot actively run themselves:</p>
             <ul className="dx-list">
-              <li>Liquidity accumulation</li>
-              <li>Market depth improvement</li>
-              <li>Ecosystem token exposure</li>
-              <li>LP strategies</li>
-              <li>Treasury diversification</li>
-              <li>Onchain reporting</li>
+              <li>Perps directional and funding-rate strategies</li>
+              <li>Prediction market strategies</li>
+              <li>Base project coins and ecosystem tokens</li>
+              <li>Virtuals and Bankr ecosystem exposure</li>
+              <li>Aerodrome and Uniswap LP strategies</li>
+              <li>RWA accumulation</li>
+              <li>Multi-asset allocation across vault types</li>
             </ul>
 
-            <h3>Project Coin Accumulation</h3>
-            <p>Communities can coordinate transparent accumulation strategies around project coins or ecosystem baskets.</p>
-            <p>These vaults should define:</p>
-            <ul className="dx-list">
-              <li>Target asset or basket</li>
-              <li>Target AUM</li>
-              <li>Execution pacing</li>
-              <li>Liquidity limits</li>
-              <li>Risk controls</li>
-              <li>Reporting cadence</li>
-              <li>Conflict disclosures</li>
-            </ul>
+            <h2>How DAOs Participate</h2>
 
-            <h3>DAO and Treasury Deployment</h3>
-            <p>DAOs and project treasuries can use agent vaults to deploy funds into strategies with defined risk-return goals.</p>
-            <p>This can include asset classes most DAOs do not actively access today, such as:</p>
-            <ul className="dx-list">
-              <li>Perps</li>
-              <li>Predictions</li>
-              <li>Base project coins</li>
-              <li>Virtuals ecosystem tokens</li>
-              <li>Bankr launches</li>
-              <li>Aerodrome LP strategies</li>
-              <li>RWA exposure</li>
-              <li>Funding-rate strategies</li>
-            </ul>
+            <div className="dx-prompt-card">
+              <div className="dx-prompt-text">Step 1 — Whitelist a Vault</div>
+              <p className="dx-prompt-desc">DAOs whitelist agent vaults that match treasury objectives — by asset class, risk level, return target, and strategy type.</p>
+            </div>
+            <div className="dx-prompt-card">
+              <div className="dx-prompt-text">Step 2 — Deploy an Allocation Agent</div>
+              <div className="dx-prompt-desc">
+                <p>The Allocation Agent discovers and monitors matching vaults. It evaluates:</p>
+                <ul className="dx-list">
+                  <li>Edge strength and repeatability</li>
+                  <li>Drawdown history and risk controls</li>
+                  <li>Strategy fit vs. treasury goals</li>
+                  <li>Liquidity and withdrawal terms</li>
+                </ul>
+              </div>
+            </div>
+            <div className="dx-prompt-card">
+              <div className="dx-prompt-text">Step 3 — Allocate and Monitor</div>
+              <p className="dx-prompt-desc">Capital is deployed into the selected vault. The Allocation Agent monitors performance and edge continuously — 24/7 — and flags when rotation or exit should be considered.</p>
+            </div>
+            <div className="dx-prompt-card">
+              <div className="dx-prompt-text">Step 4 — Rotate When Edge Shifts</div>
+              <p className="dx-prompt-desc">If a vault loses edge, drawdown exceeds limits, or a better-fit opportunity appears, the Allocation Agent recommends or executes rotation according to DAO-defined rules.</p>
+            </div>
 
-            <h3>Community Strategy Vaults</h3>
-            <p>Communities with strong distribution can launch agent vaults around a specific thesis.</p>
-            <p>Examples:</p>
-            <ul className="dx-list">
-              <li>Base ecosystem rotation</li>
-              <li>Virtuals agent token basket</li>
-              <li>Bankr project coin basket</li>
-              <li>Aerodrome LP income strategy</li>
-              <li>Prediction-market strategy</li>
-              <li>Perps funding arbitrage strategy</li>
-            </ul>
+            <h2>Disclosure Requirements</h2>
+            <p>DAOs allocating into vaults that hold assets affiliated with their own protocol should ensure that relationship is clearly disclosed in the vault documentation.</p>
+            <p>Allocation decisions should be made on the basis of edge, risk fit, and treasury objectives — not promotional alignment.</p>
 
-            <h2>Required Transparency</h2>
-            <p>If a project, DAO, or community is affiliated with assets inside the vault, that relationship should be clearly disclosed.</p>
-            <p>Community and project vaults should define:</p>
-            <ul className="dx-list">
-              <li>Strategy objective</li>
-              <li>Asset universe</li>
-              <li>Execution rules</li>
-              <li>Liquidity constraints</li>
-              <li>Risk limits</li>
-              <li>Treasury or project affiliation</li>
-              <li>Reporting cadence</li>
-              <li>Withdrawal terms</li>
-              <li>Vault status</li>
-            </ul>
-            <p>The goal is transparent strategy deployment, not opaque promotion.</p>
+            <div className="dx-callout dx-callout-warning">
+              <div className="dx-callout-title">Important</div>
+              <p>Depositing into agent vaults involves market risk, smart contract risk, liquidity risk, and strategy risk. DAOs should independently evaluate vault strategy, operator track record, and withdrawal terms before allocating treasury capital.</p>
+            </div>
 
             <PageFooter pageId="community-project-vaults" />
           </section>
@@ -1004,6 +980,14 @@ export default function DocsPage() {
               <div className="dx-roadmap-phase">Phase 6 — Vision</div>
               <h3 className="dx-roadmap-title">Open Agent Fund Network</h3>
               <p className="dx-roadmap-desc">Anyone with verified edge can apply to launch an agent vault. Eligible depositors can discover, monitor, and allocate to agent vaults through allocation agents. Yieldr becomes the agent OS for onchain funds.</p>
+            </div>
+            <div className="dx-roadmap-item">
+              <div className="dx-roadmap-dot"></div>
+              <div className="dx-roadmap-phase">Phase 7 — Future (gated on platform maturity: ~10k users / sufficient vault track record)</div>
+              <h3 className="dx-roadmap-title">Allocator Funds</h3>
+              <p className="dx-roadmap-desc">As agent vaults accumulate a track record, top-performing depositors running Allocation Agents can themselves become poolable — an onchain analog to institutional capital aggregation (pension funds, funds-of-funds). This lets passive depositors access professionally-managed allocation across agent vaults without individually evaluating each one.</p>
+              <p className="dx-roadmap-desc">Allocator track records require the same edge-attribution rigor the Quant Agent applies to traders today, extended to allocation decisions themselves. This capability is gated on sufficient historical vault performance data existing on the platform and is not part of the current product.</p>
+              <p className="dx-roadmap-desc"><em>Note: An Allocator Fund is distinct from an Agent Vault. An Agent Vault is trader-run — capital behind a trading edge. An Allocator Fund is depositor-run — capital behind an allocation strategy across multiple agent vaults.</em></p>
             </div>
 
             <PageFooter pageId="roadmap" />
