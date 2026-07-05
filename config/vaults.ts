@@ -9,6 +9,7 @@ export const VAULT_META: Record<VaultId, {
     totalPnl:          number;
     pnl30d:            number;
     capitalDeployed30d: number;
+    vaultSize:         number;
     winRate:           number;
     daysWonRate:       number;
     trades:            number;
@@ -25,6 +26,7 @@ export const VAULT_META: Record<VaultId, {
       totalPnl:          24768,
       pnl30d:            2303,
       capitalDeployed30d: 14847,
+      vaultSize:         30000,
       winRate:           82,
       daysWonRate:       61.3,
       trades:            67,
@@ -41,6 +43,7 @@ export const VAULT_META: Record<VaultId, {
       totalPnl:          4190,
       pnl30d:            980,
       capitalDeployed30d: 7200,
+      vaultSize:         15000,
       winRate:           74,
       daysWonRate:       58.0,
       trades:            143,
@@ -57,6 +60,7 @@ export const VAULT_META: Record<VaultId, {
       totalPnl:          2312,
       pnl30d:            420,
       capitalDeployed30d: 4800,
+      vaultSize:         8000,
       winRate:           69,
       daysWonRate:       55.0,
       trades:            89,
@@ -73,6 +77,7 @@ export const VAULT_META: Record<VaultId, {
       totalPnl:          0,
       pnl30d:            0,
       capitalDeployed30d: 0,
+      vaultSize:         0,
       winRate:           0,
       daysWonRate:       0,
       trades:            0,
@@ -89,6 +94,7 @@ export const VAULT_META: Record<VaultId, {
       totalPnl:          0,
       pnl30d:            0,
       capitalDeployed30d: 0,
+      vaultSize:         0,
       winRate:           0,
       daysWonRate:       0,
       trades:            0,

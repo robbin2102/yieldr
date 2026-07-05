@@ -19,8 +19,8 @@ type Position   = { market: string; side: string; size: string; entry: string; p
 type Trade      = { market: string; entry: string; size: string; pnl: string; status: 'win' | 'loss'; time: string };
 type VaultState = {
   stats: {
-    totalPnl: number; pnl30d: number; capitalDeployed30d: number; openPositionsValue: number;
-    winRate: number; daysWonRate: number; trades: number; initialCapital: number;
+    totalPnl: number; pnl30d: number; capitalDeployed30d: number; vaultSize: number;
+    openPositionsValue: number; winRate: number; daysWonRate: number; trades: number; initialCapital: number;
   };
   chartPoints: ChartPoint[];
   positions: Position[];
@@ -66,6 +66,7 @@ function buildFallbackState(): Record<ShownVaultId, VaultState> {
         totalPnl:           m.fallback.totalPnl,
         pnl30d:             m.fallback.pnl30d,
         capitalDeployed30d: m.fallback.capitalDeployed30d,
+        vaultSize:          m.fallback.vaultSize,
         openPositionsValue: 0,
         winRate:            m.fallback.winRate,
         daysWonRate:        m.fallback.daysWonRate,
@@ -333,9 +334,9 @@ function VaultsPageInner() {
               </div>
               <div className="vp-vd-stat">
                 <div className="vp-vd-stat-v white">
-                  {isLoading ? <Skel size="md" /> : fmtUsd(av.stats.capitalDeployed30d)}
+                  {isLoading ? <Skel size="md" /> : fmtUsd(av.stats.vaultSize)}
                 </div>
-                <div className="vp-vd-stat-l">Avg Capital 30D</div>
+                <div className="vp-vd-stat-l">AUM</div>
               </div>
               <div className="vp-vd-stat">
                 <div className="vp-vd-stat-v white">
