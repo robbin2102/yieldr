@@ -662,24 +662,27 @@ export default function DocsPage() {
           {/* PAGE 05: Fund Launch Waitlist */}
           <section className={'dx-page ' + (activePage === 'fund-launch-waitlist' ? 'active' : '')} id="page-fund-launch-waitlist">
             <SectionTag pageId="fund-launch-waitlist" />
-            <h1>The fund launch waitlist is coming around the $YLDR TGE via Virtuals on HOOD Chain.</h1>
-            <p className="dx-subtitle">The waitlist is for traders, LP strategists, perps traders, prediction-market traders, and ecosystem operators who want to launch agent vaults when Yieldr opens beta access.</p>
+            <h1>Fund Launch Waitlist</h1>
+            <p className="dx-subtitle">Any trader can connect a wallet, run a Quant Agent to prove edge, and join the waitlist to launch an agent vault. No community required — edge is the only prerequisite.</p>
 
             <h2>Who Should Apply?</h2>
-            <p>You should apply if you have:</p>
+            <p>Apply if you have verifiable onchain trading history and want to launch an agent vault to manage capital. That&apos;s it.</p>
+            <p>You do not need an existing community, X following, or social presence. Yieldr is a decentralised platform — edge is proven by agents, not by audience size.</p>
+            <p>Optionally, traders can add social links (X, Telegram, Discord, website) to add a layer of credibility and trust for depositors — but this is voluntary, not required. Anonymous wallets with strong edge qualify.</p>
+            <p>Relevant backgrounds include:</p>
             <ul className="dx-list">
-              <li>Verifiable onchain trading history</li>
-              <li>A strong X, Telegram, Discord, or project community</li>
-              <li>A project token or ecosystem strategy</li>
-              <li>Repeatable edge in memecoins, perps, predictions, LP strategies, or project coins</li>
-              <li>Interest in launching a transparent agent vault</li>
-              <li>Willingness to operate through public rules, risk limits, and agent monitoring</li>
+              <li>Perps traders with a history on Avantis or Hyperliquid</li>
+              <li>Prediction market traders on Polymarket</li>
+              <li>Memecoin and project coin traders on Base or Virtuals</li>
+              <li>LP strategists on Aerodrome or Uniswap</li>
+              <li>RWA traders with onchain history</li>
+              <li>Any trader with repeatable, measurable edge across any supported market</li>
             </ul>
 
             <h2>Application Flow</h2>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">01 — Connect Wallet</div>
-              <p className="dx-prompt-desc">Connect the wallet that best represents your trading, project, or strategy history.</p>
+              <p className="dx-prompt-desc">Connect the wallet that holds your trading history. This is the wallet the Quant Agent will analyze.</p>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">02 — Select Market</div>
@@ -692,7 +695,6 @@ export default function DocsPage() {
                   <li>Predictions — Polymarket</li>
                   <li>Liquidity — Aerodrome + Uniswap</li>
                   <li>RWAs — selected onchain RWA venues</li>
-                  <li>DAO Treasury Strategies — multi-asset agent allocation</li>
                 </ul>
               </div>
             </div>
@@ -710,12 +712,12 @@ export default function DocsPage() {
               </div>
             </div>
             <div className="dx-prompt-card">
-              <div className="dx-prompt-text">04 — Add Community Links</div>
-              <p className="dx-prompt-desc">Add X, Telegram, Discord, website, project page, or DAO links.</p>
+              <div className="dx-prompt-text">04 — Add Social Links (Optional)</div>
+              <p className="dx-prompt-desc">Optionally add X, Telegram, Discord, or a website. These give depositors an additional signal of credibility but are not required for waitlist eligibility.</p>
             </div>
             <div className="dx-prompt-card">
-              <div className="dx-prompt-text">05 — Submit Strategy Intent</div>
-              <p className="dx-prompt-desc">Describe what the agent vault will do and why the wallet or strategy has an edge.</p>
+              <div className="dx-prompt-text">05 — Describe Strategy Intent</div>
+              <p className="dx-prompt-desc">Briefly describe what the agent vault will do — the market, the strategy type, and the edge you believe exists in your wallet history.</p>
             </div>
             <div className="dx-prompt-card">
               <div className="dx-prompt-text">06 — Join Waitlist</div>
@@ -723,16 +725,14 @@ export default function DocsPage() {
             </div>
 
             <h2>What Happens After Signup?</h2>
-            <p>Yieldr reviews the wallet, strategy, and community profile.</p>
-            <p>Applicants may receive:</p>
+            <p>Yieldr does not manually review or approve fund applications. The platform is decentralised — agents determine vault readiness, not the Yieldr team.</p>
+            <p>Here is how the path to launch works:</p>
             <ul className="dx-list">
-              <li>Fund readiness status</li>
-              <li>Strategy feedback</li>
-              <li>Agent vault category recommendation</li>
-              <li>Whitelist campaign support</li>
-              <li>Beta launch eligibility</li>
-              <li>Access to agent vault tooling as it rolls out</li>
+              <li>The Quant Agent analyzes your wallet history to identify and score your edge.</li>
+              <li>The Monitoring Agent tracks your edge continuously across protocols — measuring whether it is sustained, improving, or degrading over time.</li>
+              <li>Vaults with sustained, measurable edge go live to accept public deposits when Yieldr opens full beta in Q1 2027.</li>
             </ul>
+            <p>Before beta launch, the Yieldr team may directly onboard a small number of top traders to run agent vaults on a whitelist basis — using Yieldr&apos;s agent infrastructure and under closer collaboration. This is separate from the open waitlist process.</p>
 
             <PageFooter pageId="fund-launch-waitlist" />
           </section>
