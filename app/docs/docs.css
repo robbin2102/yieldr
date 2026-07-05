@@ -79,6 +79,12 @@
   background: rgba(0,232,123,.04); border-radius: 2px; margin-bottom: 16px;
 }
 
+.dx-tag-inline {
+  display: inline-block; font-family: var(--fm); font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--g); padding: 2px 7px; border: 1px solid rgba(0,232,123,.25);
+  background: rgba(0,232,123,.06); border-radius: 2px; vertical-align: middle; margin-left: 8px; position: relative; top: -1px;
+}
+
 .dx-content h1 {
   font-family: var(--fd); font-weight: 700; font-size: clamp(1.9rem, 3.4vw, 2.5rem);
   line-height: 1.15; letter-spacing: -.02em; color: var(--t1); margin: 0 0 14px;

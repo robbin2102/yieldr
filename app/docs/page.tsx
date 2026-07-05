@@ -646,8 +646,10 @@ export default function DocsPage() {
             <h3>RWA Vaults</h3>
             <p>Vaults that accumulate or trade tokenized real-world asset exposure where onchain liquidity and pricing data are available.</p>
 
-            <h3>DAO Treasury Vaults</h3>
-            <p>Vaults that help DAOs and project treasuries deploy funds into agent-monitored strategies across asset classes and risk profiles.</p>
+            <h3>Allocator Funds <span className="dx-tag-inline">Future</span></h3>
+            <p>A future vault type distinct from trader-run agent vaults. Where an agent vault packages a trader&apos;s edge, an Allocator Fund packages an allocator&apos;s track record of allocating across agent vaults — pooling passive capital behind a fund manager who runs an Allocation Agent on their behalf.</p>
+            <p>This is the onchain equivalent of a fund-of-funds or pension fund structure: capital aggregated by an allocator with a demonstrable history of vault selection and rotation decisions, evaluated with the same edge-attribution rigor the Quant Agent applies to traders today — extended one layer up to the allocation decision itself.</p>
+            <p>This vault type is gated on platform maturity. Allocator track records cannot exist until sufficient vault history does. Allocator Funds are not part of the current product and will not be available at TGE. See the Roadmap for sequencing.</p>
 
             <div className="dx-callout dx-callout-warning">
               <div className="dx-callout-title">Important</div>
