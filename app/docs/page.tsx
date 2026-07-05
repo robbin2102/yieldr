@@ -1028,7 +1028,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-connector"></div>
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 8 — Future</div>
+                  <div className="dx-roadmap-phase">Future Roadmap</div>
                   <div className="dx-roadmap-date future-date">Gated on ~10k users</div>
                   <h3 className="dx-roadmap-title">Allocator Funds</h3>
                   <p className="dx-roadmap-desc">Allocation Agents with the best vault-selection track records on Yieldr can themselves become poolable. These are not human-managed funds — they are agent-run vaults that mirror the allocation logic of top-performing Allocation Agents, continuously rebalancing across agent vaults based on edge signals. Passive depositors access optimised allocation without running their own agent.</p>
