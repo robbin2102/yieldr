@@ -71,7 +71,8 @@
 }
 .ex-vc:hover { border-color: var(--line-3); }
 a.ex-vc { cursor: pointer; }
-a.ex-vc:hover { border-color: var(--g); }
+a.ex-vc:hover { border-color: var(--g); text-decoration: none; }
+a.ex-vc:hover * { text-decoration: none; }
 .ex-vc-top { display: flex; align-items: center; justify-content: space-between; gap: .4rem; flex-wrap: wrap; }
 .ex-vc-badge {
   font-family: var(--mono); font-size: .58rem; letter-spacing: .5px; text-transform: uppercase;
