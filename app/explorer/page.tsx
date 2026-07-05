@@ -7,7 +7,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import NavLinks from '@/components/NavLinks';
 import './explorer.css';
 
-type VaultCat = 'predictions' | 'perps' | 'lp' | 'project-coins' | 'rwa' | 'memecoins' | 'stock-tokens';
+type VaultCat = 'predictions' | 'perps' | 'lp' | 'project-coins' | 'rwa' | 'memecoins';
 type VaultStatus = 'live' | 'waitlist';
 type VaultChain = 'polygon' | 'base' | 'hood';
 type Vault = {
@@ -61,13 +61,13 @@ const VAULTS: Vault[] = [
   {
     id: 'nvda', name: '🤖 NVDA AI Momentum Vault', proto: '🏦 HOOD Chain · Stock Tokens',
     desc: 'Follows top wallets accumulating NVIDIA tokenized stock on Robinhood Chain. Agent rides AI infrastructure cycles with 24/7 onchain liquidity.',
-    status: 'waitlist', cat: 'stock-tokens', chain: 'hood',
+    status: 'waitlist', cat: 'rwa', chain: 'hood',
     stats: [{ v: '$65K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
     id: 'tsla', name: '⚡ TSLA Volatility Vault', proto: '🏦 HOOD Chain · Stock Tokens',
     desc: 'Captures Tesla volatility cycles using tokenized TSLA on Robinhood Chain. Agent mirrors highest-conviction entries from top TSLA spot traders.',
-    status: 'waitlist', cat: 'stock-tokens', chain: 'hood',
+    status: 'waitlist', cat: 'rwa', chain: 'hood',
     stats: [{ v: '$55K', l: 'Target AUM' }, { v: '≤20%', l: 'Perf Fee' }, { v: '', l: 'Waitlisted' }],
   },
   {
@@ -105,7 +105,6 @@ const FILTERS: Array<{ key: string; label: string; sep?: boolean }> = [
   { key: 'lp', label: 'LP' },
   { key: 'project-coins', label: 'Project Coins' },
   { key: 'rwa', label: 'RWA' },
-  { key: 'stock-tokens', label: 'Stock Tokens' },
   { key: 'memecoins', label: 'Memecoins' },
 ];
 
@@ -156,7 +155,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   {
     triggers: ['nvda', 'nvidia', 'tsla', 'tesla', 'stock token', 'stock', 'hood chain', 'hood', 'robinhood chain'],
     text: "Stock token vaults on HOOD Chain (Robinhood Chain) are a new frontier for Yieldr — 24/7 tokenized equity, 120+ countries. Whitelist the 🤖 NVDA AI Momentum Vault or ⚡ TSLA Volatility Vault for early access when they launch.",
-    filter: 'stock-tokens',
+    filter: 'rwa',
   },
   {
     triggers: ['virtuals', 'robotics', 'infra', 'base ecosystem', 'project coin'],
@@ -571,49 +570,47 @@ export default function ExplorerPage() {
 
             <div className="ex-yldr-header">
               <div className="ex-yldr-scanline" />
-              <div className="ex-yldr-eyebrow">// ACCESS_CONTROL.md</div>
+              <div className="ex-yldr-eyebrow">Agent OS · TGE Jul 9, 2026 · HOOD Chain</div>
               <div className="ex-yldr-title">
-                <span className="ex-yldr-title-free">FREE</span>
+                <span className="ex-yldr-title-free">Free tier</span>
                 <span className="ex-yldr-title-sep"> → </span>
                 <span className="ex-yldr-title-paid">$YLDR</span>
               </div>
-              <div className="ex-yldr-subtitle">You&apos;ve used your free compute. Stack $YLDR, unlock the grid.</div>
+              <div className="ex-yldr-subtitle">You&apos;ve used your 100K free compute credits. Hold $YLDR to unlock the full agent OS.</div>
             </div>
 
             <div className="ex-yldr-tiers">
               <div className="ex-yldr-tier ex-yldr-tier--free">
                 <div className="ex-yldr-tier-label">FREE TIER</div>
                 <ul className="ex-yldr-tier-list">
-                  <li><span className="ex-yldr-check ex-yldr-check--amber">✓</span> 100K tokens/lifetime</li>
-                  <li><span className="ex-yldr-check ex-yldr-check--amber">✓</span> Basic vault explorer</li>
-                  <li><span className="ex-yldr-x">✗</span> AI vault analyst</li>
-                  <li><span className="ex-yldr-x">✗</span> Live position data</li>
-                  <li><span className="ex-yldr-x">✗</span> Priority vault access</li>
+                  <li><span className="ex-yldr-check ex-yldr-check--amber">✓</span> 100K agent query credits</li>
+                  <li><span className="ex-yldr-check ex-yldr-check--amber">✓</span> Vault explorer &amp; whitelist</li>
+                  <li><span className="ex-yldr-x">—</span> Full agent stack access</li>
+                  <li><span className="ex-yldr-x">—</span> Quant edge analysis</li>
+                  <li><span className="ex-yldr-x">—</span> Agent vault launch</li>
                 </ul>
-                <div className="ex-yldr-tier-footer">gm anon. thats all u get.</div>
               </div>
 
               <div className="ex-yldr-tier ex-yldr-tier--paid">
-                <div className="ex-yldr-tier-badge">SOON™</div>
+                <div className="ex-yldr-tier-badge">TGE JUL 9</div>
                 <div className="ex-yldr-tier-label">$YLDR HOLDER</div>
                 <ul className="ex-yldr-tier-list">
-                  <li><span className="ex-yldr-check">✓</span> Unlimited AI queries</li>
-                  <li><span className="ex-yldr-check">✓</span> Full vault explorer</li>
-                  <li><span className="ex-yldr-check">✓</span> Live position data</li>
-                  <li><span className="ex-yldr-check">✓</span> Priority vault access</li>
-                  <li><span className="ex-yldr-check">✓</span> Alpha before the plebs</li>
+                  <li><span className="ex-yldr-check">✓</span> Unlimited agent inference</li>
+                  <li><span className="ex-yldr-check">✓</span> Quant Agent · edge analysis</li>
+                  <li><span className="ex-yldr-check">✓</span> Comms · Monitoring · Allocation agents</li>
+                  <li><span className="ex-yldr-check">✓</span> Launch agent vaults</li>
+                  <li><span className="ex-yldr-check">✓</span> Fee share &amp; protocol governance</li>
                 </ul>
-                <div className="ex-yldr-tier-footer">ngmi without it ngl.</div>
               </div>
             </div>
 
             <div className="ex-yldr-timeline">
-              <div className="ex-yldr-tl-label">ROADMAP</div>
+              <div className="ex-yldr-tl-label">Build roadmap</div>
               <div className="ex-yldr-tl-track">
                 <div className="ex-yldr-tl-node ex-yldr-tl-node--done">
                   <div className="ex-yldr-tl-dot" />
                   <div className="ex-yldr-tl-text">
-                    <div className="ex-yldr-tl-date">Jul 9, 2026</div>
+                    <div className="ex-yldr-tl-date">Jul 9</div>
                     <div className="ex-yldr-tl-event">$YLDR TGE</div>
                   </div>
                 </div>
@@ -621,8 +618,32 @@ export default function ExplorerPage() {
                 <div className="ex-yldr-tl-node">
                   <div className="ex-yldr-tl-dot ex-yldr-tl-dot--future" />
                   <div className="ex-yldr-tl-text">
-                    <div className="ex-yldr-tl-date">Aug 2026</div>
-                    <div className="ex-yldr-tl-event">Holder access live</div>
+                    <div className="ex-yldr-tl-date">Aug '26</div>
+                    <div className="ex-yldr-tl-event">Edge Detector</div>
+                  </div>
+                </div>
+                <div className="ex-yldr-tl-line" />
+                <div className="ex-yldr-tl-node">
+                  <div className="ex-yldr-tl-dot ex-yldr-tl-dot--future" />
+                  <div className="ex-yldr-tl-text">
+                    <div className="ex-yldr-tl-date">Sep '26</div>
+                    <div className="ex-yldr-tl-event">Full Quant Agent</div>
+                  </div>
+                </div>
+                <div className="ex-yldr-tl-line" />
+                <div className="ex-yldr-tl-node">
+                  <div className="ex-yldr-tl-dot ex-yldr-tl-dot--future" />
+                  <div className="ex-yldr-tl-text">
+                    <div className="ex-yldr-tl-date">Dec '26</div>
+                    <div className="ex-yldr-tl-event">Vault Infra</div>
+                  </div>
+                </div>
+                <div className="ex-yldr-tl-line" />
+                <div className="ex-yldr-tl-node">
+                  <div className="ex-yldr-tl-dot ex-yldr-tl-dot--future" />
+                  <div className="ex-yldr-tl-text">
+                    <div className="ex-yldr-tl-date">Q1 '27</div>
+                    <div className="ex-yldr-tl-event">Full Beta</div>
                   </div>
                 </div>
               </div>
@@ -633,9 +654,9 @@ export default function ExplorerPage() {
                 className="ex-yldr-cta"
                 onClick={() => { setShowYldrModal(false); setModalVault(VAULTS[0] ?? null); }}
               >
-                Whitelist a vault now → earn $YLDR at launch
+                Whitelist a vault — earn $YLDR at launch →
               </button>
-              <div className="ex-yldr-cta-sub">Whitelist any vault today. No deposit required.</div>
+              <div className="ex-yldr-cta-sub">No deposit required. Whitelist rewards for genuine early users.</div>
             </div>
           </div>
         </div>

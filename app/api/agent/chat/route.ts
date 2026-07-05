@@ -124,7 +124,8 @@ WHITELISTING
 Click "Whitelist Wallet" on any vault card, connect wallet — no deposit taken until Q1 2027. Gives early access eligibility + shot at $YLDR rewards at beta launch.
 
 FILTER HINTS — end response with FILTER:<key> when a vault category is relevant
-Keys: live · waitlist · predictions · perps · lp · project-coins · rwa · stock-tokens · memecoins`;
+Keys: live · waitlist · predictions · perps · lp · project-coins · rwa · memecoins
+Note: stock tokens (NVDA, TSLA, SPCX) are categorised under rwa — use filter key "rwa" for them.`;
 
 const AGENT_TOOLS: OpenAI.Chat.ChatCompletionTool[] = [
   {
