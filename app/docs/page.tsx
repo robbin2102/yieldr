@@ -915,13 +915,21 @@ export default function DocsPage() {
             <p className="dx-subtitle">The protocol token for the Yieldr agent OS — designed around agent access, agent trading, protocol participation, and future protocol utility.</p>
 
             <h2>Planned Utility</h2>
-            <ul className="dx-list">
-              <li>Agent inference access</li>
-              <li>Agent trading fees</li>
-              <li>Protocol participation</li>
-              <li>Future fee-related utilities</li>
-            </ul>
-            <p>Final utility may evolve as the product and legal structure mature.</p>
+            <p>$YLDR is designed to power the economic layer of the Yieldr agent stack — connecting agent usage, vault activity, and protocol governance into a single token.</p>
+
+            <h3>Agent Inference Access</h3>
+            <p>Querying Yieldr agents — the Quant Agent, Comms Agent, Monitoring Agent, and Allocation Agent — requires inference compute. $YLDR holders get access to agent queries beyond the free tier. The more you hold, the deeper your access: from basic vault explorer queries to full quant analysis runs across multi-protocol wallet history. This makes $YLDR the key to unlocking the full agent OS, not just the explorer.</p>
+
+            <h3>Agent Trading Fees</h3>
+            <p>Agent vaults earn performance fees when they outperform. A share of these fees flows through the protocol in $YLDR — creating a direct connection between vault performance and token demand. As more vaults go live and more capital is deployed through agents, fee volume grows. $YLDR captures a portion of that activity rather than value leaking to generic stablecoins or ETH.</p>
+
+            <h3>Protocol Participation</h3>
+            <p>$YLDR holders participate in protocol decisions: which vaults get featured, which agent modules get prioritized, allocation of protocol treasury, and future parameter changes. Holding $YLDR aligns you with the network you're using — not just a passive fee capture, but an active stake in the direction of the agent OS.</p>
+
+            <h3>Vault Access Tiers</h3>
+            <p>Certain high-performing or capacity-constrained vaults may require $YLDR to access. This creates a natural demand mechanism: the most sought-after vaults on the network gate allocation priority through token holdings, ensuring aligned, long-term depositors get first access over short-term capital that would otherwise dilute edge.</p>
+
+            <p className="dx-subtitle">Final utility mechanics may evolve as the product and legal structure mature. Nothing here constitutes a commitment to specific token mechanics or returns.</p>
 
             <h2>TGE</h2>
             <div className="dx-token-hero">
@@ -929,8 +937,8 @@ export default function DocsPage() {
               <div className="dx-token-name">YLDR</div>
               <div className="dx-token-stats">
                 <div>
-                  <div className="dx-token-stat-value">Soon</div>
-                  <div className="dx-token-stat-label">Planned TGE</div>
+                  <div className="dx-token-stat-value">Jul 9, 2026</div>
+                  <div className="dx-token-stat-label">TGE Date</div>
                 </div>
                 <div>
                   <div className="dx-token-stat-value">HOOD Chain</div>

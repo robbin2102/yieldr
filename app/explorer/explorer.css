@@ -184,7 +184,7 @@ a.ex-vc:hover { border-color: var(--g); }
 .ex-chat-input-box textarea {
   flex: 1; background: none; border: none; outline: none; resize: none;
   color: var(--text); font-family: var(--sans); font-size: .8rem; line-height: 1.4;
-  max-height: 100px;
+  min-height: 22px; max-height: 100px; overflow-y: auto;
 }
 .ex-chat-input-box textarea::placeholder { color: var(--text-faint); }
 .ex-chat-send {

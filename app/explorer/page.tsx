@@ -530,7 +530,11 @@ export default function ExplorerPage() {
                   rows={1}
                   placeholder="Ask the agent anything..."
                   value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
+                  onChange={(e) => {
+                    setChatInput(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = Math.min(e.target.scrollHeight, 100) + 'px';
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendQuery(chatInput); }
                   }}
