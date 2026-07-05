@@ -409,8 +409,8 @@ export default function HomePage() {
               </Link>
               <div className="lp-cred-card">
                 <div className="lp-cred-icon">🔨</div>
-                <div className="lp-cred-h">275+ Commits Shipped</div>
-                <p className="lp-cred-p">60K+ lines of code since October 2025. Active daily development across the agent stack and vault infrastructure.</p>
+                <div className="lp-cred-h">~1,089 Commits Shipped</div>
+                <p className="lp-cred-p">85K+ lines of code since October 2025. Active daily development across the agent stack and vault infrastructure.</p>
               </div>
               <div className="lp-cred-card">
                 <div className="lp-cred-icon">🛡️</div>
