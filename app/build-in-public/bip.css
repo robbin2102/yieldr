@@ -71,20 +71,20 @@ background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0
 .cc-title{font-size:.55rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--t3);margin-bottom:1.1rem}
 
 /* GitHub-style commit heatmap */
-.gh-wrap{}
-.gh-grid{display:flex;gap:8px;align-items:flex-start}
-.gh-col{display:flex;flex-direction:column;align-items:center;gap:5px}
-.gh-boxes{display:flex;flex-direction:column;gap:3px}
-.gh-box{width:13px;height:13px;border-radius:2px}
+.gh-wrap{width:100%}
+.gh-grid{display:flex;justify-content:space-between;width:100%;gap:8px}
+.gh-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.gh-boxes{display:flex;flex-direction:column;gap:4px;width:100%;align-items:center}
+.gh-box{width:22px;height:22px;border-radius:3px;flex-shrink:0}
 .gh-l0{background:#161b22;border:1px solid rgba(255,255,255,.06)}
 .gh-l1{background:#0e4429}
 .gh-l2{background:#006d32}
 .gh-l3{background:#26a641}
 .gh-l4{background:#39d353}
-.gh-month{font-size:.48rem;color:var(--t3);font-family:var(--fm);margin-top:2px}
-.gh-count{font-size:.46rem;color:var(--g);font-family:var(--fm)}
-.gh-legend{display:flex;align-items:center;gap:4px;margin-top:12px;font-size:.48rem;color:var(--t3)}
-.gh-legend .gh-box{width:11px;height:11px}
+.gh-month{font-size:.52rem;color:var(--t3);font-family:var(--fm)}
+.gh-count{font-size:.5rem;color:var(--g);font-family:var(--fm);font-weight:600}
+.gh-legend{display:flex;align-items:center;gap:5px;margin-top:14px;font-size:.5rem;color:var(--t3)}
+.gh-legend .gh-box{width:14px;height:14px}
 
 /* SECTION STYLING */
 .content-section{padding:2rem 2.5rem;max-width:1200px;margin:0 auto}

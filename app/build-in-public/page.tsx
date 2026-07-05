@@ -162,9 +162,9 @@ export default function BuildInPublicPage() {
             <div className="tl-month">
               <div className="tl-month-head">
                 <span className="tl-month-name">June 2026</span>
-                <span className="tl-month-badge active">&#9679; In Progress</span>
+                <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
-              <div className="tl-summary">Shipped the full quant signal execution agent on Hyperliquid — the signals service from May went live with real capital. ALO order logic, fill verification, margin-based position sizing, and per-strategy capital caps. WebSocket whale monitor re-architected across shards to bypass Hyperliquid&apos;s 30-user-per-connection limit. Vault waitlist expanded with a wallet whitelist for early access.</div>
+              <div className="tl-summary">Hyperliquid quant agent shipped and in testing for a project internal vault. WebSocket whale monitor re-architected across shards. Vault waitlist expanded with wallet whitelist for early access.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Quant Signal Execution Agent — Hyperliquid Live</div>
                 <div className="tl-item-p">Full execution agent wired to the alert engine: ALO order placement with fill verification, margin-based position sizing, per-strategy capital caps, and configurable hold periods. WAKEUP_LS/SS and WHALE_SCALEUP_4H signal strategies with symmetric long/short rules. Backtest framework with per-strategy win/loss summary and forward-return lag analysis.</div>
@@ -176,12 +176,6 @@ export default function BuildInPublicPage() {
                 <div className="tl-item-p">Re-architected the whale position monitor across multiple WebSocket connections to bypass Hyperliquid&apos;s 30-user-per-connection limit. Dynamic resharding as cohort size changes, reconnect reason tracking, and event-loop offloading for zero stalls.</div>
                 <div className="tl-tags"><span className="tl-tag">Hyperliquid</span><span className="tl-tag">Data Infra</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/382e8a0d8bf5a637ded99e7590e0dd4d991f53af" />
-              </div>
-              <div className="tl-item">
-                <div className="tl-item-h">Agent Dashboard — Live Execution Monitor</div>
-                <div className="tl-item-p">Dashboard tab for the Hyperliquid execution agent: open positions with live mark price and PnL%, strategy performance table with Total ROI and Net Avg/Trade, activity feed, health panel. Pause/resume controls via API.</div>
-                <div className="tl-tags"><span className="tl-tag">Agents</span><span className="tl-tag">UI</span></div>
-                <GhLink url="https://github.com/robbin2102/yieldr-app/commit/ef531d78e984e44d8085fc56a043e70eca3b152c" />
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">Vault Waitlist + Wallet Whitelist</div>
@@ -316,10 +310,10 @@ export default function BuildInPublicPage() {
                 <span className="tl-month-name">January 2026</span>
                 <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
-              <div className="tl-summary">Built the real-time event indexers — Avantis onchain trade events streaming as they happen, and a Hyperliquid backfiller tracking live positions across 1,500+ wallets. Wallet performance metrics service went live computing PnL consistency, ROCE trends, and 30-day analytics per wallet, powering the get_top_perp_traders MCP tool.</div>
+              <div className="tl-summary">Built the real-time event indexers — Avantis onchain trade events streaming as they happen, and a Hyperliquid backfiller tracking live positions across top wallets. Wallet performance metrics service went live computing PnL consistency, ROCE trends, and 30-day analytics per wallet, powering the get_top_perp_traders MCP tool.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Top Wallets Swap Monitoring</div>
-                <div className="tl-item-p">Avantis event listener: real-time onchain trade event indexing (open/close/liquidation). Hyperliquid indexer: backfiller + live position tracking for top 1,500+ wallets.</div>
+                <div className="tl-item-p">Avantis event listener: real-time onchain trade event indexing (open/close/liquidation). Hyperliquid indexer: backfiller + live position tracking for top wallets on Hyperliquid.</div>
                 <div className="tl-tags"><span className="tl-tag">Base</span><span className="tl-tag">Avantis</span><span className="tl-tag">Hyperliquid</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/ddffeba" />
               </div>
@@ -349,11 +343,6 @@ export default function BuildInPublicPage() {
                 <div className="tl-item-p">Top 100 trending tokens monitoring on Base.</div>
                 <div className="tl-tags"><span className="tl-tag">Base</span><span className="tl-tag">LLM Tooling</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/defde0e" />
-              </div>
-              <div className="tl-item">
-                <div className="tl-item-h">Early Access Landing + Payments</div>
-                <div className="tl-item-p">Token purchase flow with wallet connect integration.</div>
-                <div className="tl-tags"><span className="tl-tag">UI</span></div>
               </div>
             </div>
 
@@ -447,7 +436,7 @@ export default function BuildInPublicPage() {
 
         {/* CTA */}
         <div className="build-cta reveal">
-          <div className="build-cta-h">9 months of shipping. The infrastructure is built.</div>
+          <div className="build-cta-h">9 months of shipping. The trading stack is live.</div>
           <div className="build-cta-p">Agents are live. Vaults are in testing. Early access is open.</div>
           <Link href="/vaults" className="btn-p">Enter Vaults — Early Access ↗</Link>
         </div>
