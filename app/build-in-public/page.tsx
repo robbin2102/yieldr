@@ -94,7 +94,6 @@ export default function BuildInPublicPage() {
           <div className="badges">
             <div className="badge green"><img src="https://b22290bb4d42a7d0d0d796b264519fb5.cdn.bubble.io/f1760730551690x161831425309488800/_base-square%20%282%29.svg" alt="Base" /> Base Batches 002 Winner</div>
             <div className="badge">9 Months In</div>
-            <div className="badge">Delaware C-Corp</div>
             <div className="badge">~1,089 Commits</div>
             <div className="badge">2 Contributors</div>
           </div>
