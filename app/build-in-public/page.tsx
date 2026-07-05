@@ -142,7 +142,7 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">$YLDR Token Generation Event</div>
-                <div className="tl-item-p">$YLDR TGE launching via Virtuals on HOOD Chain. Deflationary by design — token consumed by agent execution cycles.</div>
+                <div className="tl-item-p">$YLDR TGE launching via Virtuals. Deflationary by design — token consumed by agent execution cycles.</div>
                 <div className="tl-tags"><span className="tl-tag green">Token</span><span className="tl-tag green">Virtuals</span><span className="tl-tag green">Live</span></div>
               </div>
             </div>

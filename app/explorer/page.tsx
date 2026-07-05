@@ -182,7 +182,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   },
   {
     triggers: ['tge', 'token', 'yldr', 'airdrop'],
-    text: "⚡ $YLDR TGE is coming on HOOD Chain via Virtuals — no date confirmed yet. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
+    text: "⚡ $YLDR TGE is coming via Virtuals — no date confirmed yet. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
   },
   {
     triggers: ['whitelist', 'waitlist', 'early access'],
