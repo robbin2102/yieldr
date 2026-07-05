@@ -220,7 +220,7 @@ export default function BuildInPublicPage() {
                 <span className="tl-month-name">March 2026</span>
                 <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
-              <div className="tl-summary">Biggest engineering month — the full agent execution stack shipped. Trader profiling, prediction market signal detection, and live on-chain trade execution all came together. Polymarket trading agents went live this month: capital scaled gradually through testing, and the internal onchain fund is now managed with up to $100K cap. Avantis perps execution and 7 new MCP tools gave agents complete market context and trade capabilities.</div>
+              <div className="tl-summary">Biggest engineering month — the full agent execution stack shipped. Trader profiling, prediction market signal detection, and live on-chain trade execution all came together. Polymarket trading agents — under private testing across separate repos since January — were moved to the main codebase and made public this month. Avantis perps execution and 7 new MCP tools gave agents complete market context and trade capabilities.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Agent Monitoring System</div>
                 <div className="tl-item-p">Scheduled background worker evaluates user-defined monitoring tasks at configurable intervals. Claude Haiku evaluator analyses tool-call output against position context — generates alerts with severity levels and per-indicator signal pills. Full CRUD via MCP tool.</div>
@@ -247,7 +247,7 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">AI Hedge Fund — Trader Profiler v2</div>
-                <div className="tl-item-p">Deep profiling of Polymarket traders: corrected win rate, cashflow-based profit factor, ROCE per timeframe (1d/7d/15d/30d), PnL consistency scoring. Insider detection score, whale classification, category sub-leagues. With profiling complete, Polymarket trading agents went live — capital deployed gradually through internal testing.</div>
+                <div className="tl-item-p">Deep profiling of Polymarket traders: corrected win rate, cashflow-based profit factor, ROCE per timeframe (1d/7d/15d/30d), PnL consistency scoring. Insider detection score, whale classification, category sub-leagues. With profiling complete, Polymarket trading agents — tested privately since January — were consolidated into the main codebase and made public.</div>
                 <div className="tl-tags"><span className="tl-tag">AI</span><span className="tl-tag">Polymarket</span><span className="tl-tag">Research</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr-app/commit/fa032549b35b29b9a2e9ac4ecb600cd8abe680fe" />
               </div>
