@@ -473,7 +473,6 @@ export default function DocsPage() {
               <li>Base memecoin trading</li>
               <li>Project coin accumulation</li>
               <li>Virtuals ecosystem strategies</li>
-              <li>Bankr project coin strategies</li>
               <li>Aerodrome liquidity strategies</li>
               <li>Uniswap liquidity strategies</li>
               <li>RWA accumulation</li>
@@ -639,7 +638,7 @@ export default function DocsPage() {
 
             <h3>Project Coin Vaults</h3>
             <p>Vaults that accumulate or rotate across project tokens using transparent rules and agent-monitored execution.</p>
-            <p>Example ecosystems: Virtuals, Bankr, and Base project coins.</p>
+            <p>Example ecosystems: Virtuals and Base project coins.</p>
 
             <h3>Memecoin Vaults</h3>
             <p>Vaults that trade high-volatility Base-native assets using wallet signals, liquidity filters, momentum signals, and risk limits.</p>
@@ -685,7 +684,7 @@ export default function DocsPage() {
               <div className="dx-prompt-desc">
                 <p>Choose the market where you want to launch an agent vault:</p>
                 <ul className="dx-list">
-                  <li>Project Coins — Bankr + Virtuals</li>
+                  <li>Project Coins — Virtuals ecosystem</li>
                   <li>Memecoins — Base</li>
                   <li>Perps — Avantis + Hyperliquid</li>
                   <li>Predictions — Polymarket</li>
@@ -753,7 +752,7 @@ export default function DocsPage() {
               <li>Perps directional and funding-rate strategies</li>
               <li>Prediction market strategies</li>
               <li>Base project coins and ecosystem tokens</li>
-              <li>Virtuals and Bankr ecosystem exposure</li>
+              <li>Virtuals ecosystem exposure</li>
               <li>Aerodrome and Uniswap LP strategies</li>
               <li>RWA accumulation</li>
               <li>Multi-asset allocation across vault types</li>
@@ -973,7 +972,7 @@ export default function DocsPage() {
               <div className="dx-roadmap-dot"></div>
               <div className="dx-roadmap-phase">Phase 5 — Planned</div>
               <h3 className="dx-roadmap-title">Multi-Venue Expansion</h3>
-              <p className="dx-roadmap-desc">Yieldr expands agent vault support across Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, Bankr, and selected RWA venues.</p>
+              <p className="dx-roadmap-desc">Yieldr expands agent vault support across Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, and selected RWA venues.</p>
             </div>
             <div className="dx-roadmap-item">
               <div className="dx-roadmap-dot"></div>
