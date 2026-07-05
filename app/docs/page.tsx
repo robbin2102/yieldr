@@ -946,49 +946,96 @@ export default function DocsPage() {
             <h1>Roadmap</h1>
             <p className="dx-subtitle">From live agent trading to the open agent fund network.</p>
 
-            <div className="dx-roadmap-item current">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 1 — Live</div>
-              <h3 className="dx-roadmap-title">Live Agent Trading</h3>
-              <p className="dx-roadmap-desc">Yieldr operates live agent trading strategies using project capital. Current focus: Polymarket prediction trading, wallet edge detection, agent research workflows, public performance reporting, trading analytics, and build-in-public transparency.</p>
-            </div>
-            <div className="dx-roadmap-item">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 2 — Coming around $YLDR TGE via Virtuals on HOOD Chain</div>
-              <h3 className="dx-roadmap-title">Whitelist and Fund Launch Applications</h3>
-              <p className="dx-roadmap-desc">Users can whitelist wallets on upcoming agent vaults. Traders, projects, DAOs, and communities can apply to launch agent vaults. Yieldr begins forming the early vault pipeline across project coins, memecoins, perps, predictions, LP strategies, RWAs, and DAO treasury strategies.</p>
-            </div>
-            <div className="dx-roadmap-item">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 3 — Coming via Virtuals on HOOD Chain</div>
-              <h3 className="dx-roadmap-title">$YLDR TGE</h3>
-              <p className="dx-roadmap-desc">$YLDR launches on HOOD Chain via Virtuals. Eligible users may participate according to final launch and jurisdictional rules. Tokenomics information and launch page will be published before launch.</p>
-            </div>
-            <div className="dx-roadmap-item">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 4 — Planned Q1–Q2 2027</div>
-              <h3 className="dx-roadmap-title">Beta Launch</h3>
-              <p className="dx-roadmap-desc">Whitelisted users begin participating in selected agent vaults. Selected launch applicants begin operating early agent vaults under controlled beta conditions. Agents begin supporting matching, comms, monitoring, reporting, risk alerts, and allocation intelligence.</p>
-            </div>
-            <div className="dx-roadmap-item">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 5 — Planned</div>
-              <h3 className="dx-roadmap-title">Multi-Venue Expansion</h3>
-              <p className="dx-roadmap-desc">Yieldr expands agent vault support across Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, and selected RWA venues.</p>
-            </div>
-            <div className="dx-roadmap-item">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 6 — Vision</div>
-              <h3 className="dx-roadmap-title">Open Agent Fund Network</h3>
-              <p className="dx-roadmap-desc">Anyone with verified edge can apply to launch an agent vault. Eligible depositors can discover, monitor, and allocate to agent vaults through allocation agents. Yieldr becomes the agent OS for onchain funds.</p>
-            </div>
-            <div className="dx-roadmap-item">
-              <div className="dx-roadmap-dot"></div>
-              <div className="dx-roadmap-phase">Phase 7 — Future (gated on platform maturity: ~10k users / sufficient vault track record)</div>
-              <h3 className="dx-roadmap-title">Allocator Funds</h3>
-              <p className="dx-roadmap-desc">As agent vaults accumulate a track record, top-performing depositors running Allocation Agents can themselves become poolable — an onchain analog to institutional capital aggregation (pension funds, funds-of-funds). This lets passive depositors access professionally-managed allocation across agent vaults without individually evaluating each one.</p>
-              <p className="dx-roadmap-desc">Allocator track records require the same edge-attribution rigor the Quant Agent applies to traders today, extended to allocation decisions themselves. This capability is gated on sufficient historical vault performance data existing on the platform and is not part of the current product.</p>
-              <p className="dx-roadmap-desc"><em>Note: An Allocator Fund is distinct from an Agent Vault. An Agent Vault is trader-run — capital behind a trading edge. An Allocator Fund is depositor-run — capital behind an allocation strategy across multiple agent vaults.</em></p>
+            <div className="dx-timeline">
+              <div className="dx-roadmap-item current">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 1</div>
+                  <div className="dx-roadmap-date live">Live Now</div>
+                  <h3 className="dx-roadmap-title">Live Agent Trading</h3>
+                  <p className="dx-roadmap-desc">Yieldr operates live agent trading strategies using project capital. Current focus: Polymarket prediction trading, wallet edge detection, agent research workflows, public performance reporting, and build-in-public transparency.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 2</div>
+                  <div className="dx-roadmap-date">Jul 9, 2026</div>
+                  <h3 className="dx-roadmap-title">$YLDR TGE + Waitlist Opens</h3>
+                  <p className="dx-roadmap-desc">$YLDR launches on HOOD Chain via Virtuals. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 3</div>
+                  <div className="dx-roadmap-date">Aug 2026</div>
+                  <h3 className="dx-roadmap-title">Quant Agent Trials</h3>
+                  <p className="dx-roadmap-desc">Waitlisted traders get access to the Quant Agent — edge detection and wallet analysis across supported protocols and chains. Traders can run their first edge profile, understand where performance exists, and begin the vault readiness process.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 4</div>
+                  <div className="dx-roadmap-date">Dec 2026</div>
+                  <h3 className="dx-roadmap-title">Full Agent Stack</h3>
+                  <p className="dx-roadmap-desc">Monitoring Agent, Comms Agent, and Allocation Agent roll out. Traders and depositors can access the full agent OS: continuous edge monitoring, depositor communication, and allocation intelligence across the vault pipeline.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 5</div>
+                  <div className="dx-roadmap-date">Q1 2027</div>
+                  <h3 className="dx-roadmap-title">Vault Infrastructure</h3>
+                  <p className="dx-roadmap-desc">Onchain vault infrastructure deploys. Waitlisted traders with sustained, agent-verified edge begin launching agent vaults. Whitelisted depositors gain access to make deposits into selected vaults for the first time.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 6</div>
+                  <div className="dx-roadmap-date">Q1–Q2 2027</div>
+                  <h3 className="dx-roadmap-title">Full Beta Launch</h3>
+                  <p className="dx-roadmap-desc">Full beta opens across agent vaults, depositor whitelist, and allocation agents. Matching, comms, monitoring, and allocation agents operate across the live vault network. Expansion across Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, and selected RWA venues.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 7 — Vision</div>
+                  <div className="dx-roadmap-date">Open Network</div>
+                  <h3 className="dx-roadmap-title">Open Agent Fund Network</h3>
+                  <p className="dx-roadmap-desc">Any trader with verified edge can launch an agent vault. Any depositor can discover, whitelist, and allocate across vaults through allocation agents. Yieldr becomes the agent OS for onchain funds.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item future">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 8 — Future</div>
+                  <div className="dx-roadmap-date future-date">Gated on ~10k users</div>
+                  <h3 className="dx-roadmap-title">Allocator Funds</h3>
+                  <p className="dx-roadmap-desc">Allocation Agents with the best vault-selection track records on Yieldr can themselves become poolable. These are not human-managed funds — they are agent-run vaults that mirror the allocation logic of top-performing Allocation Agents, continuously rebalancing across agent vaults based on edge signals. Passive depositors access optimised allocation without running their own agent.</p>
+                  <p className="dx-roadmap-desc">Requires the same edge-attribution rigor the Quant Agent applies to traders, extended to allocation decisions. Gated on sufficient vault track record data existing on the platform.</p>
+                  <p className="dx-roadmap-desc dx-roadmap-note">An Allocator Fund differs from an Agent Vault: an Agent Vault is built on a trader&apos;s edge, an Allocator Fund is built on an Allocation Agent&apos;s track record of allocating across agent vaults.</p>
+                </div>
+              </div>
             </div>
 
             <PageFooter pageId="roadmap" />
@@ -1035,7 +1082,7 @@ export default function DocsPage() {
             <p className="dx-subtitle">Follow the build.</p>
 
             <div className="dx-cards-grid">
-              <a className="dx-card" href="https://t.me/+KhZW5qgC" target="_blank" rel="noopener noreferrer">
+              <a className="dx-card" href="https://web.telegram.org/k/#-3972760184" target="_blank" rel="noopener noreferrer">
                 <div className="dx-card-icon">💬</div>
                 <div className="dx-card-title">Telegram</div>
                 <p className="dx-card-desc">Community, announcements, support.</p>
