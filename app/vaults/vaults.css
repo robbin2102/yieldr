@@ -291,27 +291,37 @@
 .vp-skel-lg  { width: 120px; height: 1.1em; }
 .vp-skel-xl  { width: 150px; height: 1.6em; }
 
+/* ── Grid item overflow fix (all sizes) ── */
+.vp-vault-detail > div { min-width: 0; }
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .vp-vault-detail { grid-template-columns: 1fr; }
+  .vp-vault-detail { grid-template-columns: 1fr; gap: 1rem; }
   .vp-vd-stats { grid-template-columns: repeat(2, 1fr); }
   .vp-vd-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .vp-vd-pnl { text-align: left; }
   .vp-nav { padding: 0 1rem; }
   .vp-breadcrumb, .vp-vd-header, .vp-vault-detail { padding-left: 1rem; padding-right: 1rem; }
-  .vp-op-cols, .vp-op-row { grid-template-columns: 2fr 1fr .8fr .8fr 1fr; }
+
+  /* Positions / trades: scroll horizontally at all mobile sizes */
+  .vp-open-positions, .vp-trade-history { overflow-x: auto; }
+  .vp-op-cols, .vp-op-row {
+    grid-template-columns: 2fr 1fr .8fr .8fr 1fr;
+    min-width: 500px;
+  }
   .vp-op-cols span:nth-child(4), .vp-op-row span:nth-child(4) { display: none; }
+  .vp-th-cols, .vp-th-row { min-width: 500px; }
 }
 
 @media (max-width: 640px) {
   .vp-main { padding-top: 48px; }
   .vp-breadcrumb, .vp-vd-header, .vp-vault-detail { padding-left: .75rem; padding-right: .75rem; }
   .vp-vd-stats { grid-template-columns: repeat(2, 1fr); }
-  .vp-vd-info h2 { font-size: 1.15rem; }
-  .vp-vd-pnl-v { font-size: 1.5rem; }
-
-  /* Make positions / trade tables horizontally scrollable */
-  .vp-open-positions, .vp-trade-history { overflow-x: auto; }
-  .vp-op-cols, .vp-op-row { min-width: 520px; }
-  .vp-th-cols, .vp-th-row { min-width: 520px; }
+  .vp-vd-stat { padding: .75rem .5rem; }
+  .vp-vd-stat-v { font-size: .82rem; }
+  .vp-vd-stat-l { font-size: .5rem; }
+  .vp-vd-info h2 { font-size: 1.1rem; }
+  .vp-vd-pnl-v { font-size: 1.4rem; }
+  .vp-vd-chart { padding: .75rem; }
+  .vp-chart-line { height: 110px; }
 }
