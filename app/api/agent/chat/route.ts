@@ -91,7 +91,7 @@ Who should apply: verifiable onchain edge in predictions, perps, LP, memecoins, 
 ROADMAP
 Phase 1 (LIVE): 2 vaults trading on Polymarket/Polygon 24/7 using project capital. ~$100K AUM. 445+ wallets whitelisted. ~$2M target AUM on waitlist.
 Phase 2 (around TGE): Whitelist + fund launch applications open.
-Phase 3 (TGE — July 9 2026): $YLDR launches on HOOD Chain via Virtuals.
+Phase 3 (TGE — July 2026): $YLDR launches via Virtuals.
 Phase 4 (August 2026): Quant Agent self-serve test live; vault launch applications open for traders with edge.
 Phase 5 (Q1 2027): Public deposits open for whitelisted vaults; early user-launched vaults go live after audits; Matching, Comms, Monitoring agents support live operations.
 Phase 6 (planned): Multi-venue expansion — Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, RWAs.
