@@ -570,7 +570,7 @@ export default function ExplorerPage() {
 
             <div className="ex-yldr-header">
               <div className="ex-yldr-scanline" />
-              <div className="ex-yldr-eyebrow">Agent OS · TGE Jul 9, 2026 · HOOD Chain</div>
+              <div className="ex-yldr-eyebrow">Agent OS · TGE Jul 2026 · via Virtuals</div>
               <div className="ex-yldr-title">
                 <span className="ex-yldr-title-free">Free tier</span>
                 <span className="ex-yldr-title-sep"> → </span>
@@ -592,7 +592,7 @@ export default function ExplorerPage() {
               </div>
 
               <div className="ex-yldr-tier ex-yldr-tier--paid">
-                <div className="ex-yldr-tier-badge">TGE JUL 9</div>
+                <div className="ex-yldr-tier-badge">TGE JUL 2026</div>
                 <div className="ex-yldr-tier-label">$YLDR HOLDER</div>
                 <ul className="ex-yldr-tier-list">
                   <li><span className="ex-yldr-check">✓</span> Unlimited agent inference</li>
@@ -610,7 +610,7 @@ export default function ExplorerPage() {
                 <div className="ex-yldr-tl-node ex-yldr-tl-node--done">
                   <div className="ex-yldr-tl-dot" />
                   <div className="ex-yldr-tl-text">
-                    <div className="ex-yldr-tl-date">Jul 9</div>
+                    <div className="ex-yldr-tl-date">Jul '26</div>
                     <div className="ex-yldr-tl-event">$YLDR TGE</div>
                   </div>
                 </div>

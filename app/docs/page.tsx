@@ -912,7 +912,7 @@ export default function DocsPage() {
               <div className="dx-token-name">YLDR</div>
               <div className="dx-token-stats">
                 <div>
-                  <div className="dx-token-stat-value">Jul 9, 2026</div>
+                  <div className="dx-token-stat-value">Jul 2026</div>
                   <div className="dx-token-stat-label">TGE Date</div>
                 </div>
                 <div>
@@ -961,7 +961,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
                   <div className="dx-roadmap-phase">Phase 2</div>
-                  <div className="dx-roadmap-date">Jul 9, 2026</div>
+                  <div className="dx-roadmap-date">Jul 2026</div>
                   <h3 className="dx-roadmap-title">$YLDR TGE + Waitlist Opens</h3>
                   <p className="dx-roadmap-desc">$YLDR launches on HOOD Chain via Virtuals. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
                 </div>
