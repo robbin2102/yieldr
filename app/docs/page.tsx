@@ -963,7 +963,7 @@ export default function DocsPage() {
                   <div className="dx-roadmap-phase">Phase 2</div>
                   <div className="dx-roadmap-date">Jul 2026</div>
                   <h3 className="dx-roadmap-title">$YLDR TGE + Waitlist Opens</h3>
-                  <p className="dx-roadmap-desc">$YLDR launches on HOOD Chain via Virtuals. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
+                  <p className="dx-roadmap-desc">$YLDR launches via Virtuals. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
                 </div>
               </div>
 
