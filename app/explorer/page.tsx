@@ -28,7 +28,12 @@ const VAULTS: Vault[] = [
     status: 'live', cat: 'predictions', chain: 'polygon',
     stats: [{ v: '+41.8%', l: '30D Return' }, { v: '$59.2K', l: 'AUM' }, { v: '82%', l: 'Win Rate' }],
   },
-
+  {
+    id: 'nba', name: '🏀 NBA Edge Vault', proto: '🔮 Polymarket · Predictions',
+    desc: 'Agent ranks top NBA prediction market traders by statistical edge, mirrors highest-conviction positions.',
+    status: 'live', cat: 'predictions', chain: 'polygon',
+    stats: [{ v: '+18.7%', l: '7D Return' }, { v: '$22.4K', l: 'AUM' }, { v: '74%', l: 'Win Rate' }],
+  },
   {
     id: 'funding', name: '⚡ Funding Arbs Vault', proto: '📈 Avantis · Hyperliquid · Perps',
     desc: 'Captures funding rate premium on Avantis & Hyperliquid by holding long/short pairs where funding diverges from historical mean. Zero directional bias.',
@@ -124,7 +129,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   },
   {
     triggers: ['live vault', 'live', 'geopolitics', 'nba'],
-    text: "Allocation agents aren't live yet, so I can't route capital into the live vaults for you — but the 🌐 Geopolitics Vault is trading real project capital on Polymarket right now. Whitelist a waitlisted vault below to be ready for what's next.",
+    text: "Allocation agents aren't live yet, so I can't route capital into the live vaults for you — but the 🌐 Geopolitics Vault and 🏀 NBA Edge Vault are trading real project capital on Polymarket right now. Whitelist a waitlisted vault below to be ready for what's next.",
     filter: 'live',
   },
   {
@@ -247,7 +252,7 @@ export default function ExplorerPage() {
       .then((d) => {
         if (!d.ok || !d.data) return;
         const next: Record<string, LiveStats> = {};
-        for (const id of ['geo', 'soccerAlpha']) {
+        for (const id of ['geo', 'nba', 'soccerAlpha']) {
           const v = d.data[id];
           if (!v?.stats) continue;
           const { vaultSize, winRate, totalPnl, initialCapital } = v.stats;
