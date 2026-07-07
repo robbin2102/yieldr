@@ -262,10 +262,7 @@ function VaultsPageInner() {
   const meta = VAULT_META[activeVault];
   const unr  = totalUnrealisedPnl(av.positions);
   const roi  = av.stats.initialCapital > 0 ? (av.stats.totalPnl / av.stats.initialCapital) * 100 : 0;
-  const otherVault = VAULT_IDS.find((id) => id !== activeVault)!;
-  const otherMeta   = VAULT_META[otherVault];
-  const otherData   = vaultData[otherVault];
-  const otherRoi    = otherData.stats.initialCapital > 0 ? (otherData.stats.totalPnl / otherData.stats.initialCapital) * 100 : 0;
+
   const truncAddr   = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
   const wlState: 'connect' | 'confirm' | 'success' = whitelisted.has(activeVault)
     ? 'success'
@@ -470,16 +467,6 @@ function VaultsPageInner() {
               </div>
             </div>
 
-            {/* Similar Vault */}
-            <Link href={`/vaults?vault=${otherVault}`} className="vp-similar-card">
-              <div className="vp-sc-title">Similar Vault</div>
-              <div className="vp-sc-name">{otherMeta.emoji} {otherMeta.name}</div>
-              <div className="vp-sc-stats">
-                <div><span className="v">{otherData.stats.winRate}%</span><span className="l">Win Rate</span></div>
-                <div><span className={`v ${otherRoi >= 0 ? 'green' : 'red'}`}>{otherRoi >= 0 ? '+' : ''}{otherRoi.toFixed(1)}%</span><span className="l">ROI</span></div>
-              </div>
-              <div className="vp-sc-cta">View Vault →</div>
-            </Link>
           </div>
 
         </div>
