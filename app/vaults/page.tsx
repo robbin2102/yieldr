@@ -28,12 +28,11 @@ type VaultState = {
   wallet?: string;
 };
 
-type ShownVaultId = 'geo' | 'nba';
-const VAULT_IDS: ShownVaultId[] = ['geo', 'nba'];
+type ShownVaultId = 'geo';
+const VAULT_IDS: ShownVaultId[] = ['geo'];
 
 const WALLETS: Record<ShownVaultId, { full: string; short: string }> = {
   geo: { full: '0xcb516a0c8b8ba2e42ff5c123e2f624d6cce6359d', short: '0xcb51…359d' },
-  nba: { full: '0x52ed504e3c3c7cfceaa61dc4f23a6e29d79f8db7', short: '0x52ed…8db7' },
 };
 
 

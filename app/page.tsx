@@ -14,14 +14,6 @@ const LIVE_VAULTS = [
     desc: 'Agent identifies wallets with abnormal win rates vs implied probability on geopolitical events.',
     stats: [{ v: '+41.8%', l: '30D Return' }, { v: '82%', l: 'Win Rate' }],
   },
-  {
-    id: 'nba',
-    href: '/explorer',
-    proto: 'Polymarket · Predictions',
-    name: '🏀 NBA Edge Vault',
-    desc: 'Agent ranks top NBA prediction market traders by statistical edge, mirrors highest-conviction positions.',
-    stats: [{ v: '+18.7%', l: '7D Return' }, { v: '74%', l: 'Win Rate' }],
-  },
 ];
 
 const WAITLIST_VAULTS = [
@@ -93,7 +85,7 @@ const WAITLIST_VAULTS = [
 function tickerItems(waitlistStats: { total_wallets: number } | null) {
   return [
   { label: 'GEOPOLITICS VAULT', value: '+41.8% 30D', up: true },
-  { label: 'NBA EDGE VAULT', value: '+18.7% 7D', up: true },
+
   { label: 'YLDR TGE', value: 'ON VIRTUALS', up: true },
   { label: 'HOOD CHAIN', value: 'NOW LIVE', up: true },
   { label: 'GENESIS FDV', value: '<$200K', up: true },
@@ -113,10 +105,10 @@ function formatAUM(n: number): string {
   return `$${n}`;
 }
 
-type LiveStats = { winRate: number; returnPct: number };
+type LiveStats = { winRate: number; returnPct: number; vaultSize: number };
 
 export default function HomePage() {
-  const [bannerOpen, setBannerOpen] = useState(true);
+  const [bannerOpen, setBannerOpen] = useState(false);
   const [waitlistStats, setWaitlistStats] = useState<{
     total_aum: number;
     total_wallets: number;
@@ -147,13 +139,13 @@ export default function HomePage() {
       .then((d) => {
         if (!d.ok || !d.data) return;
         const next: Record<string, LiveStats> = {};
-        for (const id of ['geo', 'nba']) {
-          const v = d.data[id];
-          if (!v?.stats) continue;
-          const { capitalDeployed30d, winRate, pnl30d } = v.stats;
-          next[id] = {
+        const v = d.data['geo'];
+        if (v?.stats) {
+          const { capitalDeployed30d, winRate, pnl30d, vaultSize } = v.stats;
+          next['geo'] = {
             winRate: winRate ?? 0,
             returnPct: capitalDeployed30d > 0 ? (pnl30d / capitalDeployed30d) * 100 : 0,
+            vaultSize: vaultSize ?? 0,
           };
         }
         setLiveStats(next);
@@ -257,11 +249,11 @@ export default function HomePage() {
               <div className="lp-hm-panel">
                 <div className="lp-hm-label"><span className="lp-hm-dot live" />Live now</div>
                 <div className="lp-hm-stats">
-                  <div><div className="lp-hm-v">$100K</div><div className="lp-hm-l">AUM Trading</div></div>
+                  <div><div className="lp-hm-v">{liveStats['geo']?.vaultSize ? formatAUM(liveStats['geo'].vaultSize) : '$30K'}</div><div className="lp-hm-l">AUM Trading</div></div>
                   <div className="lp-hm-sep" />
-                  <div><div className="lp-hm-v">2</div><div className="lp-hm-l">Agent Vaults</div></div>
+                  <div><div className="lp-hm-v">1</div><div className="lp-hm-l">Agent Vault</div></div>
                   <div className="lp-hm-sep" />
-                  <div><div className="lp-hm-v">2</div><div className="lp-hm-l">Active Agents</div></div>
+                  <div><div className="lp-hm-v">1</div><div className="lp-hm-l">Active Agent</div></div>
                 </div>
               </div>
               <div className="lp-hm-panel">

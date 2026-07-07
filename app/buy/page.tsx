@@ -12,7 +12,7 @@ import { SUPPORTED_CHAINS, getExplorerUrl, type TokenId } from '@/config/payment
 import NavLinks from '@/components/NavLinks';
 
 // ── Constants ──────────────────────────────────────────────────────────────
-type VaultId = 'geo' | 'nba' | 'soccerAlpha';
+type VaultId = 'geo' | 'soccerAlpha';
 const TOTAL_SUPPLY  = 210_000_000;
 const CURRENT_FDV   = 9_000_000;
 const TGE_FDV       = 75_000_000;
@@ -20,7 +20,6 @@ const TOKENS_PER_USD = TOTAL_SUPPLY / CURRENT_FDV;
 
 const VAULT_OPTS: { id: VaultId; icon: string; name: string; roi: string }[] = [
   { id: 'geo',         icon: '🌐', name: 'Geopolitics',  roi: '' },
-  { id: 'nba',         icon: '🏀', name: 'NBA Edge',      roi: '' },
   { id: 'soccerAlpha', icon: '⚽', name: 'Soccer Alpha',  roi: '' },
 ];
 
@@ -100,7 +99,7 @@ export default function BuyPage() {
       if (!data) return;
       const rois: Partial<Record<VaultId, string>> = {};
       let best = -Infinity;
-      for (const id of ['geo','nba','soccerAlpha'] as VaultId[]) {
+      for (const id of ['geo','soccerAlpha'] as VaultId[]) {
         const roi = data[id]?.stats?.roi30d;
         if (typeof roi === 'number') {
           rois[id] = `+${roi.toFixed(1)}%`;
