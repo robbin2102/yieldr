@@ -243,7 +243,7 @@ export default function AllocationsPage() {
               <div className="ap-alloc-block">
                 <div className="ap-alloc-tag">YLDR Token Allocation</div>
                 <div className="ap-alloc-val">{userLoading ? <Skel s="lg" /> : showUserData ? `${fmtInt(totalYldr)} YLDR` : '—'}</div>
-                <div className="ap-alloc-meta">Avg price <span>{showUserData ? `$${fmt(avgPrice, 4)}` : '—'}</span> &middot; TGE <span>Q1 2027</span> &middot; 12-month vest</div>
+                <div className="ap-alloc-meta">Avg price <span>{showUserData ? `$${fmt(avgPrice, 4)}` : '—'}</span> &middot; TGE <span>TBD</span> &middot; 12-month vest</div>
               </div>
 
               <div className="ap-detail-rows">

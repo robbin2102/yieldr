@@ -148,7 +148,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
             <div className="allocation-amount">
               ~{formatNumber(allocation.yldrAmount)} YLDR
             </div>
-            <span className="allocation-timing">at TGE (Q1 2027)</span>
+            <span className="allocation-timing">at TGE (TBD)</span>
 
             {/* Show breakdown if spans multiple tiers */}
             {allocation.breakdown.length > 1 && (

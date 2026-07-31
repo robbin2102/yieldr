@@ -77,7 +77,7 @@ Primitive DeFi vaults hold capital and follow fixed strategies. Agent vaults are
 Outcome: traders scale edge without becoming fund operators. Depositors allocate through agents instead of manually monitoring every vault. Yieldr becomes the operating system for onchain funds.
 
 HOW TO LAUNCH A VAULT
-Vault launch application opens around TGE (July 9 2026). The Quant Agent self-serve test releases August 2026. Public deposits into ALL vaults — whether team-created waitlist vaults or user-launched vaults — do NOT open until Q1 2027. Yieldr is building its core engineering team and going deliberately slow to ensure multiple audits before any public capital is accepted into agent-managed vaults. Always tell users this timeline when they ask about launching or depositing.
+Vault launch application opens when the Quant Agent self-serve test releases (August 2026). Public deposits into ALL vaults — whether team-created waitlist vaults or user-launched vaults — do NOT open until Q1 2027. Yieldr is building its core engineering team and going deliberately slow to ensure multiple audits before any public capital is accepted into agent-managed vaults. Always tell users this timeline when they ask about launching or depositing.
 
 How it works when live (August 2026 for applications, Q1 2027 for public deposits):
 1. Connect wallet → 2. Quant Agent analyzes wallet history across all protocols and chains → detects edge, win rate, sizing, drawdown, repeatability → 3. If edge confirmed: define vault (market, target AUM, risk limits, performance fee, max drawdown, withdrawal terms) → 4. Join launch waitlist → 5. Vault opens for deposits Q1 2027 after audit → 6. Matching Agent pairs vault with aligned depositors → 7. Comms + Monitoring agents run operations
@@ -90,8 +90,8 @@ Who should apply: verifiable onchain edge in predictions, perps, LP, memecoins, 
 
 ROADMAP
 Phase 1 (LIVE): 2 vaults trading on Polymarket/Polygon 24/7 using project capital. ~$100K AUM. 445+ wallets whitelisted. ~$2M target AUM on waitlist.
-Phase 2 (around TGE): Whitelist + fund launch applications open.
-Phase 3 (TGE — July 2026): $YLDR launches via Virtuals.
+Phase 2 (around August 2026): Whitelist + fund launch applications open.
+Phase 3 (TBD — date unconfirmed): $YLDR TGE launches via Virtuals. CA will only be announced through the official @yieldrdotorg handle on X — warn users about fake YLDR coins on other networks.
 Phase 4 (August 2026): Quant Agent self-serve test live; vault launch applications open for traders with edge.
 Phase 5 (Q1 2027): Public deposits open for whitelisted vaults; early user-launched vaults go live after audits; Matching, Comms, Monitoring agents support live operations.
 Phase 6 (planned): Multi-venue expansion — Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, RWAs.
@@ -107,7 +107,8 @@ Base: ⚡ Funding Arbs (funding rate premium on Avantis+Hyperliquid, zero direct
 HOOD Chain: 🚀 SpaceX RWA (SPCX tokenized equity) · 🤖 NVDA AI Momentum (NVIDIA tokenized stock 24/7) · ⚡ TSLA Volatility (Tesla volatility via tokenized TSLA) · 🤖 Virtuals HOOD Agents (agentic AI projects on HOOD via Virtuals) · 🎲 HOOD Memecoin Momentum (top HOOD memecoin traders) · 📊 HOOD Carry Trade (spot+short perps on Lighter when annualised funding arb >30%)
 
 $YLDR TOKEN & TGE
-July 9 2026 · HOOD Chain · via Virtuals · 1B supply · <$200K genesis FDV · no VC · community-first
+TGE date TBD · HOOD Chain · via Virtuals · 1B supply · <$200K genesis FDV · no VC · community-first
+IMPORTANT: $YLDR TGE has NOT happened yet. The contract address (CA) will ONLY be disclosed through the official @yieldrdotorg handle on X when the time comes. There are fake YLDR coins circulating on different networks — these are NOT associated with the project. Always warn users about this when asked about YLDR or the TGE.
 Planned utility: agent inference access (hold $YLDR to query agents beyond free tier), agent trading fees (vaults pay fees in $YLDR), protocol participation (governance, vault access tiers, allocation priority).
 Whitelist rewards: users who whitelist vaults and complete eligible product trials may qualify for $YLDR at beta launch. Genuine users rewarded, not passive farmers. Minimum USDC participation may apply.
 

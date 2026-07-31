@@ -125,7 +125,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   },
   {
     triggers: ['hello', 'hi', 'hey', 'sup', 'what can you do', 'who are you', 'what are you', 'help'],
-    text: "I'm the Yieldr Agent. Once live in beta, I'll help you discover vaults, explain strategies, and allocate capital across agent vaults automatically — I'm still under construction, so I can talk you through vaults, the $YLDR TGE, or whitelisting today. Whitelist your wallet on any vault below for early access in the meantime.",
+    text: "I'm the Yieldr Agent. Once live in beta, I'll help you discover vaults, explain strategies, and allocate capital across agent vaults automatically — I'm still under construction, so I can talk you through vaults or whitelisting today. Whitelist your wallet on any vault below for early access in the meantime.",
   },
   {
     triggers: ['live vault', 'live', 'geopolitics', 'nba'],
@@ -182,7 +182,7 @@ const RESPONSES: Array<{ triggers: string[]; text: string; filter?: string }> = 
   },
   {
     triggers: ['tge', 'token', 'yldr', 'airdrop'],
-    text: "⚡ $YLDR TGE is coming via Virtuals — no date confirmed yet. I can't pull live token data yet — once I'm live I'll keep you updated automatically. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
+    text: "⚡ $YLDR TGE has not happened yet — no date confirmed. The contract address (CA) will only be announced through the official @yieldrdotorg handle on X — do not trust any other source. There are fake YLDR coins circulating on different networks that are not associated with this project. Whitelist your wallet now for early access and a shot at a $YLDR airdrop at beta launch.",
   },
   {
     triggers: ['whitelist', 'waitlist', 'early access'],
@@ -196,11 +196,11 @@ function processQuery(t: string): { text: string; filter?: string } {
     if (triggers.some((kw) => lower.includes(kw))) return { text, filter };
   }
   return {
-    text: "I can tell you about Yieldr, live vaults, perps, predictions, LP, RWA, project coins, launching a vault, or the $YLDR TGE — try asking about one of those. Full allocation-agent capabilities (auto-routing your capital) are still under construction, so for now whitelist your wallet on any agent vault below for early access.",
+    text: "I can tell you about Yieldr, live vaults, perps, predictions, LP, RWA, project coins, or launching a vault — try asking about one of those. Full allocation-agent capabilities (auto-routing your capital) are still under construction, so for now whitelist your wallet on any agent vault below for early access.",
   };
 }
 
-const QUICK_REPLIES = ['What is Yieldr?', 'Live vaults', 'HOOD Chain', 'Launch a vault', 'TGE & $YLDR', 'How to whitelist'];
+const QUICK_REPLIES = ['What is Yieldr?', 'Live vaults', 'HOOD Chain', 'Launch a vault', '$YLDR token', 'How to whitelist'];
 
 type ChatMsg = { type: 'agent' | 'user' | 'typing'; text: string; liveData?: boolean };
 
@@ -287,7 +287,7 @@ export default function ExplorerPage() {
   }, [address]);
 
   const [chatMessages, setChatMessages] = useState<ChatMsg[]>([
-    { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me what Yieldr is, about any live or waitlisted vault, the $YLDR TGE, or how whitelisting works — full auto-allocation is still under construction, so until then, whitelist your wallet on any agent vault for early access.' },
+    { type: 'agent', text: 'Hey, I\'m the Yieldr Agent. Ask me what Yieldr is, about any live or waitlisted vault, or how whitelisting works — full auto-allocation is still under construction, so until then, whitelist your wallet on any agent vault for early access.' },
   ]);
   const [chatInput, setChatInput] = useState('');
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -380,7 +380,7 @@ export default function ExplorerPage() {
       }
     } catch {
       clearTimeout(liveDataHint);
-      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: "I'm having trouble connecting right now — ask me about any vault, the $YLDR TGE, or whitelisting and I'll answer once I'm back online." }]);
+      setChatMessages((m) => [...m.filter((msg) => msg.type !== 'typing'), { type: 'agent', text: "I'm having trouble connecting right now — ask me about any vault or whitelisting and I'll answer once I'm back online." }]);
     }
   }
 
@@ -570,7 +570,7 @@ export default function ExplorerPage() {
 
             <div className="ex-yldr-header">
               <div className="ex-yldr-scanline" />
-              <div className="ex-yldr-eyebrow">Agent OS · TGE Jul 2026 · via Virtuals</div>
+              <div className="ex-yldr-eyebrow">Agent OS · TGE TBD · via Virtuals</div>
               <div className="ex-yldr-title">
                 <span className="ex-yldr-title-free">Free tier</span>
                 <span className="ex-yldr-title-sep"> → </span>
@@ -592,7 +592,7 @@ export default function ExplorerPage() {
               </div>
 
               <div className="ex-yldr-tier ex-yldr-tier--paid">
-                <div className="ex-yldr-tier-badge">TGE JUL 2026</div>
+                <div className="ex-yldr-tier-badge">TGE TBD</div>
                 <div className="ex-yldr-tier-label">$YLDR HOLDER</div>
                 <ul className="ex-yldr-tier-list">
                   <li><span className="ex-yldr-check">✓</span> Unlimited agent inference</li>
@@ -610,7 +610,7 @@ export default function ExplorerPage() {
                 <div className="ex-yldr-tl-node ex-yldr-tl-node--done">
                   <div className="ex-yldr-tl-dot" />
                   <div className="ex-yldr-tl-text">
-                    <div className="ex-yldr-tl-date">Jul '26</div>
+                    <div className="ex-yldr-tl-date">TBD</div>
                     <div className="ex-yldr-tl-event">$YLDR TGE</div>
                   </div>
                 </div>

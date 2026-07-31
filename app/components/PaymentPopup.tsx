@@ -146,7 +146,7 @@ export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {
               <div className="receive-preview">
                 <div className="receive-label">You'll receive</div>
                 <div className="receive-amount">~{yldrAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })} YLDR</div>
-                <div className="receive-timing">at TGE (Q1 2027)</div>
+                <div className="receive-timing">at TGE (TBD)</div>
               </div>
             </div>
 

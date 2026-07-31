@@ -117,7 +117,6 @@ function formatAUM(n: number): string {
 type LiveStats = { winRate: number; returnPct: number };
 
 export default function HomePage() {
-  const [bannerOpen, setBannerOpen] = useState(false);
   const [waitlistStats, setWaitlistStats] = useState<{
     total_aum: number;
     total_wallets: number;
@@ -196,18 +195,6 @@ export default function HomePage() {
     <div className="lp-root">
       <div className="lp-grid" />
       <div className="lp-scanline" />
-
-      {/* ── Banner ── */}
-      {bannerOpen && (
-        <div className="lp-banner">
-          <span className="lp-banner-txt">
-            <strong>$YLDR</strong> TGE coming on Virtuals — soon · Whitelist any agent vault — earn a variable{' '}
-            <strong>$YLDR</strong> airdropped at beta launch ·
-          </span>
-          <a href="#token" className="lp-banner-link">Learn more →</a>
-          <button className="lp-banner-close" aria-label="Dismiss" onClick={() => setBannerOpen(false)}>×</button>
-        </div>
-      )}
 
       {/* ── Nav ── */}
       <nav className="lp-nav">

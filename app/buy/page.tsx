@@ -396,7 +396,7 @@ export default function BuyPage() {
               {btnLabel()}
             </button>
             <div className="bp-fine">
-              Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE Q1 2027
+              Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE TBD
             </div>
           </div>
 
