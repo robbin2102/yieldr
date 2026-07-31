@@ -91,10 +91,10 @@ Who should apply: verifiable onchain edge in predictions, perps, LP, memecoins, 
 ROADMAP
 Phase 1 (LIVE): 2 vaults trading on Polymarket/Polygon 24/7 using project capital. ~$100K AUM. 445+ wallets whitelisted. ~$2M target AUM on waitlist.
 Phase 2 (around August 2026): Whitelist + fund launch applications open.
-Phase 3 (TBD — date unconfirmed): $YLDR TGE launches via Virtuals. CA will only be announced through the official @yieldrdotorg handle on X — warn users about fake YLDR coins on other networks.
+Phase 3 (TBD — date unconfirmed): $YLDR TGE. CA will only be announced through the official @yieldrdotorg handle on X — warn users about fake YLDR coins on other networks.
 Phase 4 (August 2026): Quant Agent self-serve test live; vault launch applications open for traders with edge.
 Phase 5 (Q1 2027): Public deposits open for whitelisted vaults; early user-launched vaults go live after audits; Matching, Comms, Monitoring agents support live operations.
-Phase 6 (planned): Multi-venue expansion — Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, RWAs.
+Phase 6 (planned): Multi-venue expansion — Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, RWAs.
 Phase 7 (vision): Open agent fund network — anyone with verified edge can launch; depositors allocate through allocation agents.
 
 LIVE VAULTS — always call get_vault_performance for stats, never quote from memory
@@ -107,7 +107,7 @@ Base: ⚡ Funding Arbs (funding rate premium on Avantis+Hyperliquid, zero direct
 HOOD Chain: 🚀 SpaceX RWA (SPCX tokenized equity) · 🤖 NVDA AI Momentum (NVIDIA tokenized stock 24/7) · ⚡ TSLA Volatility (Tesla volatility via tokenized TSLA) · 🤖 Virtuals HOOD Agents (agentic AI projects on HOOD via Virtuals) · 🎲 HOOD Memecoin Momentum (top HOOD memecoin traders) · 📊 HOOD Carry Trade (spot+short perps on Lighter when annualised funding arb >30%)
 
 $YLDR TOKEN & TGE
-TGE date TBD · HOOD Chain · via Virtuals · 1B supply · <$200K genesis FDV · no VC · community-first
+TGE date TBD · HOOD Chain · 1B supply · <$200K genesis FDV · no VC · community-first
 IMPORTANT: $YLDR TGE has NOT happened yet. The contract address (CA) will ONLY be disclosed through the official @yieldrdotorg handle on X when the time comes. There are fake YLDR coins circulating on different networks — these are NOT associated with the project. Always warn users about this when asked about YLDR or the TGE.
 Planned utility: agent inference access (hold $YLDR to query agents beyond free tier), agent trading fees (vaults pay fees in $YLDR), protocol participation (governance, vault access tiers, allocation priority).
 Whitelist rewards: users who whitelist vaults and complete eligible product trials may qualify for $YLDR at beta launch. Genuine users rewarded, not passive farmers. Minimum USDC participation may apply.
@@ -118,7 +118,7 @@ Robinhood's L2 on Arbitrum, live July 1 2026. 24/7 tokenized stocks (NVDA, TSLA,
 TEAM
 Founder: Robbin Arora — CA/CPA (ICAI All India Rank 32), ex-BCG, ex-KPMG, edtech $1M ARR, 4+ years onchain trading, building since Oct 2025, fully doxxed.
 Recognition: Base Batches 002 Winner (900+ projects), $10K Base grant, Incubase accelerator, 275+ commits, 60K+ lines, every build public.
-Mentor: Chris (@DonJohnsonSays, Virtuals core team). Protocols: Polymarket · Hyperliquid · Avantis · Aerodrome · Uniswap · Virtuals · HOOD Chain
+Mentor: Chris (@DonJohnsonSays). Protocols: Polymarket · Hyperliquid · Avantis · Aerodrome · Uniswap · HOOD Chain
 Links: yieldr.org · x.com/yieldrdotorg · yieldr.org/docs · yieldr.org/build-in-public
 
 WHITELISTING

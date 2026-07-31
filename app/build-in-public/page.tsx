@@ -134,7 +134,7 @@ export default function BuildInPublicPage() {
                 <span className="tl-month-name">July 2026</span>
                 <span className="tl-month-badge active">&#9679; In Progress</span>
               </div>
-              <div className="tl-summary">Multi-chain expansion to HOOD Chain. $YLDR TGE launching via Virtuals — the token is deflationary by design, consumed by agent execution cycles.</div>
+              <div className="tl-summary">Multi-chain expansion to HOOD Chain. $YLDR TGE coming — the token is deflationary by design, consumed by agent execution cycles.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Multi-Chain Expansion — HOOD Chain</div>
                 <div className="tl-item-p">Expanding Yieldr to HOOD Chain (Robinhood Chain), an Arbitrum L2 with native 24/7 tokenized stock trading. SpaceX (SPCX), NVDA, TSLA, Virtuals HOOD Agents, and HOOD Carry Trade vaults added to the waitlist.</div>
@@ -142,8 +142,8 @@ export default function BuildInPublicPage() {
               </div>
               <div className="tl-item">
                 <div className="tl-item-h">$YLDR Token Generation Event</div>
-                <div className="tl-item-p">$YLDR TGE launching via Virtuals. Deflationary by design — token consumed by agent execution cycles.</div>
-                <div className="tl-tags"><span className="tl-tag green">Token</span><span className="tl-tag green">Virtuals</span><span className="tl-tag green">Live</span></div>
+                <div className="tl-item-p">$YLDR TGE coming. Deflationary by design — token consumed by agent execution cycles.</div>
+                <div className="tl-tags"><span className="tl-tag green">Token</span><span className="tl-tag green">Live</span></div>
               </div>
             </div>
 
@@ -398,7 +398,7 @@ export default function BuildInPublicPage() {
             <div className="rm-card">
               <div className="rm-status active">&#9679; In Progress — Q3 2026</div>
               <div className="rm-h">Multi-Chain Expansion</div>
-              <div className="rm-p">HOOD Chain (Robinhood Arbitrum L2), SpaceX and tokenized stock vaults, $YLDR TGE via Virtuals. Quant Agent trials open to waitlisted traders.</div>
+              <div className="rm-p">HOOD Chain (Robinhood Arbitrum L2), SpaceX and tokenized stock vaults, $YLDR TGE coming. Quant Agent trials open to waitlisted traders.</div>
               <div className="rm-tags"><span className="tl-tag green">HOOD Chain</span><span className="tl-tag">Multi-Chain</span><span className="tl-tag green">Token</span></div>
             </div>
             <div className="rm-card">

@@ -925,7 +925,7 @@ export default function DocsPage() {
                 </div>
               </div>
             </div>
-            <p>Tokenomics information and Virtuals launch details will be published before launch.</p>
+            <p>Tokenomics information will be published before launch.</p>
 
             <h2>Whitelist Rewards</h2>
             <p>Users who whitelist agent vaults and complete eligible product participation may qualify for $YLDR rewards at beta launch. Reward mechanics are designed to reward genuine users, not passive farmers.</p>
@@ -963,7 +963,7 @@ export default function DocsPage() {
                   <div className="dx-roadmap-phase">Phase 2</div>
                   <div className="dx-roadmap-date">TBD</div>
                   <h3 className="dx-roadmap-title">$YLDR TGE + Waitlist Opens</h3>
-                  <p className="dx-roadmap-desc">$YLDR launches via Virtuals. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
+                  <p className="dx-roadmap-desc">$YLDR TGE. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
                 </div>
               </div>
 

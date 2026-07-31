@@ -570,7 +570,7 @@ export default function ExplorerPage() {
 
             <div className="ex-yldr-header">
               <div className="ex-yldr-scanline" />
-              <div className="ex-yldr-eyebrow">Agent OS · TGE TBD · via Virtuals</div>
+              <div className="ex-yldr-eyebrow">Agent OS · TGE TBD</div>
               <div className="ex-yldr-title">
                 <span className="ex-yldr-title-free">Free tier</span>
                 <span className="ex-yldr-title-sep"> → </span>
