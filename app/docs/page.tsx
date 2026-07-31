@@ -916,16 +916,21 @@ export default function DocsPage() {
                   <div className="dx-token-stat-label">TGE Date</div>
                 </div>
                 <div>
-                  <div className="dx-token-stat-value">Virtuals</div>
-                  <div className="dx-token-stat-label">Launch Ecosystem</div>
+                  <div className="dx-token-stat-value">1B</div>
+                  <div className="dx-token-stat-label">Total Supply</div>
                 </div>
                 <div>
-                  <div className="dx-token-stat-value">&lt;$200K</div>
-                  <div className="dx-token-stat-label">Genesis FDV</div>
+                  <div className="dx-token-stat-value">No VC</div>
+                  <div className="dx-token-stat-label">Token Structure</div>
                 </div>
               </div>
             </div>
             <p>Tokenomics information will be published before launch.</p>
+
+            <div className="dx-callout dx-callout-warning">
+              <div className="dx-callout-title">⚠️ Fake $YLDR Tokens Circulating</div>
+              <p>Multiple fake $YLDR tokens are circulating on various chains with no association with this project. Do not buy or interact with any token claiming to be $YLDR until the official launch is announced. The official contract address (CA) and launch announcement will only be shared through the project&apos;s X handle: <strong>@yieldrdotorg</strong>. If you see it anywhere else first, it&apos;s not us.</p>
+            </div>
 
             <h2>Whitelist Rewards</h2>
             <p>Users who whitelist agent vaults and complete eligible product participation may qualify for $YLDR rewards at beta launch. Reward mechanics are designed to reward genuine users, not passive farmers.</p>
