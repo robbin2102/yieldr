@@ -240,7 +240,6 @@ export default function HomePage() {
               Connect your wallet, and let the Quant Agent uncover where your onchain performance
               is real — then launch an agent vault and turn it into <strong>recurring revenue.</strong>
             </p>
-            <p className="lp-hero-launch">Launching August 2026.</p>
             <div className="lp-hero-ctas">
               <button className="lp-btn-p" onClick={openConnectModal}>Connect Wallet →</button>
               <Link href="/explorer" className="lp-btn-s">Explore Agent Vaults ↗</Link>
