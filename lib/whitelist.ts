@@ -4,10 +4,6 @@ import { VaultWhitelistBase } from '@/models/VaultWhitelistBase';
 // Agent vault ids surfaced for whitelisting on /explorer and /vaults
 export const KNOWN_VAULT_IDS = ['geo', 'nba', 'funding', 'aero', 'virtuals-robotics', 'spacex', 'nvda', 'tsla', 'hood-agents', 'hood-meme', 'hood-carry', 'meme', 'quant-agent'];
 
-// Once a vault's real whitelist count passes this, the randomized base count
-// is dropped entirely and only the real count is shown.
-const BASE_COUNT_CUTOFF = 500;
-
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -33,7 +29,7 @@ async function getOrCreateBase(vaultId: string): Promise<{ base_count: number; b
     return updated ?? { base_count: existing.base_count, base_aum };
   }
 
-  const base_count = randomInt(30, 100);
+  const base_count = randomInt(50, 150);
   const base_aum = randomInt(50_000, 500_000);
   try {
     const doc = await VaultWhitelistBase.create({ vault_id: vaultId, base_count, base_aum });
@@ -50,7 +46,6 @@ async function getOrCreateBase(vaultId: string): Promise<{ base_count: number; b
 
 export async function getDisplayCount(vaultId: string): Promise<number> {
   const actual = await Whitelist.countDocuments({ vault_id: vaultId });
-  if (actual > BASE_COUNT_CUTOFF) return actual;
   const { base_count } = await getOrCreateBase(vaultId);
   return base_count + actual;
 }
