@@ -139,12 +139,10 @@ export default function HomePage() {
   }, [quantIntent, isConnected, address]);
 
   function handleQuantWaitlist() {
+    quantFired.current = false;
+    setQuantIntent(true);
     if (!isConnected) {
-      setQuantIntent(true);
       openConnectModal?.();
-    } else {
-      quantFired.current = false;
-      setQuantIntent(true);
     }
   }
 
