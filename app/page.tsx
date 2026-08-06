@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import NavLinks from '@/components/NavLinks';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 import './landing.css';
 
 const LIVE_VAULTS = [
@@ -119,6 +120,34 @@ type LiveStats = { winRate: number; returnPct: number };
 
 export default function HomePage() {
   const { openConnectModal } = useConnectModal();
+  const { isConnected, address } = useAccount();
+  const [quantIntent, setQuantIntent] = useState(false);
+  const [showQuantModal, setShowQuantModal] = useState(false);
+  const quantFired = useRef(false);
+
+  useEffect(() => {
+    if (!quantIntent || !isConnected || !address || quantFired.current) return;
+    quantFired.current = true;
+    fetch('/api/whitelist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wallet_address: address, vault_id: 'quant-agent' }),
+    }).finally(() => {
+      setQuantIntent(false);
+      setShowQuantModal(true);
+    });
+  }, [quantIntent, isConnected, address]);
+
+  function handleQuantWaitlist() {
+    if (!isConnected) {
+      setQuantIntent(true);
+      openConnectModal?.();
+    } else {
+      quantFired.current = false;
+      setQuantIntent(true);
+    }
+  }
+
   const [waitlistStats, setWaitlistStats] = useState<{
     total_aum: number;
     total_wallets: number;
@@ -241,7 +270,7 @@ export default function HomePage() {
               is real — then launch an agent vault and turn it into <strong>recurring revenue.</strong>
             </p>
             <div className="lp-hero-ctas">
-              <button className="lp-btn-p" onClick={openConnectModal}>Connect Wallet →</button>
+              <button className="lp-btn-p" onClick={handleQuantWaitlist}>Join Waitlist for Quant →</button>
               <Link href="/explorer" className="lp-btn-s">Explore Agent Vaults ↗</Link>
             </div>
             <div className="lp-hero-metrics">
@@ -482,6 +511,30 @@ export default function HomePage() {
           China, or jurisdictions where offering crypto financial services is restricted.
         </div>
       </footer>
+
+      {/* ── Quant Waitlist Success Modal ── */}
+      {showQuantModal && (
+        <div className="lp-qm-overlay" onClick={() => setShowQuantModal(false)}>
+          <div className="lp-qm-card" onClick={(e) => e.stopPropagation()}>
+            <button className="lp-qm-close" onClick={() => setShowQuantModal(false)}>✕</button>
+            <div className="lp-qm-icon">⚡</div>
+            <div className="lp-qm-title">You&apos;re on the waitlist.</div>
+            <p className="lp-qm-sub">
+              Your wallet is registered for early Quant Agent access.
+              We&apos;ll notify you when it&apos;s ready.
+            </p>
+            {address && (
+              <div className="lp-qm-wallet">
+                {address.slice(0, 6)}…{address.slice(-4)}
+              </div>
+            )}
+            <Link href="/explorer" className="lp-btn-p lp-qm-cta" onClick={() => setShowQuantModal(false)}>
+              Explore Agent Vaults ↗
+            </Link>
+            <p className="lp-qm-fine">Whitelist any agent vault to earn $YLDR rewards at launch.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

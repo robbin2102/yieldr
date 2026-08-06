@@ -212,4 +212,19 @@
   .lp-section { padding: 3rem 0; }
   .lp-vs-grid, .lp-cred-grid { grid-template-columns: 1fr; }
   .lp-footer { padding: 2rem 1.25rem; }
+  .lp-sol-grid { flex-direction: column; }
+  .lp-sol-arrow { padding: 10px 0; justify-content: center; transform: rotate(90deg); }
 }
+
+/* ---- Quant waitlist success modal ---- */
+.lp-qm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; animation: lp-fadein .2s ease; }
+@keyframes lp-fadein { from { opacity: 0; } to { opacity: 1; } }
+.lp-qm-card { position: relative; background: var(--bg2); border: 1px solid var(--b2); border-top: 2px solid var(--g); border-radius: 10px; padding: 40px 36px 32px; max-width: 400px; width: 100%; text-align: center; animation: lp-riseup .3s ease; }
+.lp-qm-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--t3); font-size: 14px; cursor: pointer; padding: 4px 8px; transition: color .15s; }
+.lp-qm-close:hover { color: var(--t1); }
+.lp-qm-icon { font-size: 2rem; margin-bottom: 14px; }
+.lp-qm-title { font-family: var(--fd); font-weight: 700; font-size: 1.4rem; color: var(--t1); letter-spacing: -.02em; margin-bottom: 10px; }
+.lp-qm-sub { font-size: .9rem; color: var(--t2); line-height: 1.6; margin-bottom: 18px; }
+.lp-qm-wallet { display: inline-block; font-family: var(--fm); font-size: 11px; color: var(--g); background: rgba(0,232,123,.07); border: 1px solid rgba(0,232,123,.2); border-radius: 4px; padding: 5px 12px; letter-spacing: .06em; margin-bottom: 24px; }
+.lp-qm-cta { width: 100%; justify-content: center; margin-bottom: 14px; }
+.lp-qm-fine { font-family: var(--fm); font-size: 10px; color: var(--t3); letter-spacing: .03em; margin: 0; }
