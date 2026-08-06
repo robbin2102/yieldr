@@ -65,12 +65,13 @@
 @keyframes lp-blink { 50% { opacity: .4; } }
 @keyframes lp-riseup { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
 
-.lp-hero h1 { font-family: var(--fd); font-weight: 700; font-size: clamp(3rem,6.5vw,4.6rem); line-height: 1.03; letter-spacing: -.025em; color: var(--t1); margin-bottom: 16px; opacity: 0; animation: lp-riseup .8s ease forwards .3s; }
+.lp-hero-tagline { font-family: var(--fm); font-size: .82rem; color: var(--t3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 18px; opacity: 0; animation: lp-riseup .8s ease forwards .2s; }
+.lp-hero h1 { font-family: var(--fd); font-weight: 700; font-size: clamp(3rem,6.5vw,4.6rem); line-height: 1.03; letter-spacing: -.025em; color: var(--t1); margin-bottom: 16px; opacity: 0; animation: lp-riseup .8s ease forwards .35s; }
 .lp-hero h1 .ac { font-style: normal; background: linear-gradient(130deg, var(--g) 30%, var(--g2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.lp-hero-tagline { font-family: var(--fm); font-size: .82rem; color: var(--t2); letter-spacing: .06em; margin-bottom: 20px; opacity: 0; animation: lp-riseup .8s ease forwards .45s; }
-.lp-hero-sub { font-size: 1rem; color: var(--t2); line-height: 1.7; max-width: 540px; margin: 0 auto 36px; opacity: 0; animation: lp-riseup .8s ease forwards .5s; }
+.lp-hero-sub { font-size: 1rem; color: var(--t2); line-height: 1.7; max-width: 540px; margin: 0 auto 14px; opacity: 0; animation: lp-riseup .8s ease forwards .5s; }
 .lp-hero-sub strong { color: var(--t1); font-weight: 600; }
-.lp-hero-ctas { margin-bottom: 56px; opacity: 0; animation: lp-riseup .8s ease forwards .7s; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.lp-hero-launch { font-family: var(--fm); font-size: .82rem; color: var(--g); letter-spacing: .08em; margin-bottom: 32px; opacity: 0; animation: lp-riseup .8s ease forwards .6s; }
+.lp-hero-ctas { margin-bottom: 56px; opacity: 0; animation: lp-riseup .8s ease forwards .72s; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
 /* ---- Hero metrics ---- */
 .lp-hero-metrics { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--b1); border-radius: 6px; overflow: hidden; opacity: 0; animation: lp-riseup .8s ease forwards .9s; width: 100%; max-width: 640px; }
@@ -88,10 +89,18 @@
 .lp-hm-tge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--fm); font-size: 9.5px; color: var(--y); letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border: 1px solid rgba(245,166,35,.2); background: rgba(245,166,35,.05); border-radius: 2px; align-self: flex-start; }
 
 /* ---- Buttons ---- */
-.lp-btn-p { display: inline-flex; align-items: center; gap: 6px; padding: 14px 32px; background: var(--g); color: var(--bg); font-family: var(--fm); font-weight: 700; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; border-radius: var(--rad); border: 1px solid var(--g); transition: all .2s; cursor: pointer; }
+.lp-btn-p { display: inline-flex; align-items: center; gap: 6px; padding: 14px 32px; background: var(--g); color: var(--bg); font-family: var(--fm); font-weight: 700; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; border-radius: var(--rad); border: 1px solid var(--g); transition: all .2s; cursor: pointer; appearance: none; -webkit-appearance: none; }
 .lp-btn-p:hover { box-shadow: 0 0 28px rgba(0,232,123,.35); transform: translateY(-1px); }
-.lp-btn-s { display: inline-flex; align-items: center; gap: 6px; padding: 14px 28px; background: transparent; color: var(--t2); font-family: var(--fm); font-weight: 600; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; border-radius: var(--rad); border: 1px solid var(--b2); transition: all .2s; cursor: pointer; }
+.lp-btn-s { display: inline-flex; align-items: center; gap: 6px; padding: 14px 28px; background: transparent; color: var(--t2); font-family: var(--fm); font-weight: 600; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; border-radius: var(--rad); border: 1px solid var(--b2); transition: all .2s; cursor: pointer; appearance: none; -webkit-appearance: none; }
 .lp-btn-s:hover { border-color: var(--b3); color: var(--t1); background: var(--bg2); }
+
+/* ---- Solution section ---- */
+.lp-sol-grid { display: flex; align-items: stretch; gap: 0; }
+.lp-sol-card { flex: 1; background: var(--bg2); border: 1px solid var(--b1); border-radius: 6px; padding: 2rem 1.8rem; }
+.lp-sol-arrow { display: flex; align-items: center; padding: 0 20px; font-family: var(--fm); font-size: 1.5rem; color: var(--g); opacity: .4; flex-shrink: 0; }
+.lp-sol-step { font-family: var(--fm); font-size: 10px; color: var(--g); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+.lp-sol-title { font-family: var(--fd); font-weight: 700; font-size: 1.2rem; color: var(--t1); margin-bottom: 12px; letter-spacing: -.01em; }
+.lp-sol-desc { font-size: .93rem; color: var(--t2); line-height: 1.65; margin: 0; }
 
 /* ---- Section shell ---- */
 .lp-section { padding: 5rem 0; }

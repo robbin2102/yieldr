@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import NavLinks from '@/components/NavLinks';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import './landing.css';
 
 const LIVE_VAULTS = [
@@ -117,6 +118,7 @@ function formatAUM(n: number): string {
 type LiveStats = { winRate: number; returnPct: number };
 
 export default function HomePage() {
+  const { openConnectModal } = useConnectModal();
   const [waitlistStats, setWaitlistStats] = useState<{
     total_aum: number;
     total_wallets: number;
@@ -232,14 +234,16 @@ export default function HomePage() {
         <div className="lp-wrap">
           <section className="lp-hero">
             <div className="lp-hero-glow" />
-            <h1>You bring the edge.<br /><span className="ac">Agents run the fund.</span></h1>
-            <p className="lp-hero-tagline">The agent stack for onchain funds.</p>
+            <p className="lp-hero-tagline">Agent stack for onchain funds.</p>
+            <h1>Discover your edge.<br /><span className="ac">Convert it into a fund.</span></h1>
             <p className="lp-hero-sub">
-              Connect your wallet, prove your edge, and launch an agent vault — turning your
-              onchain performance into <strong>recurring revenue.</strong>
+              Connect your wallet, and let the Quant Agent uncover where your onchain performance
+              is real — then launch an agent vault and turn it into <strong>recurring revenue.</strong>
             </p>
+            <p className="lp-hero-launch">Launching August 2026.</p>
             <div className="lp-hero-ctas">
-              <Link href="/explorer" className="lp-btn-p">Explore Agent Vaults ↗</Link>
+              <button className="lp-btn-p" onClick={openConnectModal}>Connect Wallet →</button>
+              <Link href="/explorer" className="lp-btn-s">Explore Agent Vaults ↗</Link>
             </div>
             <div className="lp-hero-metrics">
               <div className="lp-hm-panel">
@@ -274,29 +278,29 @@ export default function HomePage() {
           <section className="lp-section lp-reveal">
             <div className="lp-sec-head">
               <div className="lp-sec-tag">The Problem</div>
-              <div className="lp-sec-title">Great traders should run onchain funds.<br /><span className="ac">Most never do.</span></div>
+              <div className="lp-sec-title">Most traders don&apos;t know if they have an edge.<br /><span className="ac">The ones who do have no way to turn it into a fund.</span></div>
               <p className="lp-sec-sub">
-                Your wallet is public. Your PnL is onchain. Your edge is more verifiable than
-                anything in traditional finance. But you&apos;re still only trading your own capital.
+                Your wallet is public. Your PnL is onchain. It&apos;s more verifiable than any track record
+                in traditional finance — but almost nobody is reading it right.
               </p>
             </div>
             <div className="lp-pd">
               <div className="lp-pd-col">
                 <div className="lp-pd-header without">Without Yieldr</div>
                 <ul className="lp-pd-items">
+                  <li><span className="lp-pd-x">×</span>You can&apos;t tell if your wins are edge, luck, or beta</li>
                   <li><span className="lp-pd-x">×</span>Nobody outside your circle knows your track record exists</li>
                   <li><span className="lp-pd-x">×</span>Depositors have no way to find you or trust your edge</li>
                   <li><span className="lp-pd-x">×</span>You have no way to match with the right capital</li>
                   <li><span className="lp-pd-x">×</span>Every depositor question pulls you out of your positions</li>
-                  <li><span className="lp-pd-x">×</span>Drawdowns create noise you have to manage manually</li>
                   <li><span className="lp-pd-x">×</span>You scale by risking more of your own money, not theirs</li>
                 </ul>
               </div>
               <div className="lp-pd-wall">
                 <div className="lp-pd-wall-label">The wall</div>
+                <div className="lp-pd-wall-item">No way to discover if your edge is real</div>
                 <div className="lp-pd-wall-item">No discovery layer</div>
                 <div className="lp-pd-wall-item">No depositor matching</div>
-                <div className="lp-pd-wall-item">No comms when markets move</div>
                 <div className="lp-pd-wall-item">No way to scale edge without scaling personal risk</div>
                 <div className="lp-pd-wall-arrow">↓</div>
                 <div className="lp-pd-badge">Yieldr removes the wall</div>
@@ -304,12 +308,38 @@ export default function HomePage() {
               <div className="lp-pd-col">
                 <div className="lp-pd-header with">With Yieldr</div>
                 <ul className="lp-pd-items">
-                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Quant Agent identifies your edge from your wallet history</span></li>
+                  <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Quant Agent analyzes your wallet and tells you where your edge is real — and where it isn&apos;t</span></li>
                   <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Matching Agent surfaces your vault to the right depositors</span></li>
                   <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Comms Agent handles depositor queries through volatile periods</span></li>
                   <li><span className="lp-pd-check">→</span><span className="lp-pd-with">Monitoring Agent tracks edge decay before it shows in PnL</span></li>
                   <li><span className="lp-pd-check">→</span><span className="lp-pd-with" style={{ color: 'var(--g)', fontWeight: 600 }}>You keep trading. Agents handle the rest.</span></li>
                 </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* ── Solution ── */}
+        <div className="lp-wrap">
+          <section className="lp-section lp-reveal">
+            <div className="lp-sec-head">
+              <div className="lp-sec-tag">The Solution</div>
+              <div className="lp-sec-title">Yieldr gives every verified edge<br /><span className="ac">an agent stack.</span></div>
+              <p className="lp-sec-sub">
+                Not everyone has an edge worth scaling. Yieldr finds out — then builds the fund around the ones who do.
+              </p>
+            </div>
+            <div className="lp-sol-grid">
+              <div className="lp-sol-card">
+                <div className="lp-sol-step">01</div>
+                <div className="lp-sol-title">Quant Agent</div>
+                <p className="lp-sol-desc">Connect your wallet. Get an honest read on your edge: which markets you&apos;re actually strong in, what&apos;s repeatable, what&apos;s noise.</p>
+              </div>
+              <div className="lp-sol-arrow">→</div>
+              <div className="lp-sol-card">
+                <div className="lp-sol-step">02</div>
+                <div className="lp-sol-title">Agent Vault</div>
+                <p className="lp-sol-desc">If your edge holds up, launch a vault and raise outside capital. Agents handle matching, comms, and monitoring — you keep trading.</p>
               </div>
             </div>
           </section>
