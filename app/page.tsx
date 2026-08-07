@@ -264,8 +264,8 @@ export default function HomePage() {
             <p className="lp-hero-tagline">Agent stack for onchain funds.</p>
             <h1>Discover your edge.<br /><span className="ac">Convert it into a fund.</span></h1>
             <p className="lp-hero-sub">
-              Connect your wallet, and let the Quant Agent uncover where your onchain performance
-              is real — then launch an agent vault and turn it into <strong>recurring revenue.</strong>
+              Connect your wallet. Quant Agent reveals your real edge —{' '}
+              <strong>launch a vault and earn like a fund manager.</strong>
             </p>
             <div className="lp-hero-ctas">
               <button className="lp-btn-p" onClick={handleQuantWaitlist}>Join Waitlist for Quant →</button>
