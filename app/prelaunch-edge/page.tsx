@@ -3,6 +3,18 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import './page.css';
 import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS } from './images';
 
+// [isWin, heightPct] — static trade bars for the overview chart
+const TRADE_BARS: [boolean, number][] = [
+  [true,55],[false,28],[true,70],[true,45],[true,82],[true,38],
+  [false,45],[true,60],[true,35],[true,72],[false,20],[true,48],
+  [true,88],[true,52],[false,35],[true,65],[true,42],[true,75],
+  [true,30],[false,55],[true,68],[true,50],[true,85],[false,25],
+  [true,58],[true,40],[true,78],[false,30],[true,62],[true,47],
+  [true,90],[false,38],[true,55],[true,70],[false,22],[true,48],
+  [true,65],[true,33],[false,42],[true,80],[true,58],[true,45],
+  [false,28],[true,72],[true,52],[true,68],[true,40],[true,85],
+];
+
 const AGENT_TABS = ['overview', 'entry', 'exit', 'sizing'] as const;
 type AgentTab = (typeof AGENT_TABS)[number];
 type TermTab = 'leaders' | 'signals' | 'alerts';
@@ -254,6 +266,17 @@ export default function PrelaunchEdgePage() {
                   <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--win)' }} />Exit — 40% of grade</div>
                   <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--warn)' }} />Sizing — 35% of grade</div>
                   <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--agent)' }} />Entry — 25% of grade</div>
+                </div>
+              </div>
+              <div className="pe-trade-chart">
+                <div className="pe-trade-bars">
+                  {TRADE_BARS.map(([win, h], i) => (
+                    <div key={i} className={`pe-trade-bar${win ? ' win' : ' loss'}`} style={{ height: `${h}%` }} />
+                  ))}
+                </div>
+                <div className="pe-trade-chart-ft">
+                  <span>Every trade, last 90 days</span>
+                  <span>293 of 293 shown</span>
                 </div>
               </div>
             </div>

@@ -125,6 +125,14 @@
 .pe-hw-dot{width:7px; height:7px; border-radius:2px;}
 .pe-hb-row{display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;}
 
+/* Trade bar chart */
+.pe-trade-chart{margin-top:28px; border:1px solid var(--hair); border-radius:12px; background:var(--surface-2); padding:18px 18px 12px; overflow:hidden;}
+.pe-trade-bars{display:flex; align-items:flex-end; gap:3px; height:72px;}
+.pe-trade-bar{flex:1; min-width:3px; border-radius:2px 2px 0 0; min-height:3px; opacity:.9;}
+.pe-trade-bar.win{background:var(--win);}
+.pe-trade-bar.loss{background:var(--loss);}
+.pe-trade-chart-ft{display:flex; justify-content:space-between; margin-top:10px; font-family:var(--pe-mono); font-size:9px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-3);}
+
 /* Category header */
 .pe-cat-hd-mini{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; flex-wrap:wrap;}
 .pe-cat-hd-l{display:flex; align-items:center; gap:12px;}
