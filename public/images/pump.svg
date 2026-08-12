@@ -1,5 +1,14 @@
 <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-  <rect width="44" height="44" rx="12" fill="#1A1A1A"/>
-  <text x="22" y="26" font-family="'Arial Black', Arial, sans-serif" font-size="11" font-weight="900" fill="#00FF9D" text-anchor="middle">pump</text>
-  <text x="22" y="37" font-family="'Arial Black', Arial, sans-serif" font-size="10" font-weight="900" fill="#666" text-anchor="middle">.fun</text>
+  <rect width="44" height="44" rx="10" fill="#F5F5F5"/>
+  <defs>
+    <linearGradient id="pumpG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4040CC"/>
+      <stop offset="50%" stop-color="#CC2200"/>
+      <stop offset="100%" stop-color="#FF6600"/>
+    </linearGradient>
+  </defs>
+  <!-- pump.fun swirl/arc logo -->
+  <path d="M22 8 C30 8 36 14 36 22 C36 30 30 36 22 36 C14 36 8 30 8 22 C8 14 14 8 22 8Z" fill="none" stroke="url(#pumpG)" stroke-width="5" stroke-linecap="round" stroke-dasharray="52 20"/>
+  <!-- Inner mark -->
+  <circle cx="22" cy="22" r="4" fill="url(#pumpG)"/>
 </svg>
