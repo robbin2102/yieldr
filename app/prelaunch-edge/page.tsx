@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import './page.css';
-import { NAV_MARK, BASE_LOGO, RH_LOGO, CRED_BADGE, EDGE_B64, AVATARS } from './images';
+import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS } from './images';
 
 const AGENT_TABS = ['overview', 'entry', 'exit', 'sizing'] as const;
 type AgentTab = (typeof AGENT_TABS)[number];
@@ -193,31 +193,6 @@ export default function PrelaunchEdgePage() {
             <div className="pe-tick-lbl">Prelaunch ARR</div>
             <div className="pe-tick-val pe-num">${arr.toLocaleString()}</div>
             <div className="pe-tick-src">from onchain USDC receipts</div>
-          </div>
-        </div>
-      </div>
-
-      {/* CHAIN SUPPORT */}
-      <div className="pe-sec" style={{ paddingBottom: 20 }}>
-        <div className="pe-wrap">
-          <div className="pe-slbl"><span>Where It Runs</span><span className="pe-ln" /></div>
-          <h2 className="pe-sec-h">Scan a wallet on either chain.</h2>
-          <p className="pe-sec-p">Yieldr reads onchain history natively — connect any wallet on these networks and the agent picks up your full trade history automatically.</p>
-          <div className="pe-chain-grid" style={{ marginTop: 20 }}>
-            <div className="pe-chain-card base">
-              <div className="pe-chain-logo"><img src={BASE_LOGO} alt="Base" /></div>
-              <div>
-                <div className="pe-chain-name">Base <span className="pe-chain-live">Live</span></div>
-                <div className="pe-chain-desc">Full support today — meme &amp; alt coin history, OG wallet tracking, and the Quant Terminal all run natively on Base.</div>
-              </div>
-            </div>
-            <div className="pe-chain-card rh">
-              <div className="pe-chain-logo"><img src={RH_LOGO} alt="Robinhood Chain" /></div>
-              <div>
-                <div className="pe-chain-name">Robinhood Chain <span className="pe-chain-live">Live</span></div>
-                <div className="pe-chain-desc">Wallet scans and signal tracking extend to Robinhood Chain — including tokenized-equity activity as that market grows.</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

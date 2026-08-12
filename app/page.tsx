@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './landing.css';
 
@@ -128,6 +129,7 @@ function AnimatedCount({ target, prefix = '', className = 'hp-tick-val hp-num' }
 
 
 export default function HomePage() {
+  const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
@@ -154,7 +156,7 @@ export default function HomePage() {
               <Link href="/docs">Docs</Link>
               <Link href="/team">Team</Link>
             </div>
-            <Link href="/prelaunch-edge" className="hp-nav-cta">Find Your Edge</Link>
+            <button className="hp-nav-cta" onClick={() => router.push('/prelaunch-edge')}>Find Your Edge</button>
             <button
               className="hp-nav-burger"
               onClick={() => setMobileNavOpen(v => !v)}
@@ -189,7 +191,7 @@ export default function HomePage() {
             real, repeatable edge today. Later phases turn it into a fund you don&apos;t have to run yourself.
           </p>
           <div className="hp-hero-ctas">
-            <Link href="/prelaunch-edge" className="hp-btn-p">Find Your Edge →</Link>
+            <button className="hp-btn-p" onClick={() => router.push('/prelaunch-edge')}>Find Your Edge →</button>
             <button
               className="hp-btn-tertiary"
               onClick={() => document.getElementById('vaults')?.scrollIntoView({ behavior: 'smooth' })}
@@ -359,7 +361,7 @@ export default function HomePage() {
           </div>
 
           <div style={{ marginTop: 30, display: 'flex', justifyContent: 'center' }}>
-            <Link href="/prelaunch-edge" className="hp-btn-p">Find Your Edge →</Link>
+            <button className="hp-btn-p" onClick={() => router.push('/prelaunch-edge')}>Find Your Edge →</button>
           </div>
         </div>
       </div>
