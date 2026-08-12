@@ -70,9 +70,9 @@ const CREDIBILITY = [
 ];
 
 const MARKETS = [
-  { name: 'FOMO', status: 'building' as const, statusLabel: 'Building', img: '/images/fomo.svg' },
-  { name: 'pump.fun', status: 'building' as const, statusLabel: 'Building', img: '/images/pump.svg' },
-  { name: 'Polymarket', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/poly.svg' },
+  { name: 'FOMO', status: 'building' as const, statusLabel: 'Building', img: '/images/fomo.png' },
+  { name: 'pump.fun', status: 'building' as const, statusLabel: 'Building', img: '/images/pump.png' },
+  { name: 'Polymarket', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/poly.png' },
   { name: 'Uniswap', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/uni.png' },
   { name: 'Aerodrome', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/aero.png' },
 ];
@@ -285,7 +285,7 @@ export default function HomePage() {
                 </div>
                 <div className="hp-rm-visual">
                   <div className="hp-tok-hd2">
-                    <div className="hp-tok-av2">🐱</div>
+                    <div className="hp-tok-av2"><img src="/images/cashcat.png" alt="CASHCAT" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'inherit'}} /></div>
                     <div>
                       <div className="hp-tok-name2">CASHCAT <span className="hp-tok-leaf">🍃</span></div>
                       <div className="hp-tok-addr2">0x020b...1018b4</div>
