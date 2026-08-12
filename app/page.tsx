@@ -126,10 +126,6 @@ function AnimatedCount({ target, prefix = '', className = 'hp-tick-val hp-num' }
   return <div className={className} ref={ref}>{prefix}0</div>;
 }
 
-// TODO: point at the Quant Agent wallet-scan tool once that page exists in this app.
-function handlePlaceholderCta(e: React.MouseEvent) {
-  e.preventDefault();
-}
 
 export default function HomePage() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -158,7 +154,7 @@ export default function HomePage() {
               <Link href="/docs">Docs</Link>
               <Link href="/team">Team</Link>
             </div>
-            <button className="hp-nav-cta" onClick={handlePlaceholderCta}>Find Your Edge</button>
+            <Link href="/prelaunch-edge" className="hp-nav-cta">Find Your Edge</Link>
             <button
               className="hp-nav-burger"
               onClick={() => setMobileNavOpen(v => !v)}
@@ -193,7 +189,7 @@ export default function HomePage() {
             real, repeatable edge today. Later phases turn it into a fund you don&apos;t have to run yourself.
           </p>
           <div className="hp-hero-ctas">
-            <button className="hp-btn-p" onClick={handlePlaceholderCta}>Find Your Edge →</button>
+            <Link href="/prelaunch-edge" className="hp-btn-p">Find Your Edge →</Link>
             <button
               className="hp-btn-tertiary"
               onClick={() => document.getElementById('vaults')?.scrollIntoView({ behavior: 'smooth' })}
@@ -363,7 +359,7 @@ export default function HomePage() {
           </div>
 
           <div style={{ marginTop: 30, display: 'flex', justifyContent: 'center' }}>
-            <button className="hp-btn-p" onClick={handlePlaceholderCta}>Find Your Edge →</button>
+            <Link href="/prelaunch-edge" className="hp-btn-p">Find Your Edge →</Link>
           </div>
         </div>
       </div>
