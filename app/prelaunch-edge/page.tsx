@@ -210,7 +210,7 @@ export default function PrelaunchEdgePage() {
       </div>
 
       {/* QUANT AGENT SHOWCASE */}
-      <div className="pe-sec" style={{ paddingTop: 0 }} id="pe-agent">
+      <div className="pe-sec" style={{ paddingTop: 60 }} id="pe-agent">
         <div className="pe-wrap">
           <div className="pe-slbl"><span>Quant Agent</span><span className="pe-ln" /></div>
           <h2 className="pe-sec-h">This is what your edge looks like — under the hood.</h2>
