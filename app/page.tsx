@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import './landing.css';
 
@@ -70,11 +70,11 @@ const CREDIBILITY = [
 ];
 
 const MARKETS = [
-  { name: 'FOMO', status: 'building' as const, statusLabel: 'Building', mono: 'FM' },
-  { name: 'pump.fun', status: 'building' as const, statusLabel: 'Building', mono: 'PF' },
-  { name: 'Polymarket', status: 'soon' as const, statusLabel: 'Upcoming', mono: 'PM' },
-  { name: 'Uniswap', status: 'soon' as const, statusLabel: 'Upcoming', mono: 'UNI' },
-  { name: 'Aerodrome', status: 'soon' as const, statusLabel: 'Upcoming', mono: 'AERO' },
+  { name: 'FOMO', status: 'building' as const, statusLabel: 'Building', img: '/images/fomo.svg' },
+  { name: 'pump.fun', status: 'building' as const, statusLabel: 'Building', img: '/images/pump.svg' },
+  { name: 'Polymarket', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/poly.svg' },
+  { name: 'Uniswap', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/uni.svg' },
+  { name: 'Aerodrome', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/aero.svg' },
 ];
 
 const CHAINS = [
@@ -83,21 +83,21 @@ const CHAINS = [
     name: 'Base',
     badge: 'live' as const,
     desc: 'Full support today — meme & alt coin history, OG wallet tracking, and the Quant Terminal all run natively on Base.',
-    mono: 'B',
+    img: '/images/base.svg',
   },
   {
     cls: 'rh' as const,
     name: 'Robinhood Chain',
     badge: 'live' as const,
     desc: 'Wallet scans and signal tracking extend to Robinhood Chain — including tokenized-equity activity as that market grows.',
-    mono: 'RH',
+    img: '/images/hood.svg',
   },
   {
     cls: '' as const,
     name: 'Solana',
     badge: 'soon' as const,
     desc: 'Wallet scans on Solana are coming next — home to some of the fastest-moving meme markets onchain.',
-    mono: 'SOL',
+    img: '/images/sol.svg',
   },
 ];
 
@@ -132,6 +132,8 @@ function handlePlaceholderCta(e: React.MouseEvent) {
 }
 
 export default function HomePage() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   return (
     <div className="hp-root">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -143,28 +145,28 @@ export default function HomePage() {
         <div className="hp-wrap hp-nav-in">
           <div className="hp-nav-id">
             <div className="hp-nav-mark">
-              <svg width="32" height="32" viewBox="0 0 100 120" fill="none">
-                <path d="M50 10Q70 30 80 60Q70 90 50 110Q30 90 20 60Q30 30 50 10Z" fill="#17E37A" />
-                <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000" opacity=".3" />
-                <circle cx="50" cy="60" r="8" fill="#FFF" opacity=".9" />
-              </svg>
+              <img src="/nav-mark.png" alt="Yieldr" />
             </div>
             <div className="hp-nav-name">YIELDR</div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-            <div
-              className="hp-nav-links"
-              style={{ display: 'flex', gap: 20, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ink-3)' }}
-            >
-              <a href="#roadmap" style={{ textDecoration: 'none' }}>Roadmap</a>
-              <Link href="/vaults" style={{ textDecoration: 'none' }}>Vaults</Link>
-              <Link href="/buy" style={{ textDecoration: 'none' }}>Buy</Link>
-              <Link href="/allocations" style={{ textDecoration: 'none' }}>Allocations</Link>
-              <Link href="/build-in-public" style={{ textDecoration: 'none' }}>Build Log</Link>
-              <Link href="/docs" style={{ textDecoration: 'none' }}>Docs</Link>
-              <Link href="/team" style={{ textDecoration: 'none' }}>Team</Link>
+          <div className="hp-nav-right">
+            <div className={`hp-nav-links${mobileNavOpen ? ' hp-open' : ''}`}>
+              <a href="#roadmap">Roadmap</a>
+              <Link href="/vaults">Vaults</Link>
+              <Link href="/buy">Buy</Link>
+              <Link href="/build-in-public">Build Log</Link>
+              <Link href="/docs">Docs</Link>
+              <Link href="/team">Team</Link>
             </div>
             <button className="hp-nav-cta" onClick={handlePlaceholderCta}>Find Your Edge</button>
+            <button
+              className="hp-nav-burger"
+              onClick={() => setMobileNavOpen(v => !v)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileNavOpen}
+            >
+              <span /><span /><span />
+            </button>
           </div>
         </div>
       </div>
@@ -483,7 +485,9 @@ export default function HomePage() {
           <div className="hp-market-grid">
             {MARKETS.map((m) => (
               <div className="hp-market-card" key={m.name}>
-                <div className="hp-market-logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-3)', fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700, color: 'var(--ink-2)' }}>{m.mono}</div>
+                <div className="hp-market-logo">
+                  <img src={m.img} alt={m.name} />
+                </div>
                 <div className="hp-market-name">{m.name}</div>
                 <div className={`hp-market-status hp-${m.status}`}>{m.statusLabel}</div>
               </div>
@@ -503,7 +507,9 @@ export default function HomePage() {
           <div className="hp-chain-grid" style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
             {CHAINS.map((c) => (
               <div className={`hp-chain-card ${c.cls ? `hp-${c.cls}` : ''}`} key={c.name}>
-                <div className="hp-chain-logo" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-3)', fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700, color: 'var(--ink-2)' }}>{c.mono}</div>
+                <div className="hp-chain-logo">
+                  <img src={c.img} alt={c.name} />
+                </div>
                 <div>
                   <div className="hp-chain-name">{c.name} <span className={c.badge === 'live' ? 'hp-chain-live' : 'hp-chain-soon'}>{c.badge === 'live' ? 'Live' : 'Upcoming'}</span></div>
                   <div className="hp-chain-desc">{c.desc}</div>
@@ -524,7 +530,6 @@ export default function HomePage() {
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">X</a>
             <Link href="/vaults">Vaults</Link>
             <Link href="/buy">Buy</Link>
-            <Link href="/allocations">Allocations</Link>
             <Link href="/docs">Docs</Link>
             <Link href="/build-in-public">Build Log</Link>
             <Link href="/team">Team</Link>
