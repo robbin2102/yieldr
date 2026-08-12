@@ -1,4 +1,7 @@
 <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="22" cy="22" r="22" fill="#00C805"/>
-  <path d="M14 10h4.5v9.5l7-9.5H31L23.5 20.5 32 34h-5.5L21 24.5l-2.5 3.3V34H14V10z" fill="white"/>
+  <rect width="44" height="44" rx="10" fill="#00C805"/>
+  <!-- Robinhood feather silhouette -->
+  <path d="M22 6 C22 6 14 10 12 18 C10 26 14 32 18 36 C18 36 20 30 22 28 C24 26 26 24 26 20 C26 16 24 14 22 6Z" fill="#006600" opacity="0.5"/>
+  <path d="M22 6 C22 6 30 10 32 18 C34 26 30 32 26 36 C26 36 24 30 22 28 C20 26 18 24 18 20 C18 16 20 14 22 6Z" fill="#006600" opacity="0.5"/>
+  <path d="M22 6 C22 6 17 12 16 19 C15 26 18 31 22 36 C26 31 29 26 28 19 C27 12 22 6 22 6Z" fill="white" opacity="0.9"/>
 </svg>

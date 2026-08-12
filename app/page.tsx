@@ -73,8 +73,8 @@ const MARKETS = [
   { name: 'FOMO', status: 'building' as const, statusLabel: 'Building', img: '/images/fomo.svg' },
   { name: 'pump.fun', status: 'building' as const, statusLabel: 'Building', img: '/images/pump.svg' },
   { name: 'Polymarket', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/poly.svg' },
-  { name: 'Uniswap', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/uni.svg' },
-  { name: 'Aerodrome', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/aero.svg' },
+  { name: 'Uniswap', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/uni.png' },
+  { name: 'Aerodrome', status: 'soon' as const, statusLabel: 'Upcoming', img: '/images/aero.png' },
 ];
 
 const CHAINS = [
@@ -83,21 +83,21 @@ const CHAINS = [
     name: 'Base',
     badge: 'live' as const,
     desc: 'Full support today — meme & alt coin history, OG wallet tracking, and the Quant Terminal all run natively on Base.',
-    img: '/images/base.svg',
+    img: '/images/base.png',
   },
   {
     cls: 'rh' as const,
     name: 'Robinhood Chain',
     badge: 'live' as const,
     desc: 'Wallet scans and signal tracking extend to Robinhood Chain — including tokenized-equity activity as that market grows.',
-    img: '/images/hood.svg',
+    img: '/images/hood.png',
   },
   {
     cls: '' as const,
     name: 'Solana',
     badge: 'soon' as const,
     desc: 'Wallet scans on Solana are coming next — home to some of the fastest-moving meme markets onchain.',
-    img: '/images/sol.svg',
+    img: '/images/sol.png',
   },
 ];
 
