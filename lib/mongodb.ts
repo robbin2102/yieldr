@@ -1,11 +1,7 @@
 // Mongoose MongoDB Connection
 import mongoose from 'mongoose';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your MongoDB URI to .env.local');
-}
-
-const MONGODB_URI: string = process.env.MONGODB_URI;
+const MONGODB_URI: string = process.env.MONGODB_URI ?? '';
 
 type MongooseConnection = typeof mongoose;
 
@@ -31,6 +27,7 @@ if (!global.mongooseCache) {
 }
 
 async function connectDB(): Promise<MongooseConnection> {
+  if (!MONGODB_URI) throw new Error('MONGODB_URI is not set');
   if (cached.conn) {
     console.log('✅ Using cached MongoDB connection');
     return cached.conn;

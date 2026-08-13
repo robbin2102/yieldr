@@ -159,9 +159,11 @@ export async function GET() {
           capitalDeployed30d,
           daysWonRate,
           openPositionsValue,
+          vaultSize:          statsDoc.vault_size_usdc ?? 0,
           winRate:            parseFloat((statsDoc.win_rate ?? 0).toFixed(1)),
           trades:             statsDoc.win_rate_sample_size ?? 0,
           lastTradeTs:        statsDoc.last_polled_activity_ts ?? 0,
+          initialCapital:     statsDoc.initial_capital_usdc ?? 0,
         };
 
         const openPositions = filteredPositions.length

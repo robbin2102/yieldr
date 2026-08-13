@@ -187,7 +187,7 @@ export default function HomePage() {
           <div className="hp-nav-right">
             <div className={`hp-nav-links${mobileNavOpen ? ' hp-open' : ''}`}>
               <a href="#roadmap">Roadmap</a>
-              <Link href="/vaults-explorer">Vaults</Link>
+              <Link href="/explorer">Vaults</Link>
               <Link href="/buy">Buy</Link>
               <Link href="/build-in-public">Build Log</Link>
               <Link href="/docs">Docs</Link>
@@ -471,7 +471,7 @@ export default function HomePage() {
               10 more vaults are in development across Avantis, Hyperliquid, Aerodrome, and more chains —{' '}
               <b>opening to depositors as the Allocation Agent ships.</b>
             </div>
-            <Link href="/vaults-explorer" className="hp-btn-s">Explore All Agent Vaults ↗</Link>
+            <Link href="/explorer" className="hp-btn-s">Explore All Agent Vaults ↗</Link>
           </div>
           <div className="hp-vault-legal">
             Vaults are not yet live for outside deposits · Target figures are estimates, not guarantees · Not available to residents of restricted jurisdictions.
@@ -561,7 +561,7 @@ export default function HomePage() {
           </div>
           <div className="hp-foot-r">
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">X</a>
-            <Link href="/vaults-explorer">Vaults</Link>
+            <Link href="/explorer">Vaults</Link>
             <Link href="/buy">Buy</Link>
             <Link href="/docs">Docs</Link>
             <Link href="/build-in-public">Build Log</Link>
