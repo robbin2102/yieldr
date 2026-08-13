@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { EarlyAccessPopup } from '../components/payment/EarlyAccessPopup';
 import { UserProfile } from '../components/UserProfile';
+import { QuantWaitlistModal } from '../components/QuantWaitlistModal';
 import { usePayment } from '../context/PaymentContext';
 import { useAccount } from 'wagmi';
 import './docs.css';
@@ -49,6 +50,8 @@ export default function DocsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [quantModalOpen, setQuantModalOpen] = useState(false);
   const { hasCompletedPayment } = usePayment();
   const { isConnected } = useAccount();
 
@@ -203,35 +206,30 @@ export default function DocsPage() {
       {/* Header */}
       <nav className="dx-nav">
         <Link href="/" className="dx-nav-l">
-          <svg className="dx-nav-logo-svg" viewBox="0 0 100 120">
-            <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00E87B"/>
-            <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000" opacity=".3"/>
-            <circle cx="50" cy="60" r="8" fill="#FFF" opacity=".9"/>
-          </svg>
+          <div className="dx-nav-mark"><img src="/nav-mark.png" alt="Yieldr" /></div>
           <span className="dx-nav-brand">YIELDR</span>
         </Link>
-        <div className="dx-nav-links">
-          <Link href="/">Home</Link>
-          <Link href="/vaults">Vaults</Link>
-          <Link href="/docs" className="dx-active">Docs</Link>
-          <Link href="/build-in-public">Build Log</Link>
-        </div>
         <div className="dx-nav-r">
-          <div className="dx-nav-soc">
-            <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" title="X / Twitter">
-              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-
-            <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" title="GitHub">
-              <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z"/></svg>
-            </a>
+          <div className={`dx-nav-links${mobileNavOpen ? ' dx-nav-open' : ''}`}>
+            <Link href="/">Home</Link>
+            <Link href="/explorer">Vaults</Link>
+            <Link href="/build-in-public">Build Log</Link>
+            <Link href="/docs" className="dx-active">Docs</Link>
           </div>
           {hasCompletedPayment && isConnected ? (
             <UserProfile />
           ) : (
-            <Link href="/explorer" className="dx-nav-cta">Explore Vaults ↗</Link>
+            <button className="dx-nav-cta" onClick={() => setQuantModalOpen(true)}>Join Quant Waitlist</button>
           )}
-          <button className="dx-nav-hamburger" onClick={toggleSidebar} aria-label="Open menu">☰</button>
+          <button
+            className="dx-nav-burger"
+            onClick={() => setMobileNavOpen((v) => !v)}
+            aria-label="Toggle menu"
+            aria-expanded={mobileNavOpen}
+          >
+            <span /><span /><span />
+          </button>
+          <button className="dx-nav-hamburger" onClick={toggleSidebar} aria-label="Open docs sections">☰</button>
         </div>
       </nav>
 
@@ -920,7 +918,7 @@ export default function DocsPage() {
                   <div className="dx-token-stat-label">Total Supply</div>
                 </div>
                 <div>
-                  <div className="dx-token-stat-value">No VC</div>
+                  <div className="dx-token-stat-value">Fair Launch</div>
                   <div className="dx-token-stat-label">Token Structure</div>
                 </div>
               </div>
@@ -947,7 +945,7 @@ export default function DocsPage() {
           <section className={'dx-page ' + (activePage === 'roadmap' ? 'active' : '')} id="page-roadmap">
             <SectionTag pageId="roadmap" />
             <h1>Roadmap</h1>
-            <p className="dx-subtitle">From live agent trading to the open agent fund network.</p>
+            <p className="dx-subtitle">From Quant Agent trials to the open agent fund network.</p>
 
             <div className="dx-timeline">
               <div className="dx-roadmap-item current">
@@ -955,29 +953,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
                   <div className="dx-roadmap-phase">Phase 1</div>
-                  <div className="dx-roadmap-date live">Live Now</div>
-                  <h3 className="dx-roadmap-title">Live Agent Trading</h3>
-                  <p className="dx-roadmap-desc">Yieldr operates live agent trading strategies using project capital. Current focus: Polymarket prediction trading, wallet edge detection, agent research workflows, public performance reporting, and build-in-public transparency.</p>
-                </div>
-              </div>
-
-              <div className="dx-roadmap-item">
-                <div className="dx-roadmap-connector"></div>
-                <div className="dx-roadmap-dot"></div>
-                <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 2</div>
-                  <div className="dx-roadmap-date">TBD</div>
-                  <h3 className="dx-roadmap-title">$YLDR TGE + Waitlist Opens</h3>
-                  <p className="dx-roadmap-desc">$YLDR TGE. Tokenomics and launch page published before launch. Depositor whitelist and fund launch waitlist open — traders connect wallets, select markets, and join the vault pipeline.</p>
-                </div>
-              </div>
-
-              <div className="dx-roadmap-item">
-                <div className="dx-roadmap-connector"></div>
-                <div className="dx-roadmap-dot"></div>
-                <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 3</div>
-                  <div className="dx-roadmap-date">Aug 2026</div>
+                  <div className="dx-roadmap-date live">Launching Aug 15</div>
                   <h3 className="dx-roadmap-title">Quant Agent Trials</h3>
                   <p className="dx-roadmap-desc">Waitlisted traders get access to the Quant Agent — edge detection and wallet analysis across supported protocols and chains. Traders can run their first edge profile, understand where performance exists, and begin the vault readiness process.</p>
                 </div>
@@ -987,7 +963,18 @@ export default function DocsPage() {
                 <div className="dx-roadmap-connector"></div>
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 4</div>
+                  <div className="dx-roadmap-phase">Phase 2</div>
+                  <div className="dx-roadmap-date">TBD</div>
+                  <h3 className="dx-roadmap-title">$YLDR TGE</h3>
+                  <p className="dx-roadmap-desc">$YLDR TGE. Tokenomics and launch page published before launch.</p>
+                </div>
+              </div>
+
+              <div className="dx-roadmap-item">
+                <div className="dx-roadmap-connector"></div>
+                <div className="dx-roadmap-dot"></div>
+                <div className="dx-roadmap-content">
+                  <div className="dx-roadmap-phase">Phase 3</div>
                   <div className="dx-roadmap-date">Dec 2026</div>
                   <h3 className="dx-roadmap-title">Full Agent Stack</h3>
                   <p className="dx-roadmap-desc">Monitoring Agent, Comms Agent, and Allocation Agent roll out. Traders and depositors can access the full agent OS: continuous edge monitoring, depositor communication, and allocation intelligence across the vault pipeline.</p>
@@ -998,7 +985,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-connector"></div>
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 5</div>
+                  <div className="dx-roadmap-phase">Phase 4</div>
                   <div className="dx-roadmap-date">Q1 2027</div>
                   <h3 className="dx-roadmap-title">Vault Infrastructure</h3>
                   <p className="dx-roadmap-desc">Onchain vault infrastructure deploys. Waitlisted traders with sustained, agent-verified edge begin launching agent vaults. Whitelisted depositors gain access to make deposits into selected vaults for the first time.</p>
@@ -1009,7 +996,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-connector"></div>
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 6</div>
+                  <div className="dx-roadmap-phase">Phase 5</div>
                   <div className="dx-roadmap-date">Q1–Q2 2027</div>
                   <h3 className="dx-roadmap-title">Full Beta Launch</h3>
                   <p className="dx-roadmap-desc">Full beta opens across agent vaults, depositor whitelist, and allocation agents. Matching, comms, monitoring, and allocation agents operate across the live vault network. Expansion across Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, Virtuals, and selected RWA venues.</p>
@@ -1020,7 +1007,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-connector"></div>
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
-                  <div className="dx-roadmap-phase">Phase 7 — Vision</div>
+                  <div className="dx-roadmap-phase">Phase 6 — Vision</div>
                   <div className="dx-roadmap-date">Open Network</div>
                   <h3 className="dx-roadmap-title">Open Agent Fund Network</h3>
                   <p className="dx-roadmap-desc">Any trader with verified edge can launch an agent vault. Any depositor can discover, whitelist, and allocate across vaults through allocation agents. Yieldr becomes the agent OS for onchain funds.</p>
@@ -1117,6 +1104,7 @@ export default function DocsPage() {
       </div>
 
       <EarlyAccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+      <QuantWaitlistModal isOpen={quantModalOpen} onClose={() => setQuantModalOpen(false)} />
     </div>
   );
 }

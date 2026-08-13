@@ -185,7 +185,7 @@ export default function BuyPage() {
           <span className="bp-nav-brand">YIELDR</span>
         </div>
         <div className="bp-nav-r">
-          <Link href="/vaults" className="bp-nav-back">&#8592; Back to Vaults</Link>
+          <Link href="/explorer" className="bp-nav-back">&#8592; Back to Vaults</Link>
           <NavLinks showSocials={false} />
         </div>
       </nav>
