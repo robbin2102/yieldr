@@ -36,6 +36,7 @@ background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0
   .nav-links a{padding:12px 0;width:100%;opacity:1}
   .nav-links.nav-open{max-height:320px}
   .nav-cta{display:none}
+  .nav-soc{display:none}
   .nav-burger{display:flex}
 }
 .nav-soc{display:flex;gap:.6rem}

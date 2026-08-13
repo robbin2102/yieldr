@@ -235,6 +235,7 @@
 /* ---- Responsive ---- */
 @media (max-width: 1024px) {
   .dx-nav-cta { display: none; }
+  .dx-nav-soc { display: none; }
   .dx-nav-soc-discord { display: none; }
   .dx-nav-hamburger { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; font-size: 1.1rem; }
   .dx-sidebar { display: none; }
