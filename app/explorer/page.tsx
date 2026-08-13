@@ -420,7 +420,6 @@ export default function ExplorerPage() {
             <Link href="/explorer" className="active">Vaults</Link>
             <Link href="/build-in-public">Build Log</Link>
             <Link href="/docs">Docs</Link>
-            <Link href="/team">Team</Link>
           </div>
           <button className="ex-nav-cta" onClick={() => setQuantModalOpen(true)}>Join Quant Waitlist</button>
           <button

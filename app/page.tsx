@@ -188,10 +188,8 @@ export default function HomePage() {
             <div className={`hp-nav-links${mobileNavOpen ? ' hp-open' : ''}`}>
               <a href="#roadmap">Roadmap</a>
               <Link href="/explorer">Vaults</Link>
-              <Link href="/buy">Buy</Link>
               <Link href="/build-in-public">Build Log</Link>
               <Link href="/docs">Docs</Link>
-              <Link href="/team">Team</Link>
             </div>
             <button className="hp-nav-cta" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist</button>
             <button
@@ -562,10 +560,8 @@ export default function HomePage() {
           <div className="hp-foot-r">
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">X</a>
             <Link href="/explorer">Vaults</Link>
-            <Link href="/buy">Buy</Link>
             <Link href="/docs">Docs</Link>
             <Link href="/build-in-public">Build Log</Link>
-            <Link href="/team">Team</Link>
           </div>
         </div>
         <div className="hp-legal-block">
