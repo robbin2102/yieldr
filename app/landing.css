@@ -76,19 +76,20 @@
 .hp-console-frame iframe{width:100%; height:760px; border:none; display:block; background:#000;}
 
 /* ============ LIVE TICKER ============ */
-.hp-ticker{border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); background:var(--surface); margin-top:52px;}
-.hp-ticker-in{display:grid; grid-template-columns:repeat(3,1fr); gap:0;}
-.hp-tick-cell{padding:20px 24px; border-right:1px solid var(--hair); text-align:center;}
-.hp-tick-cell:last-child{border-right:none;}
-.hp-tick-lbl{font-family:var(--mono); font-size:9.5px; letter-spacing:.6px; text-transform:uppercase; color:var(--ink-3); display:flex; align-items:center; justify-content:center; gap:6px;}
+.hp-ticker{padding:52px 0 0;}
+.hp-ticker-in{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+.hp-ticker-in-3{grid-template-columns:repeat(3,1fr);}
+.hp-tick-card{border:1px solid var(--hair); border-radius:16px; background:var(--surface); padding:24px 20px; text-align:center; transition:border-color .15s, transform .15s;}
+.hp-tick-card:hover{border-color:var(--hair-2); transform:translateY(-2px);}
+.hp-tick-card-cd{border-color:var(--win-line); background:linear-gradient(180deg, var(--win-dim), var(--surface) 65%);}
+.hp-tick-lbl{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--ink-3); display:flex; align-items:center; justify-content:center; gap:6px;}
 .hp-tick-lbl .hp-ld{width:5px; height:5px; border-radius:50%; background:var(--win); animation:hp-pulse 1.4s infinite;}
-.hp-tick-val{font-family:var(--mono); font-size:24px; font-weight:800; color:var(--ink-1); margin-top:6px;}
+.hp-tick-val{font-family:var(--mono); font-size:32px; font-weight:800; color:var(--ink-1); margin-top:12px; letter-spacing:-.5px; font-variant-numeric:tabular-nums;}
 .hp-tick-val.hp-win{color:var(--win);}
-.hp-tick-src{font-size:10px; color:var(--ink-3); margin-top:4px;}
-@media (max-width:760px){.hp-ticker-in{grid-template-columns:1fr;} .hp-tick-cell{border-right:none; border-bottom:1px solid var(--hair);}}
-.hp-ticker-in-2{grid-template-columns:repeat(2,1fr);}
-.hp-tick-val.hp-countdown{color:var(--win); font-size:20px; letter-spacing:.3px;}
-@media (max-width:480px){.hp-tick-val.hp-countdown{font-size:16px;}}
+.hp-tick-src{font-size:11.5px; color:var(--ink-3); margin-top:8px;}
+.hp-tick-val.hp-countdown{color:var(--win); font-size:26px; letter-spacing:.2px;}
+@media (max-width:760px){.hp-ticker-in-3{grid-template-columns:1fr;}}
+@media (max-width:480px){.hp-tick-val{font-size:26px;} .hp-tick-val.hp-countdown{font-size:21px;}}
 
 /* ============ QUANT WAITLIST MODAL ============ */
 .hp-wl-overlay{position:fixed; inset:0; background:rgba(0,0,0,.82); backdrop-filter:blur(8px); z-index:200; display:flex; align-items:center; justify-content:center; padding:20px;}

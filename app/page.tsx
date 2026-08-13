@@ -15,6 +15,7 @@ const MARQUEE_ITEMS = [
 // Quant Agent goes live 15-Aug-2026, 11:00 PM SGT (UTC+8) = 15:00 UTC
 const QUANT_LAUNCH_AT = new Date('2026-08-15T15:00:00Z');
 const DEFAULT_WAITLIST_COUNT = 542;
+const WAITLIST_AUM = 2_100_000;
 
 const PROBLEM_ITEMS = [
   "You can't tell if your wins are edge, luck, or beta",
@@ -111,6 +112,10 @@ const SPARK_HEIGHTS = [
 ];
 const SPARK_LOSS_IDX = new Set([1,6,10,15,19,23,27,30,34,38,42,45]);
 
+function fmtAumM(n: number): string {
+  return `$${(n / 1_000_000).toFixed(1)}M`;
+}
+
 function formatCountdown(ms: number): string {
   if (ms <= 0) return 'LIVE NOW';
   const totalSeconds = Math.floor(ms / 1000);
@@ -133,7 +138,7 @@ function useCountdown(target: Date) {
   return remaining;
 }
 
-function AnimatedCount({ target, prefix = '', className = 'hp-tick-val hp-num' }: { target: number; prefix?: string; className?: string }) {
+function AnimatedCount({ target, prefix = '', format, className = 'hp-tick-val hp-num' }: { target: number; prefix?: string; format?: (n: number) => string; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
@@ -144,13 +149,13 @@ function AnimatedCount({ target, prefix = '', className = 'hp-tick-val hp-num' }
     function step(t: number) {
       const p = Math.min(1, (t - t0) / dur);
       const val = Math.floor(target * (1 - Math.pow(1 - p, 3)));
-      if (el) el.textContent = prefix + val.toLocaleString('en-US');
+      if (el) el.textContent = format ? format(val) : prefix + val.toLocaleString('en-US');
       if (p < 1) raf = requestAnimationFrame(step);
     }
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [target, prefix]);
-  return <div className={className} ref={ref}>{prefix}0</div>;
+  }, [target, prefix, format]);
+  return <div className={className} ref={ref}>{format ? format(0) : prefix + '0'}</div>;
 }
 
 
@@ -240,13 +245,18 @@ export default function HomePage() {
       </div>
 
       <div className="hp-ticker">
-        <div className="hp-wrap hp-ticker-in hp-ticker-in-2">
-          <div className="hp-tick-cell">
+        <div className="hp-wrap hp-ticker-in hp-ticker-in-3">
+          <div className="hp-tick-card">
             <div className="hp-tick-lbl"><span className="hp-ld" />Quants on Waitlist</div>
             <AnimatedCount target={waitlistCount} className="hp-tick-val hp-num hp-win" />
             <div className="hp-tick-src">reserved for Quant Agent launch</div>
           </div>
-          <div className="hp-tick-cell">
+          <div className="hp-tick-card">
+            <div className="hp-tick-lbl"><span className="hp-ld" />AUM on Waitlist</div>
+            <AnimatedCount target={WAITLIST_AUM} format={fmtAumM} className="hp-tick-val hp-num hp-win" />
+            <div className="hp-tick-src">committed across waitlisted vaults</div>
+          </div>
+          <div className="hp-tick-card hp-tick-card-cd">
             <div className="hp-tick-lbl">Quant Agent Launches In</div>
             <div className="hp-tick-val hp-num hp-countdown">
               {launchRemaining === null ? '—' : formatCountdown(launchRemaining)}
@@ -429,19 +439,22 @@ export default function HomePage() {
           <div className="hp-slbl"><span>Up Next</span><span className="hp-ln" /></div>
           <h2 className="hp-sec-h">12 agent vaults are already gathering commitments.</h2>
           <p className="hp-sec-p">
-            Together targeting $1.8M in AUM across Base, HOOD Chain, and beyond. Whitelist a wallet now to be
+            Together targeting $2.1M in AUM across Base, HOOD Chain, and beyond. Whitelist a wallet now to be
             first in when Agent Vaults open — this is what Phase 4 (Allocation Agent) turns into real,
             depositable funds.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 2, margin: '22px 0', border: '1px solid var(--hair)', borderRadius: 14, overflow: 'hidden', background: 'var(--hair)' }}>
-            <div style={{ background: 'var(--surface)', padding: '16px 20px', textAlign: 'center' }}>
-              <div className="hp-tok-stat2"><div className="hp-k" style={{ fontSize: 9.5 }}>Agent Vaults</div><div className="hp-v" style={{ fontSize: 20 }}>12</div></div>
+          <div className="hp-ticker-in hp-ticker-in-3" style={{ margin: '22px 0' }}>
+            <div className="hp-tick-card">
+              <div className="hp-tick-lbl">Agent Vaults</div>
+              <div className="hp-tick-val hp-num" style={{ fontSize: 26 }}>12</div>
             </div>
-            <div style={{ background: 'var(--surface)', padding: '16px 20px', textAlign: 'center' }}>
-              <div className="hp-tok-stat2"><div className="hp-k" style={{ fontSize: 9.5 }}>Target AUM</div><div className="hp-v" style={{ fontSize: 20, color: 'var(--win)' }}>$1.8M</div></div>
+            <div className="hp-tick-card">
+              <div className="hp-tick-lbl">Target AUM</div>
+              <div className="hp-tick-val hp-num hp-win" style={{ fontSize: 26 }}>$2.1M</div>
             </div>
-            <div style={{ background: 'var(--surface)', padding: '16px 20px', textAlign: 'center' }}>
-              <div className="hp-tok-stat2"><div className="hp-k" style={{ fontSize: 9.5 }}>Featured Below</div><div className="hp-v" style={{ fontSize: 20 }}>2</div></div>
+            <div className="hp-tick-card">
+              <div className="hp-tick-lbl">Featured Below</div>
+              <div className="hp-tick-val hp-num" style={{ fontSize: 26 }}>2</div>
             </div>
           </div>
           <div className="hp-vault2-grid">
