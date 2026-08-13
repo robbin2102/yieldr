@@ -1,16 +1,20 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { QuantWaitlistModal } from './components/QuantWaitlistModal';
 import './landing.css';
 
 const MARQUEE_ITEMS = [
   { text: 'HOOD CHAIN', hl: 'NOW LIVE' },
   { text: '🏆 BASE BATCHES 002', hl: 'WINNER' },
   { text: '🚀 CIRCUIT ACCELERATOR', hl: 'SINGAPORE' },
-  { text: '⚡ QUANT AGENT', hl: 'LIVE NOW' },
+  { text: '⚡ QUANT AGENT', hl: 'AUG 15' },
 ];
+
+// Quant Agent goes live 15-Aug-2026, 11:00 PM SGT (UTC+8) = 15:00 UTC
+const QUANT_LAUNCH_AT = new Date('2026-08-15T15:00:00Z');
+const DEFAULT_WAITLIST_COUNT = 542;
 
 const PROBLEM_ITEMS = [
   "You can't tell if your wins are edge, luck, or beta",
@@ -107,6 +111,28 @@ const SPARK_HEIGHTS = [
 ];
 const SPARK_LOSS_IDX = new Set([1,6,10,15,19,23,27,30,34,38,42,45]);
 
+function formatCountdown(ms: number): string {
+  if (ms <= 0) return 'LIVE NOW';
+  const totalSeconds = Math.floor(ms / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+}
+
+function useCountdown(target: Date) {
+  const [remaining, setRemaining] = useState<number | null>(null);
+  useEffect(() => {
+    const update = () => setRemaining(target.getTime() - Date.now());
+    update();
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
+  }, [target]);
+  return remaining;
+}
+
 function AnimatedCount({ target, prefix = '', className = 'hp-tick-val hp-num' }: { target: number; prefix?: string; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -129,8 +155,19 @@ function AnimatedCount({ target, prefix = '', className = 'hp-tick-val hp-num' }
 
 
 export default function HomePage() {
-  const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
+  const [waitlistCount, setWaitlistCount] = useState(DEFAULT_WAITLIST_COUNT);
+  const launchRemaining = useCountdown(QUANT_LAUNCH_AT);
+
+  useEffect(() => {
+    fetch('/api/quant-waitlist')
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.success && typeof d.count === 'number') setWaitlistCount(d.count);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="hp-root">
@@ -156,7 +193,7 @@ export default function HomePage() {
               <Link href="/docs">Docs</Link>
               <Link href="/team">Team</Link>
             </div>
-            <button className="hp-nav-cta" onClick={() => router.push('/prelaunch-edge')}>Find Your Edge</button>
+            <button className="hp-nav-cta" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist</button>
             <button
               className="hp-nav-burger"
               onClick={() => setMobileNavOpen(v => !v)}
@@ -184,14 +221,15 @@ export default function HomePage() {
 
       <div className="hp-hero">
         <div className="hp-wrap">
-          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent is live · Genesis window open</span>
+          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches Aug 15 · Genesis window open</span>
           <h1>Agent stack for <em>onchain funds</em>.</h1>
           <p className="hp-hero-sub">
-            Discover your edge. Convert it into a fund. Connect your wallet — the Quant Agent reveals your
-            real, repeatable edge today. Later phases turn it into a fund you don&apos;t have to run yourself.
+            Discover your edge. Convert it into a fund. The Quant Agent grades your onchain entries, exits, and
+            sizing — join the waitlist to be first in when it goes live. Later phases turn it into a fund you
+            don&apos;t have to run yourself.
           </p>
           <div className="hp-hero-ctas">
-            <button className="hp-btn-p" onClick={() => router.push('/prelaunch-edge')}>Find Your Edge →</button>
+            <button className="hp-btn-p" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist →</button>
             <button
               className="hp-btn-tertiary"
               onClick={() => document.getElementById('vaults')?.scrollIntoView({ behavior: 'smooth' })}
@@ -204,21 +242,18 @@ export default function HomePage() {
       </div>
 
       <div className="hp-ticker">
-        <div className="hp-wrap hp-ticker-in">
+        <div className="hp-wrap hp-ticker-in hp-ticker-in-2">
           <div className="hp-tick-cell">
-            <div className="hp-tick-lbl"><span className="hp-ld" />Wallets Scanned</div>
-            <AnimatedCount target={4812} />
-            <div className="hp-tick-src">Quant Agent · live</div>
+            <div className="hp-tick-lbl"><span className="hp-ld" />Quants on Waitlist</div>
+            <AnimatedCount target={waitlistCount} className="hp-tick-val hp-num hp-win" />
+            <div className="hp-tick-src">reserved for Quant Agent launch</div>
           </div>
           <div className="hp-tick-cell">
-            <div className="hp-tick-lbl">Genesis Members</div>
-            <AnimatedCount target={347} className="hp-tick-val hp-num hp-win" />
-            <div className="hp-tick-src">of 1,000 slots</div>
-          </div>
-          <div className="hp-tick-cell">
-            <div className="hp-tick-lbl">Prelaunch ARR</div>
-            <AnimatedCount target={38200} prefix="$" />
-            <div className="hp-tick-src">from onchain USDC receipts</div>
+            <div className="hp-tick-lbl">Quant Agent Launches In</div>
+            <div className="hp-tick-val hp-num hp-countdown">
+              {launchRemaining === null ? '—' : formatCountdown(launchRemaining)}
+            </div>
+            <div className="hp-tick-src">15 Aug 2026 · 11:00 PM SGT</div>
           </div>
         </div>
       </div>
@@ -228,8 +263,8 @@ export default function HomePage() {
           <div className="hp-slbl"><span>Where We Are</span><span className="hp-ln" /></div>
           <h2 className="hp-sec-h">One agent stack, shipping in phases.</h2>
           <p className="hp-sec-p">
-            Quant Agent is live today — that&apos;s what Genesis access buys first. Everything after it is
-            real, in progress, and dated honestly.
+            Quant Agent launches Aug 15 — join the waitlist to be first in when Genesis access opens.
+            Everything after it is real, in progress, and dated honestly.
           </p>
 
           <div className="hp-rm-product-grid">
@@ -237,7 +272,7 @@ export default function HomePage() {
               <div className="hp-rm-product-inner">
                 <div>
                   <div className="hp-rm-num">01 · Q3 2026</div>
-                  <div className="hp-rm-status hp-live">Live Now</div>
+                  <div className="hp-rm-status hp-proof">Launching Aug 15</div>
                   <div className="hp-rm-name">Quant Agent</div>
                   <div className="hp-rm-desc">Reads your wallet, grades Entry/Exit/Sizing, tells you if your edge is real.</div>
                 </div>
@@ -361,7 +396,7 @@ export default function HomePage() {
           </div>
 
           <div style={{ marginTop: 30, display: 'flex', justifyContent: 'center' }}>
-            <button className="hp-btn-p" onClick={() => router.push('/prelaunch-edge')}>Find Your Edge →</button>
+            <button className="hp-btn-p" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist →</button>
           </div>
         </div>
       </div>
@@ -541,6 +576,8 @@ export default function HomePage() {
           crypto financial services is restricted.
         </div>
       </div>
+
+      <QuantWaitlistModal isOpen={waitlistModalOpen} onClose={() => setWaitlistModalOpen(false)} />
     </div>
   );
 }
