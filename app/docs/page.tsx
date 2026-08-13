@@ -953,7 +953,7 @@ export default function DocsPage() {
                 <div className="dx-roadmap-dot"></div>
                 <div className="dx-roadmap-content">
                   <div className="dx-roadmap-phase">Phase 1</div>
-                  <div className="dx-roadmap-date live">Launching Aug 15</div>
+                  <div className="dx-roadmap-date live">Launching Aug 30</div>
                   <h3 className="dx-roadmap-title">Quant Agent Trials</h3>
                   <p className="dx-roadmap-desc">Waitlisted traders get access to the Quant Agent — edge detection and wallet analysis across supported protocols and chains. Traders can run their first edge profile, understand where performance exists, and begin the vault readiness process.</p>
                 </div>

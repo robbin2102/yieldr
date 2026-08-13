@@ -9,11 +9,11 @@ const MARQUEE_ITEMS = [
   { text: 'HOOD CHAIN', hl: 'NOW LIVE' },
   { text: '🏆 BASE BATCHES 002', hl: 'WINNER' },
   { text: '🚀 CIRCUIT ACCELERATOR', hl: 'SINGAPORE' },
-  { text: '⚡ QUANT AGENT', hl: 'AUG 15' },
+  { text: '⚡ QUANT AGENT', hl: 'AUG 30' },
 ];
 
-// Quant Agent goes live 15-Aug-2026, 11:00 PM SGT (UTC+8) = 15:00 UTC
-const QUANT_LAUNCH_AT = new Date('2026-08-15T15:00:00Z');
+// Quant Agent goes live 30-Aug-2026, 9:00 PM SGT (UTC+8) = 13:00 UTC
+const QUANT_LAUNCH_AT = new Date('2026-08-30T13:00:00Z');
 const DEFAULT_WAITLIST_COUNT = 542;
 const WAITLIST_AUM = 2_100_000;
 
@@ -224,7 +224,7 @@ export default function HomePage() {
 
       <div className="hp-hero">
         <div className="hp-wrap">
-          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches Aug 15 · Genesis window open</span>
+          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches Aug 30 · Genesis window open</span>
           <h1>Agent stack for <em>onchain funds</em>.</h1>
           <p className="hp-hero-sub">
             Discover your edge. Convert it into a fund. The Quant Agent grades your onchain entries, exits, and
@@ -261,7 +261,7 @@ export default function HomePage() {
             <div className="hp-tick-val hp-num hp-countdown">
               {launchRemaining === null ? '—' : formatCountdown(launchRemaining)}
             </div>
-            <div className="hp-tick-src">15 Aug 2026 · 11:00 PM SGT</div>
+            <div className="hp-tick-src">30 Aug 2026 · 9:00 PM SGT</div>
           </div>
         </div>
       </div>
@@ -271,7 +271,7 @@ export default function HomePage() {
           <div className="hp-slbl"><span>Where We Are</span><span className="hp-ln" /></div>
           <h2 className="hp-sec-h">One agent stack, shipping in phases.</h2>
           <p className="hp-sec-p">
-            Quant Agent launches Aug 15 — join the waitlist to be first in when Genesis access opens.
+            Quant Agent launches Aug 30 — join the waitlist to be first in when Genesis access opens.
             Everything after it is real, in progress, and dated honestly.
           </p>
 
@@ -280,7 +280,7 @@ export default function HomePage() {
               <div className="hp-rm-product-inner">
                 <div>
                   <div className="hp-rm-num">01 · Q3 2026</div>
-                  <div className="hp-rm-status hp-proof">Launching Aug 15</div>
+                  <div className="hp-rm-status hp-proof">Launching Aug 30</div>
                   <div className="hp-rm-name">Quant Agent</div>
                   <div className="hp-rm-desc">Reads your wallet, grades Entry/Exit/Sizing, tells you if your edge is real.</div>
                 </div>
