@@ -14,7 +14,7 @@ export interface ISubscription extends Document {
   access_months: number;
 
   tx_hash: string;
-  token: 'USDC' | 'USDT';
+  token: 'USDC' | 'USDT' | 'USDG';
   network: string;
   chain_id: number;
   treasury_address: string;
@@ -40,7 +40,7 @@ const SubscriptionSchema = new Schema<ISubscription>(
     access_months: { type: Number, required: true, default: 12 },
 
     tx_hash: { type: String, required: true, unique: true, index: true },
-    token: { type: String, required: true, enum: ['USDC', 'USDT'] },
+    token: { type: String, required: true, enum: ['USDC', 'USDT', 'USDG'] },
     network: { type: String, required: true },
     chain_id: { type: Number, required: true },
     treasury_address: { type: String, required: true },

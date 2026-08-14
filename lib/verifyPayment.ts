@@ -9,6 +9,7 @@
 
 import { createPublicClient, http, formatUnits, type Chain } from 'viem';
 import { base, mainnet, polygon, bsc } from 'viem/chains';
+import { robinhoodChain } from '@/lib/chains/robinhoodChain';
 import { SUPPORTED_CHAINS, TREASURY_ADDRESS, type TokenId } from '@/config/payment';
 
 const VIEM_CHAINS: Record<number, Chain> = {
@@ -16,6 +17,7 @@ const VIEM_CHAINS: Record<number, Chain> = {
   1: mainnet,
   137: polygon,
   56: bsc,
+  4663: robinhoodChain,
 };
 
 const SERVER_RPCS: Record<number, string> = {
@@ -23,6 +25,7 @@ const SERVER_RPCS: Record<number, string> = {
   1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
   137: process.env.NEXT_PUBLIC_RPC_POLYGON || 'https://polygon.llamarpc.com',
   56: process.env.NEXT_PUBLIC_RPC_BSC || 'https://bsc-dataseed.binance.org',
+  4663: process.env.NEXT_PUBLIC_RPC_ROBINHOOD || 'https://rpc.mainnet.chain.robinhood.com',
 };
 
 // keccak256("Transfer(address,address,uint256)")

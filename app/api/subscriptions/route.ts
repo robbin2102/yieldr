@@ -11,7 +11,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import { Subscription } from '@/models/Subscription';
 import { verifyOnchainPayment } from '@/lib/verifyPayment';
-import { TREASURY_ADDRESS, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
+import { TREASURY_ADDRESS, SUPPORTED_CHAINS, TOKEN_IDS, type TokenId } from '@/config/payment';
 import {
   isPlanName,
   isBillingCycle,
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     if (!chainCfg) {
       return NextResponse.json({ success: false, error: 'Unsupported chain' }, { status: 400 });
     }
-    if (token !== 'USDC' && token !== 'USDT') {
+    if (!TOKEN_IDS.includes(token)) {
       return NextResponse.json({ success: false, error: 'Unsupported token' }, { status: 400 });
     }
 

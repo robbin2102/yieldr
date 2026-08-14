@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAccount, useReadContract, useChainId } from 'wagmi';
 import { formatUnits, createPublicClient, http, type Chain } from 'viem';
 import { base, mainnet, polygon, bsc } from 'viem/chains';
+import { robinhoodChain } from '@/lib/chains/robinhoodChain';
 import { SUPPORTED_CHAINS, ERC20_ABI, type TokenId } from '@/config/payment';
 
 const VIEM_CHAINS: Record<number, Chain> = {
@@ -11,6 +12,7 @@ const VIEM_CHAINS: Record<number, Chain> = {
   1: mainnet,
   137: polygon,
   56: bsc,
+  4663: robinhoodChain,
 };
 
 // QuickNode RPCs from env vars (fallback to public RPCs)
@@ -19,6 +21,7 @@ const PUBLIC_RPCS: Record<number, string> = {
   1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
   137: process.env.NEXT_PUBLIC_RPC_POLYGON || 'https://polygon.llamarpc.com',
   56: process.env.NEXT_PUBLIC_RPC_BSC || 'https://bsc-dataseed.binance.org',
+  4663: process.env.NEXT_PUBLIC_RPC_ROBINHOOD || 'https://rpc.mainnet.chain.robinhood.com',
 };
 
 export interface ChainBalance {

@@ -118,7 +118,7 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
   const doTransfer = useCallback(async (planName: PlanName, cycle: BillingCycle) => {
     if (!tokenConfig) {
       setStep('error');
-      setErrorMessage('This wallet is on an unsupported network. Please switch to Base, Ethereum, Polygon, or BNB Chain.');
+      setErrorMessage('This wallet is on an unsupported network. Please switch to Base, Ethereum, Polygon, BNB Chain, or Robinhood Chain.');
       return;
     }
     const price = getPlanPrice(planName, cycle);

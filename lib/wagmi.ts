@@ -10,6 +10,7 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 import { createConfig, http } from 'wagmi';
 import { base, mainnet, polygon, bsc } from 'wagmi/chains';
+import { robinhoodChain } from './chains/robinhoodChain';
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
 
@@ -39,12 +40,13 @@ const connectors = connectorsForWallets(
 
 export const config = createConfig({
   connectors,
-  chains: [base, mainnet, polygon, bsc],
+  chains: [base, mainnet, polygon, bsc, robinhoodChain],
   ssr: true,
   transports: {
     [base.id]: http(process.env.NEXT_PUBLIC_RPC_BASE),
     [mainnet.id]: http(process.env.NEXT_PUBLIC_RPC_ETHEREUM),
     [polygon.id]: http(process.env.NEXT_PUBLIC_RPC_POLYGON),
     [bsc.id]: http(process.env.NEXT_PUBLIC_RPC_BSC),
+    [robinhoodChain.id]: http(process.env.NEXT_PUBLIC_RPC_ROBINHOOD),
   },
 });

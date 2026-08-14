@@ -62,7 +62,8 @@ export const USDT_ETH_ABI = [
 ] as const;
 
 // ── Stablecoin config per chain ──
-export type TokenId = 'USDC' | 'USDT';
+export type TokenId = 'USDC' | 'USDT' | 'USDG';
+export const TOKEN_IDS: TokenId[] = ['USDC', 'USDT', 'USDG'];
 
 export interface TokenConfig {
   address: `0x${string}`;
@@ -128,6 +129,17 @@ export const SUPPORTED_CHAINS: Record<number, { name: string; explorer: string; 
       USDT: {
         address: '0x55d398326f99059fF775485246999027B3197955',
         decimals: 18,
+        abi: ERC20_ABI,
+      },
+    },
+  },
+  4663: {
+    name: 'Robinhood Chain',
+    explorer: 'https://robinhoodchain.blockscout.com',
+    tokens: {
+      USDG: {
+        address: '0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168',
+        decimals: 6,
         abi: ERC20_ABI,
       },
     },
