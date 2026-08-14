@@ -208,7 +208,7 @@ export default function HomePage() {
               <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter"><XIcon /></a>
               <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GitHubIcon /></a>
             </div>
-            <button className="hp-nav-cta" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist</button>
+            <Link href="/prelaunch-edge" className="hp-nav-cta">Find Your Edge</Link>
             <button
               className="hp-nav-burger"
               onClick={() => setMobileNavOpen(v => !v)}
@@ -244,7 +244,7 @@ export default function HomePage() {
             don&apos;t have to run yourself.
           </p>
           <div className="hp-hero-ctas">
-            <button className="hp-btn-p" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist →</button>
+            <Link href="/prelaunch-edge" className="hp-btn-p">Find Your Edge →</Link>
             <button
               className="hp-btn-tertiary"
               onClick={() => document.getElementById('vaults')?.scrollIntoView({ behavior: 'smooth' })}
@@ -416,7 +416,7 @@ export default function HomePage() {
           </div>
 
           <div style={{ marginTop: 30, display: 'flex', justifyContent: 'center' }}>
-            <button className="hp-btn-p" onClick={() => setWaitlistModalOpen(true)}>Join Quant Waitlist →</button>
+            <Link href="/prelaunch-edge" className="hp-btn-p">Find Your Edge →</Link>
           </div>
         </div>
       </div>
