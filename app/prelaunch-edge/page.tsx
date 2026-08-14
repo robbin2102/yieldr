@@ -3,6 +3,11 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
+import { PLAN_PRICES, type PlanName } from '@/config/plans';
+import { getExplorerUrl } from '@/config/payment';
+import { usePayment } from '../context/PaymentContext';
+import { useSubscriptionPayment } from '@/hooks/useSubscriptionPayment';
+import { useAccount } from 'wagmi';
 
 // [isWin, heightPct] — static trade bars for the overview chart
 const TRADE_BARS: [boolean, number][] = [
@@ -22,9 +27,9 @@ type TermTab = 'leaders' | 'signals' | 'alerts';
 type Billing = 'm' | 'a';
 
 const PRICES = {
-  Scout:  { m: 50,  a: 38 },
-  Trader: { m: 100, a: 75 },
-  Desk:   { m: 199, a: 149 },
+  Scout:  { m: PLAN_PRICES.Scout.monthly,  a: PLAN_PRICES.Scout.annual },
+  Trader: { m: PLAN_PRICES.Trader.monthly, a: PLAN_PRICES.Trader.annual },
+  Desk:   { m: PLAN_PRICES.Desk.monthly,   a: PLAN_PRICES.Desk.annual },
 };
 
 const FAQ_ITEMS = [
@@ -87,9 +92,17 @@ export default function PrelaunchEdgePage() {
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [checkoutPlan, setCheckoutPlan] = useState<{ name: string; m: number; a: number }>({ name: '', m: 0, a: 0 });
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [connecting, setConnecting] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState<{ name: PlanName | ''; m: number; a: number }>({ name: '', m: 0, a: 0 });
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
+
+  const { isConnected, address } = useAccount();
+  const { lastSubscription, hasCompletedPayment } = usePayment();
+  const {
+    pay,
+    resetPayment,
+    step: paymentStep,
+    errorMessage: paymentError,
+  } = useSubscriptionPayment('USDC');
 
   const agentAutoRef = useRef(true);
   const agentPausedRef = useRef(false);
@@ -176,29 +189,41 @@ export default function PrelaunchEdgePage() {
     document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
-  const openCheckout = useCallback((name: string, mPrice: number, aPrice: number) => {
+  const openCheckout = useCallback((name: PlanName, mPrice: number, aPrice: number) => {
     setCheckoutPlan({ name, m: mPrice, a: aPrice });
-    setWalletConnected(false);
-    setConnecting(false);
+    setRedirectCountdown(null);
+    resetPayment();
     setCheckoutOpen(true);
-  }, []);
+  }, [resetPayment]);
 
-  const closeCheckout = useCallback(() => setCheckoutOpen(false), []);
-
-  const connectWalletDemo = useCallback(() => {
-    setConnecting(true);
-    setTimeout(() => {
-      setWalletConnected(true);
-      setConnecting(false);
-    }, 700);
-  }, []);
-
-  const confirmPay = useCallback(() => {
-    alert(`Payment flow: USDC charge for ${checkoutPlan.name} — this is where the onchain transaction would fire.`);
-    closeCheckout();
-  }, [checkoutPlan, closeCheckout]);
+  const closeCheckout = useCallback(() => {
+    setCheckoutOpen(false);
+    setRedirectCountdown(null);
+    resetPayment();
+  }, [resetPayment]);
 
   const checkoutPrice = billing === 'a' ? checkoutPlan.a : checkoutPlan.m;
+
+  const handlePayNow = useCallback(() => {
+    if (!checkoutPlan.name) return;
+    pay(checkoutPlan.name, billing === 'a' ? 'annual' : 'monthly');
+  }, [checkoutPlan.name, billing, pay]);
+
+  // Success → short countdown, then hand the user off to the subscriptions page.
+  useEffect(() => {
+    if (paymentStep !== 'success') return;
+    setRedirectCountdown(5);
+  }, [paymentStep]);
+
+  useEffect(() => {
+    if (redirectCountdown === null) return;
+    if (redirectCountdown <= 0) {
+      router.push('/subscriptions');
+      return;
+    }
+    const t = setTimeout(() => setRedirectCountdown(c => (c ?? 1) - 1), 1000);
+    return () => clearTimeout(t);
+  }, [redirectCountdown, router]);
 
   return (
     <div className="pe-root">
@@ -211,7 +236,12 @@ export default function PrelaunchEdgePage() {
             </div>
             <span className="pe-nav-name">YIELDR</span>
           </div>
-          <button className="pe-nav-cta" onClick={scrollToPricing}>Reserve Genesis Access</button>
+          <div className="pe-nav-right">
+            {hasCompletedPayment && (
+              <button className="pe-nav-sub-link" onClick={() => router.push('/subscriptions')}>Subscriptions</button>
+            )}
+            <button className="pe-nav-cta" onClick={scrollToPricing}>Reserve Genesis Access</button>
+          </div>
         </div>
       </nav>
 
@@ -855,42 +885,92 @@ export default function PrelaunchEdgePage() {
       {checkoutOpen && (
         <div
           className="pe-modal-overlay open"
-          onClick={(e) => { if (e.target === e.currentTarget) closeCheckout(); }}
+          onClick={(e) => { if (paymentStep !== 'success' && e.target === e.currentTarget) closeCheckout(); }}
         >
           <div className="pe-modal">
-            <div className="pe-modal-hd">
-              <span className="pe-t">Confirm Genesis Reservation</span>
-              <button className="pe-modal-close" onClick={closeCheckout}>✕</button>
-            </div>
-            <div className="pe-modal-body">
-              <div className="pe-modal-plan">
-                <div>
-                  <div className="pe-modal-plan-name">{checkoutPlan.name}</div>
-                  <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Billed annually · Genesis price' : 'Billed monthly · Genesis price'}</div>
+            {paymentStep === 'success' && lastSubscription ? (
+              <>
+                <div className="pe-modal-hd">
+                  <span className="pe-t">Payment Confirmed</span>
+                  <button className="pe-modal-close" onClick={closeCheckout}>✕</button>
                 </div>
-                <div className="pe-modal-plan-price">${checkoutPrice}</div>
-              </div>
-              <div className="pe-modal-note">
-                You&apos;re charged <b>once, today</b>. This locks 12 months of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> between now and then.
-              </div>
-              <div className="pe-modal-reward">
-                <div className="pe-k">Estimated Genesis Reward</div>
-                <div className="pe-v">${checkoutPrice} – ${checkoutPrice * 2} in tokens</div>
-                <div className="pe-s">1x–2x your payment, valued at TGE launch price. Distributed to your connected wallet within 30 days of TGE.</div>
-              </div>
-              <div className="pe-modal-actions">
-                {!walletConnected ? (
-                  <button className="pe-modal-btn connect" onClick={connectWalletDemo}>
-                    {connecting ? 'Connecting...' : 'Connect Wallet to Pay'}
-                  </button>
-                ) : (
-                  <button className="pe-modal-btn pay" onClick={confirmPay}>Pay ${checkoutPrice} Now</button>
-                )}
-                <div className={`pe-modal-wallet-state${walletConnected ? ' connected' : ''}`}>
-                  {walletConnected ? 'Wallet connected · defirobbin.base.eth' : 'No wallet connected'}
+                <div className="pe-modal-body">
+                  <div className="pe-modal-success">
+                    <div className="pe-modal-success-icon">✓</div>
+                    <div className="pe-modal-success-title">You&apos;re in — Genesis {lastSubscription.planName}</div>
+                    <div className="pe-modal-success-sub">
+                      ${lastSubscription.usdcAmount.toFixed(2)} {lastSubscription.token} paid on {lastSubscription.network}
+                    </div>
+                  </div>
+                  <div className="pe-modal-plan">
+                    <div>
+                      <div className="pe-modal-plan-name">Reward eligibility</div>
+                      <div className="pe-modal-plan-cycle">Paid out {lastSubscription.rewardPayoutWindow}</div>
+                    </div>
+                    <div className="pe-modal-plan-price">${lastSubscription.rewardMinUsdc.toFixed(0)}–${lastSubscription.rewardMaxUsdc.toFixed(0)}</div>
+                  </div>
+                  <div className="pe-modal-note">
+                    Access starts <b>{lastSubscription.subscriptionStart}</b> when Quant Terminal ships. Your reward is airdropped in <b>$YLDR</b>, or stock-linked tokens like <b>$SPCX</b>/<b>$TSLA</b>, valued at TGE price.
+                  </div>
+                  <div className="pe-modal-tx">
+                    <a href={`${getExplorerUrl(lastSubscription.chainId)}/tx/${lastSubscription.txHash}`} target="_blank" rel="noopener noreferrer">
+                      View transaction {lastSubscription.txHash.slice(0, 8)}...{lastSubscription.txHash.slice(-6)} ↗
+                    </a>
+                  </div>
+                  <div className="pe-modal-actions">
+                    <button className="pe-modal-btn pay" onClick={() => router.push('/subscriptions')}>View My Subscriptions →</button>
+                    {redirectCountdown !== null && redirectCountdown > 0 && (
+                      <div className="pe-modal-wallet-state">Redirecting in {redirectCountdown}s...</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <>
+                <div className="pe-modal-hd">
+                  <span className="pe-t">Confirm Genesis Reservation</span>
+                  <button className="pe-modal-close" onClick={closeCheckout}>✕</button>
+                </div>
+                <div className="pe-modal-body">
+                  <div className="pe-modal-plan">
+                    <div>
+                      <div className="pe-modal-plan-name">{checkoutPlan.name}</div>
+                      <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Billed annually · Genesis price' : 'Billed monthly · Genesis price'}</div>
+                    </div>
+                    <div className="pe-modal-plan-price">${checkoutPrice}</div>
+                  </div>
+                  <div className="pe-modal-note">
+                    You&apos;re charged <b>once, today</b>. This locks 12 months of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> between now and then.
+                  </div>
+                  <div className="pe-modal-reward">
+                    <div className="pe-k">Estimated Genesis Reward</div>
+                    <div className="pe-v">${checkoutPrice} – ${checkoutPrice * 2} in USDC value</div>
+                    <div className="pe-s">1x–2x your payment, airdropped in $YLDR or stock-linked tokens ($SPCX/$TSLA) at TGE + 30 days.</div>
+                  </div>
+
+                  {paymentStep === 'error' && paymentError && (
+                    <div className="pe-modal-error">{paymentError}</div>
+                  )}
+
+                  <div className="pe-modal-actions">
+                    <button
+                      className="pe-modal-btn pay"
+                      onClick={handlePayNow}
+                      disabled={paymentStep === 'connecting' || paymentStep === 'awaiting-signature' || paymentStep === 'confirming' || paymentStep === 'recording'}
+                    >
+                      {paymentStep === 'connecting' && 'Connecting Wallet...'}
+                      {paymentStep === 'awaiting-signature' && 'Confirm in Wallet...'}
+                      {paymentStep === 'confirming' && 'Confirming Transaction...'}
+                      {paymentStep === 'recording' && 'Finalizing...'}
+                      {(paymentStep === 'idle' || paymentStep === 'error') && (isConnected ? `Pay $${checkoutPrice} Now` : 'Connect Wallet to Pay')}
+                    </button>
+                    <div className={`pe-modal-wallet-state${isConnected ? ' connected' : ''}`}>
+                      {isConnected && address ? `Wallet connected · ${address.slice(0, 6)}...${address.slice(-4)}` : 'No wallet connected'}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

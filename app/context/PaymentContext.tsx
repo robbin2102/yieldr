@@ -18,6 +18,20 @@ interface AllocationData {
   discord_invite?: string | null;
 }
 
+export interface LastSubscription {
+  planName: string;
+  billingCycle: 'monthly' | 'annual';
+  usdcAmount: number;
+  rewardMinUsdc: number;
+  rewardMaxUsdc: number;
+  txHash: string;
+  chainId: number;
+  network: string;
+  token: string;
+  subscriptionStart: string;
+  rewardPayoutWindow: string;
+}
+
 interface PaymentContextType {
   status: PaymentStatus;
   setStatus: (status: PaymentStatus) => void;
@@ -31,6 +45,8 @@ interface PaymentContextType {
   setAllocationData: (data: AllocationData | null) => void;
   hasCompletedPayment: boolean;
   setHasCompletedPayment: (completed: boolean) => void;
+  lastSubscription: LastSubscription | null;
+  setLastSubscription: (data: LastSubscription | null) => void;
   reset: () => void;
 }
 
@@ -54,6 +70,13 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       return localStorage.getItem('yldr_has_completed_payment') === 'true';
     }
     return false;
+  });
+  const [lastSubscription, setLastSubscription] = useState<LastSubscription | null>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('yldr_last_subscription');
+      return saved ? JSON.parse(saved) : null;
+    }
+    return null;
   });
 
   // Persist to localStorage when these values change
@@ -79,6 +102,17 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const setLastSubscriptionPersistent = (data: LastSubscription | null) => {
+    setLastSubscription(data);
+    if (typeof window !== 'undefined') {
+      if (data) {
+        localStorage.setItem('yldr_last_subscription', JSON.stringify(data));
+      } else {
+        localStorage.removeItem('yldr_last_subscription');
+      }
+    }
+  };
+
   const reset = () => {
     setStatus('idle');
     setTxHash(null);
@@ -100,6 +134,8 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
         setAllocationData: setAllocationDataPersistent,
         hasCompletedPayment,
         setHasCompletedPayment: setHasCompletedPaymentPersistent,
+        lastSubscription,
+        setLastSubscription: setLastSubscriptionPersistent,
         reset,
       }}
     >

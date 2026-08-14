@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { QuantWaitlistModal } from './components/QuantWaitlistModal';
+import { usePayment } from './context/PaymentContext';
 import './landing.css';
 
 const MARQUEE_ITEMS = [
@@ -172,6 +173,7 @@ export default function HomePage() {
   const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const [waitlistCount, setWaitlistCount] = useState(DEFAULT_WAITLIST_COUNT);
   const launchRemaining = useCountdown(QUANT_LAUNCH_AT);
+  const { hasCompletedPayment } = usePayment();
 
   useEffect(() => {
     fetch('/api/quant-waitlist')
@@ -203,6 +205,7 @@ export default function HomePage() {
               <Link href="/explorer">Vaults</Link>
               <Link href="/build-in-public">Build Log</Link>
               <Link href="/docs">Docs</Link>
+              {hasCompletedPayment && <Link href="/subscriptions">Subscriptions</Link>}
             </div>
             <div className="hp-nav-soc">
               <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter"><XIcon /></a>

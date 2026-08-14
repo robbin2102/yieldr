@@ -81,7 +81,7 @@ export default function BuyPage() {
   useEffect(() => {
     if (countdown === null || countdown < 0) return;
     if (countdown === 0) {
-      try { router.push('/allocations'); }
+      try { router.push('/subscriptions'); }
       catch { setRedirectFailed(true); }
       return;
     }
@@ -475,7 +475,7 @@ export default function BuyPage() {
                 Redirecting to your allocation in {countdown}s...
               </div>
             ) : redirectFailed || (countdown !== null && countdown <= 0) ? (
-              <Link href="/allocations" className="bp-modal-cta">
+              <Link href="/subscriptions" className="bp-modal-cta">
                 View My Allocation &#8599;
               </Link>
             ) : null}

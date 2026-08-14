@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAccount, useDisconnect } from 'wagmi';
+import { usePayment } from '@/app/context/PaymentContext';
 import './nav-links.css';
 
 interface NavLinksProps {
@@ -18,10 +19,15 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
   const pathname = usePathname();
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { hasCompletedPayment } = usePayment();
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [hasContributions, setHasContributions] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+
+  // A user can unlock Subscriptions access either via the legacy contribution
+  // flow or the new Genesis subscription payment flow.
+  const hasAccess = hasContributions || hasCompletedPayment;
 
   // Check if user has contributions
   useEffect(() => {
@@ -73,7 +79,9 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
         <Link href="/" className={isActive('/') ? 'active' : ''}>Home</Link>
         <Link href="/explorer" className={isActive('/explorer') ? 'active' : ''}>Vaults</Link>
         <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
-        <Link href="/allocations" className={`ynav-alloc${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
+        {hasAccess && (
+          <Link href="/subscriptions" className={`ynav-alloc${isActive('/subscriptions') ? ' active' : ''}`}>Subscriptions</Link>
+        )}
       </nav>
 
       {showSocials && (
@@ -88,7 +96,7 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
       )}
 
       {/* Wallet profile (replaces CTA when connected with contributions) */}
-      {isConnected && hasContributions ? (
+      {isConnected && hasAccess ? (
         <div className="ynav-profile" ref={profileRef}>
           <button className="ynav-profile-btn" onClick={() => setProfileOpen(!profileOpen)}>
             <span className="ynav-profile-dot" />
@@ -97,8 +105,8 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
           </button>
           {profileOpen && (
             <div className="ynav-profile-dropdown">
-              <Link href="/allocations" className="ynav-profile-item" onClick={() => setProfileOpen(false)}>
-                My Allocations
+              <Link href="/subscriptions" className="ynav-profile-item" onClick={() => setProfileOpen(false)}>
+                My Subscriptions
               </Link>
               <Link href="/buy" className="ynav-profile-item" onClick={() => setProfileOpen(false)}>
                 Buy More
@@ -148,7 +156,9 @@ export default function NavLinks({ cta, showSocials = true }: NavLinksProps) {
               <Link href="/explorer" className={isActive('/explorer') ? 'active' : ''}>Vaults</Link>
               <Link href="/build-in-public" className={isActive('/build-in-public') ? 'active' : ''}>Build Log</Link>
               <Link href="/docs" className={isActive('/docs') ? 'active' : ''}>Docs</Link>
-              <Link href="/allocations" className={`ynav-alloc-mobile${isActive('/allocations') ? ' active' : ''}`}>Allocations</Link>
+              {hasAccess && (
+                <Link href="/subscriptions" className={`ynav-alloc-mobile${isActive('/subscriptions') ? ' active' : ''}`}>Subscriptions</Link>
+              )}
             </div>
             <div className="ynav-menu-footer">
               {isConnected ? (
