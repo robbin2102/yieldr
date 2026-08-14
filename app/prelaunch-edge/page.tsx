@@ -3,11 +3,11 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
-import { PLAN_PRICES, type PlanName } from '@/config/plans';
-import { getExplorerUrl } from '@/config/payment';
+import { PLAN_PRICES, MONTHS_PER_YEAR, type PlanName } from '@/config/plans';
+import { getExplorerUrl, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
 import { usePayment } from '../context/PaymentContext';
 import { useSubscriptionPayment } from '@/hooks/useSubscriptionPayment';
-import { useAccount } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 // [isWin, heightPct] — static trade bars for the overview chart
 const TRADE_BARS: [boolean, number][] = [
@@ -94,15 +94,34 @@ export default function PrelaunchEdgePage() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutPlan, setCheckoutPlan] = useState<{ name: PlanName | ''; m: number; a: number }>({ name: '', m: 0, a: 0 });
   const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
+  const [selectedToken, setSelectedToken] = useState<TokenId>('USDC');
 
   const { isConnected, address } = useAccount();
+  const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
   const { lastSubscription, hasCompletedPayment } = usePayment();
   const {
     pay,
     resetPayment,
     step: paymentStep,
     errorMessage: paymentError,
-  } = useSubscriptionPayment('USDC');
+    balance: tokenBalance,
+    otherBalances,
+    scanDone: balanceScanDone,
+    isSupported: isChainSupported,
+    chainId: activeChainId,
+    chainName: activeChainName,
+  } = useSubscriptionPayment(selectedToken);
+
+  const chainConfigForToken = SUPPORTED_CHAINS[activeChainId];
+  const availableTokens = chainConfigForToken ? (Object.keys(chainConfigForToken.tokens) as TokenId[]) : [];
+
+  // Keep selectedToken valid whenever the wallet's chain changes.
+  useEffect(() => {
+    if (availableTokens.length > 0 && !availableTokens.includes(selectedToken)) {
+      setSelectedToken(availableTokens[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeChainId]);
 
   const agentAutoRef = useRef(true);
   const agentPausedRef = useRef(false);
@@ -202,7 +221,12 @@ export default function PrelaunchEdgePage() {
     resetPayment();
   }, [resetPayment]);
 
-  const checkoutPrice = billing === 'a' ? checkoutPlan.a : checkoutPlan.m;
+  // Annual billing prepays the discounted monthly rate for the full year, once.
+  const checkoutPrice = billing === 'a' ? checkoutPlan.a * MONTHS_PER_YEAR : checkoutPlan.m;
+  const insufficientBalance = isConnected && isChainSupported && balanceScanDone && tokenBalance < checkoutPrice && otherBalances.length === 0;
+  const payDisabled =
+    paymentStep === 'connecting' || paymentStep === 'awaiting-signature' || paymentStep === 'confirming' || paymentStep === 'recording' ||
+    (isConnected && !isChainSupported) || insufficientBalance;
 
   const handlePayNow = useCallback(() => {
     if (!checkoutPlan.name) return;
@@ -935,7 +959,7 @@ export default function PrelaunchEdgePage() {
                   <div className="pe-modal-plan">
                     <div>
                       <div className="pe-modal-plan-name">{checkoutPlan.name}</div>
-                      <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Billed annually · Genesis price' : 'Billed monthly · Genesis price'}</div>
+                      <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Annual rate · 12 months prepaid' : 'Monthly rate · Genesis price'}</div>
                     </div>
                     <div className="pe-modal-plan-price">${checkoutPrice}</div>
                   </div>
@@ -948,6 +972,71 @@ export default function PrelaunchEdgePage() {
                     <div className="pe-s">1x–2x your payment, airdropped in $YLDR or stock-linked tokens ($SPCX/$TSLA) at TGE + 30 days.</div>
                   </div>
 
+                  {isConnected && (
+                    <div className="pe-modal-pay-with">
+                      <div className="pe-k">Pay with</div>
+                      {!isChainSupported ? (
+                        <div className="pe-modal-switch">
+                          <div className="pe-modal-switch-note">Your wallet is on an unsupported network. Switch to continue:</div>
+                          <div className="pe-modal-switch-btns">
+                            {Object.entries(SUPPORTED_CHAINS).map(([id, cfg]) => (
+                              <button
+                                key={id}
+                                className="pe-modal-switch-btn"
+                                disabled={isSwitchingChain}
+                                onClick={() => switchChain({ chainId: Number(id) })}
+                              >
+                                {cfg.name}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="pe-modal-chain-row">
+                            <span className="pe-modal-chain-dot" />
+                            <span>{activeChainName}</span>
+                            {availableTokens.length > 1 ? (
+                              <div className="pe-modal-token-toggle">
+                                {availableTokens.map(t => (
+                                  <button
+                                    key={t}
+                                    className={selectedToken === t ? 'on' : ''}
+                                    onClick={() => setSelectedToken(t)}
+                                  >
+                                    {t}
+                                  </button>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="pe-modal-token-single">{availableTokens[0]}</span>
+                            )}
+                            <span className="pe-modal-balance">Balance: ${tokenBalance.toFixed(2)}</span>
+                          </div>
+                          {balanceScanDone && tokenBalance < checkoutPrice && otherBalances.length > 0 && (
+                            <div className="pe-modal-switch">
+                              <div className="pe-modal-switch-note">💡 You have stablecoins available elsewhere:</div>
+                              <div className="pe-modal-switch-btns">
+                                {otherBalances.map((ob, i) => (
+                                  <button
+                                    key={i}
+                                    className="pe-modal-switch-btn"
+                                    onClick={() => {
+                                      if (ob.chainId !== activeChainId) switchChain({ chainId: ob.chainId });
+                                      setSelectedToken(ob.token);
+                                    }}
+                                  >
+                                    {ob.chainId === activeChainId ? ob.token : ob.chainName}: ${ob.balance.toFixed(2)} {ob.token}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
+
                   {paymentStep === 'error' && paymentError && (
                     <div className="pe-modal-error">{paymentError}</div>
                   )}
@@ -956,13 +1045,21 @@ export default function PrelaunchEdgePage() {
                     <button
                       className="pe-modal-btn pay"
                       onClick={handlePayNow}
-                      disabled={paymentStep === 'connecting' || paymentStep === 'awaiting-signature' || paymentStep === 'confirming' || paymentStep === 'recording'}
+                      disabled={payDisabled}
                     >
                       {paymentStep === 'connecting' && 'Connecting Wallet...'}
                       {paymentStep === 'awaiting-signature' && 'Confirm in Wallet...'}
                       {paymentStep === 'confirming' && 'Confirming Transaction...'}
                       {paymentStep === 'recording' && 'Finalizing...'}
-                      {(paymentStep === 'idle' || paymentStep === 'error') && (isConnected ? `Pay $${checkoutPrice} Now` : 'Connect Wallet to Pay')}
+                      {(paymentStep === 'idle' || paymentStep === 'error') && (
+                        !isConnected
+                          ? 'Connect Wallet to Pay'
+                          : !isChainSupported
+                          ? 'Switch to a supported network'
+                          : insufficientBalance
+                          ? `Insufficient ${selectedToken} balance`
+                          : `Pay $${checkoutPrice} Now`
+                      )}
                     </button>
                     <div className={`pe-modal-wallet-state${isConnected ? ' connected' : ''}`}>
                       {isConnected && address ? `Wallet connected · ${address.slice(0, 6)}...${address.slice(-4)}` : 'No wallet connected'}

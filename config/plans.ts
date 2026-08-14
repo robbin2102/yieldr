@@ -27,11 +27,25 @@ export function isBillingCycle(value: unknown): value is BillingCycle {
   return value === 'monthly' || value === 'annual';
 }
 
-/** Returns the canonical price for a plan/cycle, or null if either is invalid. */
+export const MONTHS_PER_YEAR = 12;
+
+/**
+ * Returns the actual one-time Genesis charge for a plan/cycle, or null if
+ * either is invalid.
+ *
+ * PLAN_PRICES stores a PER-MONTH rate for both cycles (used as-is for the
+ * "$X/mo" marketing price on the pricing cards). There is no recurring
+ * billing in this product — every plan is a single upfront payment:
+ *   - monthly cycle → one month's rate, charged once
+ *   - annual cycle  → the discounted per-month rate × 12, charged once,
+ *                      prepaying the full first year at the lower rate
+ * This is the amount actually transferred on-chain and the amount the
+ * server independently verifies against — it must stay in sync with both.
+ */
 export function getPlanPrice(name: PlanName, cycle: BillingCycle): number | null {
   const plan = PLAN_PRICES[name];
   if (!plan) return null;
-  return cycle === 'annual' ? plan.annual : plan.monthly;
+  return cycle === 'annual' ? plan.annual * MONTHS_PER_YEAR : plan.monthly;
 }
 
 export const REWARD_MULTIPLIER_MIN = 1;
