@@ -1,7 +1,8 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import './page.css';
-import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS } from './images';
+import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
 
 // [isWin, heightPct] — static trade bars for the overview chart
 const TRADE_BARS: [boolean, number][] = [
@@ -28,22 +29,35 @@ const PRICES = {
 
 const FAQ_ITEMS = [
   {
-    q: 'Am I buying a token right now?',
-    a: "No. You're prepaying for the Quant Agent and Terminal subscription, same as any SaaS pre-order. The 1x–2x token reward is a bonus tied to your subscription, not a separate token sale.",
+    q: 'Is the demo above my real wallet?',
+    a: "No — it's a scripted walkthrough on a sample wallet, so you can see exactly how the product works before Quant Agent goes live on Aug 30. Once it's live, this becomes a real scan of your own wallet.",
   },
   {
-    q: 'When am I actually charged?',
-    a: 'Once, today — your Genesis payment. Your subscription doesn\'t start running until the beta product goes live, so there are no charges between now and launch. What you pay today is credited against your first billing period once the product launches.',
+    q: 'Am I buying a token right now?',
+    a: "No. You're prepaying for the Quant Terminal subscription, same as any SaaS pre-order. The 1x–2x token reward is a bonus tied to your subscription, not a separate token sale.",
+  },
+  {
+    q: 'When am I actually charged, and when does access start?',
+    a: "You're charged once, today. Your 12-month Quant Terminal access window doesn't start until Terminal itself launches in Q1 2027 — so there's nothing else to pay between now and then, and your access runs a full year from the day it goes live, not from today.",
   },
   {
     q: 'Does Yieldr ever trade for me?',
     a: 'No. Yieldr is intelligence only — read-only wallet analysis and market signals. It never custodies funds or executes trades on your behalf.',
   },
   {
-    q: 'What if I don\'t renew after the free trial?',
-    a: 'Your Genesis reward is earned by your prepayment today, not by staying subscribed forever. Product access requires an active subscription once the free trial ends at public launch.',
+    q: "What if I don't renew after my 12 months?",
+    a: 'Your Genesis reward is earned by your prepayment today, not by staying subscribed forever. Continued Terminal access after your 12-month Genesis window requires a normal subscription at the public rate.',
   },
 ];
+
+const CREDITS = {
+  Scout: '1M',
+  Trader: '5M',
+  Desk: '15M',
+};
+
+const LAUNCH_DATE = new Date('2026-08-30T00:00:00-07:00').getTime();
+const pad = (n: number) => String(n).padStart(2, '0');
 
 function animateCount(
   setter: (v: number) => void,
@@ -60,17 +74,22 @@ function animateCount(
 }
 
 export default function PrelaunchEdgePage() {
+  const router = useRouter();
   const [billing, setBilling] = useState<Billing>('m');
   const [agentTab, setAgentTab] = useState<AgentTab>('overview');
   const [agentIdx, setAgentIdx] = useState(0);
   const [termTab, setTermTab] = useState<TermTab>('leaders');
-  const [scanActive, setScanActive] = useState(false);
-  const [scanLoading, setScanLoading] = useState(false);
   const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set([0]));
   const [scans, setScans] = useState(0);
   const [buyers, setBuyers] = useState(0);
   const [arr, setArr] = useState(0);
   const [progAnimating, setProgAnimating] = useState(true);
+  const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
+
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState<{ name: string; m: number; a: number }>({ name: '', m: 0, a: 0 });
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [connecting, setConnecting] = useState(false);
 
   const agentAutoRef = useRef(true);
   const agentPausedRef = useRef(false);
@@ -81,6 +100,40 @@ export default function PrelaunchEdgePage() {
     animateCount(setScans, 4812, 1400);
     animateCount(setBuyers, 347, 1600);
     animateCount(setArr, 38200, 1600);
+  }, []);
+
+  // Load demo iframe on mount (always on — no longer gated behind a click)
+  useEffect(() => {
+    if (iframeRef.current) {
+      iframeRef.current.src = `data:text/html;base64,${EDGE_B64}`;
+    }
+  }, []);
+
+  // Countdown to launch
+  useEffect(() => {
+    const tick = () => {
+      const diff = Math.max(0, LAUNCH_DATE - Date.now());
+      setCountdown({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // autoscan=1 query param — auto-scroll to demo section
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('autoscan') === '1') {
+      const t = setTimeout(() => {
+        document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 400);
+      return () => clearTimeout(t);
+    }
   }, []);
 
   // Agent tab auto-rotation
@@ -107,23 +160,6 @@ export default function PrelaunchEdgePage() {
     setAgentIdx(idx);
   }, []);
 
-  const startScan = useCallback(() => {
-    if (scanActive) return;
-    setScanLoading(true);
-    setTimeout(() => {
-      setScanLoading(false);
-      setScanActive(true);
-      if (iframeRef.current) {
-        iframeRef.current.src = `data:text/html;base64,${EDGE_B64}`;
-      }
-    }, 1200);
-  }, [scanActive]);
-
-  const closeScan = useCallback(() => {
-    setScanActive(false);
-    if (iframeRef.current) iframeRef.current.src = '';
-  }, []);
-
   const toggleFaq = useCallback((idx: number) => {
     setFaqOpen(prev => {
       const next = new Set(prev);
@@ -132,22 +168,50 @@ export default function PrelaunchEdgePage() {
     });
   }, []);
 
-  const scrollToPricing = () => {
-    document.getElementById('pe-pricing')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const scrollToPricing = useCallback(() => {
+    document.getElementById('pe-pricing')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
+  const scrollToDemo = useCallback(() => {
+    document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
+
+  const openCheckout = useCallback((name: string, mPrice: number, aPrice: number) => {
+    setCheckoutPlan({ name, m: mPrice, a: aPrice });
+    setWalletConnected(false);
+    setConnecting(false);
+    setCheckoutOpen(true);
+  }, []);
+
+  const closeCheckout = useCallback(() => setCheckoutOpen(false), []);
+
+  const connectWalletDemo = useCallback(() => {
+    setConnecting(true);
+    setTimeout(() => {
+      setWalletConnected(true);
+      setConnecting(false);
+    }, 700);
+  }, []);
+
+  const confirmPay = useCallback(() => {
+    alert(`Payment flow: USDC charge for ${checkoutPlan.name} — this is where the onchain transaction would fire.`);
+    closeCheckout();
+  }, [checkoutPlan, closeCheckout]);
+
+  const checkoutPrice = billing === 'a' ? checkoutPlan.a : checkoutPlan.m;
 
   return (
     <div className="pe-root">
       {/* NAV */}
       <nav className="pe-nav">
         <div className="pe-wrap pe-nav-in">
-          <div className="pe-nav-id">
+          <div className="pe-nav-id" style={{ cursor: 'pointer' }} onClick={() => router.push('/')}>
             <div className="pe-nav-mark">
               <img src={NAV_MARK} alt="Yieldr" />
             </div>
             <span className="pe-nav-name">YIELDR</span>
           </div>
-          <button className="pe-nav-cta" onClick={startScan}>Scan My Wallet</button>
+          <button className="pe-nav-cta" onClick={scrollToPricing}>Reserve Genesis Access</button>
         </div>
       </nav>
 
@@ -156,34 +220,30 @@ export default function PrelaunchEdgePage() {
         <div className="pe-wrap">
           <span className="pe-eyebrow">
             <span className="pe-dot" />
-            Genesis window open · closes in 30 days or 1,000 members
+            Reserve now · Quant Agent goes live Aug 30
           </span>
-          <h1 className="pe-h1">Find Your <em>Edge</em>, Onchain.</h1>
+          <h1 className="pe-h1">Reserve your edge <em>before</em> it goes live.</h1>
           <p className="pe-hero-sub">
-            A quant agent that grades your onchain entries, exits, and sizing. A live terminal that watches OG wallets and demand shifts before they move markets.
+            Quant Agent launches Aug 30. Lock Genesis pricing today with one payment — pay nothing else until Quant Terminal ships — and earn 1x–2x back in tokens either way.
           </p>
+
+          <div className="pe-countdown">
+            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.d)}</div><div className="pe-cd-lbl">Days</div></div>
+            <div className="pe-cd-sep">:</div>
+            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.h)}</div><div className="pe-cd-lbl">Hours</div></div>
+            <div className="pe-cd-sep">:</div>
+            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.m)}</div><div className="pe-cd-lbl">Min</div></div>
+            <div className="pe-cd-sep">:</div>
+            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.s)}</div><div className="pe-cd-lbl">Sec</div></div>
+          </div>
+          <div className="pe-countdown-note">Until Quant Agent goes live · Aug 30, 2026</div>
+
           <div className="pe-hero-ctas">
-            <button
-              className={`pe-btn-p${scanLoading ? ' pe-loading' : ''}`}
-              onClick={startScan}
-            >
-              <span className="pe-spin" />
-              <span className="pe-lbl">Scan My Wallet →</span>
-            </button>
-            <button className="pe-btn-s" onClick={scrollToPricing}>See Genesis Pricing</button>
+            <button className="pe-btn-p" onClick={scrollToPricing}>Reserve Genesis Access →</button>
+            <button className="pe-btn-s" onClick={scrollToDemo}>Preview the Demo ↓</button>
           </div>
           <div className="pe-hero-note">
-            Connect a read-only wallet · nothing custodied, nothing traded on your behalf · ~30 seconds
-          </div>
-
-          <div className={`pe-console${scanActive ? ' active' : ''}`}>
-            <div className="pe-console-hd">
-              <span className="pe-lbl">● Live · scanning onchain history</span>
-              <button className="pe-console-close" onClick={closeScan}>Close ✕</button>
-            </div>
-            <div>
-              <iframe ref={iframeRef} title="Edge Analysis" style={{ width: '100%', height: 760, border: 'none', display: 'block', background: '#000' }} />
-            </div>
+            One payment, today · nothing charged again until Quant Terminal launches
           </div>
         </div>
       </div>
@@ -192,9 +252,9 @@ export default function PrelaunchEdgePage() {
       <div className="pe-ticker">
         <div className="pe-wrap pe-ticker-in">
           <div className="pe-tick-cell">
-            <div className="pe-tick-lbl"><span className="pe-ld" />Wallets Scanned</div>
+            <div className="pe-tick-lbl"><span className="pe-ld" />Demo Previews Run</div>
             <div className="pe-tick-val pe-num">{scans.toLocaleString()}</div>
-            <div className="pe-tick-src">live · this session</div>
+            <div className="pe-tick-src">since launch announcement</div>
           </div>
           <div className="pe-tick-cell">
             <div className="pe-tick-lbl">Genesis Members</div>
@@ -205,6 +265,48 @@ export default function PrelaunchEdgePage() {
             <div className="pe-tick-lbl">Prelaunch ARR</div>
             <div className="pe-tick-val pe-num">${arr.toLocaleString()}</div>
             <div className="pe-tick-src">from onchain USDC receipts</div>
+          </div>
+        </div>
+      </div>
+
+      {/* DEMO PREVIEW */}
+      <div className="pe-sec" id="pe-demo">
+        <div className="pe-wrap">
+          <span className="pe-demo-badge"><span className="pe-dt" />Demo Preview · Live Wallet Scanning Launches Aug 30</span>
+          <h2 className="pe-sec-h">See exactly how Quant Agent will read your wallet.</h2>
+          <p className="pe-sec-p">This is a scripted walkthrough of the real product using a sample wallet — not a live connection yet. When Quant Agent goes live Aug 30, this becomes your actual scan.</p>
+          <div className="pe-console active" style={{ maxWidth: 920, marginTop: 24 }}>
+            <div className="pe-console-hd">
+              <span className="pe-lbl">◆ Demo mode · sample wallet</span>
+            </div>
+            <div className="pe-console-frame">
+              <iframe ref={iframeRef} title="Edge Analysis Demo" style={{ width: '100%', height: 760, border: 'none', display: 'block', background: '#000' }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CHAIN SUPPORT */}
+      <div className="pe-sec">
+        <div className="pe-wrap">
+          <div className="pe-slbl"><span>Where It Runs</span><span className="pe-ln" /></div>
+          <h2 className="pe-sec-h">Scan a wallet on either chain.</h2>
+          <p className="pe-sec-p">Yieldr reads onchain history natively — connect any wallet on these networks and the agent picks up your full trade history automatically.</p>
+          <div className="pe-chain-grid">
+            <div className="pe-chain-card base">
+              <div className="pe-chain-logo"><img src={BASE_LOGO} alt="Base" /></div>
+              <div>
+                <div className="pe-chain-name">Base <span className="pe-chain-live">Live</span></div>
+                <div className="pe-chain-desc">Full support today — meme &amp; alt coin history, OG wallet tracking, and the Quant Terminal all run natively on Base.</div>
+              </div>
+            </div>
+            <div className="pe-chain-card rh">
+              <div className="pe-chain-logo"><img src={RH_LOGO} alt="Robinhood Chain" /></div>
+              <div>
+                <div className="pe-chain-name">Robinhood Chain <span className="pe-chain-live">Live</span></div>
+                <div className="pe-chain-desc">Wallet scans and signal tracking extend to Robinhood Chain — including tokenized-equity activity as that market grows.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -469,7 +571,7 @@ export default function PrelaunchEdgePage() {
                     <div className="pe-lb2-name">
                       {row.name}
                       <span className="pe-lb2-app">
-                        <img src={row.app === 'FOMO' ? '/images/fomo.png' : '/images/pump.png'} alt={row.app} />
+                        <img src={row.app === 'FOMO' ? FOMO_ICON : PUMP_ICON} alt={row.app} />
                       </span>
                     </div>
                     <div className="pe-lb2-edge">EDGE <b>{row.edge}</b></div>
@@ -478,7 +580,7 @@ export default function PrelaunchEdgePage() {
                 ))}
                 <div className="pe-app-legend">
                   <div className="pe-app-legend-item">
-                    <img src="/images/pump.png" alt="" />Tracked on pump.fun
+                    <img src={PUMP_ICON} alt="" />Tracked on pump.fun
                   </div>
                 </div>
               </div>
@@ -608,8 +710,8 @@ export default function PrelaunchEdgePage() {
       <div className="pe-sec" id="pe-pricing">
         <div className="pe-wrap">
           <div className="pe-slbl"><span>Genesis Pricing</span><span className="pe-ln" /></div>
-          <h2 className="pe-sec-h">Lock this price before public launch.</h2>
-          <p className="pe-sec-p">Genesis subscribers pay this price for as long as they stay subscribed. Public pricing at Q4 launch will be higher.</p>
+          <h2 className="pe-sec-h">Pay once now. Pricing locks. Access starts when Terminal ships.</h2>
+          <p className="pe-sec-p">One payment today reserves 12 months of Quant Terminal access starting from its Q1 2027 launch — nothing else is charged in between. Example: the Desk annual plan is ~$1,800 once ($149/mo × 12), and earns an estimated $1,800–$3,600 back in tokens.</p>
 
           <div className="pe-toggle-row">
             <div className="pe-toggle">
@@ -629,13 +731,13 @@ export default function PrelaunchEdgePage() {
                 <span className="u">/mo</span>
               </div>
               <div className={`pe-plan-orig${billing === 'a' ? ' show' : ''}`}>$600/yr billed monthly</div>
-              <div className="pe-plan-credits">⚡ 1M agent inference credits / mo</div>
+              <div className="pe-plan-credits">⚡ {CREDITS.Scout} agent inference credits / mo</div>
               <ul>
                 <li>Quant Agent — 1 wallet, full Edge Grade</li>
                 <li>Entry / Exit / Sizing breakdown + agent chat</li>
                 <li>No live Terminal, no real-time alerts</li>
               </ul>
-              <button className="pe-plan-btn">Reserve Scout</button>
+              <button className="pe-plan-btn" onClick={() => openCheckout('Scout', PRICES.Scout.m, PRICES.Scout.a)}>Reserve Scout</button>
               <div className="pe-plan-reward">🎁 Genesis reward: 1x–2x back in $YLDR at TGE</div>
             </div>
 
@@ -649,13 +751,13 @@ export default function PrelaunchEdgePage() {
                 <span className="u">/mo</span>
               </div>
               <div className={`pe-plan-orig${billing === 'a' ? ' show' : ''}`}>$1,200/yr billed monthly</div>
-              <div className="pe-plan-credits">⚡ 5M agent inference credits / mo</div>
+              <div className="pe-plan-credits">⚡ {CREDITS.Trader} agent inference credits / mo</div>
               <ul>
                 <li>Everything in Scout, 3 wallets tracked</li>
                 <li>Full Quant Terminal — signals, chart lenses, leaderboard</li>
                 <li>Live alerts: pullback setups, OG exits, dev dumps</li>
               </ul>
-              <button className="pe-plan-btn">Reserve Trader</button>
+              <button className="pe-plan-btn" onClick={() => openCheckout('Trader', PRICES.Trader.m, PRICES.Trader.a)}>Reserve Trader</button>
               <div className="pe-plan-reward">🎁 Genesis reward: 1x–2x back in $YLDR at TGE</div>
             </div>
 
@@ -668,13 +770,13 @@ export default function PrelaunchEdgePage() {
                 <span className="u">/mo</span>
               </div>
               <div className={`pe-plan-orig${billing === 'a' ? ' show' : ''}`}>$2,388/yr billed monthly</div>
-              <div className="pe-plan-credits">⚡ 20M agent inference credits / mo</div>
+              <div className="pe-plan-credits">⚡ {CREDITS.Desk} agent inference credits / mo</div>
               <ul>
                 <li>Everything in Trader, unlimited wallets</li>
                 <li>Priority / lowest-latency signal delivery</li>
                 <li>First access to new markets (predictions, liquidity — 2027)</li>
               </ul>
-              <button className="pe-plan-btn">Reserve Desk</button>
+              <button className="pe-plan-btn" onClick={() => openCheckout('Desk', PRICES.Desk.m, PRICES.Desk.a)}>Reserve Desk</button>
               <div className="pe-plan-reward">🎁 Genesis reward: 1x–2x back in $YLDR at TGE</div>
             </div>
           </div>
@@ -729,13 +831,10 @@ export default function PrelaunchEdgePage() {
       {/* FINAL CTA */}
       <div className="pe-wrap">
         <div className="pe-final">
-          <h2>You can&apos;t fix a leak you can&apos;t see. See yours now.</h2>
-          <p>Run your Edge Analysis, see exactly what it finds, then decide.</p>
+          <h2>The price goes up Aug 30. Lock it in before then.</h2>
+          <p>One payment today, nothing charged again until Quant Terminal ships — plus 1x–2x back in tokens.</p>
           <div style={{ marginTop: 26 }}>
-            <button className={`pe-btn-p${scanLoading ? ' pe-loading' : ''}`} onClick={startScan}>
-              <span className="pe-spin" />
-              <span className="pe-lbl">Scan My Wallet →</span>
-            </button>
+            <button className="pe-btn-p" onClick={scrollToPricing}>Reserve Genesis Access →</button>
           </div>
         </div>
       </div>
@@ -751,6 +850,50 @@ export default function PrelaunchEdgePage() {
           </div>
         </div>
       </div>
+
+      {/* CHECKOUT MODAL */}
+      {checkoutOpen && (
+        <div
+          className="pe-modal-overlay open"
+          onClick={(e) => { if (e.target === e.currentTarget) closeCheckout(); }}
+        >
+          <div className="pe-modal">
+            <div className="pe-modal-hd">
+              <span className="pe-t">Confirm Genesis Reservation</span>
+              <button className="pe-modal-close" onClick={closeCheckout}>✕</button>
+            </div>
+            <div className="pe-modal-body">
+              <div className="pe-modal-plan">
+                <div>
+                  <div className="pe-modal-plan-name">{checkoutPlan.name}</div>
+                  <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Billed annually · Genesis price' : 'Billed monthly · Genesis price'}</div>
+                </div>
+                <div className="pe-modal-plan-price">${checkoutPrice}</div>
+              </div>
+              <div className="pe-modal-note">
+                You&apos;re charged <b>once, today</b>. This locks 12 months of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> between now and then.
+              </div>
+              <div className="pe-modal-reward">
+                <div className="pe-k">Estimated Genesis Reward</div>
+                <div className="pe-v">${checkoutPrice} – ${checkoutPrice * 2} in tokens</div>
+                <div className="pe-s">1x–2x your payment, valued at TGE launch price. Distributed to your connected wallet within 30 days of TGE.</div>
+              </div>
+              <div className="pe-modal-actions">
+                {!walletConnected ? (
+                  <button className="pe-modal-btn connect" onClick={connectWalletDemo}>
+                    {connecting ? 'Connecting...' : 'Connect Wallet to Pay'}
+                  </button>
+                ) : (
+                  <button className="pe-modal-btn pay" onClick={confirmPay}>Pay ${checkoutPrice} Now</button>
+                )}
+                <div className={`pe-modal-wallet-state${walletConnected ? ' connected' : ''}`}>
+                  {walletConnected ? 'Wallet connected · defirobbin.base.eth' : 'No wallet connected'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
