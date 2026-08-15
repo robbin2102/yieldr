@@ -30,6 +30,8 @@ export interface LastSubscription {
   token: string;
   subscriptionStart: string;
   rewardPayoutWindow: string;
+  accessMonths: number;
+  renewsAutomatically: boolean;
 }
 
 interface PaymentContextType {

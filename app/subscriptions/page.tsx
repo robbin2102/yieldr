@@ -19,6 +19,7 @@ interface SubscriptionRecord {
   reward_payout_window: string;
   subscription_start: string;
   access_months: number;
+  renews_automatically: boolean;
   tx_hash: string;
   chain_id: number;
   network: string;
@@ -177,6 +178,10 @@ export default function SubscriptionsPage() {
                     <div className="sp-plan-card-row"><span>Reward eligibility</span><b>${fmt(s.reward_min_usdc, 0)}–${fmt(s.reward_max_usdc, 0)}</b></div>
                     <div className="sp-plan-card-row"><span>Payout window</span><b>{s.reward_payout_window}</b></div>
                     <div className="sp-plan-card-row"><span>Access starts</span><b>{s.subscription_start}</b></div>
+                    <div className="sp-plan-card-row">
+                      <span>{s.renews_automatically ? 'Billing' : 'Access period'}</span>
+                      <b>{s.renews_automatically ? `1st month, then auto-renews monthly` : `${s.access_months} months prepaid`}</b>
+                    </div>
                     <div className="sp-plan-card-row"><span>Network</span><b>{s.network}</b></div>
                     <div className="sp-plan-card-tx">
                       <a href={`${getExplorerUrl(s.chain_id)}/tx/${s.tx_hash}`} target="_blank" rel="noopener noreferrer">

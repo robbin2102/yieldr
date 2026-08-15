@@ -12,6 +12,7 @@ export interface ISubscription extends Document {
   reward_payout_window: string;
   subscription_start: string;
   access_months: number;
+  renews_automatically: boolean;
 
   tx_hash: string;
   token: 'USDC' | 'USDT' | 'USDG';
@@ -37,7 +38,8 @@ const SubscriptionSchema = new Schema<ISubscription>(
     reward_max_usdc: { type: Number, required: true },
     reward_payout_window: { type: String, required: true, default: 'TGE + 30 days' },
     subscription_start: { type: String, required: true, default: 'Q1 2027' },
-    access_months: { type: Number, required: true, default: 12 },
+    access_months: { type: Number, required: true, default: 1 },
+    renews_automatically: { type: Boolean, required: true, default: true },
 
     tx_hash: { type: String, required: true, unique: true, index: true },
     token: { type: String, required: true, enum: ['USDC', 'USDT', 'USDG'] },

@@ -43,15 +43,15 @@ const FAQ_ITEMS = [
   },
   {
     q: 'When am I actually charged, and when does access start?',
-    a: "You're charged once, today. Your 12-month Quant Terminal access window doesn't start until Terminal itself launches in Q1 2027 — so there's nothing else to pay between now and then, and your access runs a full year from the day it goes live, not from today.",
+    a: "You're charged once, today, either way — nothing runs between now and Terminal's Q1 2027 launch. Monthly plans reserve your first month at the Genesis rate; billing then auto-renews monthly once Terminal goes live. Annual plans prepay the full 12 months today, so there's nothing else to pay for that whole first year.",
   },
   {
     q: 'Does Yieldr ever trade for me?',
     a: 'No. Yieldr is intelligence only — read-only wallet analysis and market signals. It never custodies funds or executes trades on your behalf.',
   },
   {
-    q: "What if I don't renew after my 12 months?",
-    a: 'Your Genesis reward is earned by your prepayment today, not by staying subscribed forever. Continued Terminal access after your 12-month Genesis window requires a normal subscription at the public rate.',
+    q: 'What happens after my access period ends?',
+    a: "Your Genesis reward is earned by your prepayment today, not by staying subscribed forever. Monthly plans auto-renew at your locked Genesis rate until you cancel. Annual plans simply end after 12 months — renewing after that means resubscribing at the public rate.",
   },
 ];
 
@@ -765,7 +765,7 @@ export default function PrelaunchEdgePage() {
         <div className="pe-wrap">
           <div className="pe-slbl"><span>Genesis Pricing</span><span className="pe-ln" /></div>
           <h2 className="pe-sec-h">Pay once now. Pricing locks. Access starts when Terminal ships.</h2>
-          <p className="pe-sec-p">One payment today reserves 12 months of Quant Terminal access starting from its Q1 2027 launch — nothing else is charged in between. Example: the Desk annual plan is ~$1,800 once ($149/mo × 12), and earns an estimated $1,800–$3,600 back in tokens.</p>
+          <p className="pe-sec-p">Nothing is charged between now and Terminal&apos;s Q1 2027 launch either way. Monthly locks your first month at the Genesis rate, then auto-renews monthly from launch. Annual prepays the full 12 months today at a lower rate — nothing else to pay all year. Example: the Desk annual plan is ~$1,800 once ($149/mo × 12), and earns an estimated $1,800–$3,600 back in tokens.</p>
 
           <div className="pe-toggle-row">
             <div className="pe-toggle">
@@ -934,7 +934,11 @@ export default function PrelaunchEdgePage() {
                     <div className="pe-modal-plan-price">${lastSubscription.rewardMinUsdc.toFixed(0)}–${lastSubscription.rewardMaxUsdc.toFixed(0)}</div>
                   </div>
                   <div className="pe-modal-note">
-                    Access starts <b>{lastSubscription.subscriptionStart}</b> when Quant Terminal ships. Your reward is airdropped in <b>$YLDR</b>, or stock-linked tokens like <b>$SPCX</b>/<b>$TSLA</b>, valued at TGE price.
+                    Access starts <b>{lastSubscription.subscriptionStart}</b> when Quant Terminal ships
+                    {lastSubscription.renewsAutomatically
+                      ? <> — covers your <b>first month</b>, then auto-renews monthly at your locked Genesis rate.</>
+                      : <> — <b>{lastSubscription.accessMonths} months</b> fully prepaid, nothing else to pay until then.</>}
+                    {' '}Your reward is airdropped in <b>$YLDR</b>, or stock-linked tokens like <b>$SPCX</b>/<b>$TSLA</b>, valued at TGE price.
                   </div>
                   <div className="pe-modal-tx">
                     <a href={`${getExplorerUrl(lastSubscription.chainId)}/tx/${lastSubscription.txHash}`} target="_blank" rel="noopener noreferrer">
@@ -959,12 +963,16 @@ export default function PrelaunchEdgePage() {
                   <div className="pe-modal-plan">
                     <div>
                       <div className="pe-modal-plan-name">{checkoutPlan.name}</div>
-                      <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Annual rate · 12 months prepaid' : 'Monthly rate · Genesis price'}</div>
+                      <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Annual rate · 12 months prepaid' : 'Monthly rate · 1st month, then auto-renews'}</div>
                     </div>
                     <div className="pe-modal-plan-price">${checkoutPrice}</div>
                   </div>
                   <div className="pe-modal-note">
-                    You&apos;re charged <b>once, today</b>. This locks 12 months of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> between now and then.
+                    {billing === 'a' ? (
+                      <>You&apos;re charged <b>once, today</b>. This prepays <b>12 months</b> of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> for that whole first year.</>
+                    ) : (
+                      <>You&apos;re charged <b>once, today</b>, for your <b>first month</b> at the Genesis rate — nothing else is charged before Terminal&apos;s <b>Q1 2027 launch</b>. From launch, this <b>auto-renews monthly</b> at ${checkoutPrice}/mo until you cancel.</>
+                    )}
                   </div>
                   <div className="pe-modal-reward">
                     <div className="pe-k">Estimated Genesis Reward</div>

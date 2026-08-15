@@ -48,8 +48,27 @@ export function getPlanPrice(name: PlanName, cycle: BillingCycle): number | null
   return cycle === 'annual' ? plan.annual * MONTHS_PER_YEAR : plan.monthly;
 }
 
+/**
+ * How much access a single Genesis payment actually buys, and whether it
+ * keeps billing after that.
+ *
+ *   - monthly cycle → covers ONE month of access once Terminal launches.
+ *     After that first month, the subscription auto-renews monthly at the
+ *     locked-in Genesis rate (recurring billing begins at launch — there is
+ *     nothing to charge between now and then).
+ *   - annual cycle  → the full 12 months is already paid for today. No
+ *     renewal charge until the 12-month window ends.
+ */
+export function getAccessMonths(cycle: BillingCycle): number {
+  return cycle === 'annual' ? MONTHS_PER_YEAR : 1;
+}
+
+/** True if this cycle keeps auto-charging (at the locked Genesis rate) after its initial access window. */
+export function renewsAutomatically(cycle: BillingCycle): boolean {
+  return cycle === 'monthly';
+}
+
 export const REWARD_MULTIPLIER_MIN = 1;
 export const REWARD_MULTIPLIER_MAX = 2;
-export const SUBSCRIPTION_ACCESS_MONTHS = 12;
 export const SUBSCRIPTION_START_LABEL = 'Q1 2027';
 export const REWARD_PAYOUT_LABEL = 'TGE + 30 days';

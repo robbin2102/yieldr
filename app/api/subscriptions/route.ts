@@ -16,11 +16,12 @@ import {
   isPlanName,
   isBillingCycle,
   getPlanPrice,
+  getAccessMonths,
+  renewsAutomatically,
   REWARD_MULTIPLIER_MIN,
   REWARD_MULTIPLIER_MAX,
   REWARD_PAYOUT_LABEL,
   SUBSCRIPTION_START_LABEL,
-  SUBSCRIPTION_ACCESS_MONTHS,
 } from '@/config/plans';
 
 // Small tolerance for floating point / gas-adjacent rounding on the client side.
@@ -111,7 +112,8 @@ export async function POST(req: NextRequest) {
       reward_max_usdc: rewardMax,
       reward_payout_window: REWARD_PAYOUT_LABEL,
       subscription_start: SUBSCRIPTION_START_LABEL,
-      access_months: SUBSCRIPTION_ACCESS_MONTHS,
+      access_months: getAccessMonths(billing_cycle),
+      renews_automatically: renewsAutomatically(billing_cycle),
       tx_hash: tx_hash.toLowerCase(),
       token,
       network: verification.network ?? chainCfg.name,
@@ -134,6 +136,8 @@ export async function POST(req: NextRequest) {
         reward_max_usdc: rewardMax,
         subscription_start: SUBSCRIPTION_START_LABEL,
         reward_payout_window: REWARD_PAYOUT_LABEL,
+        access_months: getAccessMonths(billing_cycle),
+        renews_automatically: renewsAutomatically(billing_cycle),
       },
     });
   } catch (error) {

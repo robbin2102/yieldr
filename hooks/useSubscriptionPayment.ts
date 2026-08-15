@@ -97,6 +97,8 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
         token: selectedToken,
         subscriptionStart: data.data.subscription_start,
         rewardPayoutWindow: data.data.reward_payout_window,
+        accessMonths: data.data.access_months,
+        renewsAutomatically: data.data.renews_automatically,
       };
       setLastSubscription(record);
       setHasCompletedPayment(true);
