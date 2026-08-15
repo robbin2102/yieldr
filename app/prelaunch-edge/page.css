@@ -385,6 +385,10 @@
 .pe-modal-token-single{font-family:var(--pe-mono); font-size:10.5px; color:var(--ink-2); margin-left:auto;}
 .pe-modal-balance{font-family:var(--pe-mono); font-size:10.5px; color:var(--ink-3); width:100%;}
 .pe-modal-balance.low{color:var(--loss);}
+.pe-modal-add-asset{font-family:var(--pe-mono); font-size:9.5px; font-weight:700; color:var(--agent); background:var(--agent-dim); border:1px solid var(--agent-line); border-radius:100px; padding:4px 9px; cursor:pointer; white-space:nowrap;}
+.pe-modal-add-asset:hover{opacity:.85;}
+.pe-modal-add-asset:disabled{opacity:.6; cursor:not-allowed;}
+.pe-modal-chain-note{font-size:10px; color:var(--ink-3); margin-top:6px; line-height:1.4;}
 .pe-modal-switch{margin-top:10px; border:1px solid var(--warn-line); background:var(--warn-dim); border-radius:10px; padding:10px 12px;}
 .pe-modal-switch.subtle{border-color:var(--hair-2); background:var(--surface-2);}
 .pe-modal-switch-note{font-size:11px; color:var(--ink-2); margin-bottom:8px;}
