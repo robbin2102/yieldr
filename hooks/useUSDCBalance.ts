@@ -15,7 +15,8 @@ const VIEM_CHAINS: Record<number, Chain> = {
   4663: robinhoodChain,
 };
 
-// QuickNode RPCs from env vars (fallback to public RPCs)
+// Configured RPC provider (currently Alchemy) from env vars, falling back to
+// public RPCs per chain if a var isn't set.
 const PUBLIC_RPCS: Record<number, string> = {
   8453: process.env.NEXT_PUBLIC_RPC_BASE || 'https://mainnet.base.org',
   1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
