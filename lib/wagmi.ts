@@ -11,6 +11,7 @@ import {
 import { createConfig, http } from 'wagmi';
 import { base, mainnet, polygon, bsc } from 'wagmi/chains';
 import { robinhoodChain } from './chains/robinhoodChain';
+import { getProxyRpcUrl } from '@/config/payment';
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '';
 
@@ -42,11 +43,13 @@ export const config = createConfig({
   connectors,
   chains: [base, mainnet, polygon, bsc, robinhoodChain],
   ssr: true,
+  // Every chain reads through the RPC proxy — the real provider keys live
+  // only on that service, never in this app's own env vars.
   transports: {
-    [base.id]: http(process.env.NEXT_PUBLIC_RPC_BASE),
-    [mainnet.id]: http(process.env.NEXT_PUBLIC_RPC_ETHEREUM),
-    [polygon.id]: http(process.env.NEXT_PUBLIC_RPC_POLYGON),
-    [bsc.id]: http(process.env.NEXT_PUBLIC_RPC_BSC),
-    [robinhoodChain.id]: http(process.env.NEXT_PUBLIC_RPC_ROBINHOOD),
+    [base.id]: http(getProxyRpcUrl(base.id)),
+    [mainnet.id]: http(getProxyRpcUrl(mainnet.id)),
+    [polygon.id]: http(getProxyRpcUrl(polygon.id)),
+    [bsc.id]: http(getProxyRpcUrl(bsc.id)),
+    [robinhoodChain.id]: http(getProxyRpcUrl(robinhoodChain.id)),
   },
 });

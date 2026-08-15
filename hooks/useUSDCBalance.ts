@@ -5,7 +5,7 @@ import { useAccount, useReadContract, useChainId } from 'wagmi';
 import { formatUnits, createPublicClient, http, type Chain } from 'viem';
 import { base, mainnet, polygon, bsc } from 'viem/chains';
 import { robinhoodChain } from '@/lib/chains/robinhoodChain';
-import { SUPPORTED_CHAINS, ERC20_ABI, type TokenId } from '@/config/payment';
+import { SUPPORTED_CHAINS, ERC20_ABI, getProxyRpcUrl, type TokenId } from '@/config/payment';
 
 const VIEM_CHAINS: Record<number, Chain> = {
   8453: base,
@@ -13,16 +13,6 @@ const VIEM_CHAINS: Record<number, Chain> = {
   137: polygon,
   56: bsc,
   4663: robinhoodChain,
-};
-
-// Configured RPC provider (currently Alchemy) from env vars, falling back to
-// public RPCs per chain if a var isn't set.
-const PUBLIC_RPCS: Record<number, string> = {
-  8453: process.env.NEXT_PUBLIC_RPC_BASE || 'https://mainnet.base.org',
-  1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
-  137: process.env.NEXT_PUBLIC_RPC_POLYGON || 'https://polygon.llamarpc.com',
-  56: process.env.NEXT_PUBLIC_RPC_BSC || 'https://bsc-dataseed.binance.org',
-  4663: process.env.NEXT_PUBLIC_RPC_ROBINHOOD || 'https://rpc.mainnet.chain.robinhood.com',
 };
 
 export interface ChainBalance {
@@ -87,11 +77,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     setScanErrors([]);
     setScanDone(false);
 
-    // Logged as a flat string, not an object — Next.js's dev overlay
-    // intercepts console.error/warn calls with an object argument and can
-    // render it as a bare "{}" in its own popup instead of the real content,
-    // which is useless for debugging. A plain string always shows as-is.
-    console.warn('[Balance] Scanning all chains. Resolved RPC URLs: ' + JSON.stringify(PUBLIC_RPCS, null, 2));
+    console.warn('[Balance] Scanning all chains via RPC proxy.');
 
     const jobs: Promise<void>[] = [];
 
@@ -101,7 +87,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
       const viemChain = VIEM_CHAINS[numId];
       if (!viemChain) continue;
 
-      const rpcUrl = PUBLIC_RPCS[numId];
+      const rpcUrl = getProxyRpcUrl(numId);
       if (!rpcUrl) continue;
 
       const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl, { timeout: 15_000, retryCount: 1 }) });

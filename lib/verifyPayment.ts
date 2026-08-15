@@ -10,7 +10,7 @@
 import { createPublicClient, http, formatUnits, type Chain } from 'viem';
 import { base, mainnet, polygon, bsc } from 'viem/chains';
 import { robinhoodChain } from '@/lib/chains/robinhoodChain';
-import { SUPPORTED_CHAINS, TREASURY_ADDRESS, type TokenId } from '@/config/payment';
+import { SUPPORTED_CHAINS, TREASURY_ADDRESS, getProxyRpcUrl, type TokenId } from '@/config/payment';
 
 const VIEM_CHAINS: Record<number, Chain> = {
   8453: base,
@@ -20,13 +20,9 @@ const VIEM_CHAINS: Record<number, Chain> = {
   4663: robinhoodChain,
 };
 
-const SERVER_RPCS: Record<number, string> = {
-  8453: process.env.NEXT_PUBLIC_RPC_BASE || 'https://mainnet.base.org',
-  1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
-  137: process.env.NEXT_PUBLIC_RPC_POLYGON || 'https://polygon.llamarpc.com',
-  56: process.env.NEXT_PUBLIC_RPC_BSC || 'https://bsc-dataseed.binance.org',
-  4663: process.env.NEXT_PUBLIC_RPC_ROBINHOOD || 'https://rpc.mainnet.chain.robinhood.com',
-};
+// Server-to-server call to the same RPC proxy the client uses — the real
+// provider keys never need to live in this app's own env vars at all, on
+// either side of the client/server boundary.
 
 // keccak256("Transfer(address,address,uint256)")
 const TRANSFER_TOPIC0 =
@@ -85,7 +81,7 @@ export async function verifyOnchainPayment(input: VerifyPaymentInput): Promise<V
   if (!tokenCfg) return { ok: false, error: 'Unsupported token for this chain' };
 
   const viemChain = VIEM_CHAINS[chainId];
-  const rpcUrl = SERVER_RPCS[chainId];
+  const rpcUrl = getProxyRpcUrl(chainId);
   if (!viemChain || !rpcUrl) return { ok: false, error: 'No RPC configured for this chain' };
 
   if (!/^0x[a-fA-F0-9]{64}$/.test(txHash)) return { ok: false, error: 'Malformed transaction hash' };
