@@ -158,6 +158,12 @@ export default function PrelaunchEdgePage() {
   const agentAutoRef = useRef(true);
   const agentPausedRef = useRef(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const demoSectionRef = useRef<HTMLDivElement>(null);
+  const [demoStarted, setDemoStarted] = useState(false);
+
+  const startDemo = useCallback(() => {
+    setDemoStarted(true);
+  }, []);
 
   // Ticker animation
   useEffect(() => {
@@ -166,12 +172,31 @@ export default function PrelaunchEdgePage() {
     animateCount(setArr, 38200, 1600);
   }, []);
 
-  // Load demo iframe on mount (always on — no longer gated behind a click)
+  // The demo runs a ~20s scripted walkthrough on its own timer as soon as it
+  // loads — starting it on page mount meant it was mid-sequence while people
+  // were still reading the hero. It now only loads once the user actually
+  // asks for it: clicking "Preview the Demo", or scrolling the section into
+  // view themselves. Once started it keeps running to completion regardless
+  // of where they scroll to next.
   useEffect(() => {
-    if (iframeRef.current) {
+    if (demoStarted) return;
+    const el = demoSectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) startDemo();
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [demoStarted, startDemo]);
+
+  useEffect(() => {
+    if (demoStarted && iframeRef.current) {
       iframeRef.current.src = `data:text/html;base64,${EDGE_B64}`;
     }
-  }, []);
+  }, [demoStarted]);
 
   // Countdown to launch
   useEffect(() => {
@@ -189,15 +214,17 @@ export default function PrelaunchEdgePage() {
     return () => clearInterval(timer);
   }, []);
 
-  // autoscan=1 query param — auto-scroll to demo section
+  // autoscan=1 query param — auto-scroll to demo section and start it
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('autoscan') === '1') {
+      startDemo();
       const t = setTimeout(() => {
         document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 400);
       return () => clearTimeout(t);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Agent tab auto-rotation
@@ -237,8 +264,9 @@ export default function PrelaunchEdgePage() {
   }, []);
 
   const scrollToDemo = useCallback(() => {
+    startDemo();
     document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
+  }, [startDemo]);
 
   const openCheckout = useCallback((name: PlanName, mPrice: number, aPrice: number) => {
     setCheckoutPlan({ name, m: mPrice, a: aPrice });
@@ -383,7 +411,7 @@ export default function PrelaunchEdgePage() {
       </div>
 
       {/* DEMO PREVIEW */}
-      <div className="pe-sec" id="pe-demo">
+      <div className="pe-sec" id="pe-demo" ref={demoSectionRef}>
         <div className="pe-wrap">
           <span className="pe-demo-badge"><span className="pe-dt" />Demo Preview · Live Wallet Scanning Launches Aug 30</span>
           <h2 className="pe-sec-h">See exactly how Quant Agent will read your wallet.</h2>
@@ -392,8 +420,19 @@ export default function PrelaunchEdgePage() {
             <div className="pe-console-hd">
               <span className="pe-lbl">◆ Demo mode · sample wallet</span>
             </div>
-            <div className="pe-console-frame">
-              <iframe ref={iframeRef} title="Edge Analysis Demo" style={{ width: '100%', height: 760, border: 'none', display: 'block', background: '#000' }} />
+            <div className="pe-console-frame" style={{ position: 'relative' }}>
+              {!demoStarted && (
+                <button className="pe-console-start" onClick={startDemo}>
+                  <span className="pe-console-start-icon">▶</span>
+                  Preview the Demo
+                </button>
+              )}
+              <iframe
+                ref={iframeRef}
+                title="Edge Analysis Demo"
+                sandbox="allow-scripts"
+                style={{ width: '100%', height: 760, border: 'none', display: 'block', background: '#000' }}
+              />
             </div>
           </div>
         </div>
