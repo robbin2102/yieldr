@@ -23,7 +23,7 @@
 .sp-nav-mark{width:32px; height:32px; border-radius:9px; overflow:hidden; flex-shrink:0; background:#000;}
 .sp-nav-mark img{width:100%; height:100%; object-fit:cover;}
 .sp-nav-name{font-family:var(--sp-mono); font-size:14px; font-weight:800; letter-spacing:1.5px; color:var(--ink-1);}
-.sp-nav-cta{font-family:var(--sp-mono); font-size:11.5px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:#04140B; background:var(--win); border:none; border-radius:8px; padding:10px 18px; transition:opacity .15s; text-decoration:none; display:inline-block;}
+.sp-nav-cta, .sp-root a.sp-nav-cta{font-family:var(--sp-mono); font-size:11.5px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:#04140B; background:var(--win); border:none; border-radius:8px; padding:10px 18px; transition:opacity .15s; text-decoration:none; display:inline-block;}
 .sp-nav-cta:hover{opacity:.88;}
 
 /* HERO */

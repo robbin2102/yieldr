@@ -51,7 +51,7 @@ export default function SubscriptionsPage() {
   const router = useRouter();
   const { address, isConnected, isReconnecting, isConnecting, status: accountStatus } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { status } = usePayment();
+  const { status, hasCompletedPayment } = usePayment();
 
   const [hydrated, setHydrated] = useState(false);
   const [mySubs, setMySubs] = useState<SubscriptionRecord[]>([]);
@@ -63,6 +63,14 @@ export default function SubscriptionsPage() {
   useEffect(() => {
     if (isConnected || accountStatus === 'disconnected') setHydrated(true);
   }, [isConnected, accountStatus]);
+
+  // This page only exists for wallets that have completed a Genesis payment —
+  // send everyone else back to where they'd reserve one.
+  useEffect(() => {
+    if (!hasCompletedPayment) {
+      router.replace('/prelaunch-edge');
+    }
+  }, [hasCompletedPayment, router]);
 
   useEffect(() => {
     fetch('/api/subscriptions/public')
@@ -92,6 +100,11 @@ export default function SubscriptionsPage() {
 
   const totalPages = Math.ceil(publicSubs.length / ITEMS_PER_PAGE);
   const pageItems = publicSubs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  // Render nothing while the redirect effect above sends unpaid visitors away.
+  if (!hasCompletedPayment) {
+    return null;
+  }
 
   return (
     <div className="sp-root">
