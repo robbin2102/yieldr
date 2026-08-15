@@ -87,7 +87,11 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     setScanErrors([]);
     setScanDone(false);
 
-    console.log('[Balance] Scanning all chains for stablecoins. Resolved RPC URLs:', PUBLIC_RPCS);
+    // Logged as a flat string, not an object — Next.js's dev overlay
+    // intercepts console.error/warn calls with an object argument and can
+    // render it as a bare "{}" in its own popup instead of the real content,
+    // which is useless for debugging. A plain string always shows as-is.
+    console.warn('[Balance] Scanning all chains. Resolved RPC URLs: ' + JSON.stringify(PUBLIC_RPCS, null, 2));
 
     const jobs: Promise<void>[] = [];
 
@@ -100,7 +104,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
       const rpcUrl = PUBLIC_RPCS[numId];
       if (!rpcUrl) continue;
 
-      const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl, { timeout: 8_000, retryCount: 1 }) });
+      const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl, { timeout: 15_000, retryCount: 1 }) });
 
       for (const [tokenName, tokenCfg] of Object.entries(cfg.tokens)) {
         // Skip the selected token on current chain (already read by useReadContract)
@@ -127,28 +131,34 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
             .catch((err) => {
               if (scanGenRef.current !== gen) return;
               // viem's top-level shortMessage is usually a generic phrase
-              // ("HTTP request failed.") — the actually useful info (status
-              // code, root cause) lives on .status / .cause. Surface all of
-              // it so a failure is diagnosable instead of just "it's gone."
+              // ("HTTP request failed." / "The request took too long to
+              // respond.") — the actually useful info (status code, response
+              // body, root cause) lives on .status / .details /
+              // .metaMessages / .cause. Pull all of it so a failure is
+              // diagnosable instead of just "it's gone."
               const status = err?.status ?? err?.cause?.status;
+              const details = err?.details;
+              const metaMessages = Array.isArray(err?.metaMessages) ? err.metaMessages.join(' ') : undefined;
               const causeMessage = err?.cause?.shortMessage || err?.cause?.message;
               const shortMessage = err?.shortMessage || err?.message || String(err);
-              const message = [shortMessage, status ? `HTTP ${status}` : null, causeMessage && causeMessage !== shortMessage ? causeMessage : null]
+              const message = [
+                shortMessage,
+                status ? `HTTP ${status}` : null,
+                details && details !== shortMessage ? details : null,
+                metaMessages,
+                causeMessage && causeMessage !== shortMessage ? causeMessage : null,
+              ]
                 .filter(Boolean)
                 .join(' — ')
-                .slice(0, 200);
+                .slice(0, 250);
 
-              console.error('[Balance][RPC FAIL]', {
-                chain: cfg.name,
-                token: tokenName,
-                url: rpcUrl,
-                errorName: err?.name,
-                status,
-                shortMessage,
-                causeName: err?.cause?.name,
-                causeMessage,
-                fullMessage: err?.message,
-              });
+              // Flat string, not an object arg — see note above on why.
+              console.warn(
+                `[Balance][RPC FAIL] chain=${cfg.name} token=${tokenName} url=${rpcUrl} ` +
+                `errorName=${err?.name} status=${status ?? 'n/a'} shortMessage="${shortMessage}" ` +
+                `details="${details ?? 'n/a'}" metaMessages="${metaMessages ?? 'n/a'}" ` +
+                `causeName=${err?.cause?.name ?? 'n/a'} causeMessage="${causeMessage ?? 'n/a'}"`
+              );
 
               setScanErrors((prev) => [
                 ...prev,
