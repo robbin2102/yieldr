@@ -34,7 +34,7 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const { openConnectModal } = useConnectModal();
-  const { balance, otherBalances, scanDone, isLoading: balanceLoading, refetch: refetchBalance } = useUSDCBalance(selectedToken);
+  const { balance, otherBalances, scanErrors, scanDone, isLoading: balanceLoading, refetch: refetchBalance } = useUSDCBalance(selectedToken);
   const { transfer, hash, isPending, isConfirming, isConfirmed, isReverted, error: transferError } = useUSDCTransfer();
   const { setLastSubscription, setHasCompletedPayment } = usePayment();
 
@@ -236,6 +236,7 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
     balance,
     balanceLoading,
     otherBalances,
+    scanErrors,
     scanDone,
     isSupported,
     chainId,

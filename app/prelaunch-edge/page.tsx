@@ -7,7 +7,7 @@ import { PLAN_PRICES, MONTHS_PER_YEAR, computeChargeAmount, type PlanName, type 
 import { getExplorerUrl, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
 import { usePayment } from '../context/PaymentContext';
 import { useSubscriptionPayment } from '@/hooks/useSubscriptionPayment';
-import { useAccount, useSwitchChain, useWatchAsset } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 // [isWin, heightPct] — static trade bars for the overview chart
 const TRADE_BARS: [boolean, number][] = [
@@ -99,8 +99,6 @@ export default function PrelaunchEdgePage() {
 
   const { isConnected, address } = useAccount();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
-  const { watchAssetAsync, isPending: isWatchingAsset } = useWatchAsset();
-  const [assetAdded, setAssetAdded] = useState(false);
   const { lastSubscription, hasCompletedPayment } = usePayment();
   const {
     pay,
@@ -110,6 +108,7 @@ export default function PrelaunchEdgePage() {
     balance: tokenBalance,
     balanceLoading,
     otherBalances,
+    scanErrors,
     isSupported: isChainSupported,
     chainId: activeChainId,
     chainName: activeChainName,
@@ -119,7 +118,6 @@ export default function PrelaunchEdgePage() {
 
   const chainConfigForToken = SUPPORTED_CHAINS[activeChainId];
   const availableTokens = chainConfigForToken ? (Object.keys(chainConfigForToken.tokens) as TokenId[]) : [];
-  const activeTokenConfig = chainConfigForToken?.tokens[selectedToken];
 
   // Keep selectedToken valid whenever the wallet's chain changes.
   useEffect(() => {
@@ -128,32 +126,6 @@ export default function PrelaunchEdgePage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChainId]);
-
-  // Reset the "added" confirmation whenever the chain/token selection changes.
-  useEffect(() => {
-    setAssetAdded(false);
-  }, [activeChainId, selectedToken]);
-
-  // MetaMask (and most wallets) show ERC20 transfers as "Unknown" until the
-  // token has been explicitly registered with the wallet — this can't be
-  // fixed from the transfer call itself, only by asking the wallet to watch
-  // the asset (EIP-747), which is what this does.
-  const handleAddToWallet = useCallback(async () => {
-    if (!activeTokenConfig) return;
-    try {
-      const added = await watchAssetAsync({
-        type: 'ERC20',
-        options: {
-          address: activeTokenConfig.address,
-          symbol: selectedToken,
-          decimals: activeTokenConfig.decimals,
-        },
-      });
-      if (added) setAssetAdded(true);
-    } catch {
-      // User dismissed the wallet prompt — not an error worth surfacing.
-    }
-  }, [activeTokenConfig, selectedToken, watchAssetAsync]);
 
   const agentAutoRef = useRef(true);
   const agentPausedRef = useRef(false);
@@ -1157,19 +1129,6 @@ export default function PrelaunchEdgePage() {
                             <span className={`pe-modal-balance${insufficientBalance ? ' low' : ''}`}>
                               {balanceLoading ? 'Checking balance...' : `Balance: $${tokenBalance.toFixed(2)}`}
                             </span>
-                            {activeTokenConfig && (
-                              <button
-                                type="button"
-                                className="pe-modal-add-asset"
-                                onClick={handleAddToWallet}
-                                disabled={isWatchingAsset}
-                              >
-                                {assetAdded ? `✓ ${selectedToken} added` : isWatchingAsset ? 'Adding...' : `+ Add ${selectedToken} to wallet`}
-                              </button>
-                            )}
-                          </div>
-                          <div className="pe-modal-chain-note">
-                            Wallet showing &quot;Unknown&quot; instead of {selectedToken}? Add it above so your wallet recognizes the token before you confirm.
                           </div>
                           {otherBalances.length > 0 && (
                             <div className={`pe-modal-switch${insufficientBalance ? '' : ' subtle'}`}>
@@ -1190,6 +1149,13 @@ export default function PrelaunchEdgePage() {
                                   </button>
                                 ))}
                               </div>
+                            </div>
+                          )}
+                          {scanErrors.length > 0 && (
+                            <div className="pe-modal-scan-errors">
+                              Couldn&apos;t check balance on {scanErrors.map((e, i) => (
+                                <span key={i}>{i > 0 ? ', ' : ''}{e.chainName} ({e.message})</span>
+                              ))} — RPC issue, not necessarily a zero balance.
                             </div>
                           )}
                         </>

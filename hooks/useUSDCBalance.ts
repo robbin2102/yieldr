@@ -32,11 +32,19 @@ export interface ChainBalance {
   balance: number;
 }
 
+export interface ChainScanError {
+  chainId: number;
+  chainName: string;
+  token: TokenId;
+  message: string;
+}
+
 export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const [balance, setBalance] = useState(0);
   const [otherBalances, setOtherBalances] = useState<ChainBalance[]>([]);
+  const [scanErrors, setScanErrors] = useState<ChainScanError[]>([]);
   const [scanDone, setScanDone] = useState(false);
   const scanGenRef = useRef(0);
 
@@ -76,6 +84,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     if (!address || !isConnected) return;
     const gen = ++scanGenRef.current;
     setOtherBalances([]);
+    setScanErrors([]);
     setScanDone(false);
 
     console.log('[Balance] Scanning all chains for stablecoins...');
@@ -116,7 +125,13 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
               ]);
             })
             .catch((err) => {
-              console.warn(`[Balance] Failed to read ${tokenName} on ${cfg.name}:`, err);
+              if (scanGenRef.current !== gen) return;
+              const message = (err?.shortMessage || err?.message || String(err)).slice(0, 140);
+              console.warn(`[Balance] Failed to read ${tokenName} on ${cfg.name} (${rpcUrl}):`, err);
+              setScanErrors((prev) => [
+                ...prev,
+                { chainId: numId, chainName: cfg.name, token: tokenName as TokenId, message },
+              ]);
             })
         );
       }
@@ -141,6 +156,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     isLoading,
     refetch,
     otherBalances,
+    scanErrors,
     scanDone,
   };
 }
