@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
-import { PLAN_PRICES, MONTHS_PER_YEAR, type PlanName } from '@/config/plans';
+import { PLAN_PRICES, MONTHS_PER_YEAR, computeChargeAmount, type PlanName, type BillingCycle } from '@/config/plans';
 import { getExplorerUrl, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
 import { usePayment } from '../context/PaymentContext';
 import { useSubscriptionPayment } from '@/hooks/useSubscriptionPayment';
@@ -111,6 +111,8 @@ export default function PrelaunchEdgePage() {
     isSupported: isChainSupported,
     chainId: activeChainId,
     chainName: activeChainName,
+    currentSubscription,
+    currentSubscriptionLoaded,
   } = useSubscriptionPayment(selectedToken);
 
   const chainConfigForToken = SUPPORTED_CHAINS[activeChainId];
@@ -222,8 +224,29 @@ export default function PrelaunchEdgePage() {
     resetPayment();
   }, [resetPayment]);
 
-  // Annual billing prepays the discounted monthly rate for the full year, once.
-  const checkoutPrice = billing === 'a' ? checkoutPlan.a * MONTHS_PER_YEAR : checkoutPlan.m;
+  // Annual billing prepays the discounted monthly rate for the full year, once —
+  // this is the plan's full sticker price, before accounting for anything the
+  // wallet has already paid toward its current plan.
+  const fullPlanPrice = billing === 'a' ? checkoutPlan.a * MONTHS_PER_YEAR : checkoutPlan.m;
+  const selectedCycle: BillingCycle = billing === 'a' ? 'annual' : 'monthly';
+
+  // A wallet holds exactly one plan at a time. Once connected, figure out
+  // whether this selection is a fresh purchase, a valid upgrade (charged only
+  // the differential), a re-purchase of the plan already owned, or not an
+  // upgrade at all — computeChargeAmount is the exact function the payment
+  // hook (and the server) use to decide the real charge, so this is only a
+  // preview, never a second source of truth.
+  const currentSubPending = isConnected && !currentSubscriptionLoaded;
+  const chargeDecision = checkoutPlan.name && isConnected && currentSubscriptionLoaded
+    ? computeChargeAmount(checkoutPlan.name, selectedCycle, currentSubscription)
+    : null;
+  const alreadyOwned = chargeDecision !== null && !chargeDecision.ok && chargeDecision.reason === 'already-owned';
+  const notAnUpgrade = chargeDecision !== null && !chargeDecision.ok && chargeDecision.reason === 'not-an-upgrade';
+  const isUpgradePurchase = chargeDecision !== null && chargeDecision.ok && chargeDecision.isUpgrade;
+  // Amount actually charged: the upgrade differential once known, otherwise
+  // the full price (best-effort display before a wallet is connected).
+  const checkoutPrice = chargeDecision && chargeDecision.ok ? chargeDecision.amount : fullPlanPrice;
+
   // Balance on the ACTIVE chain/token is unknown until the scan resolves — never
   // let a click through before we actually know whether it can succeed, or a
   // payment attempt can be submitted (and revert on-chain) against a balance we
@@ -232,12 +255,13 @@ export default function PrelaunchEdgePage() {
   const insufficientBalance = isConnected && isChainSupported && !balanceLoading && tokenBalance < checkoutPrice;
   const payDisabled =
     paymentStep === 'connecting' || paymentStep === 'awaiting-signature' || paymentStep === 'confirming' || paymentStep === 'recording' ||
-    (isConnected && !isChainSupported) || balancePending || insufficientBalance;
+    (isConnected && !isChainSupported) || balancePending || insufficientBalance ||
+    currentSubPending || alreadyOwned || notAnUpgrade;
 
   const handlePayNow = useCallback(() => {
     if (!checkoutPlan.name) return;
-    pay(checkoutPlan.name, billing === 'a' ? 'annual' : 'monthly');
-  }, [checkoutPlan.name, billing, pay]);
+    pay(checkoutPlan.name, selectedCycle);
+  }, [checkoutPlan.name, selectedCycle, pay]);
 
   // Success → short countdown, then hand the user off to the subscriptions page.
   useEffect(() => {
@@ -969,24 +993,43 @@ export default function PrelaunchEdgePage() {
                   <div className="pe-modal-plan">
                     <div>
                       <div className="pe-modal-plan-name">{checkoutPlan.name}</div>
-                      <div className="pe-modal-plan-cycle">{billing === 'a' ? 'Annual rate · 12 months prepaid' : 'Monthly rate · 1st month, then auto-renews'}</div>
+                      <div className="pe-modal-plan-cycle">
+                        {isUpgradePurchase
+                          ? `Upgrade from ${currentSubscription?.planName} ${currentSubscription?.billingCycle}`
+                          : billing === 'a' ? 'Annual rate · 12 months prepaid' : 'Monthly rate · 1st month, then auto-renews'}
+                      </div>
                     </div>
-                    <div className="pe-modal-plan-price">${checkoutPrice}</div>
-                  </div>
-                  <div className="pe-modal-note">
-                    {billing === 'a' ? (
-                      <>You&apos;re charged <b>once, today</b>. This prepays <b>12 months</b> of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> for that whole first year.</>
-                    ) : (
-                      <>You&apos;re charged <b>once, today</b>, for your <b>first month</b> at the Genesis rate — nothing else is charged before Terminal&apos;s <b>Q1 2027 launch</b>. From launch, this <b>auto-renews monthly</b> at ${checkoutPrice}/mo until you cancel.</>
-                    )}
-                  </div>
-                  <div className="pe-modal-reward">
-                    <div className="pe-k">Estimated Genesis Reward</div>
-                    <div className="pe-v">${checkoutPrice} – ${checkoutPrice * 2} in USDC value</div>
-                    <div className="pe-s">1x–2x your payment, airdropped in $YLDR or stock-linked tokens ($SPCX/$TSLA) at TGE + 30 days.</div>
+                    <div className="pe-modal-plan-price">${checkoutPrice.toFixed(2)}</div>
                   </div>
 
-                  {isConnected && (
+                  {alreadyOwned ? (
+                    <div className="pe-modal-note">
+                      You already have the <b>{checkoutPlan.name} {billing === 'a' ? 'annual' : 'monthly'}</b> plan. Pick a different plan or billing cycle above to upgrade, or visit your <a href="/subscriptions" style={{ color: 'var(--win)' }}>subscriptions</a> to review it.
+                    </div>
+                  ) : notAnUpgrade ? (
+                    <div className="pe-modal-note">
+                      {checkoutPlan.name} {billing === 'a' ? 'annual' : 'monthly'} isn&apos;t an upgrade from your current <b>{currentSubscription?.planName} {currentSubscription?.billingCycle}</b> plan — its price doesn&apos;t exceed what you&apos;ve already paid. Choose a higher plan or annual billing instead.
+                    </div>
+                  ) : (
+                    <>
+                      <div className="pe-modal-note">
+                        {isUpgradePurchase ? (
+                          <>You&apos;re charged <b>${checkoutPrice.toFixed(2)} today</b> — the difference between what you&apos;ve already paid and {checkoutPlan.name} {billing === 'a' ? 'annual' : 'monthly'}&apos;s full price. {billing === 'a' ? <>This prepays <b>12 months</b> from Terminal&apos;s <b>Q1 2027 launch</b>.</> : <>From <b>Q1 2027 launch</b>, this <b>auto-renews monthly</b> at ${checkoutPlan.m}/mo until you cancel.</>}</>
+                        ) : billing === 'a' ? (
+                          <>You&apos;re charged <b>once, today</b>. This prepays <b>12 months</b> of Quant Terminal access starting from its <b>Q1 2027 launch</b> — not from today — so there&apos;s <b>nothing else to pay</b> for that whole first year.</>
+                        ) : (
+                          <>You&apos;re charged <b>once, today</b>, for your <b>first month</b> at the Genesis rate — nothing else is charged before Terminal&apos;s <b>Q1 2027 launch</b>. From launch, this <b>auto-renews monthly</b> at ${checkoutPlan.m}/mo until you cancel.</>
+                        )}
+                      </div>
+                      <div className="pe-modal-reward">
+                        <div className="pe-k">Estimated Genesis Reward</div>
+                        <div className="pe-v">${checkoutPrice.toFixed(2)} – ${(checkoutPrice * 2).toFixed(2)} in USDC value</div>
+                        <div className="pe-s">1x–2x your payment, airdropped in $YLDR or stock-linked tokens ($SPCX/$TSLA) at TGE + 30 days.</div>
+                      </div>
+                    </>
+                  )}
+
+                  {isConnected && !alreadyOwned && !notAnUpgrade && (
                     <div className="pe-modal-pay-with">
                       <div className="pe-k">Pay with</div>
                       {!isChainSupported ? (
@@ -1059,32 +1102,42 @@ export default function PrelaunchEdgePage() {
                     <div className="pe-modal-error">{paymentError}</div>
                   )}
 
-                  <div className="pe-modal-actions">
-                    <button
-                      className="pe-modal-btn pay"
-                      onClick={handlePayNow}
-                      disabled={payDisabled}
-                    >
-                      {paymentStep === 'connecting' && 'Connecting Wallet...'}
-                      {paymentStep === 'awaiting-signature' && 'Confirm in Wallet...'}
-                      {paymentStep === 'confirming' && 'Confirming Transaction...'}
-                      {paymentStep === 'recording' && 'Finalizing...'}
-                      {(paymentStep === 'idle' || paymentStep === 'error') && (
-                        !isConnected
-                          ? 'Connect Wallet to Pay'
-                          : !isChainSupported
-                          ? 'Switch to a supported network'
-                          : balancePending
-                          ? 'Checking balance...'
-                          : insufficientBalance
-                          ? `Insufficient ${selectedToken} balance`
-                          : `Pay $${checkoutPrice} Now`
-                      )}
-                    </button>
-                    <div className={`pe-modal-wallet-state${isConnected ? ' connected' : ''}`}>
-                      {isConnected && address ? `Wallet connected · ${address.slice(0, 6)}...${address.slice(-4)}` : 'No wallet connected'}
+                  {alreadyOwned || notAnUpgrade ? (
+                    <div className="pe-modal-actions">
+                      <button className="pe-modal-btn pay" onClick={() => router.push('/subscriptions')}>View My Subscriptions →</button>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="pe-modal-actions">
+                      <button
+                        className="pe-modal-btn pay"
+                        onClick={handlePayNow}
+                        disabled={payDisabled}
+                      >
+                        {paymentStep === 'connecting' && 'Connecting Wallet...'}
+                        {paymentStep === 'awaiting-signature' && 'Confirm in Wallet...'}
+                        {paymentStep === 'confirming' && 'Confirming Transaction...'}
+                        {paymentStep === 'recording' && 'Finalizing...'}
+                        {(paymentStep === 'idle' || paymentStep === 'error') && (
+                          !isConnected
+                            ? 'Connect Wallet to Pay'
+                            : currentSubPending
+                            ? 'Checking your account...'
+                            : !isChainSupported
+                            ? 'Switch to a supported network'
+                            : balancePending
+                            ? 'Checking balance...'
+                            : insufficientBalance
+                            ? `Insufficient ${selectedToken} balance`
+                            : isUpgradePurchase
+                            ? `Pay $${checkoutPrice.toFixed(2)} to Upgrade`
+                            : `Pay $${checkoutPrice.toFixed(2)} Now`
+                        )}
+                      </button>
+                      <div className={`pe-modal-wallet-state${isConnected ? ' connected' : ''}`}>
+                        {isConnected && address ? `Wallet connected · ${address.slice(0, 6)}...${address.slice(-4)}` : 'No wallet connected'}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </>
             )}

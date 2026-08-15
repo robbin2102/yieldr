@@ -20,6 +20,10 @@ interface SubscriptionRecord {
   subscription_start: string;
   access_months: number;
   renews_automatically: boolean;
+  is_upgrade: boolean;
+  upgraded_from_plan: string | null;
+  upgraded_from_cycle: string | null;
+  cumulative_usdc_paid: number;
   tx_hash: string;
   chain_id: number;
   network: string;
@@ -93,10 +97,13 @@ export default function SubscriptionsPage() {
   const isWalletPending = !hydrated || isReconnecting || isConnecting;
   const showData = isConnected && !isWalletPending;
 
+  // API returns subscriptions sorted newest-first, so [0] is the wallet's
+  // current plan — every earlier record is either the initial purchase or a
+  // superseded step in the upgrade chain, still visible in the history table.
+  const currentSub = mySubs[0] ?? null;
   const totalPaid = mySubs.reduce((s, c) => s + c.usdc_amount, 0);
   const totalRewardMin = mySubs.reduce((s, c) => s + c.reward_min_usdc, 0);
   const totalRewardMax = mySubs.reduce((s, c) => s + c.reward_max_usdc, 0);
-  const activePlans = mySubs.length;
 
   const totalPages = Math.ceil(publicSubs.length / ITEMS_PER_PAGE);
   const pageItems = publicSubs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -139,7 +146,7 @@ export default function SubscriptionsPage() {
               <span className="sp-sub" style={{ margin: 0 }}>Connect the wallet you paid with to see your subscriptions.</span>
             </div>
           ) : (
-            <p className="sp-sub sp-mono">{address?.slice(0, 6)}...{address?.slice(-4)} · {activePlans} subscription{activePlans !== 1 ? 's' : ''}</p>
+            <p className="sp-sub sp-mono">{address?.slice(0, 6)}...{address?.slice(-4)} · {mySubs.length} payment{mySubs.length !== 1 ? 's' : ''}</p>
           )}
         </div>
 
@@ -155,8 +162,8 @@ export default function SubscriptionsPage() {
               <div className="sp-stat-l">Reward Eligibility (USDC value)</div>
             </div>
             <div className="sp-stat-card">
-              <div className="sp-stat-v">{myLoading ? <Skel /> : showData ? activePlans : '—'}</div>
-              <div className="sp-stat-l">Active Plans</div>
+              <div className="sp-stat-v">{myLoading ? <Skel /> : showData && currentSub ? `${currentSub.plan_name} ${currentSub.billing_cycle}` : '—'}</div>
+              <div className="sp-stat-l">Current Plan</div>
             </div>
             <div className="sp-stat-card">
               <div className="sp-stat-v">Q1 2027</div>
@@ -177,34 +184,37 @@ export default function SubscriptionsPage() {
           </div>
         ) : (
           <>
-            {/* PLAN CARDS */}
-            <div className="sp-wrap sp-sec">
-              <div className="sp-slbl"><span>Your Plans</span><span className="sp-ln" /></div>
-              <div className="sp-plans-grid">
-                {mySubs.map((s, i) => (
-                  <div className="sp-plan-card" key={i}>
+            {/* CURRENT PLAN */}
+            {currentSub && (
+              <div className="sp-wrap sp-sec">
+                <div className="sp-slbl"><span>Your Current Plan</span><span className="sp-ln" /></div>
+                <div className="sp-plans-grid">
+                  <div className="sp-plan-card">
                     <div className="sp-plan-card-hd">
-                      <span className="sp-plan-card-name">{s.plan_name}</span>
-                      <span className="sp-plan-card-cycle">{s.billing_cycle}</span>
+                      <span className="sp-plan-card-name">{currentSub.plan_name}</span>
+                      <span className="sp-plan-card-cycle">{currentSub.billing_cycle}</span>
                     </div>
-                    <div className="sp-plan-card-amt">${fmt(s.usdc_amount)}</div>
-                    <div className="sp-plan-card-row"><span>Reward eligibility</span><b>${fmt(s.reward_min_usdc, 0)}–${fmt(s.reward_max_usdc, 0)}</b></div>
-                    <div className="sp-plan-card-row"><span>Payout window</span><b>{s.reward_payout_window}</b></div>
-                    <div className="sp-plan-card-row"><span>Access starts</span><b>{s.subscription_start}</b></div>
+                    <div className="sp-plan-card-amt">${fmt(currentSub.cumulative_usdc_paid)}</div>
+                    {mySubs.length > 1 && (
+                      <div className="sp-plan-card-row"><span>Invested across</span><b>{mySubs.length} payments</b></div>
+                    )}
+                    <div className="sp-plan-card-row"><span>Reward eligibility</span><b>${fmt(totalRewardMin, 0)}–${fmt(totalRewardMax, 0)}</b></div>
+                    <div className="sp-plan-card-row"><span>Payout window</span><b>{currentSub.reward_payout_window}</b></div>
+                    <div className="sp-plan-card-row"><span>Access starts</span><b>{currentSub.subscription_start}</b></div>
                     <div className="sp-plan-card-row">
-                      <span>{s.renews_automatically ? 'Billing' : 'Access period'}</span>
-                      <b>{s.renews_automatically ? `1st month, then auto-renews monthly` : `${s.access_months} months prepaid`}</b>
+                      <span>{currentSub.renews_automatically ? 'Billing' : 'Access period'}</span>
+                      <b>{currentSub.renews_automatically ? `1st month, then auto-renews monthly` : `${currentSub.access_months} months prepaid`}</b>
                     </div>
-                    <div className="sp-plan-card-row"><span>Network</span><b>{s.network}</b></div>
+                    <div className="sp-plan-card-row"><span>Network</span><b>{currentSub.network}</b></div>
                     <div className="sp-plan-card-tx">
-                      <a href={`${getExplorerUrl(s.chain_id)}/tx/${s.tx_hash}`} target="_blank" rel="noopener noreferrer">
-                        {s.tx_hash.slice(0, 8)}...{s.tx_hash.slice(-6)} ↗
+                      <a href={`${getExplorerUrl(currentSub.chain_id)}/tx/${currentSub.tx_hash}`} target="_blank" rel="noopener noreferrer">
+                        Latest payment: {currentSub.tx_hash.slice(0, 8)}...{currentSub.tx_hash.slice(-6)} ↗
                       </a>
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* REWARD BANNER */}
             <div className="sp-wrap sp-sec" style={{ paddingTop: 0 }}>
@@ -239,12 +249,13 @@ export default function SubscriptionsPage() {
                   <table className="sp-table">
                     <thead>
                       <tr>
-                        <th>Plan</th><th>Cycle</th><th>Amount</th><th>Reward Range</th><th>Network</th><th>When</th><th>TX</th>
+                        <th>Type</th><th>Plan</th><th>Cycle</th><th>Amount</th><th>Reward Range</th><th>Network</th><th>When</th><th>TX</th>
                       </tr>
                     </thead>
                     <tbody>
                       {mySubs.map((s, i) => (
                         <tr key={i}>
+                          <td>{s.is_upgrade ? `Upgrade from ${s.upgraded_from_plan} ${s.upgraded_from_cycle}` : 'Initial'}</td>
                           <td className="white">{s.plan_name}</td>
                           <td>{s.billing_cycle}</td>
                           <td>${fmt(s.usdc_amount)} {s.token}</td>

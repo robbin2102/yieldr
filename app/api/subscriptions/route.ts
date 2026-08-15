@@ -15,13 +15,15 @@ import { TREASURY_ADDRESS, SUPPORTED_CHAINS, TOKEN_IDS, type TokenId } from '@/c
 import {
   isPlanName,
   isBillingCycle,
-  getPlanPrice,
+  computeChargeAmount,
   getAccessMonths,
   renewsAutomatically,
   REWARD_MULTIPLIER_MIN,
   REWARD_MULTIPLIER_MAX,
   REWARD_PAYOUT_LABEL,
   SUBSCRIPTION_START_LABEL,
+  type PlanName,
+  type BillingCycle,
 } from '@/config/plans';
 
 // Small tolerance for floating point / gas-adjacent rounding on the client side.
@@ -68,10 +70,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Transaction already recorded' }, { status: 409 });
     }
 
-    // The expected price comes from OUR OWN plan catalogue, never from the client.
-    const expectedPrice = getPlanPrice(plan_name, billing_cycle);
-    if (expectedPrice === null) {
-      return NextResponse.json({ success: false, error: 'Unable to resolve plan price' }, { status: 400 });
+    // A wallet holds exactly one plan at a time. Look up its current one (the
+    // most recent confirmed record) to decide whether this is a first
+    // purchase, a valid upgrade (charged only the differential), a
+    // re-purchase of the exact same plan (rejected), or a non-upgrade
+    // (rejected) — computeChargeAmount is the SAME function the client used
+    // to size the on-chain transfer, so there's nothing to drift.
+    const currentRecord = await Subscription.findOne({
+      wallet_address: wallet_address.toLowerCase(),
+      status: 'confirmed',
+    }).sort({ created_at: -1 });
+
+    const current = currentRecord
+      ? {
+          planName: currentRecord.plan_name as PlanName,
+          billingCycle: currentRecord.billing_cycle as BillingCycle,
+          cumulativeUsdcPaid: currentRecord.cumulative_usdc_paid,
+        }
+      : null;
+
+    const charge = computeChargeAmount(plan_name, billing_cycle, current);
+    if (!charge.ok) {
+      const messages: Record<typeof charge.reason, string> = {
+        'already-owned': `You already have the ${plan_name} ${billing_cycle} plan.`,
+        'not-an-upgrade': `${plan_name} ${billing_cycle} isn't an upgrade from your current plan.`,
+        'invalid-plan': 'Unable to resolve plan price.',
+      };
+      return NextResponse.json({ success: false, error: messages[charge.reason] }, { status: 409 });
     }
 
     // Re-derive the truth from the chain: real sender, real recipient, real amount.
@@ -89,11 +114,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (verification.amount + AMOUNT_TOLERANCE < expectedPrice) {
+    if (verification.amount + AMOUNT_TOLERANCE < charge.amount) {
       return NextResponse.json(
         {
           success: false,
-          error: `On-chain payment ($${verification.amount.toFixed(2)}) is below the ${plan_name} ${billing_cycle} price ($${expectedPrice})`,
+          error: `On-chain payment ($${verification.amount.toFixed(2)}) is below the required ${charge.isUpgrade ? 'upgrade' : ''} amount ($${charge.amount.toFixed(2)})`,
         },
         { status: 402 }
       );
@@ -102,6 +127,7 @@ export async function POST(req: NextRequest) {
     const verifiedAmount = verification.amount;
     const rewardMin = verifiedAmount * REWARD_MULTIPLIER_MIN;
     const rewardMax = verifiedAmount * REWARD_MULTIPLIER_MAX;
+    const cumulativePaid = (current?.cumulativeUsdcPaid ?? 0) + verifiedAmount;
 
     const subscription = await Subscription.create({
       wallet_address: wallet_address.toLowerCase(),
@@ -114,6 +140,11 @@ export async function POST(req: NextRequest) {
       subscription_start: SUBSCRIPTION_START_LABEL,
       access_months: getAccessMonths(billing_cycle),
       renews_automatically: renewsAutomatically(billing_cycle),
+      is_upgrade: charge.isUpgrade,
+      upgraded_from_subscription_id: currentRecord?._id ?? null,
+      upgraded_from_plan: current?.planName ?? null,
+      upgraded_from_cycle: current?.billingCycle ?? null,
+      cumulative_usdc_paid: cumulativePaid,
       tx_hash: tx_hash.toLowerCase(),
       token,
       network: verification.network ?? chainCfg.name,
@@ -138,6 +169,8 @@ export async function POST(req: NextRequest) {
         reward_payout_window: REWARD_PAYOUT_LABEL,
         access_months: getAccessMonths(billing_cycle),
         renews_automatically: renewsAutomatically(billing_cycle),
+        is_upgrade: charge.isUpgrade,
+        cumulative_usdc_paid: cumulativePaid,
       },
     });
   } catch (error) {

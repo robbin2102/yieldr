@@ -14,7 +14,12 @@ import { useUSDCBalance } from './useUSDCBalance';
 import { useUSDCTransfer } from './useUSDCTransfer';
 import { usePayment, type LastSubscription } from '@/app/context/PaymentContext';
 import { SUPPORTED_CHAINS, PREFERRED_CHAIN_ID, type TokenId } from '@/config/payment';
-import { getPlanPrice, type PlanName, type BillingCycle } from '@/config/plans';
+import {
+  computeChargeAmount,
+  type PlanName,
+  type BillingCycle,
+  type CurrentSubscriptionInfo,
+} from '@/config/plans';
 
 export type SubscriptionPaymentStep =
   | 'idle'
@@ -36,9 +41,45 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
   const [step, setStep] = useState<SubscriptionPaymentStep>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [pendingPlan, setPendingPlan] = useState<{ name: PlanName; cycle: BillingCycle } | null>(null);
+  const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscriptionInfo | null>(null);
+  const [currentSubscriptionLoaded, setCurrentSubscriptionLoaded] = useState(false);
 
   const recordedTx = useRef<Set<string>>(new Set());
   const wantsToPayRef = useRef(false);
+
+  // A wallet holds exactly one plan at a time — fetch its current one (if
+  // any) so we can price upgrades correctly and block re-buying the same
+  // plan before ever prompting a wallet signature.
+  const fetchCurrentSubscription = useCallback(async () => {
+    if (!address) {
+      setCurrentSubscription(null);
+      setCurrentSubscriptionLoaded(true);
+      return;
+    }
+    setCurrentSubscriptionLoaded(false);
+    try {
+      const res = await fetch(`/api/subscriptions?wallet=${address}`);
+      const data = await res.json();
+      const latest = data?.success ? data.data.subscriptions?.[0] : null;
+      setCurrentSubscription(
+        latest
+          ? {
+              planName: latest.plan_name,
+              billingCycle: latest.billing_cycle,
+              cumulativeUsdcPaid: latest.cumulative_usdc_paid,
+            }
+          : null
+      );
+    } catch {
+      setCurrentSubscription(null);
+    } finally {
+      setCurrentSubscriptionLoaded(true);
+    }
+  }, [address]);
+
+  useEffect(() => {
+    void fetchCurrentSubscription();
+  }, [fetchCurrentSubscription]);
 
   const chainConfig = SUPPORTED_CHAINS[chainId] ?? SUPPORTED_CHAINS[PREFERRED_CHAIN_ID];
   const tokenConfig = chainConfig?.tokens[selectedToken];
@@ -115,11 +156,12 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
       setLastSubscription(record);
       setHasCompletedPayment(true);
       setStep('success');
+      void fetchCurrentSubscription();
     } catch (err) {
       setStep('error');
       setErrorMessage(err instanceof Error ? err.message : 'Failed to record payment');
     }
-  }, [address, chainId, selectedToken, chainConfig, setLastSubscription, setHasCompletedPayment]);
+  }, [address, chainId, selectedToken, chainConfig, setLastSubscription, setHasCompletedPayment, fetchCurrentSubscription]);
 
   // When the on-chain transfer confirms (and did NOT revert), record it server-side
   // (the server independently re-verifies the receipt on-chain too).
@@ -136,21 +178,32 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
       setErrorMessage('This wallet is on an unsupported network. Please switch to Base, Ethereum, Polygon, BNB Chain, or Robinhood Chain.');
       return;
     }
-    const price = getPlanPrice(planName, cycle);
-    if (price === null) {
+
+    // Never prompt a wallet signature for a plan the wallet already owns, or
+    // for a combination that isn't actually an upgrade — computeChargeAmount
+    // is the same function the server re-checks on submission.
+    const charge = computeChargeAmount(planName, cycle, currentSubscription);
+    if (!charge.ok) {
       setStep('error');
-      setErrorMessage('Unable to resolve plan price.');
+      setErrorMessage(
+        charge.reason === 'already-owned'
+          ? `You already have the ${planName} ${cycle} plan.`
+          : charge.reason === 'not-an-upgrade'
+          ? `${planName} ${cycle} isn't an upgrade from your current plan.`
+          : 'Unable to resolve plan price.'
+      );
       return;
     }
+
     setErrorMessage(null);
     setStep('awaiting-signature');
     try {
-      await transfer(price, tokenConfig);
+      await transfer(charge.amount, tokenConfig);
     } catch {
       setStep('error');
       setErrorMessage('Transaction was rejected or failed. Please try again.');
     }
-  }, [tokenConfig, transfer]);
+  }, [tokenConfig, transfer, currentSubscription]);
 
   /** Entry point called by the checkout modal's "Pay Now" button. */
   const pay = useCallback((planName: PlanName, cycle: BillingCycle) => {
@@ -188,5 +241,7 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
     chainId,
     chainName: chainConfig?.name,
     txHash: hash,
+    currentSubscription,
+    currentSubscriptionLoaded,
   };
 }
