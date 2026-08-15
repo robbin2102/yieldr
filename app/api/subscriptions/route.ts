@@ -152,8 +152,6 @@ export async function POST(req: NextRequest) {
       treasury_address: TREASURY_ADDRESS,
       status: 'confirmed',
       created_at: new Date(),
-      ip_address: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || undefined,
-      user_agent: req.headers.get('user-agent') || undefined,
     });
 
     return NextResponse.json({

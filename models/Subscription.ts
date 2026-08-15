@@ -34,8 +34,6 @@ export interface ISubscription extends Document {
 
   status: 'confirmed' | 'failed';
   created_at: Date;
-  ip_address?: string;
-  user_agent?: string;
 }
 
 const SubscriptionSchema = new Schema<ISubscription>(
@@ -67,8 +65,6 @@ const SubscriptionSchema = new Schema<ISubscription>(
 
     status: { type: String, required: true, enum: ['confirmed', 'failed'], default: 'confirmed' },
     created_at: { type: Date, default: Date.now, index: true },
-    ip_address: { type: String },
-    user_agent: { type: String },
   },
   {
     timestamps: true,
