@@ -417,12 +417,24 @@ export default function PrelaunchEdgePage() {
             <div className="pe-tick-val pe-num">{scans.toLocaleString()}</div>
             <div className="pe-tick-src">since launch announcement</div>
           </div>
-          <div className="pe-tick-cell">
+          <div
+            className="pe-tick-cell clickable"
+            role="button"
+            tabIndex={0}
+            onClick={() => router.push('/subscriptions#community-trx')}
+            onKeyDown={(e) => { if (e.key === 'Enter') router.push('/subscriptions#community-trx'); }}
+          >
             <div className="pe-tick-lbl">Genesis Members</div>
             <div className="pe-tick-val pe-num win">{buyers.toLocaleString()}</div>
             <div className="pe-tick-src">of {slotsTotal.toLocaleString()} slots</div>
           </div>
-          <div className="pe-tick-cell">
+          <div
+            className="pe-tick-cell clickable"
+            role="button"
+            tabIndex={0}
+            onClick={() => router.push('/subscriptions#community-trx')}
+            onKeyDown={(e) => { if (e.key === 'Enter') router.push('/subscriptions#community-trx'); }}
+          >
             <div className="pe-tick-lbl">Prelaunch ARR</div>
             <div className="pe-tick-val pe-num">${arr.toLocaleString()}</div>
             <div className="pe-tick-src">from onchain USDC receipts</div>

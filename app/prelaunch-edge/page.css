@@ -88,6 +88,9 @@
 .pe-tick-val{font-family:var(--pe-mono); font-size:24px; font-weight:800; color:var(--ink-1); margin-top:6px;}
 .pe-tick-val.win{color:var(--win);}
 .pe-tick-src{font-size:10px; color:var(--ink-3); margin-top:4px;}
+.pe-tick-cell.clickable{cursor:pointer; transition:background .15s;}
+.pe-tick-cell.clickable:hover{background:var(--surface-2);}
+.pe-tick-cell.clickable:focus-visible{outline:1px solid var(--win); outline-offset:-1px;}
 @media (max-width:760px){.pe-ticker-in{grid-template-columns:1fr;} .pe-tick-cell{border-right:none; border-bottom:1px solid var(--hair);}}
 
 /* SECTION LABELS */

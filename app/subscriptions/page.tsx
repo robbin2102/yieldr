@@ -64,6 +64,7 @@ export default function SubscriptionsPage() {
   const [publicSubs, setPublicSubs] = useState<SubscriptionRecord[]>([]);
   const [publicLoading, setPublicLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [siteStats, setSiteStats] = useState<{ genesisMembers: number; genesisSlotsTotal: number; prelaunchArr: number } | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -104,6 +105,27 @@ export default function SubscriptionsPage() {
       .then(d => { if (d.success) setPublicSubs(d.data.subscriptions); })
       .catch(() => {})
       .finally(() => setPublicLoading(false));
+  }, []);
+
+  // Same endpoint the prelaunch page's live ticker reads — using it here too
+  // (rather than deriving from publicSubs, which is capped at 100 rows)
+  // guarantees this summary always matches what the ticker showed.
+  useEffect(() => {
+    fetch('/api/site-stats')
+      .then(r => r.json())
+      .then(d => { if (d?.data) setSiteStats(d.data); })
+      .catch(() => {});
+  }, []);
+
+  // Deep-linked here from the prelaunch ticker (#community-trx) — scroll to
+  // the community table once it's actually on the page. Next's built-in
+  // hash-scroll can race the initial render, so this is a defensive backup.
+  useEffect(() => {
+    if (window.location.hash !== '#community-trx') return;
+    const t = setTimeout(() => {
+      document.getElementById('community-trx')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 150);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -330,7 +352,21 @@ export default function SubscriptionsPage() {
         )}
 
         {/* PUBLIC TRACKER */}
-        <div className="sp-wrap sp-sec" style={{ paddingTop: 0 }}>
+        <div className="sp-wrap sp-sec" style={{ paddingTop: 0 }} id="community-trx">
+          {siteStats && (
+            <div className="sp-community-summary">
+              <div className="sp-community-summary-item">
+                <div className="sp-community-summary-v">{siteStats.genesisMembers.toLocaleString()}</div>
+                <div className="sp-community-summary-l">Genesis Members</div>
+                <div className="sp-community-summary-s">of {siteStats.genesisSlotsTotal.toLocaleString()} slots</div>
+              </div>
+              <div className="sp-community-summary-item">
+                <div className="sp-community-summary-v win">${siteStats.prelaunchArr.toLocaleString()}</div>
+                <div className="sp-community-summary-l">Prelaunch ARR</div>
+                <div className="sp-community-summary-s">from onchain USDC receipts</div>
+              </div>
+            </div>
+          )}
           <div className="sp-card">
             <div className="sp-tracker-head">
               <div className="sp-tracker-title">Community Subscriptions</div>

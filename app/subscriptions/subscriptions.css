@@ -62,6 +62,16 @@
 .sp-stat-v{font-family:var(--sp-mono); font-size:22px; font-weight:800; color:var(--ink-1);}
 .sp-stat-v.win{color:var(--win);}
 .sp-stat-l{font-size:11px; color:var(--ink-3); margin-top:6px;}
+
+/* Community summary — mirrors the prelaunch page's live ticker so the two
+   always read as the same numbers, since they're the same API call. */
+.sp-community-summary{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px;}
+.sp-community-summary-item{border:1px solid var(--hair); border-radius:14px; background:var(--surface); padding:16px 18px; text-align:center;}
+.sp-community-summary-v{font-family:var(--sp-mono); font-size:26px; font-weight:800; color:var(--ink-1);}
+.sp-community-summary-v.win{color:var(--win);}
+.sp-community-summary-l{font-size:11px; letter-spacing:.3px; text-transform:uppercase; color:var(--ink-2); margin-top:6px; font-weight:600;}
+.sp-community-summary-s{font-size:10.5px; color:var(--ink-3); margin-top:2px;}
+@media (max-width:560px){.sp-community-summary{grid-template-columns:1fr;}}
 .sp-skel{display:inline-block; width:52px; height:16px; border-radius:4px; background:var(--surface-3); animation:sp-pulse 1.4s infinite;}
 @keyframes sp-pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
 
