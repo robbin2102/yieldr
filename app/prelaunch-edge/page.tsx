@@ -88,6 +88,7 @@ export default function PrelaunchEdgePage() {
   const [scans, setScans] = useState(0);
   const [buyers, setBuyers] = useState(0);
   const [arr, setArr] = useState(0);
+  const [slotsTotal, setSlotsTotal] = useState(1000);
   const [progAnimating, setProgAnimating] = useState(true);
   const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
@@ -161,15 +162,33 @@ export default function PrelaunchEdgePage() {
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const [demoStarted, setDemoStarted] = useState(false);
 
+  const demoViewLoggedRef = useRef(false);
   const startDemo = useCallback(() => {
     setDemoStarted(true);
+    if (!demoViewLoggedRef.current) {
+      demoViewLoggedRef.current = true;
+      fetch('/api/site-stats/demo-view', { method: 'POST' }).catch(() => {});
+    }
   }, []);
 
-  // Ticker animation
+  // Ticker — pulled from Mongo (baseline + real onchain/demo counts) rather
+  // than hardcoded, so the numbers actually reflect what's happened. Falls
+  // back to the last-known defaults if the fetch fails.
   useEffect(() => {
-    animateCount(setScans, 4812, 1400);
-    animateCount(setBuyers, 347, 1600);
-    animateCount(setArr, 38200, 1600);
+    fetch('/api/site-stats')
+      .then(r => r.json())
+      .then(d => {
+        const stats = d?.data ?? {};
+        animateCount(setScans, stats.demoPreviewsRun ?? 4812, 1400);
+        animateCount(setBuyers, stats.genesisMembers ?? 347, 1600);
+        animateCount(setArr, stats.prelaunchArr ?? 38200, 1600);
+        setSlotsTotal(stats.genesisSlotsTotal ?? 1000);
+      })
+      .catch(() => {
+        animateCount(setScans, 4812, 1400);
+        animateCount(setBuyers, 347, 1600);
+        animateCount(setArr, 38200, 1600);
+      });
   }, []);
 
   // The demo runs a ~20s scripted walkthrough on its own timer as soon as it
@@ -400,7 +419,7 @@ export default function PrelaunchEdgePage() {
           <div className="pe-tick-cell">
             <div className="pe-tick-lbl">Genesis Members</div>
             <div className="pe-tick-val pe-num win">{buyers.toLocaleString()}</div>
-            <div className="pe-tick-src">of 1,000 slots</div>
+            <div className="pe-tick-src">of {slotsTotal.toLocaleString()} slots</div>
           </div>
           <div className="pe-tick-cell">
             <div className="pe-tick-lbl">Prelaunch ARR</div>
