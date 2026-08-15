@@ -85,6 +85,16 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
   const tokenConfig = chainConfig?.tokens[selectedToken];
   const isSupported = !!SUPPORTED_CHAINS[chainId];
 
+  // A prior attempt's error (e.g. "unsupported network") must not linger once
+  // the user has actually switched chain or token — otherwise a stale error
+  // box sits on screen contradicting the (now valid) chain info shown above
+  // it, which reads as broken rather than resolved.
+  useEffect(() => {
+    setStep((s) => (s === 'error' ? 'idle' : s));
+    setErrorMessage(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId, selectedToken]);
+
   useEffect(() => {
     if (isPending || isConfirming) setStep(isPending ? 'awaiting-signature' : 'confirming');
   }, [isPending, isConfirming]);

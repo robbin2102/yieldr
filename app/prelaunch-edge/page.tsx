@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
@@ -109,6 +109,7 @@ export default function PrelaunchEdgePage() {
     balanceLoading,
     otherBalances,
     scanErrors,
+    scanDone,
     isSupported: isChainSupported,
     chainId: activeChainId,
     chainName: activeChainName,
@@ -304,6 +305,33 @@ export default function PrelaunchEdgePage() {
     paymentStep === 'connecting' || paymentStep === 'awaiting-signature' || paymentStep === 'confirming' || paymentStep === 'recording' ||
     (isConnected && !isChainSupported) || balancePending || insufficientBalance ||
     currentSubPending || alreadyOwned || notAnUpgrade;
+
+  // A single, always-visible picker across every chain/token this wallet has
+  // a scanned balance on — no forced network-switch wall, no dead-end error.
+  // The wallet's actual connected chain (if supported) is included so the
+  // "pay without switching anything" option is always the most obvious one;
+  // clicking any other option switches chain (if needed) and selects its
+  // token before the user ever hits Pay Now.
+  const payOptions = useMemo(() => {
+    const opts: { chainId: number; chainName: string; token: TokenId; balance: number; isCurrent: boolean }[] = [];
+    if (isChainSupported && activeChainName) {
+      opts.push({ chainId: activeChainId, chainName: activeChainName, token: selectedToken, balance: tokenBalance, isCurrent: true });
+    }
+    for (const ob of otherBalances) {
+      opts.push({ chainId: ob.chainId, chainName: ob.chainName, token: ob.token, balance: ob.balance, isCurrent: false });
+    }
+    // Options that can actually cover this purchase float to the top; ties
+    // broken by balance size so the "obviously best" choice is first.
+    return opts.sort((a, b) => {
+      const aOk = a.balance >= checkoutPrice;
+      const bOk = b.balance >= checkoutPrice;
+      if (aOk !== bOk) return aOk ? -1 : 1;
+      return b.balance - a.balance;
+    });
+  }, [isChainSupported, activeChainId, activeChainName, selectedToken, tokenBalance, otherBalances, checkoutPrice]);
+
+  const balanceScanPending = !balanceLoading && !scanDone && payOptions.length === 0;
+  const noSufficientOption = scanDone && !balanceLoading && payOptions.length > 0 && !payOptions.some(o => o.balance >= checkoutPrice);
 
   const handlePayNow = useCallback(() => {
     if (!checkoutPlan.name) return;
@@ -1090,9 +1118,11 @@ export default function PrelaunchEdgePage() {
                   {isConnected && (
                     <div className="pe-modal-pay-with">
                       <div className="pe-k">Pay with</div>
-                      {!isChainSupported ? (
+                      {balanceScanPending ? (
+                        <div className="pe-modal-balance-scanning">Checking balances on Base, Ethereum, Polygon, BNB Chain, and Robinhood Chain...</div>
+                      ) : payOptions.length === 0 ? (
                         <div className="pe-modal-switch">
-                          <div className="pe-modal-switch-note">Your wallet is on an unsupported network. Switch to continue:</div>
+                          <div className="pe-modal-switch-note">No stablecoin balance found on any supported chain for this wallet. Switch to fund one:</div>
                           <div className="pe-modal-switch-btns">
                             {Object.entries(SUPPORTED_CHAINS).map(([id, cfg]) => (
                               <button
@@ -1108,47 +1138,33 @@ export default function PrelaunchEdgePage() {
                         </div>
                       ) : (
                         <>
-                          <div className="pe-modal-chain-row">
-                            <span className="pe-modal-chain-dot" />
-                            <span>{activeChainName}</span>
-                            {availableTokens.length > 1 ? (
-                              <div className="pe-modal-token-toggle">
-                                {availableTokens.map(t => (
-                                  <button
-                                    key={t}
-                                    className={selectedToken === t ? 'on' : ''}
-                                    onClick={() => setSelectedToken(t)}
-                                  >
-                                    {t}
-                                  </button>
-                                ))}
-                              </div>
-                            ) : (
-                              <span className="pe-modal-token-single">{availableTokens[0]}</span>
-                            )}
-                            <span className={`pe-modal-balance${insufficientBalance ? ' low' : ''}`}>
-                              {balanceLoading ? 'Checking balance...' : `Balance: $${tokenBalance.toFixed(2)}`}
-                            </span>
+                          <div className="pe-modal-pay-options">
+                            {payOptions.map((opt) => {
+                              const sufficient = opt.balance >= checkoutPrice;
+                              return (
+                                <button
+                                  key={`${opt.chainId}-${opt.token}`}
+                                  type="button"
+                                  className={`pe-modal-pay-option${opt.isCurrent ? ' current' : ''}${sufficient ? ' ok' : ' low'}`}
+                                  disabled={isSwitchingChain}
+                                  onClick={() => {
+                                    if (opt.chainId !== activeChainId) switchChain({ chainId: opt.chainId });
+                                    setSelectedToken(opt.token);
+                                  }}
+                                >
+                                  <span className="pe-modal-pay-option-chain">
+                                    <span className="pe-modal-chain-dot" />
+                                    {opt.chainName}
+                                    {opt.isCurrent && <span className="pe-modal-pay-option-tag">connected</span>}
+                                  </span>
+                                  <span className="pe-modal-pay-option-bal">${opt.balance.toFixed(2)} {opt.token}</span>
+                                </button>
+                              );
+                            })}
                           </div>
-                          {otherBalances.length > 0 && (
-                            <div className={`pe-modal-switch${insufficientBalance ? '' : ' subtle'}`}>
-                              <div className="pe-modal-switch-note">
-                                {insufficientBalance ? '💡 You have stablecoins available elsewhere:' : 'Also available on other chains:'}
-                              </div>
-                              <div className="pe-modal-switch-btns">
-                                {otherBalances.map((ob, i) => (
-                                  <button
-                                    key={i}
-                                    className="pe-modal-switch-btn"
-                                    onClick={() => {
-                                      if (ob.chainId !== activeChainId) switchChain({ chainId: ob.chainId });
-                                      setSelectedToken(ob.token);
-                                    }}
-                                  >
-                                    {ob.chainId === activeChainId ? ob.token : ob.chainName}: ${ob.balance.toFixed(2)} {ob.token}
-                                  </button>
-                                ))}
-                              </div>
+                          {noSufficientOption && (
+                            <div className="pe-modal-scan-errors low">
+                              Not enough balance on any chain above to cover this ${checkoutPrice.toFixed(2)} payment — add funds to one and it&apos;ll update here.
                             </div>
                           )}
                           {scanErrors.length > 0 && (
