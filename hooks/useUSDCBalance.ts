@@ -87,7 +87,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     setScanErrors([]);
     setScanDone(false);
 
-    console.log('[Balance] Scanning all chains for stablecoins...');
+    console.log('[Balance] Scanning all chains for stablecoins. Resolved RPC URLs:', PUBLIC_RPCS);
 
     const jobs: Promise<void>[] = [];
 
@@ -126,8 +126,30 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
             })
             .catch((err) => {
               if (scanGenRef.current !== gen) return;
-              const message = (err?.shortMessage || err?.message || String(err)).slice(0, 140);
-              console.warn(`[Balance] Failed to read ${tokenName} on ${cfg.name} (${rpcUrl}):`, err);
+              // viem's top-level shortMessage is usually a generic phrase
+              // ("HTTP request failed.") — the actually useful info (status
+              // code, root cause) lives on .status / .cause. Surface all of
+              // it so a failure is diagnosable instead of just "it's gone."
+              const status = err?.status ?? err?.cause?.status;
+              const causeMessage = err?.cause?.shortMessage || err?.cause?.message;
+              const shortMessage = err?.shortMessage || err?.message || String(err);
+              const message = [shortMessage, status ? `HTTP ${status}` : null, causeMessage && causeMessage !== shortMessage ? causeMessage : null]
+                .filter(Boolean)
+                .join(' — ')
+                .slice(0, 200);
+
+              console.error('[Balance][RPC FAIL]', {
+                chain: cfg.name,
+                token: tokenName,
+                url: rpcUrl,
+                errorName: err?.name,
+                status,
+                shortMessage,
+                causeName: err?.cause?.name,
+                causeMessage,
+                fullMessage: err?.message,
+              });
+
               setScanErrors((prev) => [
                 ...prev,
                 { chainId: numId, chainName: cfg.name, token: tokenName as TokenId, message },

@@ -205,6 +205,24 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
       return;
     }
 
+    // Belt-and-suspenders: the checkout modal's Pay button is already
+    // disabled while balance is unknown/insufficient, but that's a UI-level
+    // guard that can race (stale click, chain-switch mid-flight). This is
+    // the one place that actually fires a wallet signature request, so it
+    // re-checks the real balance itself rather than trusting the caller —
+    // never build a transaction we already know is short of the required
+    // amount and will revert or get flagged "likely to fail" by the wallet.
+    if (balanceLoading) {
+      setStep('error');
+      setErrorMessage('Still checking your balance — please wait a moment and try again.');
+      return;
+    }
+    if (balance < charge.amount) {
+      setStep('error');
+      setErrorMessage(`Insufficient ${selectedToken} balance: you have $${balance.toFixed(2)}, this needs $${charge.amount.toFixed(2)}.`);
+      return;
+    }
+
     setErrorMessage(null);
     setStep('awaiting-signature');
     try {
@@ -213,7 +231,7 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
       setStep('error');
       setErrorMessage('Transaction was rejected or failed. Please try again.');
     }
-  }, [tokenConfig, transfer, currentSubscription]);
+  }, [tokenConfig, transfer, currentSubscription, balance, balanceLoading, selectedToken]);
 
   /** Entry point called by the checkout modal's "Pay Now" button. */
   const pay = useCallback((planName: PlanName, cycle: BillingCycle) => {
