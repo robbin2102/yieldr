@@ -110,7 +110,6 @@ export default function PrelaunchEdgePage() {
     balance: tokenBalance,
     balanceLoading,
     otherBalances,
-    scanDone: balanceScanDone,
     isSupported: isChainSupported,
     chainId: activeChainId,
     chainName: activeChainName,
@@ -1172,7 +1171,7 @@ export default function PrelaunchEdgePage() {
                           <div className="pe-modal-chain-note">
                             Wallet showing &quot;Unknown&quot; instead of {selectedToken}? Add it above so your wallet recognizes the token before you confirm.
                           </div>
-                          {balanceScanDone && otherBalances.length > 0 && (
+                          {otherBalances.length > 0 && (
                             <div className={`pe-modal-switch${insufficientBalance ? '' : ' subtle'}`}>
                               <div className="pe-modal-switch-note">
                                 {insufficientBalance ? '💡 You have stablecoins available elsewhere:' : 'Also available on other chains:'}
