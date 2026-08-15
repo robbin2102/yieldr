@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { getExplorerUrl } from '@/config/payment';
@@ -54,6 +54,7 @@ function Skel() {
 export default function SubscriptionsPage() {
   const router = useRouter();
   const { address } = useAccount();
+  const { disconnect } = useDisconnect();
   const { openConnectModal } = useConnectModal();
   const { status, hasCompletedPayment } = usePayment();
 
@@ -63,6 +64,20 @@ export default function SubscriptionsPage() {
   const [publicSubs, setPublicSubs] = useState<SubscriptionRecord[]>([]);
   const [publicLoading, setPublicLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  // Close the profile dropdown on outside click.
+  useEffect(() => {
+    if (!profileOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [profileOpen]);
 
   // A plain mount flag — NOT derived from wagmi's connection status. wagmi can
   // report 'reconnecting' for a real, sometimes lengthy window right after a
@@ -119,6 +134,12 @@ export default function SubscriptionsPage() {
   const totalPages = Math.ceil(publicSubs.length / ITEMS_PER_PAGE);
   const pageItems = publicSubs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
+  const truncAddr = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
+  const handleDisconnect = () => {
+    disconnect();
+    setProfileOpen(false);
+  };
+
   // Render nothing while the redirect effect above sends unpaid visitors away.
   if (!hasCompletedPayment) {
     return null;
@@ -136,7 +157,27 @@ export default function SubscriptionsPage() {
             <div className="sp-nav-mark"><img src={NAV_MARK} alt="Yieldr" /></div>
             <span className="sp-nav-name">YIELDR</span>
           </div>
-          <a href="/prelaunch-edge#pe-pricing" className="sp-nav-cta">Reserve Another Plan</a>
+          <div className="sp-nav-right">
+            <a href="/prelaunch-edge#pe-pricing" className="sp-nav-cta">Reserve Another Plan</a>
+            {hydrated && address && (
+              <div className="sp-profile" ref={profileRef}>
+                <button className="sp-profile-btn" onClick={() => setProfileOpen(o => !o)}>
+                  <span className="sp-profile-avatar">
+                    <svg viewBox="0 0 24 24" width="13" height="13"><circle cx="12" cy="8" r="4" fill="currentColor" /><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="currentColor" /></svg>
+                  </span>
+                  <span className="sp-mono">{truncAddr}</span>
+                  <svg className={`sp-profile-chevron${profileOpen ? ' open' : ''}`} width="10" height="10" viewBox="0 0 10 10"><path d="M2 4l3 3 3-3" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
+                </button>
+                {profileOpen && (
+                  <div className="sp-profile-dropdown">
+                    <div className="sp-profile-addr">{address}</div>
+                    <div className="sp-profile-divider" />
+                    <button className="sp-profile-item sp-profile-disconnect" onClick={handleDisconnect}>Disconnect Wallet</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 
