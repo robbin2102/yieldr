@@ -1034,7 +1034,10 @@ export default function PrelaunchEdgePage() {
               <>
                 <div className="pe-modal-hd">
                   <span className="pe-t">Payment Confirmed</span>
-                  <button className="pe-modal-close" onClick={closeCheckout}>✕</button>
+                  {/* On the success screen, dismissing the confirmation should still land the
+                      user on their subscription — not silently cancel the pending redirect and
+                      strand them back on this page with no indication anything happened. */}
+                  <button className="pe-modal-close" onClick={() => router.push('/subscriptions')}>✕</button>
                 </div>
                 <div className="pe-modal-body">
                   <div className="pe-modal-success">
