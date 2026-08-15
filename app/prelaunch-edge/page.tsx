@@ -145,21 +145,23 @@ export default function PrelaunchEdgePage() {
 
   // Ticker — pulled from Mongo (baseline + real onchain/demo counts) rather
   // than hardcoded, so the numbers actually reflect what's happened. Falls
-  // back to the last-known defaults if the fetch fails.
+  // No baseline padding — these are the true actual counts from Mongo.
+  // Falls back to zero (not a marketing number) only if the fetch itself
+  // fails outright.
   useEffect(() => {
     fetch('/api/site-stats')
       .then(r => r.json())
       .then(d => {
         const stats = d?.data ?? {};
-        animateCount(setScans, stats.demoPreviewsRun ?? 4812, 1400);
-        animateCount(setBuyers, stats.genesisMembers ?? 347, 1600);
-        animateCount(setArr, stats.prelaunchArr ?? 38200, 1600);
+        animateCount(setScans, stats.demoPreviewsRun ?? 0, 1400);
+        animateCount(setBuyers, stats.genesisMembers ?? 0, 1600);
+        animateCount(setArr, stats.prelaunchArr ?? 0, 1600);
         setSlotsTotal(stats.genesisSlotsTotal ?? 1000);
       })
       .catch(() => {
-        animateCount(setScans, 4812, 1400);
-        animateCount(setBuyers, 347, 1600);
-        animateCount(setArr, 38200, 1600);
+        animateCount(setScans, 0, 1400);
+        animateCount(setBuyers, 0, 1600);
+        animateCount(setArr, 0, 1600);
       });
   }, []);
 

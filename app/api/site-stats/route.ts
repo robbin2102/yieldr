@@ -5,11 +5,14 @@ import { Subscription } from '@/models/Subscription';
 
 export const dynamic = 'force-dynamic';
 
+// No baseline padding — every number here is the true actual count from
+// Mongo. This fallback only fires if the DB itself is unreachable, so it's
+// zeroed rather than a marketing number that could be mistaken for real data.
 const DEFAULTS = {
-  demoPreviewsRun: 4812,
-  genesisMembers: 347,
+  demoPreviewsRun: 0,
+  genesisMembers: 0,
   genesisSlotsTotal: 1000,
-  prelaunchArr: 38200,
+  prelaunchArr: 0,
 };
 
 export async function GET() {
@@ -32,10 +35,10 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       data: {
-        demoPreviewsRun: stats.demo_previews_baseline + stats.demo_previews_count,
-        genesisMembers: stats.genesis_members_baseline + genesisMembersReal.length,
+        demoPreviewsRun: stats.demo_previews_count,
+        genesisMembers: genesisMembersReal.length,
         genesisSlotsTotal: stats.genesis_slots_total,
-        prelaunchArr: stats.prelaunch_arr_baseline + (arrAgg[0]?.total ?? 0),
+        prelaunchArr: arrAgg[0]?.total ?? 0,
       },
     });
   } catch (error) {
