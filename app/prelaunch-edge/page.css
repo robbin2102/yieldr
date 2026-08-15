@@ -384,7 +384,9 @@
 .pe-modal-token-toggle button.on{background:var(--win); color:#04140B; border-color:transparent;}
 .pe-modal-token-single{font-family:var(--pe-mono); font-size:10.5px; color:var(--ink-2); margin-left:auto;}
 .pe-modal-balance{font-family:var(--pe-mono); font-size:10.5px; color:var(--ink-3); width:100%;}
+.pe-modal-balance.low{color:var(--loss);}
 .pe-modal-switch{margin-top:10px; border:1px solid var(--warn-line); background:var(--warn-dim); border-radius:10px; padding:10px 12px;}
+.pe-modal-switch.subtle{border-color:var(--hair-2); background:var(--surface-2);}
 .pe-modal-switch-note{font-size:11px; color:var(--ink-2); margin-bottom:8px;}
 .pe-modal-switch-btns{display:flex; gap:6px; flex-wrap:wrap;}
 .pe-modal-switch-btn{font-family:var(--pe-mono); font-size:10px; font-weight:700; color:var(--ink-1); background:var(--surface-2); border:1px solid var(--hair-2); border-radius:8px; padding:6px 10px; cursor:pointer;}

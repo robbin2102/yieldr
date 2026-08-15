@@ -105,6 +105,7 @@ export default function PrelaunchEdgePage() {
     step: paymentStep,
     errorMessage: paymentError,
     balance: tokenBalance,
+    balanceLoading,
     otherBalances,
     scanDone: balanceScanDone,
     isSupported: isChainSupported,
@@ -223,10 +224,15 @@ export default function PrelaunchEdgePage() {
 
   // Annual billing prepays the discounted monthly rate for the full year, once.
   const checkoutPrice = billing === 'a' ? checkoutPlan.a * MONTHS_PER_YEAR : checkoutPlan.m;
-  const insufficientBalance = isConnected && isChainSupported && balanceScanDone && tokenBalance < checkoutPrice && otherBalances.length === 0;
+  // Balance on the ACTIVE chain/token is unknown until the scan resolves — never
+  // let a click through before we actually know whether it can succeed, or a
+  // payment attempt can be submitted (and revert on-chain) against a balance we
+  // hadn't confirmed yet.
+  const balancePending = isConnected && isChainSupported && balanceLoading;
+  const insufficientBalance = isConnected && isChainSupported && !balanceLoading && tokenBalance < checkoutPrice;
   const payDisabled =
     paymentStep === 'connecting' || paymentStep === 'awaiting-signature' || paymentStep === 'confirming' || paymentStep === 'recording' ||
-    (isConnected && !isChainSupported) || insufficientBalance;
+    (isConnected && !isChainSupported) || balancePending || insufficientBalance;
 
   const handlePayNow = useCallback(() => {
     if (!checkoutPlan.name) return;
@@ -1019,11 +1025,15 @@ export default function PrelaunchEdgePage() {
                             ) : (
                               <span className="pe-modal-token-single">{availableTokens[0]}</span>
                             )}
-                            <span className="pe-modal-balance">Balance: ${tokenBalance.toFixed(2)}</span>
+                            <span className={`pe-modal-balance${insufficientBalance ? ' low' : ''}`}>
+                              {balanceLoading ? 'Checking balance...' : `Balance: $${tokenBalance.toFixed(2)}`}
+                            </span>
                           </div>
-                          {balanceScanDone && tokenBalance < checkoutPrice && otherBalances.length > 0 && (
-                            <div className="pe-modal-switch">
-                              <div className="pe-modal-switch-note">💡 You have stablecoins available elsewhere:</div>
+                          {balanceScanDone && otherBalances.length > 0 && (
+                            <div className={`pe-modal-switch${insufficientBalance ? '' : ' subtle'}`}>
+                              <div className="pe-modal-switch-note">
+                                {insufficientBalance ? '💡 You have stablecoins available elsewhere:' : 'Also available on other chains:'}
+                              </div>
                               <div className="pe-modal-switch-btns">
                                 {otherBalances.map((ob, i) => (
                                   <button
@@ -1064,6 +1074,8 @@ export default function PrelaunchEdgePage() {
                           ? 'Connect Wallet to Pay'
                           : !isChainSupported
                           ? 'Switch to a supported network'
+                          : balancePending
+                          ? 'Checking balance...'
                           : insufficientBalance
                           ? `Insufficient ${selectedToken} balance`
                           : `Pay $${checkoutPrice} Now`

@@ -29,8 +29,8 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const { openConnectModal } = useConnectModal();
-  const { balance, otherBalances, scanDone } = useUSDCBalance(selectedToken);
-  const { transfer, hash, isPending, isConfirming, isConfirmed, error: transferError } = useUSDCTransfer();
+  const { balance, otherBalances, scanDone, isLoading: balanceLoading, refetch: refetchBalance } = useUSDCBalance(selectedToken);
+  const { transfer, hash, isPending, isConfirming, isConfirmed, isReverted, error: transferError } = useUSDCTransfer();
   const { setLastSubscription, setHasCompletedPayment } = usePayment();
 
   const [step, setStep] = useState<SubscriptionPaymentStep>('idle');
@@ -54,6 +54,18 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
       setErrorMessage('Transaction was rejected or failed. Please try again.');
     }
   }, [transferError]);
+
+  // A reverted transaction still resolves a receipt successfully (see
+  // useUSDCTransfer's isReverted note) — this must be treated as a failure,
+  // not routed into recordSubscription.
+  useEffect(() => {
+    if (isReverted && hash && !recordedTx.current.has(hash)) {
+      recordedTx.current.add(hash);
+      setStep('error');
+      setErrorMessage('Transaction failed on-chain (reverted). No funds were recorded — please check your balance and try again.');
+      void refetchBalance();
+    }
+  }, [isReverted, hash, refetchBalance]);
 
   // Once the wallet connects, if the user had already clicked "pay", fire the transfer now.
   useEffect(() => {
@@ -109,13 +121,14 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
     }
   }, [address, chainId, selectedToken, chainConfig, setLastSubscription, setHasCompletedPayment]);
 
-  // When the on-chain transfer confirms, record it server-side (server re-verifies on-chain).
+  // When the on-chain transfer confirms (and did NOT revert), record it server-side
+  // (the server independently re-verifies the receipt on-chain too).
   useEffect(() => {
-    if (isConfirmed && hash && !recordedTx.current.has(hash) && pendingPlan) {
+    if (isConfirmed && !isReverted && hash && !recordedTx.current.has(hash) && pendingPlan) {
       recordedTx.current.add(hash);
       void recordSubscription(pendingPlan.name, pendingPlan.cycle, hash);
     }
-  }, [isConfirmed, hash, pendingPlan, recordSubscription]);
+  }, [isConfirmed, isReverted, hash, pendingPlan, recordSubscription]);
 
   const doTransfer = useCallback(async (planName: PlanName, cycle: BillingCycle) => {
     if (!tokenConfig) {
@@ -168,6 +181,7 @@ export function useSubscriptionPayment(selectedToken: TokenId = 'USDC') {
     isConnected,
     address,
     balance,
+    balanceLoading,
     otherBalances,
     scanDone,
     isSupported,

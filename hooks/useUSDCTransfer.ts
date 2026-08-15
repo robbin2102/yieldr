@@ -7,9 +7,14 @@ import { TREASURY_ADDRESS, type TokenConfig } from '@/config/payment';
 export function useUSDCTransfer() {
   const { data: hash, writeContract, error: writeError, isPending } = useWriteContract();
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  // NOTE: useWaitForTransactionReceipt's `isSuccess` means "we successfully
+  // fetched a receipt" — NOT "the transaction succeeded on-chain". A reverted
+  // transaction still produces a fetchable receipt (status: 'reverted'), so
+  // callers must check `isReverted` before treating `isConfirmed` as a win.
+  const { isLoading: isConfirming, isSuccess: isConfirmed, data: receipt } = useWaitForTransactionReceipt({
     hash,
   });
+  const isReverted = isConfirmed && receipt?.status === 'reverted';
 
   const transfer = async (amount: number, tokenConfig: TokenConfig) => {
     try {
@@ -40,6 +45,7 @@ export function useUSDCTransfer() {
     isPending,
     isConfirming,
     isConfirmed,
+    isReverted,
     error: writeError,
   };
 }
