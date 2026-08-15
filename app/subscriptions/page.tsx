@@ -53,7 +53,7 @@ function Skel() {
 
 export default function SubscriptionsPage() {
   const router = useRouter();
-  const { address, isConnected, isReconnecting, isConnecting, status: accountStatus } = useAccount();
+  const { address } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { status, hasCompletedPayment } = usePayment();
 
@@ -64,9 +64,16 @@ export default function SubscriptionsPage() {
   const [publicLoading, setPublicLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // A plain mount flag — NOT derived from wagmi's connection status. wagmi can
+  // report 'reconnecting' for a real, sometimes lengthy window right after a
+  // wallet round-trip (e.g. returning from a mobile wallet deep link, which is
+  // exactly the path this app optimizes for), and that status never resolves
+  // to 'connected' or 'disconnected' during the window — so gating on it (as
+  // this used to) left the page stuck showing "—" even though `address` and
+  // the fetched subscription data were already correct.
   useEffect(() => {
-    if (isConnected || accountStatus === 'disconnected') setHydrated(true);
-  }, [isConnected, accountStatus]);
+    setHydrated(true);
+  }, []);
 
   // This page only exists for wallets that have completed a Genesis payment —
   // send everyone else back to where they'd reserve one.
@@ -94,8 +101,12 @@ export default function SubscriptionsPage() {
       .finally(() => setMyLoading(false));
   }, [address, status]);
 
-  const isWalletPending = !hydrated || isReconnecting || isConnecting;
-  const showData = isConnected && !isWalletPending;
+  // Data visibility is keyed off `address` itself, not wagmi's connection
+  // status enum — once we have an address we've already fetched (or are
+  // fetching) that wallet's subscriptions, and that data stays valid even if
+  // wagmi later reports a transient 'reconnecting'/'connecting' status.
+  const isWalletPending = !hydrated;
+  const showData = hydrated && !!address;
 
   // API returns subscriptions sorted newest-first, so [0] is the wallet's
   // current plan — every earlier record is either the initial purchase or a
@@ -140,7 +151,7 @@ export default function SubscriptionsPage() {
 
           {isWalletPending ? (
             <p className="sp-sub">Connecting wallet...</p>
-          ) : !isConnected ? (
+          ) : !address ? (
             <div className="sp-connect-row">
               <button className="sp-btn-connect" onClick={openConnectModal}>Connect Wallet →</button>
               <span className="sp-sub" style={{ margin: 0 }}>Connect the wallet you paid with to see your subscriptions.</span>
