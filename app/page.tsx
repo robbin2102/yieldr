@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { QuantWaitlistModal } from './components/QuantWaitlistModal';
 import { usePayment } from './context/PaymentContext';
 import './landing.css';
 
@@ -10,11 +9,9 @@ const MARQUEE_ITEMS = [
   { text: 'HOOD CHAIN', hl: 'NOW LIVE' },
   { text: '🏆 BASE BATCHES 002', hl: 'WINNER' },
   { text: '🚀 CIRCUIT ACCELERATOR', hl: 'SINGAPORE' },
-  { text: '⚡ QUANT AGENT', hl: 'AUG 30' },
+  { text: '⚡ QUANT AGENT', hl: 'OCT 31' },
 ];
 
-// Quant Agent goes live 7-Sep-2026, 9:00 PM SGT (UTC+8) = 13:00 UTC
-const QUANT_LAUNCH_AT = new Date('2026-09-07T13:00:00Z');
 const DEFAULT_WAITLIST_COUNT = 542;
 const WAITLIST_AUM = 2_100_000;
 
@@ -117,27 +114,6 @@ function fmtAumM(n: number): string {
   return `$${(n / 1_000_000).toFixed(1)}M`;
 }
 
-function formatCountdown(ms: number): string {
-  if (ms <= 0) return 'LIVE NOW';
-  const totalSeconds = Math.floor(ms / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${days}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
-}
-
-function useCountdown(target: Date) {
-  const [remaining, setRemaining] = useState<number | null>(null);
-  useEffect(() => {
-    const update = () => setRemaining(target.getTime() - Date.now());
-    update();
-    const id = setInterval(update, 1000);
-    return () => clearInterval(id);
-  }, [target]);
-  return remaining;
-}
 
 function XIcon() {
   return <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>;
@@ -170,9 +146,7 @@ function AnimatedCount({ target, prefix = '', format, className = 'hp-tick-val h
 
 export default function HomePage() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const [waitlistCount, setWaitlistCount] = useState(DEFAULT_WAITLIST_COUNT);
-  const launchRemaining = useCountdown(QUANT_LAUNCH_AT);
   const { hasCompletedPayment } = usePayment();
 
   useEffect(() => {
@@ -239,7 +213,7 @@ export default function HomePage() {
 
       <div className="hp-hero">
         <div className="hp-wrap">
-          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches 7 Sep · Genesis window open</span>
+          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches 31 Oct · Genesis window open</span>
           <h1>Agent stack for <em>onchain funds</em>.</h1>
           <p className="hp-hero-sub">
             Discover your edge. Convert it into a fund. The Quant Agent grades your onchain entries, exits, and
@@ -271,12 +245,10 @@ export default function HomePage() {
             <AnimatedCount target={WAITLIST_AUM} format={fmtAumM} className="hp-tick-val hp-num hp-win" />
             <div className="hp-tick-src">committed across waitlisted vaults</div>
           </div>
-          <div className="hp-tick-card hp-tick-card-cd">
-            <div className="hp-tick-lbl">Quant Agent Launches In</div>
-            <div className="hp-tick-val hp-num hp-countdown">
-              {launchRemaining === null ? '—' : formatCountdown(launchRemaining)}
-            </div>
-            <div className="hp-tick-src">7 Sep 2026 · 9:00 PM SGT</div>
+          <div className="hp-tick-card">
+            <div className="hp-tick-lbl"><span className="hp-ld" />Annual Recurring Revenue</div>
+            <div className="hp-tick-val hp-num hp-win">$14,400</div>
+            <div className="hp-tick-src">15 paying members · $1,200/mo</div>
           </div>
         </div>
       </div>
@@ -286,7 +258,7 @@ export default function HomePage() {
           <div className="hp-slbl"><span>Where We Are</span><span className="hp-ln" /></div>
           <h2 className="hp-sec-h">One agent stack, shipping in phases.</h2>
           <p className="hp-sec-p">
-            Quant Agent launches 7 Sep — join the waitlist to be first in when Genesis access opens.
+            Quant Agent launches 31 Oct — join the waitlist to be first in when Genesis access opens.
             Everything after it is real, in progress, and dated honestly.
           </p>
 
@@ -295,7 +267,7 @@ export default function HomePage() {
               <div className="hp-rm-product-inner">
                 <div>
                   <div className="hp-rm-num">01 · Q3 2026</div>
-                  <div className="hp-rm-status hp-proof">Launching 7 Sep</div>
+                  <div className="hp-rm-status hp-proof">Launching 31 Oct</div>
                   <div className="hp-rm-name">Quant Agent</div>
                   <div className="hp-rm-desc">Reads your wallet, grades Entry/Exit/Sizing, tells you if your edge is real.</div>
                 </div>
@@ -602,7 +574,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      <QuantWaitlistModal isOpen={waitlistModalOpen} onClose={() => setWaitlistModalOpen(false)} />
     </div>
   );
 }

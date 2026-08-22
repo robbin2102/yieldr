@@ -519,7 +519,7 @@ export default function ExplorerPage() {
           {agentTokens >= FREE_TOKEN_LIMIT ? (
             <div className="ex-token-limit-msg">
               <div className="ex-token-limit-title">Free tier reached</div>
-              <div className="ex-token-limit-body">$YLDR token holders get unlimited agent access. Token launch Sep 2026 — whitelist your wallet now for early access.</div>
+              <div className="ex-token-limit-body">$YLDR token holders get unlimited agent access. Token launch Oct 2026 — whitelist your wallet now for early access.</div>
               <button className="ex-token-limit-cta" onClick={() => { setActiveFilter('live'); setChainFilter('all'); }}>Whitelist a vault →</button>
             </div>
           ) : (
