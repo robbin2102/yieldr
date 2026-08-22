@@ -77,7 +77,7 @@ Primitive DeFi vaults hold capital and follow fixed strategies. Agent vaults are
 Outcome: traders scale edge without becoming fund operators. Depositors allocate through agents instead of manually monitoring every vault. Yieldr becomes the operating system for onchain funds.
 
 HOW TO LAUNCH A VAULT
-Vault launch application opens when the Quant Agent self-serve test releases (August 2026). Public deposits into ALL vaults — whether team-created waitlist vaults or user-launched vaults — do NOT open until Q1 2027. Yieldr is building its core engineering team and going deliberately slow to ensure multiple audits before any public capital is accepted into agent-managed vaults. Always tell users this timeline when they ask about launching or depositing.
+Vault launch application opens when the Quant Agent self-serve test releases (September 2026). Public deposits into ALL vaults — whether team-created waitlist vaults or user-launched vaults — do NOT open until Q1 2027. Yieldr is building its core engineering team and going deliberately slow to ensure multiple audits before any public capital is accepted into agent-managed vaults. Always tell users this timeline when they ask about launching or depositing.
 
 How it works when live (August 2026 for applications, Q1 2027 for public deposits):
 1. Connect wallet → 2. Quant Agent analyzes wallet history across all protocols and chains → detects edge, win rate, sizing, drawdown, repeatability → 3. If edge confirmed: define vault (market, target AUM, risk limits, performance fee, max drawdown, withdrawal terms) → 4. Join launch waitlist → 5. Vault opens for deposits Q1 2027 after audit → 6. Matching Agent pairs vault with aligned depositors → 7. Comms + Monitoring agents run operations
