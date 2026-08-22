@@ -1,13 +1,7 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import './globals.css';
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { ProvidersLayout } from './ProvidersLayout';
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-};
 
 export const metadata: Metadata = {
   title: 'Yieldr — Agentic Trading Vaults',

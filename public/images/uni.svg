@@ -1,0 +1,18 @@
+<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+  <rect width="44" height="44" rx="10" fill="#1A0030"/>
+  <!-- Uniswap unicorn head silhouette (simplified) -->
+  <!-- Horn -->
+  <polygon points="22,6 19,14 25,14" fill="white" opacity="0.9"/>
+  <!-- Head -->
+  <ellipse cx="22" cy="20" rx="9" ry="8" fill="white"/>
+  <!-- Ear left -->
+  <polygon points="14,14 12,18 17,17" fill="white"/>
+  <!-- Ear right -->
+  <polygon points="30,14 32,18 27,17" fill="white"/>
+  <!-- Eye left -->
+  <circle cx="18.5" cy="20" r="1.8" fill="#FF007A"/>
+  <!-- Eye right -->
+  <circle cx="25.5" cy="20" r="1.8" fill="#FF007A"/>
+  <!-- Neck/body -->
+  <path d="M15 27 C15 27 14 34 22 36 C30 34 29 27 29 27 C26 29 18 29 15 27Z" fill="white"/>
+</svg>

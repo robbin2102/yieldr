@@ -1,0 +1,5 @@
+<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+  <rect width="44" height="44" rx="0" fill="#0052FF"/>
+  <!-- Base chain logo: blue with white "b" arc mark -->
+  <path d="M22 9C14.8 9 9 14.8 9 22C9 29.2 14.8 35 22 35C28.4 35 33.7 30.7 35 24.8L28.8 24.8C27.7 27.5 25 29.3 22 29.3C17.9 29.3 14.6 26.1 14.6 22C14.6 17.9 17.9 14.7 22 14.7C25.1 14.7 27.7 16.5 28.8 19.2L35 19.2C33.7 13.3 28.4 9 22 9Z" fill="white"/>
+</svg>

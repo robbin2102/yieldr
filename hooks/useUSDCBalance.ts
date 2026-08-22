@@ -1,24 +1,18 @@
 // Hook: Read stablecoin balances — current chain + scan all supported chains
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAccount, useReadContract, useChainId } from 'wagmi';
 import { formatUnits, createPublicClient, http, type Chain } from 'viem';
 import { base, mainnet, polygon, bsc } from 'viem/chains';
-import { SUPPORTED_CHAINS, ERC20_ABI, type TokenId } from '@/config/payment';
+import { robinhoodChain } from '@/lib/chains/robinhoodChain';
+import { SUPPORTED_CHAINS, ERC20_ABI, getProxyRpcUrl, type TokenId } from '@/config/payment';
 
 const VIEM_CHAINS: Record<number, Chain> = {
   8453: base,
   1: mainnet,
   137: polygon,
   56: bsc,
-};
-
-// QuickNode RPCs from env vars (fallback to public RPCs)
-const PUBLIC_RPCS: Record<number, string> = {
-  8453: process.env.NEXT_PUBLIC_RPC_BASE || 'https://mainnet.base.org',
-  1: process.env.NEXT_PUBLIC_RPC_ETHEREUM || 'https://eth.llamarpc.com',
-  137: process.env.NEXT_PUBLIC_RPC_POLYGON || 'https://polygon.llamarpc.com',
-  56: process.env.NEXT_PUBLIC_RPC_BSC || 'https://bsc-dataseed.binance.org',
+  4663: robinhoodChain,
 };
 
 export interface ChainBalance {
@@ -28,12 +22,21 @@ export interface ChainBalance {
   balance: number;
 }
 
+export interface ChainScanError {
+  chainId: number;
+  chainName: string;
+  token: TokenId;
+  message: string;
+}
+
 export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const [balance, setBalance] = useState(0);
   const [otherBalances, setOtherBalances] = useState<ChainBalance[]>([]);
+  const [scanErrors, setScanErrors] = useState<ChainScanError[]>([]);
   const [scanDone, setScanDone] = useState(false);
+  const scanGenRef = useRef(0);
 
   const chainConfig = SUPPORTED_CHAINS[chainId];
   const tokenConfig = chainConfig?.tokens[selectedToken];
@@ -59,13 +62,24 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     }
   }, [data, tokenConfig?.decimals]);
 
-  // Scan all other chains for stablecoin balances + other tokens on current chain
+  // Scan all other chains for stablecoin balances + other tokens on current chain.
+  // Every chain/token combo is read in PARALLEL with its own timeout, and each
+  // result is applied to state as soon as IT resolves — not batched behind the
+  // slowest chain. Public RPCs vary a lot in reliability, so waiting for the
+  // whole batch to settle before showing anything meant a balance found early
+  // (e.g. Base) could sit invisible for many seconds behind one slow/dead RPC.
+  // scanGenRef guards against a superseded scan's late results (e.g. the user
+  // switches chains mid-scan) clobbering a newer one's.
   const scanAllChains = useCallback(async () => {
     if (!address || !isConnected) return;
+    const gen = ++scanGenRef.current;
+    setOtherBalances([]);
+    setScanErrors([]);
     setScanDone(false);
 
-    console.log('[Balance] Scanning all chains for stablecoins...');
-    const results: ChainBalance[] = [];
+    console.warn('[Balance] Scanning all chains via RPC proxy.');
+
+    const jobs: Promise<void>[] = [];
 
     for (const [cId, cfg] of Object.entries(SUPPORTED_CHAINS)) {
       const numId = Number(cId);
@@ -73,36 +87,79 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
       const viemChain = VIEM_CHAINS[numId];
       if (!viemChain) continue;
 
-      const rpcUrl = PUBLIC_RPCS[numId];
+      const rpcUrl = getProxyRpcUrl(numId);
       if (!rpcUrl) continue;
 
-      const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl) });
+      const client = createPublicClient({ chain: viemChain, transport: http(rpcUrl, { timeout: 15_000, retryCount: 1 }) });
 
       for (const [tokenName, tokenCfg] of Object.entries(cfg.tokens)) {
         // Skip the selected token on current chain (already read by useReadContract)
         if (numId === chainId && tokenName === selectedToken) continue;
 
-        try {
-          const raw = await client.readContract({
-            address: tokenCfg.address,
-            abi: ERC20_ABI,
-            functionName: 'balanceOf',
-            args: [address],
-          });
-          const bal = parseFloat(formatUnits(raw as bigint, tokenCfg.decimals));
-          if (bal > 0.01) {
-            console.log(`[Balance] Found $${bal.toFixed(2)} ${tokenName} on ${cfg.name}`);
-            results.push({ chainId: numId, chainName: cfg.name, token: tokenName as TokenId, balance: bal });
-          }
-        } catch (err) {
-          console.warn(`[Balance] Failed to read ${tokenName} on ${cfg.name}:`, err);
-        }
+        jobs.push(
+          client
+            .readContract({
+              address: tokenCfg.address,
+              abi: ERC20_ABI,
+              functionName: 'balanceOf',
+              args: [address],
+            })
+            .then((raw) => {
+              if (scanGenRef.current !== gen) return;
+              const bal = parseFloat(formatUnits(raw as bigint, tokenCfg.decimals));
+              if (bal <= 0.01) return;
+              console.log(`[Balance] Found $${bal.toFixed(2)} ${tokenName} on ${cfg.name}`);
+              setOtherBalances((prev) => [
+                ...prev,
+                { chainId: numId, chainName: cfg.name, token: tokenName as TokenId, balance: bal },
+              ]);
+            })
+            .catch((err) => {
+              if (scanGenRef.current !== gen) return;
+              // viem's top-level shortMessage is usually a generic phrase
+              // ("HTTP request failed." / "The request took too long to
+              // respond.") — the actually useful info (status code, response
+              // body, root cause) lives on .status / .details /
+              // .metaMessages / .cause. Pull all of it so a failure is
+              // diagnosable instead of just "it's gone."
+              const status = err?.status ?? err?.cause?.status;
+              const details = err?.details;
+              const metaMessages = Array.isArray(err?.metaMessages) ? err.metaMessages.join(' ') : undefined;
+              const causeMessage = err?.cause?.shortMessage || err?.cause?.message;
+              const shortMessage = err?.shortMessage || err?.message || String(err);
+              const message = [
+                shortMessage,
+                status ? `HTTP ${status}` : null,
+                details && details !== shortMessage ? details : null,
+                metaMessages,
+                causeMessage && causeMessage !== shortMessage ? causeMessage : null,
+              ]
+                .filter(Boolean)
+                .join(' — ')
+                .slice(0, 250);
+
+              // Flat string, not an object arg — see note above on why.
+              console.warn(
+                `[Balance][RPC FAIL] chain=${cfg.name} token=${tokenName} url=${rpcUrl} ` +
+                `errorName=${err?.name} status=${status ?? 'n/a'} shortMessage="${shortMessage}" ` +
+                `details="${details ?? 'n/a'}" metaMessages="${metaMessages ?? 'n/a'}" ` +
+                `causeName=${err?.cause?.name ?? 'n/a'} causeMessage="${causeMessage ?? 'n/a'}"`
+              );
+
+              setScanErrors((prev) => [
+                ...prev,
+                { chainId: numId, chainName: cfg.name, token: tokenName as TokenId, message },
+              ]);
+            })
+        );
       }
     }
 
-    console.log(`[Balance] Scan complete. Found ${results.length} balances on other chains.`);
-    setOtherBalances(results);
-    setScanDone(true);
+    await Promise.all(jobs);
+    if (scanGenRef.current === gen) {
+      console.log('[Balance] Scan complete.');
+      setScanDone(true);
+    }
   }, [address, isConnected, chainId, selectedToken]);
 
   // Trigger scan when wallet connects or chain changes
@@ -117,6 +174,7 @@ export function useUSDCBalance(selectedToken: TokenId = 'USDC') {
     isLoading,
     refetch,
     otherBalances,
+    scanErrors,
     scanDone,
   };
 }

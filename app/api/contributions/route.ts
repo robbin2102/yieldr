@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
         yldr_price_per_token: allocation.effectivePrice,
         yldr_fdv:             allocation.fdv,
         yldr_tier:            allocation.tier,
-        yldr_tge_date:        'TBD',
+        yldr_tge_date:        'Q1 2027',
         yldr_vest_months:     12,
         network,
         chain_id,

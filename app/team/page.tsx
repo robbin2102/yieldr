@@ -142,7 +142,7 @@ export default function TeamPage() {
         <nav className="snav">
           <Link href="/" className="snav-logo-link">
             <svg className="snav-logo-svg" viewBox="0 0 100 120">
-              <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00E87B"/>
+              <path d="M 50 10 Q 70 30 80 60 Q 70 90 50 110 Q 30 90 20 60 Q 30 30 50 10 Z" fill="#00C805"/>
               <ellipse cx="50" cy="60" rx="15" ry="20" fill="#000" opacity=".3"/>
               <circle cx="50" cy="60" r="8" fill="#FFF" opacity=".9"/>
             </svg>

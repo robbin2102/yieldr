@@ -1,0 +1,17 @@
+<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+  <rect width="44" height="44" rx="10" fill="white"/>
+  <!-- Pill capsule rotated ~-38deg, centered at 22,22 -->
+  <g transform="rotate(-38 22 22)">
+    <!-- Dark border outline -->
+    <rect x="7" y="15" width="30" height="14" rx="7" fill="#1D3829"/>
+    <!-- White/light half (right) -->
+    <path d="M22 16.2 L28.5 16.2 Q35.5 16.2 35.5 22 Q35.5 27.8 28.5 27.8 L22 27.8 Z" fill="#D6EAE2"/>
+    <!-- Green half (left) -->
+    <path d="M22 16.2 L15.5 16.2 Q8.5 16.2 8.5 22 Q8.5 27.8 15.5 27.8 L22 27.8 Z" fill="#5EC87A"/>
+    <!-- Diagonal divider -->
+    <line x1="22" y1="16" x2="22" y2="28" stroke="#1D3829" stroke-width="1.8"/>
+    <!-- Shine on green half -->
+    <ellipse cx="13.5" cy="19" rx="2" ry="1.2" fill="white" opacity="0.65" transform="rotate(-10 13.5 19)"/>
+    <circle cx="12.5" cy="23.5" r="1.1" fill="white" opacity="0.45"/>
+  </g>
+</svg>

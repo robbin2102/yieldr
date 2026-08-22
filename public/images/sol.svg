@@ -1,0 +1,14 @@
+<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+  <rect width="44" height="44" rx="10" fill="#1A1A2E"/>
+  <defs>
+    <linearGradient id="solG" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9945FF"/>
+      <stop offset="50%" stop-color="#43B4CA"/>
+      <stop offset="100%" stop-color="#19FB9B"/>
+    </linearGradient>
+  </defs>
+  <!-- Solana 3-bar diagonal logo -->
+  <path d="M10.5 28.5 L30.5 28.5 L33.5 31.5 L13.5 31.5 Z" fill="url(#solG)"/>
+  <path d="M10.5 20.5 L30.5 20.5 L33.5 23.5 L13.5 23.5 Z" fill="url(#solG)"/>
+  <path d="M13.5 12.5 L33.5 12.5 L30.5 15.5 L10.5 15.5 Z" fill="url(#solG)"/>
+</svg>

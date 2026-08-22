@@ -35,7 +35,7 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 2.5rem; height: 54px;
   background: rgba(2,2,4,.92); backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid var(--b1);
 }
 .bp-nav-l { display: flex; align-items: center; gap: .6rem; }
 .bp-nav-brand { font-family: var(--fd); font-weight: 700; font-size: .95rem; letter-spacing: 3px; }

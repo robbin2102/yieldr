@@ -34,7 +34,7 @@ export function MyAllocationModal({ isOpen, onClose }: MyAllocationModalProps) {
           <div className="allocation-main">
             <div className="allocation-amount-display">
               <span className="yldr-amount">{formatNumber(yldrAmount)} YLDR</span>
-              <span className="allocation-label">Allocated at TGE (TBD)</span>
+              <span className="allocation-label">Allocated at TGE (Q1 2027)</span>
             </div>
           </div>
 

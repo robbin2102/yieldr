@@ -13,8 +13,6 @@ const MARQUEE_ITEMS = [
   { text: '⚡ QUANT AGENT', hl: 'AUG 30' },
 ];
 
-// Quant Agent goes live 30-Aug-2026, 9:00 PM SGT (UTC+8) = 13:00 UTC
-const QUANT_LAUNCH_AT = new Date('2026-08-30T13:00:00Z');
 const DEFAULT_WAITLIST_COUNT = 542;
 const WAITLIST_AUM = 2_100_000;
 
@@ -117,6 +115,10 @@ function fmtAumM(n: number): string {
   return `$${(n / 1_000_000).toFixed(1)}M`;
 }
 
+function fmtArr(n: number): string {
+  return `$${Math.round(n).toLocaleString('en-US')}`;
+}
+
 function XIcon() {
   return <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>;
 }
@@ -150,6 +152,8 @@ export default function HomePage() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const [waitlistCount, setWaitlistCount] = useState(DEFAULT_WAITLIST_COUNT);
+  const [prelaunchArr, setPrelaunchArr] = useState(0);
+  const [arrMemberCount, setArrMemberCount] = useState(0);
   const { hasCompletedPayment } = usePayment();
 
   useEffect(() => {
@@ -157,6 +161,18 @@ export default function HomePage() {
       .then((r) => r.json())
       .then((d) => {
         if (d?.success && typeof d.count === 'number') setWaitlistCount(d.count);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/site-stats')
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.success && d.data) {
+          if (typeof d.data.prelaunchArr === 'number') setPrelaunchArr(d.data.prelaunchArr);
+          if (typeof d.data.genesisMembers === 'number') setArrMemberCount(d.data.genesisMembers);
+        }
       })
       .catch(() => {});
   }, []);
@@ -250,8 +266,8 @@ export default function HomePage() {
           </div>
           <div className="hp-tick-card">
             <div className="hp-tick-lbl"><span className="hp-ld" />Annual Recurring Revenue</div>
-            <div className="hp-tick-val hp-num hp-win">$14,400</div>
-            <div className="hp-tick-src">15 paying members · $1,200/mo</div>
+            <div className="hp-tick-val hp-num hp-win">{fmtArr(prelaunchArr)}</div>
+            <div className="hp-tick-src">{arrMemberCount} paying member{arrMemberCount === 1 ? '' : 's'} · Genesis</div>
           </div>
         </div>
       </div>

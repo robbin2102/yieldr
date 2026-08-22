@@ -62,7 +62,8 @@ export const USDT_ETH_ABI = [
 ] as const;
 
 // ── Stablecoin config per chain ──
-export type TokenId = 'USDC' | 'USDT';
+export type TokenId = 'USDC' | 'USDT' | 'USDG';
+export const TOKEN_IDS: TokenId[] = ['USDC', 'USDT', 'USDG'];
 
 export interface TokenConfig {
   address: `0x${string}`;
@@ -132,9 +133,44 @@ export const SUPPORTED_CHAINS: Record<number, { name: string; explorer: string; 
       },
     },
   },
+  4663: {
+    name: 'Robinhood Chain',
+    explorer: 'https://robinhoodchain.blockscout.com',
+    tokens: {
+      USDG: {
+        address: '0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168',
+        decimals: 6,
+        abi: ERC20_ABI,
+      },
+    },
+  },
 };
 
 export const PREFERRED_CHAIN_ID = 8453; // Base
+
+// ── RPC proxy (standalone service, e.g. hosted on Railway) ──
+//
+// The real RPC provider keys (Alchemy etc.) live ONLY on that service, never
+// in this app's env vars. This app just needs to know where the proxy is —
+// that URL is not a secret, it's our own address, so it's fine to be
+// NEXT_PUBLIC_. The proxy allowlists a fixed set of read-only JSON-RPC
+// methods and rejects everything else, so even if this URL is scraped it
+// can't be used to send transactions or as a general-purpose RPC gateway.
+export const RPC_PROXY_BASE_URL = process.env.NEXT_PUBLIC_RPC_PROXY_URL || 'http://localhost:8787';
+
+// Chain ID -> the path segment the proxy exposes for it (see rpc-proxy/server.js)
+export const RPC_PROXY_CHAIN_PATHS: Record<number, string> = {
+  8453: 'base',
+  1: 'ethereum',
+  137: 'polygon',
+  56: 'bsc',
+  4663: 'robinhood',
+};
+
+export function getProxyRpcUrl(chainId: number): string | undefined {
+  const path = RPC_PROXY_CHAIN_PATHS[chainId];
+  return path ? `${RPC_PROXY_BASE_URL}/rpc/${path}` : undefined;
+}
 
 // Helper: get explorer URL for a chain
 export function getExplorerUrl(chainId: number): string {

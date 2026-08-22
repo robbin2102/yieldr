@@ -81,7 +81,7 @@ export default function BuyPage() {
   useEffect(() => {
     if (countdown === null || countdown < 0) return;
     if (countdown === 0) {
-      try { router.push('/allocations'); }
+      try { router.push('/subscriptions'); }
       catch { setRedirectFailed(true); }
       return;
     }
@@ -185,7 +185,7 @@ export default function BuyPage() {
           <span className="bp-nav-brand">YIELDR</span>
         </div>
         <div className="bp-nav-r">
-          <Link href="/vaults" className="bp-nav-back">&#8592; Back to Vaults</Link>
+          <Link href="/explorer" className="bp-nav-back">&#8592; Back to Vaults</Link>
           <NavLinks showSocials={false} />
         </div>
       </nav>
@@ -396,7 +396,7 @@ export default function BuyPage() {
               {btnLabel()}
             </button>
             <div className="bp-fine">
-              Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE TBD
+              Accepts USDC &amp; USDT on Base, Ethereum, Polygon, BNB Chain &bull; Min $1 &bull; YLDR: 12-month vest from TGE Q1 2027
             </div>
           </div>
 
@@ -475,7 +475,7 @@ export default function BuyPage() {
                 Redirecting to your allocation in {countdown}s...
               </div>
             ) : redirectFailed || (countdown !== null && countdown <= 0) ? (
-              <Link href="/allocations" className="bp-modal-cta">
+              <Link href="/subscriptions" className="bp-modal-cta">
                 View My Allocation &#8599;
               </Link>
             ) : null}
