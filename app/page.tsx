@@ -10,7 +10,7 @@ const MARQUEE_ITEMS = [
   { text: 'HOOD CHAIN', hl: 'NOW LIVE' },
   { text: '🏆 BASE BATCHES 002', hl: 'WINNER' },
   { text: '🚀 CIRCUIT ACCELERATOR', hl: 'SINGAPORE' },
-  { text: '⚡ QUANT AGENT', hl: 'AUG 30' },
+  { text: '⚡ QUANT AGENT', hl: 'Q4 2026' },
 ];
 
 const DEFAULT_WAITLIST_COUNT = 542;
@@ -232,7 +232,7 @@ export default function HomePage() {
 
       <div className="hp-hero">
         <div className="hp-wrap">
-          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches Aug 30 · Genesis window open</span>
+          <span className="hp-eyebrow"><span className="hp-dot" />Quant Agent launches Q4 2026 · Genesis window open</span>
           <h1>Agent stack for <em>onchain funds</em>.</h1>
           <p className="hp-hero-sub">
             Discover your edge. Convert it into a fund. The Quant Agent grades your onchain entries, exits, and
@@ -277,7 +277,7 @@ export default function HomePage() {
           <div className="hp-slbl"><span>Where We Are</span><span className="hp-ln" /></div>
           <h2 className="hp-sec-h">One agent stack, shipping in phases.</h2>
           <p className="hp-sec-p">
-            Quant Agent launches Aug 30 — join the waitlist to be first in when Genesis access opens.
+            Quant Agent launches Q4 2026 — join the waitlist to be first in when Genesis access opens.
             Everything after it is real, in progress, and dated honestly.
           </p>
 
@@ -285,8 +285,8 @@ export default function HomePage() {
             <div className="hp-rm-product-card">
               <div className="hp-rm-product-inner">
                 <div>
-                  <div className="hp-rm-num">01 · Q3 2026</div>
-                  <div className="hp-rm-status hp-proof">Launching Aug 30</div>
+                  <div className="hp-rm-num">01 · Q4 2026</div>
+                  <div className="hp-rm-status hp-proof">Launching Q4 2026</div>
                   <div className="hp-rm-name">Quant Agent</div>
                   <div className="hp-rm-desc">Reads your wallet, grades Entry/Exit/Sizing, tells you if your edge is real.</div>
                 </div>

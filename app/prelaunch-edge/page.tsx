@@ -35,7 +35,7 @@ const PRICES = {
 const FAQ_ITEMS = [
   {
     q: 'Is the demo above my real wallet?',
-    a: "No — it's a scripted walkthrough on a sample wallet, so you can see exactly how the product works before Quant Agent goes live on Aug 30. Once it's live, this becomes a real scan of your own wallet.",
+    a: "No — it's a scripted walkthrough on a sample wallet, so you can see exactly how the product works before Quant Agent goes live in Q4 2026. Once it's live, this becomes a real scan of your own wallet.",
   },
   {
     q: 'Am I buying a token right now?',
@@ -61,8 +61,6 @@ const CREDITS = {
   Desk: '15M',
 };
 
-const LAUNCH_DATE = new Date('2026-08-30T00:00:00-07:00').getTime();
-const pad = (n: number) => String(n).padStart(2, '0');
 
 function animateCount(
   setter: (v: number) => void,
@@ -90,7 +88,6 @@ export default function PrelaunchEdgePage() {
   const [arr, setArr] = useState(0);
   const [slotsTotal, setSlotsTotal] = useState(1000);
   const [progAnimating, setProgAnimating] = useState(true);
-  const [countdown, setCountdown] = useState({ d: 0, h: 0, m: 0, s: 0 });
 
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutPlan, setCheckoutPlan] = useState<{ name: PlanName | ''; m: number; a: number }>({ name: '', m: 0, a: 0 });
@@ -190,22 +187,6 @@ export default function PrelaunchEdgePage() {
       iframeRef.current.src = `data:text/html;base64,${EDGE_B64}`;
     }
   }, [demoStarted]);
-
-  // Countdown to launch
-  useEffect(() => {
-    const tick = () => {
-      const diff = Math.max(0, LAUNCH_DATE - Date.now());
-      setCountdown({
-        d: Math.floor(diff / 86400000),
-        h: Math.floor((diff % 86400000) / 3600000),
-        m: Math.floor((diff % 3600000) / 60000),
-        s: Math.floor((diff % 60000) / 1000),
-      });
-    };
-    tick();
-    const timer = setInterval(tick, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   // autoscan=1 query param — auto-scroll to demo section and start it
   useEffect(() => {
@@ -381,23 +362,12 @@ export default function PrelaunchEdgePage() {
         <div className="pe-wrap">
           <span className="pe-eyebrow">
             <span className="pe-dot" />
-            Reserve now · Quant Agent goes live Aug 30
+            Reserve now · Quant Agent goes live Q4 2026
           </span>
           <h1 className="pe-h1">Reserve your edge <em>before</em> it goes live.</h1>
           <p className="pe-hero-sub">
-            Quant Agent launches Aug 30. Lock Genesis pricing today with one payment — pay nothing else until Quant Terminal ships — and earn 1x–2x back in tokens either way.
+            Quant Agent launches Q4 2026. Lock Genesis pricing today with one payment — pay nothing else until Quant Terminal ships — and earn 1x–2x back in tokens either way.
           </p>
-
-          <div className="pe-countdown">
-            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.d)}</div><div className="pe-cd-lbl">Days</div></div>
-            <div className="pe-cd-sep">:</div>
-            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.h)}</div><div className="pe-cd-lbl">Hours</div></div>
-            <div className="pe-cd-sep">:</div>
-            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.m)}</div><div className="pe-cd-lbl">Min</div></div>
-            <div className="pe-cd-sep">:</div>
-            <div className="pe-cd-box"><div className="pe-cd-num">{pad(countdown.s)}</div><div className="pe-cd-lbl">Sec</div></div>
-          </div>
-          <div className="pe-countdown-note">Until Quant Agent goes live · Aug 30, 2026</div>
 
           <div className="pe-hero-ctas">
             <button className="pe-btn-p" onClick={scrollToPricing}>Reserve Genesis Access →</button>
@@ -445,9 +415,9 @@ export default function PrelaunchEdgePage() {
       {/* DEMO PREVIEW */}
       <div className="pe-sec" id="pe-demo" ref={demoSectionRef}>
         <div className="pe-wrap">
-          <span className="pe-demo-badge"><span className="pe-dt" />Demo Preview · Live Wallet Scanning Launches Aug 30</span>
+          <span className="pe-demo-badge"><span className="pe-dt" />Demo Preview · Live Wallet Scanning Launches Q4 2026</span>
           <h2 className="pe-sec-h">See exactly how Quant Agent will read your wallet.</h2>
-          <p className="pe-sec-p">This is a scripted walkthrough of the real product using a sample wallet — not a live connection yet. When Quant Agent goes live Aug 30, this becomes your actual scan.</p>
+          <p className="pe-sec-p">This is a scripted walkthrough of the real product using a sample wallet — not a live connection yet. When Quant Agent goes live in Q4 2026, this becomes your actual scan.</p>
           <div className="pe-console active" style={{ maxWidth: 920, marginTop: 24 }}>
             <div className="pe-console-hd">
               <span className="pe-lbl">◆ Demo mode · sample wallet</span>
@@ -1015,7 +985,7 @@ export default function PrelaunchEdgePage() {
       {/* FINAL CTA */}
       <div className="pe-wrap">
         <div className="pe-final">
-          <h2>The price goes up Aug 30. Lock it in before then.</h2>
+          <h2>The price goes up at launch. Lock it in before then.</h2>
           <p>One payment today, nothing charged again until Quant Terminal ships — plus 1x–2x back in tokens.</p>
           <div style={{ marginTop: 26 }}>
             <button className="pe-btn-p" onClick={scrollToPricing}>Reserve Genesis Access →</button>

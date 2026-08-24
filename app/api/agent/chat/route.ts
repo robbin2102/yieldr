@@ -68,7 +68,7 @@ Agent vault = Capital Layer (deposits, withdrawals, accounting, fee logic, risk 
 
 Primitive DeFi vaults hold capital and follow fixed strategies. Agent vaults are dynamic, monitored, explainable, and connected to an agent network.
 
-• Quant Agent — analyzes wallet history: where edge exists, which markets perform best, entry/exit behavior, sizing, holding periods, drawdown history, win rate, regime sensitivity, repeatability, whether performance is edge/beta/luck/insider timing. Goal: explain WHY edge exists and whether it can scale. Self-serve test release August 2026.
+• Quant Agent — analyzes wallet history: where edge exists, which markets perform best, entry/exit behavior, sizing, holding periods, drawdown history, win rate, regime sensitivity, repeatability, whether performance is edge/beta/luck/insider timing. Goal: explain WHY edge exists and whether it can scale. Self-serve test release Q4 2026.
 • Matching Agent — connects vaults to depositors by asset class, risk tolerance, return target, drawdown tolerance, holding period, liquidity needs — capital matched to fit, not noisy leaderboards or social clout
 • Comms Agent — depositor queries, weekly summaries, drawdown explanations, strategy updates, risk alerts, market context — trader stays focused on positions
 • Monitoring Agent — edge decay, strategy drift, sizing changes, drawdown vs historical norms, liquidity risk, leverage creep, AUM vs strategy capacity, whether recent performance is repeatable or luck-driven — flags problems before PnL shows them
@@ -77,9 +77,9 @@ Primitive DeFi vaults hold capital and follow fixed strategies. Agent vaults are
 Outcome: traders scale edge without becoming fund operators. Depositors allocate through agents instead of manually monitoring every vault. Yieldr becomes the operating system for onchain funds.
 
 HOW TO LAUNCH A VAULT
-Vault launch application opens when the Quant Agent self-serve test releases (August 2026). Public deposits into ALL vaults — whether team-created waitlist vaults or user-launched vaults — do NOT open until Q1 2027. Yieldr is building its core engineering team and going deliberately slow to ensure multiple audits before any public capital is accepted into agent-managed vaults. Always tell users this timeline when they ask about launching or depositing.
+Vault launch application opens when the Quant Agent self-serve test releases (Q4 2026). Public deposits into ALL vaults — whether team-created waitlist vaults or user-launched vaults — do NOT open until Q1 2027. Yieldr is building its core engineering team and going deliberately slow to ensure multiple audits before any public capital is accepted into agent-managed vaults. Always tell users this timeline when they ask about launching or depositing.
 
-How it works when live (August 2026 for applications, Q1 2027 for public deposits):
+How it works when live (Q4 2026 for applications, Q1 2027 for public deposits):
 1. Connect wallet → 2. Quant Agent analyzes wallet history across all protocols and chains → detects edge, win rate, sizing, drawdown, repeatability → 3. If edge confirmed: define vault (market, target AUM, risk limits, performance fee, max drawdown, withdrawal terms) → 4. Join launch waitlist → 5. Vault opens for deposits Q1 2027 after audit → 6. Matching Agent pairs vault with aligned depositors → 7. Comms + Monitoring agents run operations
 
 Fund launch waitlist application (open now around TGE for interested traders): Connect wallet → Select market (predictions/perps/LP/memecoins/project coins/RWAs) → Select target AUM → Add community links → Submit strategy intent → Join waitlist. This is an expression of interest for vault launch — not a deposit.
@@ -90,9 +90,9 @@ Who should apply: verifiable onchain edge in predictions, perps, LP, memecoins, 
 
 ROADMAP
 Phase 1 (LIVE): 2 vaults trading on Polymarket/Polygon 24/7 using project capital. ~$100K AUM. 445+ wallets whitelisted. ~$2M target AUM on waitlist.
-Phase 2 (around August 2026): Whitelist + fund launch applications open.
+Phase 2 (around Q4 2026): Whitelist + fund launch applications open.
 Phase 3 (TBD — date unconfirmed): $YLDR TGE. CA will only be announced through the official @yieldrdotorg handle on X — warn users about fake YLDR coins on other networks.
-Phase 4 (August 2026): Quant Agent self-serve test live; vault launch applications open for traders with edge.
+Phase 4 (Q4 2026): Quant Agent self-serve test live; vault launch applications open for traders with edge.
 Phase 5 (Q1 2027): Public deposits open for whitelisted vaults; early user-launched vaults go live after audits; Matching, Comms, Monitoring agents support live operations.
 Phase 6 (planned): Multi-venue expansion — Polymarket, Avantis, Hyperliquid, Aerodrome, Uniswap, RWAs.
 Phase 7 (vision): Open agent fund network — anyone with verified edge can launch; depositors allocate through allocation agents.
