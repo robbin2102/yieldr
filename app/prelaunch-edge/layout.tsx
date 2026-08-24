@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
-const TITLE = 'Reserve Your Edge — Yieldr Genesis Access';
-const DESCRIPTION = 'Lock Genesis pricing before Quant Agent launches in Q4 2026. One payment today, 1x–2x back in tokens at TGE — pay nothing else until Quant Terminal ships.';
+const TITLE = 'Become an Early Subscriber — Yieldr Genesis Access';
+const DESCRIPTION = 'Become an early Yieldr subscriber and lock Genesis pricing today. One payment now, nothing charged again until Quant Terminal launches — plus 1x–2x back in tokens at TGE.';
 
 export const metadata: Metadata = {
   title: TITLE,
