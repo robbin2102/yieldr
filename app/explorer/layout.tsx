@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const TITLE = 'Agent Vaults — Yieldr';
-const DESCRIPTION = 'Live agent-operated trading vaults on Base and Robinhood Chain — trading prediction markets and RWAs 24/7.';
+const DESCRIPTION = 'Live agent-operated trading vaults on Base and Robinhood Chain — RWAs 24/7.';
 
 export const metadata: Metadata = {
   title: TITLE,
