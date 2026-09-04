@@ -35,7 +35,14 @@ export default function V2DocsPage() {
             <div className="v2-nav-name">Yieldr</div>
             <div className="v2-nav-tag">v2</div>
           </Link>
-          <Link href="/v2/prelaunch-edge" className="v2-nav-cta">Reserve Genesis Access</Link>
+          <div className="v2-nav-right">
+            <div className="v2-nav-links">
+              <Link href="/v2">Home</Link>
+              <Link href="/v2/explorer">Vaults</Link>
+              <Link href="/v2/build-in-public">Build Log</Link>
+            </div>
+            <Link href="/v2/prelaunch-edge" className="v2-nav-cta">Reserve Genesis Access</Link>
+          </div>
         </div>
       </div>
 
@@ -200,7 +207,12 @@ export default function V2DocsPage() {
       <div className="v2-foot">
         <div className="v2-wrap v2-foot-in">
           <div className="v2-foot-l">© 2026 Yieldr · Agent OS for onchain funds</div>
-          <div className="v2-foot-r"><Link href="/v2">Home</Link></div>
+          <div className="v2-foot-r">
+            <Link href="/v2">Home</Link>
+            <Link href="/v2/explorer">Vaults</Link>
+            <Link href="/v2/build-in-public">Build Log</Link>
+            <Link href="/v2/prelaunch-edge">Reserve Genesis Access</Link>
+          </div>
         </div>
       </div>
     </div>

@@ -99,7 +99,15 @@ export default function V2PrelaunchEdgePage() {
               <div className="v2-nav-tag">v2</div>
             </Link>
           </div>
-          <button className="v2-nav-cta" disabled title="Wallet connect disabled in design review">Connect Wallet</button>
+          <div className="v2-nav-right">
+            <div className="v2-nav-links">
+              <Link href="/v2">Home</Link>
+              <Link href="/v2/explorer">Vaults</Link>
+              <Link href="/v2/build-in-public">Build Log</Link>
+              <Link href="/v2/docs">Docs</Link>
+            </div>
+            <button className="v2-nav-cta" disabled title="Wallet connect disabled in design review">Connect Wallet</button>
+          </div>
         </div>
       </div>
 
@@ -249,7 +257,10 @@ export default function V2PrelaunchEdgePage() {
         <div className="v2-wrap v2-foot-in">
           <div className="v2-foot-l">© 2026 Yieldr · Agent OS for onchain funds</div>
           <div className="v2-foot-r">
+            <Link href="/v2">Home</Link>
+            <Link href="/v2/explorer">Vaults</Link>
             <Link href="/v2/docs">Docs</Link>
+            <Link href="/v2/build-in-public">Build Log</Link>
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">X</a>
           </div>
         </div>

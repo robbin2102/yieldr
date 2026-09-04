@@ -43,9 +43,15 @@ export default function V2BuildInPublicPage() {
             <div className="v2-nav-name">Yieldr</div>
             <div className="v2-nav-tag">v2</div>
           </Link>
-          <div className="v2-nav-links">
-            <a href={TWITTER} target="_blank" rel="noopener noreferrer">X</a>
-            <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <div className="v2-nav-right">
+            <div className="v2-nav-links">
+              <Link href="/v2">Home</Link>
+              <Link href="/v2/explorer">Vaults</Link>
+              <Link href="/v2/docs">Docs</Link>
+              <a href={TWITTER} target="_blank" rel="noopener noreferrer">X</a>
+              <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+            <Link href="/v2/prelaunch-edge" className="v2-nav-cta">Reserve Genesis Access</Link>
           </div>
         </div>
       </div>
@@ -106,7 +112,9 @@ export default function V2BuildInPublicPage() {
           <div className="v2-foot-l">© 2026 Yieldr · Agent OS for onchain funds</div>
           <div className="v2-foot-r">
             <Link href="/v2">Home</Link>
+            <Link href="/v2/explorer">Vaults</Link>
             <Link href="/v2/docs">Docs</Link>
+            <Link href="/v2/prelaunch-edge">Reserve Genesis Access</Link>
           </div>
         </div>
       </div>

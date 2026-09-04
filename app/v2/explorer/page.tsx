@@ -56,7 +56,14 @@ export default function V2ExplorerPage() {
             <div className="v2-nav-name">Yieldr</div>
             <div className="v2-nav-tag">v2</div>
           </Link>
-          <button className="v2-nav-cta" disabled title="Wallet connect disabled in design review">Connect Wallet</button>
+          <div className="v2-nav-right">
+            <div className="v2-nav-links">
+              <Link href="/v2">Home</Link>
+              <Link href="/v2/build-in-public">Build Log</Link>
+              <Link href="/v2/docs">Docs</Link>
+            </div>
+            <Link href="/v2/prelaunch-edge" className="v2-nav-cta">Reserve Genesis Access</Link>
+          </div>
         </div>
       </div>
 
@@ -102,7 +109,9 @@ export default function V2ExplorerPage() {
           <div className="v2-foot-l">© 2026 Yieldr · Agent OS for onchain funds</div>
           <div className="v2-foot-r">
             <Link href="/v2">Home</Link>
+            <Link href="/v2/prelaunch-edge">Reserve Genesis Access</Link>
             <Link href="/v2/docs">Docs</Link>
+            <Link href="/v2/build-in-public">Build Log</Link>
           </div>
         </div>
       </div>
