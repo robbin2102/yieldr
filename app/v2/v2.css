@@ -1,0 +1,202 @@
+/* ============================================================
+   Yieldr v2 — design system
+   Editorial-meets-terminal: a serif display face for authority
+   and warmth, Plex Sans for reading, Plex Mono for anything
+   that is data, a label, or a system output. Palette is a warm
+   near-black (not pure #000) with a muted sage accent instead
+   of neon green, and a small gold accent reserved for Genesis/
+   reward moments so it reads as meaningful, not decorative.
+   ============================================================ */
+
+.v2-root {
+  --bg: #0b0c09;
+  --bg-1: #101208;
+  --bg-2: #15170f;
+  --surface: #131510;
+  --surface-2: #1a1c14;
+  --border: rgba(243, 241, 233, 0.09);
+  --border-2: rgba(243, 241, 233, 0.16);
+
+  --ink-1: #f3f1e9;
+  --ink-2: #a3a696;
+  --ink-3: #6b6e60;
+
+  --accent: #6bc47a;
+  --accent-strong: #8fe09c;
+  --accent-dim: rgba(107, 196, 122, 0.13);
+  --accent-line: rgba(107, 196, 122, 0.35);
+
+  --gold: #d8ab53;
+  --gold-dim: rgba(216, 171, 83, 0.14);
+
+  --loss: #e2585c;
+
+  --font-d: 'Fraunces', Georgia, serif;
+  --font-b: 'IBM Plex Sans', -apple-system, sans-serif;
+  --font-m: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --wrap: 1180px;
+  --r: 10px;
+  --r-lg: 18px;
+
+  background: var(--bg);
+  color: var(--ink-1);
+  font-family: var(--font-b);
+  min-height: 100vh;
+  position: relative;
+}
+
+.v2-root * { box-sizing: border-box; }
+.v2-root a { color: inherit; }
+.v2-root img { display: block; max-width: 100%; }
+.v2-root button { font-family: inherit; cursor: pointer; }
+
+.v2-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
+
+.v2-num { font-family: var(--font-m); font-variant-numeric: tabular-nums; }
+
+/* ── Nav ─────────────────────────────────────────────────── */
+.v2-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(11, 12, 9, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.v2-nav-in { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+.v2-nav-id { display: flex; align-items: center; gap: 10px; }
+.v2-nav-mark { width: 26px; height: 26px; border-radius: 6px; background: var(--accent-dim); border: 1px solid var(--accent-line); display: flex; align-items: center; justify-content: center; }
+.v2-nav-mark span { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); }
+.v2-nav-name { font-family: var(--font-d); font-size: 19px; font-weight: 600; letter-spacing: 0.2px; }
+.v2-nav-tag { font-family: var(--font-m); font-size: 10.5px; color: var(--ink-3); border: 1px solid var(--border-2); border-radius: 4px; padding: 2px 6px; margin-left: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+.v2-nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-2); }
+.v2-nav-links a { text-decoration: none; }
+.v2-nav-links a:hover { color: var(--ink-1); }
+.v2-nav-cta { font-family: var(--font-m); font-size: 13px; background: var(--accent); color: #06170a; padding: 9px 16px; border-radius: 7px; text-decoration: none; font-weight: 600; }
+.v2-nav-cta:hover { background: var(--accent-strong); }
+.v2-nav-right { display: flex; align-items: center; gap: 26px; }
+
+/* ── Hero ────────────────────────────────────────────────── */
+.v2-hero { padding: 92px 0 64px; border-bottom: 1px solid var(--border); }
+.v2-hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: end; }
+.v2-eyebrow { font-family: var(--font-m); font-size: 12.5px; color: var(--accent-strong); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+.v2-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+.v2-h1 { font-family: var(--font-d); font-size: clamp(40px, 5.2vw, 66px); line-height: 1.04; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; margin: 0 0 22px; }
+.v2-h1 em { font-style: italic; color: var(--accent-strong); }
+.v2-hero-sub { font-size: 17px; line-height: 1.6; color: var(--ink-2); max-width: 46ch; margin: 0 0 30px; }
+.v2-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.v2-btn-p { font-family: var(--font-m); font-size: 14.5px; font-weight: 600; background: var(--accent); color: #06170a; padding: 13px 22px; border-radius: 8px; text-decoration: none; border: none; }
+.v2-btn-p:hover { background: var(--accent-strong); }
+.v2-btn-s { font-family: var(--font-m); font-size: 14.5px; background: transparent; color: var(--ink-1); padding: 13px 22px; border-radius: 8px; border: 1px solid var(--border-2); text-decoration: none; }
+.v2-btn-s:hover { border-color: var(--accent-line); color: var(--accent-strong); }
+.v2-hero-note { font-size: 12.5px; color: var(--ink-3); }
+
+/* Hero visual: a real, honest system diagram — three stacked
+   layers, not a decorative blob — since the copy explains the
+   architecture, the visual should show it. */
+.v2-stack { border: 1px solid var(--border-2); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; }
+.v2-stack-row { padding: 20px 22px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.v2-stack-row:last-child { border-bottom: none; }
+.v2-stack-lbl { font-family: var(--font-m); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); }
+.v2-stack-name { font-family: var(--font-d); font-size: 20px; font-weight: 600; }
+.v2-stack-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.v2-stack-row.is-agent { background: var(--accent-dim); }
+.v2-stack-row.is-agent .v2-stack-name { color: var(--accent-strong); }
+
+/* ── Ticker ──────────────────────────────────────────────── */
+.v2-ticker { padding: 40px 0; border-bottom: 1px solid var(--border); }
+.v2-ticker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.v2-tick { background: var(--bg); padding: 22px 26px; }
+.v2-tick-lbl { font-family: var(--font-m); font-size: 11.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.v2-tick-val { font-family: var(--font-m); font-size: 30px; font-weight: 600; color: var(--ink-1); }
+.v2-tick-val.is-accent { color: var(--accent-strong); }
+.v2-tick-src { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
+
+/* ── Section shell ───────────────────────────────────────── */
+.v2-sec { padding: 88px 0; border-bottom: 1px solid var(--border); }
+.v2-slbl { font-family: var(--font-m); font-size: 12px; color: var(--accent-strong); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+.v2-sec-h { font-family: var(--font-d); font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; line-height: 1.1; text-wrap: balance; margin: 0 0 16px; max-width: 20ch; }
+.v2-sec-p { font-size: 16px; color: var(--ink-2); max-width: 62ch; line-height: 1.6; margin: 0 0 40px; }
+
+/* ── Roadmap ─────────────────────────────────────────────── */
+.v2-rm-list { display: flex; flex-direction: column; border: 1px solid var(--border-2); border-radius: var(--r-lg); overflow: hidden; }
+.v2-rm-item { display: grid; grid-template-columns: 90px 1fr auto; gap: 24px; align-items: center; padding: 26px 28px; border-bottom: 1px solid var(--border); }
+.v2-rm-item:last-child { border-bottom: none; }
+.v2-rm-item.is-now { background: var(--accent-dim); }
+.v2-rm-num { font-family: var(--font-m); font-size: 13px; color: var(--ink-3); }
+.v2-rm-item.is-now .v2-rm-num { color: var(--accent-strong); }
+.v2-rm-name { font-family: var(--font-d); font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.v2-rm-desc { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; max-width: 56ch; }
+.v2-rm-when { font-family: var(--font-m); font-size: 11.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.v2-rm-cta { font-family: var(--font-m); font-size: 13px; font-weight: 600; color: #06170a; background: var(--accent); padding: 9px 16px; border-radius: 7px; text-decoration: none; white-space: nowrap; }
+.v2-rm-cta:hover { background: var(--accent-strong); }
+
+/* ── Problem / Solution ──────────────────────────────────── */
+.v2-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.v2-list { display: flex; flex-direction: column; gap: 18px; }
+.v2-list-item { display: flex; gap: 14px; font-size: 15px; line-height: 1.55; }
+.v2-list-item .v2-mk { font-family: var(--font-m); font-size: 12px; color: var(--ink-3); flex: none; padding-top: 3px; }
+.v2-list-item.is-loss .v2-mk { color: var(--loss); }
+.v2-list-item.is-win .v2-mk { color: var(--accent-strong); }
+.v2-col-h { font-family: var(--font-m); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); margin-bottom: 20px; }
+
+/* ── Vault teasers ───────────────────────────────────────── */
+.v2-vault-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.v2-vault-card { border: 1px solid var(--border-2); border-radius: var(--r-lg); padding: 24px; background: var(--surface); }
+.v2-vault-cat { font-family: var(--font-m); font-size: 11.5px; color: var(--ink-3); margin-bottom: 10px; }
+.v2-vault-name { font-family: var(--font-d); font-size: 21px; font-weight: 600; margin-bottom: 10px; }
+.v2-vault-desc { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; margin-bottom: 20px; }
+.v2-vault-stats { display: flex; gap: 24px; border-top: 1px solid var(--border); padding-top: 16px; }
+.v2-vault-stat-lbl { font-family: var(--font-m); font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; }
+.v2-vault-stat-val { font-family: var(--font-m); font-size: 16px; margin-top: 4px; }
+
+/* ── Credibility ─────────────────────────────────────────── */
+.v2-cred-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.v2-cred-card { border: 1px solid var(--border); border-radius: var(--r); padding: 22px; text-decoration: none; display: block; transition: border-color .15s; }
+.v2-cred-card:hover { border-color: var(--accent-line); }
+.v2-cred-ic { font-size: 20px; margin-bottom: 12px; }
+.v2-cred-name { font-size: 14.5px; font-weight: 600; margin-bottom: 8px; }
+.v2-cred-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+/* ── Markets / chains ────────────────────────────────────── */
+.v2-chip-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.v2-chip { border: 1px solid var(--border); border-radius: var(--r); padding: 18px 14px; text-align: center; }
+.v2-chip-logo { width: 34px; height: 34px; margin: 0 auto 12px; border-radius: 8px; overflow: hidden; background: var(--surface-2); }
+.v2-chip-name { font-size: 13.5px; font-weight: 600; margin-bottom: 8px; }
+.v2-chip-status { font-family: var(--font-m); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 4px; display: inline-block; }
+.v2-chip-status.is-building { background: var(--gold-dim); color: var(--gold); }
+.v2-chip-status.is-soon { background: var(--surface-2); color: var(--ink-3); }
+
+.v2-chain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.v2-chain-card { border: 1px solid var(--border-2); border-radius: var(--r-lg); padding: 22px; display: flex; gap: 16px; }
+.v2-chain-logo { width: 40px; height: 40px; border-radius: 9px; background: var(--surface-2); flex: none; overflow: hidden; }
+.v2-chain-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.v2-chain-badge { font-family: var(--font-m); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 4px; }
+.v2-chain-badge.is-building { background: var(--gold-dim); color: var(--gold); }
+.v2-chain-badge.is-planned { background: var(--surface-2); color: var(--ink-3); }
+.v2-chain-desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.v2-foot { padding: 44px 0 30px; }
+.v2-foot-in { display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; flex-wrap: wrap; gap: 16px; }
+.v2-foot-l { font-size: 13px; color: var(--ink-3); }
+.v2-foot-l a { text-decoration: none; color: var(--ink-2); }
+.v2-foot-r { display: flex; gap: 22px; font-size: 13.5px; color: var(--ink-2); align-items: center; }
+.v2-foot-r a { text-decoration: none; }
+.v2-foot-r a:hover { color: var(--ink-1); }
+.v2-legal { font-size: 11.5px; color: var(--ink-3); line-height: 1.6; border-top: 1px solid var(--border); padding-top: 20px; max-width: 100ch; }
+
+/* ── Badge used across v2 pages to mark this as an in-review build ── */
+.v2-devbar { background: var(--gold); color: #221703; font-family: var(--font-m); font-size: 12.5px; text-align: center; padding: 7px 0; letter-spacing: 0.02em; }
+.v2-devbar a { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .v2-hero-grid { grid-template-columns: 1fr; }
+  .v2-ticker-grid { grid-template-columns: 1fr; }
+  .v2-two-col { grid-template-columns: 1fr; }
+  .v2-vault-grid { grid-template-columns: 1fr; }
+  .v2-cred-grid { grid-template-columns: 1fr; }
+  .v2-chip-grid { grid-template-columns: repeat(2, 1fr); }
+  .v2-chain-grid { grid-template-columns: 1fr; }
+  .v2-rm-item { grid-template-columns: 1fr; gap: 10px; }
+  .v2-nav-links { display: none; }
+}
