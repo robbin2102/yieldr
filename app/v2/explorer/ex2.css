@@ -1,0 +1,23 @@
+.ex2-hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); }
+.ex2-hero .v2-h1 { max-width: 16ch; }
+.ex2-hero .v2-hero-sub { max-width: 56ch; }
+
+.ex2-body { padding: 48px 28px 80px; }
+.ex2-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.ex2-filters button { background: none; border: 1px solid var(--border-2); color: var(--ink-2); font-family: var(--font-m); font-size: 12.5px; padding: 8px 14px; border-radius: 7px; }
+.ex2-filters button.is-active { background: var(--accent-dim); border-color: var(--accent-line); color: var(--accent-strong); }
+
+.ex2-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.ex2-card { border: 1px solid var(--border-2); border-radius: var(--r-lg); background: var(--surface); padding: 22px; }
+.ex2-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ex2-status { font-family: var(--font-m); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 4px; }
+.ex2-status.is-live { background: var(--accent-dim); color: var(--accent-strong); }
+.ex2-status.is-waitlist { background: var(--gold-dim); color: var(--gold); }
+.ex2-proto { font-family: var(--font-m); font-size: 11px; color: var(--ink-3); }
+.ex2-name { font-family: var(--font-d); font-size: 19px; font-weight: 600; margin-bottom: 10px; }
+.ex2-desc { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 18px; min-height: 60px; }
+.ex2-stats { display: flex; gap: 20px; border-top: 1px solid var(--border); padding-top: 14px; }
+.ex2-stat-v { font-size: 15px; font-weight: 600; }
+.ex2-stat-l { font-family: var(--font-m); font-size: 10px; color: var(--ink-3); text-transform: uppercase; margin-top: 3px; }
+
+@media (max-width: 900px) { .ex2-grid { grid-template-columns: 1fr; } }

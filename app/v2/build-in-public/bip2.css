@@ -1,0 +1,31 @@
+.bip2-hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); }
+.bip2-hero .v2-h1 { max-width: 16ch; }
+
+.bip2-gh { border: 1px solid var(--border-2); border-radius: var(--r-lg); background: var(--surface); padding: 28px; }
+.bip2-gh-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 12px; margin-bottom: 20px; }
+.bip2-gh-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bip2-gh-boxes { display: flex; flex-direction: column; gap: 3px; }
+.bip2-gh-box { width: 16px; height: 16px; border-radius: 3px; background: var(--surface-2); }
+.bip2-gh-box.lvl0 { background: var(--surface-2); }
+.bip2-gh-box.lvl1 { background: rgba(107,196,122,.25); }
+.bip2-gh-box.lvl2 { background: rgba(107,196,122,.45); }
+.bip2-gh-box.lvl3 { background: rgba(107,196,122,.7); }
+.bip2-gh-box.lvl4 { background: var(--accent); }
+.bip2-gh-month { font-family: var(--font-m); font-size: 11px; color: var(--ink-3); margin-top: 6px; }
+.bip2-gh-count { font-size: 13px; }
+.bip2-gh-legend { display: flex; align-items: center; gap: 6px; font-family: var(--font-m); font-size: 11px; color: var(--ink-3); }
+.bip2-gh-legend .bip2-gh-box { width: 12px; height: 12px; }
+
+.bip2-timeline { display: flex; flex-direction: column; }
+.bip2-tl-row { padding: 24px 0; border-bottom: 1px solid var(--border); }
+.bip2-tl-row:last-child { border-bottom: none; }
+.bip2-tl-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.bip2-tl-name { font-family: var(--font-d); font-size: 19px; font-weight: 600; }
+.bip2-tl-badge { font-family: var(--font-m); font-size: 11px; padding: 3px 9px; border-radius: 5px; }
+.bip2-tl-badge.is-active { background: var(--accent-dim); color: var(--accent-strong); }
+.bip2-tl-badge.is-complete { background: var(--surface-2); color: var(--ink-3); }
+.bip2-tl-summary { font-size: 14px; color: var(--ink-2); line-height: 1.6; max-width: 74ch; margin: 0; }
+
+@media (max-width: 900px) {
+  .bip2-gh-grid { grid-template-columns: repeat(5, 1fr); row-gap: 20px; }
+}
