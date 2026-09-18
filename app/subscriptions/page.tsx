@@ -7,6 +7,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { usePayment } from '@/app/context/PaymentContext';
 import { getExplorerUrl } from '@/config/payment';
 import { NAV_MARK } from '@/app/prelaunch-edge/images';
+import Universe from '@/app/Universe';
 import './subscriptions.css';
 
 interface SubscriptionRecord {
@@ -170,14 +171,18 @@ export default function SubscriptionsPage() {
   return (
     <div className="sp-root">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+      <Universe />
 
       {/* NAV */}
       <nav className="sp-nav">
         <div className="sp-wrap sp-nav-in">
           <div className="sp-nav-id" onClick={() => router.push('/')}>
             <div className="sp-nav-mark"><img src={NAV_MARK} alt="Yieldr" /></div>
-            <span className="sp-nav-name">YIELDR</span>
+            <span className="sp-nav-name">Yieldr</span>
           </div>
           <div className="sp-nav-right">
             <a href="/prelaunch-edge#pe-pricing" className="sp-nav-cta">Reserve Another Plan</a>
