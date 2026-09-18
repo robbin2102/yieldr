@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
+import Universe from '../Universe';
 import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
 import { PLAN_PRICES, MONTHS_PER_YEAR, computeChargeAmount, type PlanName, type BillingCycle } from '@/config/plans';
 import { getExplorerUrl, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
@@ -339,6 +340,7 @@ export default function PrelaunchEdgePage() {
 
   return (
     <div className="pe-root">
+      <Universe />
       {/* NAV */}
       <nav className="pe-nav">
         <div className="pe-wrap pe-nav-in">
@@ -346,7 +348,7 @@ export default function PrelaunchEdgePage() {
             <div className="pe-nav-mark">
               <img src={NAV_MARK} alt="Yieldr" />
             </div>
-            <span className="pe-nav-name">YIELDR</span>
+            <span className="pe-nav-name">Yieldr</span>
           </div>
           <div className="pe-nav-right">
             {hasCompletedPayment && (
