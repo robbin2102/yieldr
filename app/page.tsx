@@ -11,6 +11,16 @@ import VaultBuilder from './VaultBuilder';
 import { useAgentCycle, AgentSteps, AgentLog } from './AgentConsole';
 import './landing.css';
 
+const DEPTH_SECTIONS = [
+  { id: 'top', label: 'Top' },
+  { id: 'lab', label: 'Proof' },
+  { id: 'patterns', label: 'Patterns' },
+  { id: 'vaults', label: 'Vaults' },
+  { id: 'agents', label: 'Agents' },
+  { id: 'apps', label: 'Apps' },
+  { id: 'access', label: 'Access' },
+];
+
 function XIcon() {
   return <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>;
 }
@@ -51,6 +61,7 @@ export default function HomePage() {
   const railRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const { activeStep, shown } = useAgentCycle();
+  const [activeSection, setActiveSection] = useState('top');
 
   useEffect(() => {
     fetch('/api/site-stats').then((r) => r.json()).then((d) => {
@@ -69,6 +80,16 @@ export default function HomePage() {
         const bar = railRef.current?.firstElementChild as HTMLElement | null;
         if (bar) bar.style.width = (max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0) * 100 + '%';
         navRef.current?.classList.toggle('solid', window.scrollY > 40);
+
+        // Which section marker the reader has scrolled past — closest
+        // anchor whose top is at or above the viewport midline.
+        let current = DEPTH_SECTIONS[0].id;
+        for (const s of DEPTH_SECTIONS) {
+          const el = document.getElementById(s.id);
+          if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.5) current = s.id;
+        }
+        setActiveSection(current);
+
         ticking = false;
       });
     }
@@ -106,6 +127,11 @@ export default function HomePage() {
       <div id="rail" ref={railRef}><i /></div>
       <Universe />
       <div className="aurora" />
+      <nav id="depth" aria-label="Section">
+        {DEPTH_SECTIONS.map((s) => (
+          <a key={s.id} href={`#${s.id}`} aria-label={s.label} className={activeSection === s.id ? 'on' : ''} />
+        ))}
+      </nav>
 
       <header className="nav" id="nav" ref={navRef}>
         <Link className="brand" href="/">
