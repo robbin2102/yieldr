@@ -419,7 +419,6 @@ export default function ExplorerPage() {
             <Link href="/">Home</Link>
             <Link href="/explorer" className="active">Vaults</Link>
             <Link href="/build-in-public">Build Log</Link>
-            <Link href="/docs">Docs</Link>
           </div>
           <div className="ex-nav-soc">
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">

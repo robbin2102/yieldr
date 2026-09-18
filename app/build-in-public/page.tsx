@@ -87,7 +87,6 @@ export default function BuildInPublicPage() {
           <div className={`nav-links${mobileNavOpen ? ' nav-open' : ''}`}>
             <Link href="/">Home</Link>
             <Link href="/build-in-public" className="active">Build Log</Link>
-            <Link href="/docs">Docs</Link>
           </div>
           <div className="nav-soc">
             <a href={TWITTER} target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">

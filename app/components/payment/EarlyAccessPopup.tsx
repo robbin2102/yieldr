@@ -295,12 +295,7 @@ export function EarlyAccessPopup({ isOpen, onClose }: EarlyAccessPopupProps) {
           </div>
 
           <p className="popup-footer">
-            Tokens distributed at TGE. Read{' '}
-            <a href="/docs" target="_blank">docs</a>
-            {' '}to learn more about{' '}
-            <a href="/docs#what-is-yieldr" target="_blank">product</a>
-            {' '}&{' '}
-            <a href="/docs#tokenomics" target="_blank">tokenomics</a>.
+            Tokens distributed at TGE.
           </p>
         </div>
       </div>

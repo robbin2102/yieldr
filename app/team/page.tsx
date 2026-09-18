@@ -150,7 +150,6 @@ export default function TeamPage() {
           </Link>
           <div className="snav-links">
             <Link href="/">Home</Link>
-            <Link href="/docs">Docs</Link>
             <Link href="/team" className="snav-active">Team</Link>
             <Link href="/build-in-public">Build Progress</Link>
           </div>

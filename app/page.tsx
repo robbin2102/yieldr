@@ -142,7 +142,6 @@ export default function HomePage() {
           <nav className={`nav-links${mobileNavOpen ? ' open' : ''}`}>
             <a href="#lab" onClick={() => setMobileNavOpen(false)}>Roadmap</a>
             <Link href="/build-in-public" onClick={() => setMobileNavOpen(false)}>Build Log</Link>
-            <Link href="/docs" onClick={() => setMobileNavOpen(false)}>Docs</Link>
             {hasCompletedPayment && <Link href="/subscriptions" onClick={() => setMobileNavOpen(false)}>Subscriptions</Link>}
           </nav>
           <div className="nav-soc">
@@ -348,7 +347,6 @@ export default function HomePage() {
             <span>© 2026 Yieldr · Agent stack for onchain funds</span>
             <nav>
               <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">X</a>
-              <Link href="/docs">Docs</Link>
               <Link href="/build-in-public">Build log</Link>
               <Link href="/explorer">Vaults</Link>
             </nav>

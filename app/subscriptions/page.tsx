@@ -425,7 +425,6 @@ export default function SubscriptionsPage() {
         <div className="sp-wrap sp-foot-in">
           <div className="sp-foot-l">© 2026 Yieldr · Agent Stack for onchain funds</div>
           <div className="sp-foot-r">
-            <a href="/docs">Docs</a>
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer">X</a>
           </div>
         </div>

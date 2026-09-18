@@ -245,7 +245,7 @@ export function PaymentPopup({ isOpen, onClose }: PaymentPopupProps) {
           </div>
 
           <p className="popup-note">
-            Tokens distributed at TGE. Read <a href="/docs" target="_blank">docs</a> to learn more about <a href="/docs" target="_blank">product</a> & <a href="/docs" target="_blank">tokenomics</a>.
+            Tokens distributed at TGE.
           </p>
         </div>
       </div>
