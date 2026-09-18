@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 import Universe from '../Universe';
-import { NAV_MARK, CRED_BADGE, EDGE_B64, AVATARS, BASE_LOGO, RH_LOGO, FOMO_ICON, PUMP_ICON } from './images';
+import { NAV_MARK, CRED_BADGE, EDGE_B64, BASE_LOGO, RH_LOGO } from './images';
 import { PLAN_PRICES, MONTHS_PER_YEAR, computeChargeAmount, type PlanName, type BillingCycle } from '@/config/plans';
 import { getExplorerUrl, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
 import { usePayment } from '../context/PaymentContext';
@@ -22,9 +22,6 @@ const TRADE_BARS: [boolean, number][] = [
   [false,28],[true,72],[true,52],[true,68],[true,40],[true,85],
 ];
 
-const AGENT_TABS = ['overview', 'entry', 'exit', 'sizing'] as const;
-type AgentTab = (typeof AGENT_TABS)[number];
-type TermTab = 'leaders' | 'signals' | 'alerts';
 type Billing = 'm' | 'a';
 
 const PRICES = {
@@ -80,15 +77,11 @@ function animateCount(
 export default function PrelaunchEdgePage() {
   const router = useRouter();
   const [billing, setBilling] = useState<Billing>('m');
-  const [agentTab, setAgentTab] = useState<AgentTab>('overview');
-  const [agentIdx, setAgentIdx] = useState(0);
-  const [termTab, setTermTab] = useState<TermTab>('leaders');
   const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set([0]));
   const [scans, setScans] = useState(0);
   const [buyers, setBuyers] = useState(0);
   const [arr, setArr] = useState(0);
   const [slotsTotal, setSlotsTotal] = useState(1000);
-  const [progAnimating, setProgAnimating] = useState(true);
 
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutPlan, setCheckoutPlan] = useState<{ name: PlanName | ''; m: number; a: number }>({ name: '', m: 0, a: 0 });
@@ -126,8 +119,6 @@ export default function PrelaunchEdgePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChainId]);
 
-  const agentAutoRef = useRef(true);
-  const agentPausedRef = useRef(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const demoSectionRef = useRef<HTMLDivElement>(null);
   const [demoStarted, setDemoStarted] = useState(false);
@@ -200,30 +191,6 @@ export default function PrelaunchEdgePage() {
       return () => clearTimeout(t);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Agent tab auto-rotation
-  useEffect(() => {
-    if (!agentAutoRef.current) return;
-    setProgAnimating(false);
-    requestAnimationFrame(() => setProgAnimating(true));
-    const timer = setInterval(() => {
-      if (!agentAutoRef.current || agentPausedRef.current) return;
-      setAgentIdx(prev => {
-        const next = (prev + 1) % AGENT_TABS.length;
-        setAgentTab(AGENT_TABS[next]);
-        setProgAnimating(false);
-        requestAnimationFrame(() => setProgAnimating(true));
-        return next;
-      });
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleSetAgentTab = useCallback((tab: AgentTab, idx: number) => {
-    agentAutoRef.current = false;
-    setAgentTab(tab);
-    setAgentIdx(idx);
   }, []);
 
   const toggleFaq = useCallback((idx: number) => {
@@ -452,15 +419,15 @@ export default function PrelaunchEdgePage() {
             <div className="pe-chain-card base">
               <div className="pe-chain-logo"><img src={BASE_LOGO} alt="Base" /></div>
               <div>
-                <div className="pe-chain-name">Base <span className="pe-chain-live">Live</span></div>
-                <div className="pe-chain-desc">Full support today — meme &amp; alt coin history, OG wallet tracking, and the Quant Terminal all run natively on Base.</div>
+                <div className="pe-chain-name">Base <span className="pe-chain-live">In Development</span></div>
+                <div className="pe-chain-desc">First chain supported at launch — meme &amp; alt coin history, OG wallet tracking, and the Quant Terminal all run natively on Base.</div>
               </div>
             </div>
             <div className="pe-chain-card rh">
               <div className="pe-chain-logo"><img src={RH_LOGO} alt="Robinhood Chain" /></div>
               <div>
-                <div className="pe-chain-name">Robinhood Chain <span className="pe-chain-live">Live</span></div>
-                <div className="pe-chain-desc">Wallet scans and signal tracking extend to Robinhood Chain — including tokenized-equity activity as that market grows.</div>
+                <div className="pe-chain-name">Robinhood Chain <span className="pe-chain-live">In Development</span></div>
+                <div className="pe-chain-desc">Wallet scans and signal tracking extending to Robinhood Chain — including tokenized-equity activity as that market grows.</div>
               </div>
             </div>
           </div>
@@ -474,57 +441,22 @@ export default function PrelaunchEdgePage() {
           <h2 className="pe-sec-h">This is what your edge looks like — under the hood.</h2>
           <p className="pe-sec-p">One composite score, three graded categories underneath it — Entry, Exit, and Sizing, each weighted by how much it actually predicts your results.</p>
 
-          <div
-            className="pe-showcase"
-            onMouseEnter={() => { agentPausedRef.current = true; }}
-            onMouseLeave={() => { agentPausedRef.current = false; }}
-          >
-            <div className="pe-sc-tabs">
-              {(['Overview', 'Entry', 'Exit', 'Sizing'] as const).map((label, i) => {
-                const tabKey = AGENT_TABS[i];
-                const isOn = agentTab === tabKey;
-                const pct = ['', '25%', '40%', '35%'][i];
-                return (
-                  <button
-                    key={tabKey}
-                    className={`pe-sc-tab${isOn ? ' on' : ''}`}
-                    onClick={() => handleSetAgentTab(tabKey, i)}
-                  >
-                    {label}{pct && <span className="pe-n">{pct}</span>}
-                    {isOn && (
-                      <div
-                        className={`pe-sc-progress${progAnimating ? ' animating' : ''}`}
-                        style={{ width: progAnimating ? '100%' : '0%' }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Overview */}
-            <div className={`pe-sc-body pe-sc-panel${agentTab === 'overview' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">Your Edge, Composite</span>
-                <h3>76 out of 100 — a real, repeatable edge</h3>
-                <p>Not a vibe check. A weighted composite pulled straight from onchain trade history, benchmarked against 2,400 meme &amp; alt traders.</p>
+          <div className="pe-showcase" style={{ marginTop: 22 }}>
+            <div className="pe-sc-body" style={{ gridTemplateColumns: '1fr', minHeight: 0 }}>
+              <div className="pe-hb-row">
+                <div className="pe-hero-figure">
+                  <span className="pe-hero-num">76</span>
+                  <span className="pe-hero-max">/ 100</span>
+                  <span className="pe-hero-badge">Strong Edge</span>
+                </div>
+                <div className="pe-hero-side"><span className="pe-hero-delta">▲ +15 vs 6wk ago</span></div>
               </div>
-              <div>
-                <div className="pe-hb-row">
-                  <div className="pe-hero-figure">
-                    <span className="pe-hero-num">76</span>
-                    <span className="pe-hero-max">/ 100</span>
-                    <span className="pe-hero-badge">Strong Edge</span>
-                  </div>
-                  <div className="pe-hero-side"><span className="pe-hero-delta">▲ +15 vs 6wk ago</span></div>
-                </div>
-                <div className="pe-hero-cohort">Better edge than <b>8 in 10</b> meme &amp; alt traders we track.</div>
-                <div className="pe-hero-verdict">You&apos;ve got a <span className="hl">real, repeatable edge</span> — carried by elite exits, held back by occasional sniping.</div>
-                <div className="pe-hero-weights">
-                  <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--win)' }} />Exit — 40% of grade</div>
-                  <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--warn)' }} />Sizing — 35% of grade</div>
-                  <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--agent)' }} />Entry — 25% of grade</div>
-                </div>
+              <div className="pe-hero-cohort">Better edge than <b>8 in 10</b> meme &amp; alt traders we track.</div>
+              <div className="pe-hero-verdict">You&apos;ve got a <span className="hl">real, repeatable edge</span> — carried by elite exits, held back by occasional sniping.</div>
+              <div className="pe-hero-weights">
+                <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--win)' }} />Exit — 40% of grade · Elite</div>
+                <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--warn)' }} />Sizing — 35% of grade · Solid</div>
+                <div className="pe-hw-item"><span className="pe-hw-dot" style={{ background: 'var(--agent)' }} />Entry — 25% of grade · Needs Work</div>
               </div>
               <div className="pe-trade-chart">
                 <div className="pe-trade-bars">
@@ -538,298 +470,26 @@ export default function PrelaunchEdgePage() {
                 </div>
               </div>
             </div>
-
-            {/* Entry */}
-            <div className={`pe-sc-body pe-sc-panel${agentTab === 'entry' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">Entry · 25% of grade</span>
-                <h3>You wait for the dip — and it pays off</h3>
-                <p>Every buy classified by setup. Waiting for a pullback wins almost 3x more than sniping the launch — the data settles the argument you have with yourself every time.</p>
-              </div>
-              <div>
-                <div className="pe-cat-hd-mini">
-                  <div className="pe-cat-hd-l">
-                    <div className="pe-cat-ic">🎯</div>
-                    <div>
-                      <div className="pe-cat-name">Entry — When You Buy</div>
-                      <div className="pe-cat-sub">How your timing on the way in affects the outcome</div>
-                    </div>
-                  </div>
-                  <div className="pe-cat-hd-r">
-                    <span className="pe-cat-weight">25% of grade</span>
-                    <span className="pe-cat-grade warn">Needs Work</span>
-                  </div>
-                </div>
-                <div className="pe-type-row loss">
-                  <div className="pe-type-label">Sniped the launch</div>
-                  <div className="pe-type-track"><div className="pe-type-fill loss" style={{ width: '24%' }} /></div>
-                  <div className="pe-type-meta"><span className="wr">24 / 100 win</span><span className="amt loss">-$1,850</span></div>
-                </div>
-                <div className="pe-type-row win">
-                  <div className="pe-type-label">Waited for a dip</div>
-                  <div className="pe-type-track"><div className="pe-type-fill win" style={{ width: '63%' }} /></div>
-                  <div className="pe-type-meta"><span className="wr">63 / 100 win</span><span className="amt win">+$5,700</span></div>
-                </div>
-                <div className="pe-type-row">
-                  <div className="pe-type-label">Chased a breakout</div>
-                  <div className="pe-type-track"><div className="pe-type-fill warn" style={{ width: '38%' }} /></div>
-                  <div className="pe-type-meta"><span className="wr">38 / 100 win</span><span className="amt loss">-$310</span></div>
-                </div>
-                <div className="pe-pattern loss">
-                  <div className="pe-pattern-txt">
-                    <b className="loss">Sniping is your #1 leak.</b> 17 trades bought in the first 15 minutes. Result: -$1,850, only 1 in 4 won.
-                    <div className="pe-pattern-chips">
-                      <span className="pe-pchip flat">⚠ no better than 60 days ago</span>
-                      <span className="pe-pchip n">17 trades · enough to trust</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Exit */}
-            <div className={`pe-sc-body pe-sc-panel${agentTab === 'exit' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">Exit · 40% of grade</span>
-                <h3>Elite exits — this is what carries your edge</h3>
-                <p>You capture 50% of a token&apos;s peak on average. Most traders we track only get 14%. This one category is doing most of the work.</p>
-              </div>
-              <div>
-                <div className="pe-cat-hd-mini">
-                  <div className="pe-cat-hd-l">
-                    <div className="pe-cat-ic">💰</div>
-                    <div>
-                      <div className="pe-cat-name">Exit — When You Sell</div>
-                      <div className="pe-cat-sub">How much of the move you actually capture</div>
-                    </div>
-                  </div>
-                  <div className="pe-cat-hd-r">
-                    <span className="pe-cat-weight">40% of grade</span>
-                    <span className="pe-cat-grade">Elite</span>
-                  </div>
-                </div>
-                <div className="pe-cap-wrap">
-                  <div className="pe-cap-lbl-row"><span>Peak captured</span><span><b>50%</b> of the way to the top, on average</span></div>
-                  <div className="pe-cap-track">
-                    <div className="pe-cap-fill" style={{ width: '50%' }} />
-                    <div className="pe-cap-mark" style={{ left: '14%' }} />
-                    <div className="pe-cap-mark-lbl" style={{ left: '14%' }}>avg trader: 14%</div>
-                  </div>
-                </div>
-                <div className="pe-cap-wrap" style={{ marginTop: 28 }}>
-                  <div className="pe-cap-lbl-row"><span>Round-trip rate</span><span><b>13%</b> of winners turn into losers</span></div>
-                  <div className="pe-cap-track">
-                    <div className="pe-cap-fill warn" style={{ width: '13%' }} />
-                    <div className="pe-cap-mark" style={{ left: '52%' }} />
-                    <div className="pe-cap-mark-lbl" style={{ left: '52%' }}>avg trader: 52%</div>
-                  </div>
-                </div>
-                <div style={{ marginTop: 28 }}>
-                  <div className="pe-cap-lbl-row"><span>How you exit winners</span><span /></div>
-                  <div className="pe-seg-bar">
-                    <div className="pe-seg" style={{ background: 'var(--win)', width: '70%' }} />
-                    <div className="pe-seg" style={{ background: 'var(--ink-3)', width: '18%' }} />
-                    <div className="pe-seg" style={{ background: 'var(--loss)', width: '12%' }} />
-                  </div>
-                  <div className="pe-seg-legend">
-                    <div className="pe-seg-item"><span className="pe-dot-sq" style={{ background: 'var(--win)' }} />Sold in pieces — 70%</div>
-                    <div className="pe-seg-item"><span className="pe-dot-sq" style={{ background: 'var(--ink-3)' }} />Sold all at once — 18%</div>
-                    <div className="pe-seg-item"><span className="pe-dot-sq" style={{ background: 'var(--loss)' }} />Held too long — 12%</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Sizing */}
-            <div className={`pe-sc-body pe-sc-panel${agentTab === 'sizing' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">Sizing · 35% of grade</span>
-                <h3>You size up on conviction — that&apos;s not luck</h3>
-                <p>You bet 2.1x more on trades that end up winning than ones that end up losing. That&apos;s a real, repeatable signal, measurable across hundreds of trades — not hindsight.</p>
-              </div>
-              <div>
-                <div className="pe-cat-hd-mini">
-                  <div className="pe-cat-hd-l">
-                    <div className="pe-cat-ic">⚖️</div>
-                    <div>
-                      <div className="pe-cat-name">Sizing — How Much You Bet</div>
-                      <div className="pe-cat-sub">Whether your conviction matches your outcomes</div>
-                    </div>
-                  </div>
-                  <div className="pe-cat-hd-r">
-                    <span className="pe-cat-weight">35% of grade</span>
-                    <span className="pe-cat-grade">Solid</span>
-                  </div>
-                </div>
-                <div className="pe-ladder">
-                  <div className="pe-ladder-row">
-                    <div className="pe-ladder-label">On winners</div>
-                    <div className="pe-ladder-track"><div className="pe-ladder-fill win" style={{ width: '100%' }}><span>$612 avg</span></div></div>
-                  </div>
-                  <div className="pe-ladder-row">
-                    <div className="pe-ladder-label">On losers</div>
-                    <div className="pe-ladder-track"><div className="pe-ladder-fill loss" style={{ width: '47%' }}><span>$290 avg</span></div></div>
-                  </div>
-                </div>
-                <div className="pe-ladder-ratio">You bet 2.1x more on winners than losers — real conviction sizing.</div>
-                <div className="pe-spectrum">
-                  <div className="pe-spectrum-lbl"><span>Erratic</span><span>Disciplined</span></div>
-                  <div className="pe-spectrum-track"><div className="pe-spectrum-marker" style={{ left: '82%' }} /></div>
-                  <div className="pe-spectrum-tag">Disciplined bettor — low erratic sizing (CoV 0.28)</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* QUANT TERMINAL SHOWCASE */}
+      {/* QUANT TERMINAL TEASER */}
       <div className="pe-sec" style={{ paddingTop: 0 }}>
         <div className="pe-wrap">
           <div className="pe-slbl"><span>Quant Terminal</span><span className="pe-ln" /></div>
           <h2 className="pe-sec-h">The same agent, watching every wallet worth watching.</h2>
-          <p className="pe-sec-p">Works natively across FOMO and pump.fun — the two apps meme traders actually live in — so top-trader edge, demand/supply signals, and alerts all sit in one feed instead of ten open tabs.</p>
-
-          <div className="pe-showcase">
-            <div className="pe-sc-tabs">
-              {(['leaders', 'signals', 'alerts'] as TermTab[]).map((t, i) => (
-                <button
-                  key={t}
-                  className={`pe-sc-tab${termTab === t ? ' on' : ''}`}
-                  onClick={() => setTermTab(t)}
-                >
-                  {['Top Trader Edge', 'Demand & Supply', 'Agent Alerts'][i]}
-                </button>
-              ))}
-            </div>
-
-            {/* Leaders */}
-            <div className={`pe-sc-body pe-sc-panel${termTab === 'leaders' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">Ranked By Edge, Not Followers</span>
-                <h3>See exactly how top traders print on FOMO and pump.fun</h3>
-                <p>The agent tracks wallets across both apps meme traders actually live in, and reasons on the ones actually making money — ranked by validated edge score and real PnL, not follower count.</p>
-              </div>
-              <div>
-                <div className="pe-lbd-hd">
-                  <span className="pe-cat-name" style={{ fontSize: 13 }}>Traders · Ranked by Edge Score</span>
-                  <span className="pe-lbd-pnl">PNL WINDOW: 7D</span>
-                </div>
-                {[
-                  { name: 'loganlim_x', app: 'FOMO', edge: 78, pnl: '+$974.8K', win: true, av: AVATARS[0] },
-                  { name: 'theveeman', app: 'FOMO', edge: 71, pnl: '+$835.8K', win: true, av: AVATARS[1] },
-                  { name: 'PoorGoat_', app: 'FOMO', edge: 64, pnl: '+$1.55M', win: true, av: AVATARS[2] },
-                  { name: 'SolSwizzle', app: 'pump.fun', edge: 12, pnl: '+$95', win: true, av: AVATARS[3] },
-                  { name: 'formlesscrab125', app: 'pump.fun', edge: 8, pnl: '-$181.1K', win: false, av: AVATARS[4] },
-                ].map(row => (
-                  <div className="pe-lb2-row" key={row.name}>
-                    <div className="pe-lb2-av"><img src={row.av} alt="" /></div>
-                    <div className="pe-lb2-name">
-                      {row.name}
-                      <span className="pe-lb2-app">
-                        <img src={row.app === 'FOMO' ? FOMO_ICON : PUMP_ICON} alt={row.app} />
-                      </span>
-                    </div>
-                    <div className="pe-lb2-edge">EDGE <b>{row.edge}</b></div>
-                    <div className="pe-lb2-pnl" style={{ color: row.win ? 'var(--win)' : 'var(--loss)' }}>{row.pnl}</div>
-                  </div>
-                ))}
-                <div className="pe-app-legend">
-                  <div className="pe-app-legend-item">
-                    <img src={PUMP_ICON} alt="" />Tracked on pump.fun
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Demand & Supply */}
-            <div className={`pe-sc-body pe-sc-panel${termTab === 'signals' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">Demand vs Supply</span>
-                <h3>Be the first to know who&apos;s pumping it — and who&apos;s dumping it</h3>
-                <p>Every coin gets the same read: real OG accumulation vs deployer-funded dumping, side by side, so you&apos;re never the last one to find out a team is exiting into strength.</p>
-              </div>
-              <div>
-                <div className="pe-pair-cols">
-                  <div>
-                    <div className="pe-pair-hd" style={{ color: 'var(--win)' }}>▲ CASHCAT · Accumulation</div>
-                    <div className="pe-flow-row">
-                      <div className="pe-flow-cell">
-                        <div className="pe-flow-k">Net OG Flow</div>
-                        <div className="pe-flow-v" style={{ color: 'var(--win)' }}>+$62.8K</div>
-                        <div className="pe-flow-sub">34 buys / 4 sells · 5m</div>
-                      </div>
-                      <div className="pe-flow-cell">
-                        <div className="pe-flow-k">Buyer Growth</div>
-                        <div className="pe-flow-v" style={{ color: 'var(--win)' }}>+62 net</div>
-                        <div className="pe-flow-sub">15m window</div>
-                      </div>
-                    </div>
-                    <div className="pe-sig">
-                      <div className="pe-sig-top">🔺 OG Influx</div>
-                      <div className="pe-sig-num">+$61.4K bought · 20 of 52 OGs</div>
-                      <div className="pe-sig-txt">38% of tracked OGs added this hour, zero net exits.</div>
-                      <div className="pe-sig-prob">86% ± 7% · High confidence</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="pe-pair-hd" style={{ color: 'var(--loss)' }}>▼ MYRAD · Distribution</div>
-                    <div className="pe-flow-row">
-                      <div className="pe-flow-cell">
-                        <div className="pe-flow-k">Net OG Flow</div>
-                        <div className="pe-flow-v" style={{ color: 'var(--loss)' }}>-$41.2K</div>
-                        <div className="pe-flow-sub">3 buys / 19 sells · 5m</div>
-                      </div>
-                      <div className="pe-flow-cell">
-                        <div className="pe-flow-k">Buyer Growth</div>
-                        <div className="pe-flow-v" style={{ color: 'var(--loss)' }}>-8 net</div>
-                        <div className="pe-flow-sub">15m window</div>
-                      </div>
-                    </div>
-                    <div className="pe-sig loss">
-                      <div className="pe-sig-top">🔻 Dev/Team Bundle Dump</div>
-                      <div className="pe-sig-num">$12.4K sold · 0 buys · 3 wallets</div>
-                      <div className="pe-sig-txt">Cumulative since launch: $94.2K across 23 wallets.</div>
-                      <div className="pe-sig-prob">86% ± 7% · High confidence</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Agent Alerts */}
-            <div className={`pe-sc-body pe-sc-panel${termTab === 'alerts' ? ' on' : ''}`}>
-              <div className="pe-sc-text">
-                <span className="pe-tag">One Agent, Every Source</span>
-                <h3>Reasoning across signals and X, so you don&apos;t have to</h3>
-                <p>No more five terminals and ten open tabs. The agent synthesizes onchain flow with social chatter into one plain-language read — and flags risk before anyone pitches you the &quot;next CASHCAT.&quot;</p>
-              </div>
-              <div>
-                <div className="pe-chat-feed">
-                  <div className="pe-chat-card synth">
-                    <div className="pe-chat-tag">◆ Yieldr Agent — Synthesis</div>
-                    <div className="pe-chat-body">Two bullish signals are firing together on <b>CASHCAT</b>: OGs are accumulating while new buyer growth runs 4x+ baseline. That convergence is what genuine organic growth looks like — not just a volume spike.</div>
-                  </div>
-                  <div className="pe-chat-card up">
-                    <div className="pe-chat-tag">▲ Demand Ignition</div>
-                    <div className="pe-chat-body"><b>+62 new wallets/15m · 4.2x baseline.</b> New holders, OG buying, and social chatter all rising together.</div>
-                  </div>
-                  <div className="pe-chat-card risk">
-                    <div className="pe-chat-tag">⚠ Yieldr Agent — Risk</div>
-                    <div className="pe-chat-body"><b>MYRAD</b> looks the opposite of CASHCAT right now: $12.4K sold in the last hour by wallets that never bought (bundler pattern). Not something you&apos;re holding — but worth knowing before anyone pitches it to you.</div>
-                  </div>
-                </div>
-                <div className="pe-chat-input-row">
-                  <div className="pe-chat-input">Ask about a trader, coin, or your edge...</div>
-                  <button className="pe-chat-send">→</button>
-                </div>
-              </div>
-            </div>
+          <p className="pe-sec-p">Real-time signals and top-trader flow across FOMO and pump.fun — the two apps meme traders actually live in — ships alongside the Quant Terminal.</p>
+          <div className="pe-final" style={{ marginTop: 22, padding: '36px 32px' }}>
+            <span className="pe-badge-pill" style={{ color: 'var(--agent)', background: 'var(--agent-dim)', border: '1px solid var(--agent-line)' }}>Roadmap · Q1 2027</span>
+            <h2 style={{ marginTop: 16, fontSize: 24 }}>Not live yet — Genesis subscribers get first access.</h2>
+            <p style={{ maxWidth: 520 }}>Quant Agent (Q4 2026) reads your wallet and grades your edge. Quant Terminal follows in Q1 2027 with live leaderboards, demand/supply signals, and agent alerts across every wallet worth watching — not just yours.</p>
           </div>
         </div>
       </div>
 
       {/* CREDIBILITY */}
+
       <div className="pe-sec" style={{ paddingTop: 0 }}>
         <div className="pe-wrap">
           <div className="pe-slbl"><span>Why Trust This</span><span className="pe-ln" /></div>
