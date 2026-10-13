@@ -1,9 +1,9 @@
 'use client';
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
 import Universe from '../Universe';
-import { NAV_MARK, CRED_BADGE, EDGE_B64, BASE_LOGO, RH_LOGO } from './images';
+import { NAV_MARK, CRED_BADGE, BASE_LOGO, RH_LOGO } from './images';
 import { PLAN_PRICES, MONTHS_PER_YEAR, computeChargeAmount, type PlanName, type BillingCycle } from '@/config/plans';
 import { getExplorerUrl, SUPPORTED_CHAINS, type TokenId } from '@/config/payment';
 import { usePayment } from '../context/PaymentContext';
@@ -31,10 +31,6 @@ const PRICES = {
 };
 
 const FAQ_ITEMS = [
-  {
-    q: 'Is the demo above my real wallet?',
-    a: "No — it's a scripted walkthrough on a sample wallet, so you can see exactly how the product works before Quant Agent goes live in Q4 2026. Once it's live, this becomes a real scan of your own wallet.",
-  },
   {
     q: 'Am I buying a token right now?',
     a: "No. You're prepaying for the Quant Terminal subscription, same as any SaaS pre-order. The 1x–2x token reward is a bonus tied to your subscription, not a separate token sale.",
@@ -119,19 +115,6 @@ export default function PrelaunchEdgePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChainId]);
 
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const demoSectionRef = useRef<HTMLDivElement>(null);
-  const [demoStarted, setDemoStarted] = useState(false);
-
-  const demoViewLoggedRef = useRef(false);
-  const startDemo = useCallback(() => {
-    setDemoStarted(true);
-    if (!demoViewLoggedRef.current) {
-      demoViewLoggedRef.current = true;
-      fetch('/api/site-stats/demo-view', { method: 'POST' }).catch(() => {});
-    }
-  }, []);
-
   // Ticker — pulled from Mongo (baseline + real onchain/demo counts) rather
   // than hardcoded, so the numbers actually reflect what's happened. Falls
   // No baseline padding — these are the true actual counts from Mongo.
@@ -154,45 +137,6 @@ export default function PrelaunchEdgePage() {
       });
   }, []);
 
-  // The demo runs a ~20s scripted walkthrough on its own timer as soon as it
-  // loads — starting it on page mount meant it was mid-sequence while people
-  // were still reading the hero. It now only loads once the user actually
-  // asks for it: clicking "Preview the Demo", or scrolling the section into
-  // view themselves. Once started it keeps running to completion regardless
-  // of where they scroll to next.
-  useEffect(() => {
-    if (demoStarted) return;
-    const el = demoSectionRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) startDemo();
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [demoStarted, startDemo]);
-
-  useEffect(() => {
-    if (demoStarted && iframeRef.current) {
-      iframeRef.current.src = `data:text/html;base64,${EDGE_B64}`;
-    }
-  }, [demoStarted]);
-
-  // autoscan=1 query param — auto-scroll to demo section and start it
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('autoscan') === '1') {
-      startDemo();
-      const t = setTimeout(() => {
-        document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 400);
-      return () => clearTimeout(t);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const toggleFaq = useCallback((idx: number) => {
     setFaqOpen(prev => {
       const next = new Set(prev);
@@ -204,11 +148,6 @@ export default function PrelaunchEdgePage() {
   const scrollToPricing = useCallback(() => {
     document.getElementById('pe-pricing')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
-
-  const scrollToDemo = useCallback(() => {
-    startDemo();
-    document.getElementById('pe-demo')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [startDemo]);
 
   const openCheckout = useCallback((name: PlanName, mPrice: number, aPrice: number) => {
     setCheckoutPlan({ name, m: mPrice, a: aPrice });
@@ -340,7 +279,7 @@ export default function PrelaunchEdgePage() {
 
           <div className="pe-hero-ctas">
             <button className="pe-btn-p" onClick={scrollToPricing}>Reserve Genesis Access →</button>
-            <button className="pe-btn-s" onClick={scrollToDemo}>Preview the Demo ↓</button>
+            <a className="pe-btn-s" href="https://app.yieldr.org/edge" target="_blank" rel="noopener noreferrer">Find Your Edge ↗</a>
           </div>
           <div className="pe-hero-note">
             One payment, today · nothing charged again until Quant Terminal launches
@@ -381,39 +320,11 @@ export default function PrelaunchEdgePage() {
         </div>
       </div>
 
-      {/* DEMO PREVIEW */}
-      <div className="pe-sec" id="pe-demo" ref={demoSectionRef}>
-        <div className="pe-wrap">
-          <span className="pe-demo-badge"><span className="pe-dt" />Demo Preview · Live Wallet Scanning Launches Q4 2026</span>
-          <h2 className="pe-sec-h">See exactly how Quant Agent will read your wallet.</h2>
-          <p className="pe-sec-p">This is a scripted walkthrough of the real product using a sample wallet — not a live connection yet. When Quant Agent goes live in Q4 2026, this becomes your actual scan.</p>
-          <div className="pe-console active" style={{ maxWidth: 920, marginTop: 24 }}>
-            <div className="pe-console-hd">
-              <span className="pe-lbl">◆ Demo mode · sample wallet</span>
-            </div>
-            <div className="pe-console-frame" style={{ position: 'relative' }}>
-              {!demoStarted && (
-                <button className="pe-console-start" onClick={startDemo}>
-                  <span className="pe-console-start-icon">▶</span>
-                  Preview the Demo
-                </button>
-              )}
-              <iframe
-                ref={iframeRef}
-                title="Edge Analysis Demo"
-                sandbox="allow-scripts"
-                style={{ width: '100%', height: 760, border: 'none', display: 'block', background: '#000' }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* CHAIN SUPPORT */}
       <div className="pe-sec">
         <div className="pe-wrap">
           <div className="pe-slbl"><span>Where It Runs</span><span className="pe-ln" /></div>
-          <h2 className="pe-sec-h">Scan a wallet on either chain.</h2>
+          <h2 className="pe-sec-h">Scan a wallet on any of these chains.</h2>
           <p className="pe-sec-p">Yieldr reads onchain history natively — connect any wallet on these networks and the agent picks up your full trade history automatically.</p>
           <div className="pe-chain-grid">
             <div className="pe-chain-card base">
@@ -428,6 +339,13 @@ export default function PrelaunchEdgePage() {
               <div>
                 <div className="pe-chain-name">Robinhood Chain <span className="pe-chain-live">In Development</span></div>
                 <div className="pe-chain-desc">Wallet scans and signal tracking extending to Robinhood Chain — including tokenized-equity activity as that market grows.</div>
+              </div>
+            </div>
+            <div className="pe-chain-card sol">
+              <div className="pe-chain-logo"><img src="/images/sol.svg" alt="Solana" /></div>
+              <div>
+                <div className="pe-chain-name">Solana <span className="pe-chain-live">In Development</span></div>
+                <div className="pe-chain-desc">Meme &amp; alt coin trade history on Solana — where most memecoin volume lives, starting with FOMO and pump.fun traders.</div>
               </div>
             </div>
           </div>
