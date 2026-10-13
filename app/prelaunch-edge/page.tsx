@@ -30,6 +30,10 @@ const PRICES = {
   Desk:   { m: PLAN_PRICES.Desk.monthly,   a: PLAN_PRICES.Desk.annual },
 };
 
+// Edge Detection totals, matching the landing page hero and yieldr-app's README.
+const TRADES_ANALYZED = 100542;
+const WALLETS_ANALYZED = 1284;
+
 const FAQ_ITEMS = [
   {
     q: 'Am I buying a token right now?',
@@ -74,7 +78,7 @@ export default function PrelaunchEdgePage() {
   const router = useRouter();
   const [billing, setBilling] = useState<Billing>('m');
   const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set([0]));
-  const [scans, setScans] = useState(0);
+  const [trades, setTrades] = useState(0);
   const [buyers, setBuyers] = useState(0);
   const [arr, setArr] = useState(0);
   const [slotsTotal, setSlotsTotal] = useState(1000);
@@ -115,23 +119,22 @@ export default function PrelaunchEdgePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeChainId]);
 
-  // Ticker — pulled from Mongo (baseline + real onchain/demo counts) rather
-  // than hardcoded, so the numbers actually reflect what's happened. Falls
-  // No baseline padding — these are the true actual counts from Mongo.
-  // Falls back to zero (not a marketing number) only if the fetch itself
-  // fails outright.
+  useEffect(() => {
+    animateCount(setTrades, TRADES_ANALYZED, 1400);
+  }, []);
+
+  // Genesis members and ARR are the true actual counts from Mongo, no baseline
+  // padding. Falls back to zero (not a marketing number) only if the fetch fails.
   useEffect(() => {
     fetch('/api/site-stats')
       .then(r => r.json())
       .then(d => {
         const stats = d?.data ?? {};
-        animateCount(setScans, stats.demoPreviewsRun ?? 0, 1400);
         animateCount(setBuyers, stats.genesisMembers ?? 0, 1600);
         animateCount(setArr, stats.prelaunchArr ?? 0, 1600);
         setSlotsTotal(stats.genesisSlotsTotal ?? 1000);
       })
       .catch(() => {
-        animateCount(setScans, 0, 1400);
         animateCount(setBuyers, 0, 1600);
         animateCount(setArr, 0, 1600);
       });
@@ -270,11 +273,11 @@ export default function PrelaunchEdgePage() {
         <div className="pe-wrap">
           <span className="pe-eyebrow">
             <span className="pe-dot" />
-            Reserve now · Quant Agent goes live Q4 2026
+            Edge Detection is live · Terminal public beta Q4 2026
           </span>
-          <h1 className="pe-h1">Reserve your edge <em>before</em> it goes live.</h1>
+          <h1 className="pe-h1">Find your edge free. Get the Terminal <em>first</em>.</h1>
           <p className="pe-hero-sub">
-            Quant Agent launches Q4 2026. Lock Genesis pricing today with one payment — pay nothing else until Quant Terminal ships — and earn 1x–2x back in tokens either way.
+            Edge Detection is live and free for FOMO traders. Genesis members get the Quant Terminal beta before its public release in Q4 2026. One payment locks Genesis pricing, nothing else is charged until the Terminal ships, and you earn 1x–2x back in tokens at TGE.
           </p>
 
           <div className="pe-hero-ctas">
@@ -291,9 +294,9 @@ export default function PrelaunchEdgePage() {
       <div className="pe-ticker">
         <div className="pe-wrap pe-ticker-in">
           <div className="pe-tick-cell">
-            <div className="pe-tick-lbl"><span className="pe-ld" />Demo Previews Run</div>
-            <div className="pe-tick-val pe-num">{scans.toLocaleString()}</div>
-            <div className="pe-tick-src">since launch announcement</div>
+            <div className="pe-tick-lbl"><span className="pe-ld" />Trades Analyzed</div>
+            <div className="pe-tick-val pe-num">{trades.toLocaleString()}</div>
+            <div className="pe-tick-src">across {WALLETS_ANALYZED.toLocaleString()} wallets by Edge Detection</div>
           </div>
           <div
             className="pe-tick-cell clickable"
