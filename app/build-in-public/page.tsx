@@ -111,7 +111,7 @@ export default function BuildInPublicPage() {
 
         {/* HERO */}
         <div className="page-hero">
-          <div className="updated">Updated monthly · Week 1 Jul 2026 · ~1,089 commits shipped</div>
+          <div className="updated">Updated monthly · Week 2 Oct 2026 · ~1,089 commits shipped</div>
           <h1>Building in Public</h1>
           <div className="sub">Transparent development. <strong>No bullshit.</strong> Real trading performance, real commit history. Every module tracked openly from day one.</div>
           <div className="badges">
@@ -151,22 +151,78 @@ export default function BuildInPublicPage() {
 
           <div className="timeline">
 
+            {/* OCTOBER 2026 */}
+            <div className="tl-month">
+              <div className="tl-month-head">
+                <span className="tl-month-name">October 2026</span>
+                <span className="tl-month-badge active">&#9679; In Progress</span>
+              </div>
+              <div className="tl-highlight win">&#9889; Edge Detection MVP Live — Colosseum Submission</div>
+              <div className="tl-summary">Shipped and launched Yieldr V5: Edge Detection. Paste a FOMO wallet, Yieldr rebuilds the last 90 days of trades, names the repeatable patterns behind them, and stress-tests each one before calling it an edge. Live now at app.yieldr.org/edge.</div>
+              <div className="tl-item">
+                <div className="tl-item-h">Edge Detection — Pattern Discovery &amp; Validation Engine</div>
+                <div className="tl-item-p">Reconstructs a wallet&apos;s full trade history from onchain data and groups behaviour into named patterns — High-Conviction Dip Buyer, Fast Loss Cutter, Peak Capturer — alongside risk patterns like Post-Loss Tilt and Overtrading. Each pattern only counts as edge if it survives removing the single best trade, stripping the top 5% of outliers, holding out tokens it was never fitted to, and scoring forward on unseen trades.</div>
+                <div className="tl-tags"><span className="tl-tag green">FOMO</span><span className="tl-tag">Solana</span><span className="tl-tag">Pattern Detection</span><span className="tl-tag">Python</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr-app/commit/2a2b85a10915f935e4f60a8b8a9902e57e07e6bc" />
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">Scan Caching + Holdings UI</div>
+                <div className="tl-item-p">Resubmitting a wallet reuses the matching completed scan instead of re-running it. Added a live holdings view, positions chart, and full results breakdown to the scan result page.</div>
+                <div className="tl-tags"><span className="tl-tag">UI</span><span className="tl-tag">Data Infra</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr-app/commit/2a2b85a10915f935e4f60a8b8a9902e57e07e6bc" />
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">app.yieldr.org/edge — Production Launch</div>
+                <div className="tl-item-p">App domain root now redirects straight to Edge Detection. Landing site&apos;s &quot;Find your edge&quot; CTA points at the live app instead of a prelaunch page.</div>
+                <div className="tl-tags"><span className="tl-tag">Vercel</span><span className="tl-tag">Railway</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr-app/commit/0b933b7632436b9854ae5fa766a3ff03e02f9ed2" />
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">Terminal — Labeled UI Preview</div>
+                <div className="tl-item-p">Shipped a Terminal view showing validated patterns of top holders per coin. Clearly labeled as a UI preview — its data and interactions are illustrative ahead of the real insider and side-wallet tracking build.</div>
+                <div className="tl-tags"><span className="tl-tag">UI</span><span className="tl-tag">Design</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr-app/commit/585c3675c0976af9942a111d71b451933952b799" />
+              </div>
+            </div>
+
+            {/* AUGUST 2026 */}
+            <div className="tl-month">
+              <div className="tl-month-head">
+                <span className="tl-month-name">August 2026</span>
+                <span className="tl-month-badge complete">&#10003; Complete</span>
+              </div>
+              <div className="tl-highlight vision">Circuit Accelerator — Pivot to Meme &amp; Alt Markets</div>
+              <div className="tl-summary">Went through the Circuit Accelerator (Base &times; Newcampus, Singapore) and moved off perps/prediction-market agents onto meme and alt-coin traders, where most traders actually are. In parallel, shipped real Genesis subscription payments, a homepage redesign, and the Vaults Explorer.</div>
+              <div className="tl-item">
+                <div className="tl-item-h">Circuit Accelerator — Strategic Pivot</div>
+                <div className="tl-item-p">Completed the Base &times; Newcampus Circuit Accelerator in Singapore. Refocused from perps and prediction-market agents onto meme and alt-coin markets — about 95% of meme traders lose money, and that&apos;s where the edge-detection thesis has the most signal.</div>
+                <div className="tl-tags"><span className="tl-tag">Strategy</span><span className="tl-tag">Research</span></div>
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">Genesis Subscription Payments — Live</div>
+                <div className="tl-item-p">Real on-chain-verified Genesis subscription payments shipped: unified cross-chain balance picker at checkout, a standalone RPC proxy so provider keys never touch the app, and per-wallet plan enforcement with differential-priced upgrades.</div>
+                <div className="tl-tags"><span className="tl-tag green">Genesis</span><span className="tl-tag">Payments</span><span className="tl-tag green">On-chain</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr/commit/42f4163" />
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">Homepage Redesign + Vaults Explorer</div>
+                <div className="tl-item-p">Full homepage redesign framing Yieldr as the agent stack for onchain funds, plus a dedicated Vaults Explorer page replacing the earlier placeholder.</div>
+                <div className="tl-tags"><span className="tl-tag">UI</span><span className="tl-tag">Design</span><span className="tl-tag green">Vaults</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr/commit/851e183" />
+              </div>
+            </div>
+
             {/* JULY 2026 */}
             <div className="tl-month">
               <div className="tl-month-head">
                 <span className="tl-month-name">July 2026</span>
-                <span className="tl-month-badge active">&#9679; In Progress</span>
+                <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
-              <div className="tl-summary">Multi-chain expansion to HOOD Chain. $YLDR TGE coming — the token is deflationary by design, consumed by agent execution cycles.</div>
+              <div className="tl-summary">Multi-chain expansion groundwork for HOOD Chain tokenized stock trading.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Multi-Chain Expansion — HOOD Chain</div>
                 <div className="tl-item-p">Expanding Yieldr to HOOD Chain (Robinhood Chain), an Arbitrum L2 with native 24/7 tokenized stock trading. SpaceX (SPCX), NVDA, TSLA, Virtuals HOOD Agents, and HOOD Carry Trade vaults added to the waitlist.</div>
                 <div className="tl-tags"><span className="tl-tag green">HOOD Chain</span><span className="tl-tag">Stock Tokens</span><span className="tl-tag">Multi-Chain</span></div>
-              </div>
-              <div className="tl-item">
-                <div className="tl-item-h">$YLDR Token Generation Event</div>
-                <div className="tl-item-p">$YLDR TGE coming. Deflationary by design — token consumed by agent execution cycles.</div>
-                <div className="tl-tags"><span className="tl-tag green">Token</span><span className="tl-tag green">Live</span></div>
               </div>
             </div>
 
@@ -415,32 +471,32 @@ export default function BuildInPublicPage() {
           <div className="sec-divider">
             <div className="sec-num">03 — Roadmap</div>
             <div className="sec-h">What&apos;s next</div>
-            <div className="sec-sub">Planned milestones from Q3 2026 through full beta. <Link href="/docs#roadmap" className="sec-docs-link">Full roadmap in docs ↗</Link></div>
+            <div className="sec-sub">From live Edge Detection through Agent Vaults. <Link href="/docs#roadmap" className="sec-docs-link">Full roadmap in docs ↗</Link></div>
           </div>
           <div className="roadmap-grid">
             <div className="rm-card">
-              <div className="rm-status active">&#9679; In Progress — Q3 2026</div>
-              <div className="rm-h">Multi-Chain Expansion</div>
-              <div className="rm-p">HOOD Chain (Robinhood Arbitrum L2), SpaceX and tokenized stock vaults, $YLDR TGE coming. Quant Agent trials open to waitlisted traders.</div>
-              <div className="rm-tags"><span className="tl-tag green">HOOD Chain</span><span className="tl-tag">Multi-Chain</span><span className="tl-tag green">Token</span></div>
+              <div className="rm-status active">&#9679; Live</div>
+              <div className="rm-h">Edge Detection</div>
+              <div className="rm-p">Find and validate your edge from a FOMO wallet. Live now at app.yieldr.org/edge.</div>
+              <div className="rm-tags"><span className="tl-tag green">FOMO</span><span className="tl-tag">Solana</span></div>
             </div>
             <div className="rm-card">
-              <div className="rm-status planned">&#9675; Planned — Q4 2026</div>
-              <div className="rm-h">Full Agent Stack</div>
-              <div className="rm-p">Monitoring Agent, Comms Agent, and Allocation Agent roll out. Traders and depositors access the complete agent OS — edge monitoring, depositor communication, and allocation intelligence.</div>
-              <div className="rm-tags"><span className="tl-tag">Agents</span><span className="tl-tag">MCP</span></div>
+              <div className="rm-status planned">&#9675; Building</div>
+              <div className="rm-h">Terminal</div>
+              <div className="rm-p">Validated patterns of the top holders in each coin, plus insider and side-wallet tracking.</div>
+              <div className="rm-tags"><span className="tl-tag">UI</span><span className="tl-tag">Insider Tracking</span></div>
+            </div>
+            <div className="rm-card">
+              <div className="rm-status planned">&#9675; Building</div>
+              <div className="rm-h">pump.fun</div>
+              <div className="rm-p">Edge Detection for pump.fun traders — the same pattern-discovery and validation engine, extended to a second chain and platform.</div>
+              <div className="rm-tags"><span className="tl-tag">pump.fun</span><span className="tl-tag">Solana</span></div>
             </div>
             <div className="rm-card">
               <div className="rm-status planned">&#9675; Planned — Q1 2027</div>
-              <div className="rm-h">Vault Infrastructure &amp; Beta Deposits</div>
-              <div className="rm-p">Vault smart contracts deploy. Waitlisted traders with agent-verified edge launch vaults. Whitelisted depositors make first deposits into selected agent vaults.</div>
-              <div className="rm-tags"><span className="tl-tag green">Vaults</span><span className="tl-tag">Smart Contracts</span></div>
-            </div>
-            <div className="rm-card">
-              <div className="rm-status planned">&#9675; Planned — Q1–Q2 2027</div>
-              <div className="rm-h">Full Beta Launch</div>
-              <div className="rm-p">Full beta opens across agent vaults, depositor whitelist, and allocation agents. Matching, comms, monitoring, and allocation agents operate across the live vault network.</div>
-              <div className="rm-tags"><span className="tl-tag">Open Network</span></div>
+              <div className="rm-h">Agent Vaults</div>
+              <div className="rm-p">Pick a proven pattern, launch a vault, an agent runs it, and others back it.</div>
+              <div className="rm-tags"><span className="tl-tag green">Vaults</span><span className="tl-tag">Agents</span></div>
             </div>
           </div>
         </div>
