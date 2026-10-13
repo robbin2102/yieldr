@@ -308,11 +308,11 @@ export default function HomePage() {
         </div>
         <div className="wrap">
           <div className="rail rise">
-            <a className="app" href={edgeUrl('coverage')} target="_blank" rel="noopener noreferrer"><div className="nm">FOMO</div><div className="st live">● Live</div><div className="ch">Base · Solana<br />Robinhood Chain</div></a>
-            <div className="app"><div className="nm">pump.fun</div><div className="st bld">◐ Building</div><div className="ch">Solana</div></div>
-            <div className="app"><div className="nm">Polymarket</div><div className="st up">○ Upcoming</div><div className="ch">Predictions</div></div>
-            <div className="app"><div className="nm">Uniswap</div><div className="st up">○ Upcoming</div><div className="ch">DeFi</div></div>
-            <div className="app"><div className="nm">Aerodrome</div><div className="st up">○ Upcoming</div><div className="ch">Base</div></div>
+            <a className="app" href={edgeUrl('coverage')} target="_blank" rel="noopener noreferrer"><div className="nm"><img className="mark" src="/images/fomo.png" alt="" />FOMO</div><div className="st live">● Live</div><div className="ch">Base · Solana<br />Robinhood Chain</div></a>
+            <div className="app"><div className="nm"><img className="mark" src="/images/pump.png" alt="" />pump.fun</div><div className="st bld">◐ Building</div><div className="ch">Solana</div></div>
+            <div className="app"><div className="nm"><img className="mark" src="/images/poly.png" alt="" />Polymarket</div><div className="st up">○ Upcoming</div><div className="ch">Predictions</div></div>
+            <div className="app"><div className="nm"><img className="mark" src="/images/uni.png" alt="" />Uniswap</div><div className="st up">○ Upcoming</div><div className="ch">DeFi</div></div>
+            <div className="app"><div className="nm"><img className="mark" src="/images/aero.png" alt="" />Aerodrome</div><div className="st up">○ Upcoming</div><div className="ch">Base</div></div>
           </div>
         </div>
       </section>

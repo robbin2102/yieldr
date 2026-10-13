@@ -34,6 +34,14 @@ const PRICES = {
 const TRADES_ANALYZED = 100542;
 const WALLETS_ANALYZED = 1284;
 
+const APPS = [
+  { name: 'FOMO', logo: '/images/fomo.png', st: 'live', label: '● Live', where: 'Base · Solana · Robinhood Chain', href: 'https://app.yieldr.org/edge?utm_source=prelaunch&utm_content=coverage' },
+  { name: 'pump.fun', logo: '/images/pump.png', st: 'bld', label: '◐ Building', where: 'Solana' },
+  { name: 'Polymarket', logo: '/images/poly.png', st: 'up', label: '○ Upcoming', where: 'Predictions' },
+  { name: 'Uniswap', logo: '/images/uni.png', st: 'up', label: '○ Upcoming', where: 'DeFi' },
+  { name: 'Aerodrome', logo: '/images/aero.png', st: 'up', label: '○ Upcoming', where: 'Base' },
+];
+
 const FAQ_ITEMS = [
   {
     q: 'Am I buying a token right now?',
@@ -351,6 +359,34 @@ export default function PrelaunchEdgePage() {
                 <div className="pe-chain-desc">Meme &amp; alt coin trade history on Solana — where most memecoin volume lives, starting with FOMO and pump.fun traders.</div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* APP COVERAGE */}
+      <div className="pe-sec">
+        <div className="pe-wrap">
+          <div className="pe-slbl"><span>Coverage</span><span className="pe-ln" /></div>
+          <h2 className="pe-sec-h">Meets you where you already trade.</h2>
+          <p className="pe-sec-p">Find the edge behind the top traders where they trade, then turn it into a fund. pump.fun is next; Polymarket, Uniswap and Aerodrome follow as Agent Vaults expand into predictions and DeFi.</p>
+          <div className="pe-app-grid">
+            {APPS.map((app) => {
+              const body = (
+                <>
+                  <div className="pe-app-top">
+                    <img className="pe-app-logo" src={app.logo} alt="" />
+                    <span className="pe-app-name">{app.name}</span>
+                  </div>
+                  <div className={`pe-app-st ${app.st}`}>{app.label}</div>
+                  <div className="pe-app-where">{app.where}</div>
+                </>
+              );
+              return app.href ? (
+                <a key={app.name} className="pe-app-card" href={app.href} target="_blank" rel="noopener noreferrer">{body}</a>
+              ) : (
+                <div key={app.name} className="pe-app-card">{body}</div>
+              );
+            })}
           </div>
         </div>
       </div>
