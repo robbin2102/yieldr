@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { ProvidersLayout } from './ProvidersLayout';
 
 const TITLE = 'Yieldr — Agent Stack for Onchain Funds';
-const DESCRIPTION = 'Discover your edge, convert it into a fund. The Quant Agent grades your onchain entries, exits, and sizing — join the waitlist to be first in when it launches.';
+const DESCRIPTION = 'Find out if your trading has a real edge. Edge Detection is live and free for FOMO traders: paste a wallet and see which patterns made money, which lost it, and why.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.yieldr.org'),

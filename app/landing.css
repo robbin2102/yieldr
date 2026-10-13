@@ -443,7 +443,7 @@ body{background:#03050B}
 .nav-right{display:flex;align-items:center;gap:22px}
 @media (max-width:1000px){
   .nav-burger{display:flex}
-  .nav-links{position:fixed;top:58px;left:0;right:0;flex-direction:column;gap:0;background:rgba(5,7,15,.97);
+  .nav-links{display:flex;position:fixed;top:58px;left:0;right:0;flex-direction:column;gap:0;background:rgba(5,7,15,.97);
     backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:6px var(--gut) 14px;
     transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity var(--med),transform var(--med)}
   .nav-links.open{opacity:1;transform:none;pointer-events:auto}

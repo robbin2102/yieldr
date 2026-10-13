@@ -143,7 +143,7 @@ export default function HomePage() {
         </Link>
         <div className="nav-right">
           <nav className={`nav-links${mobileNavOpen ? ' open' : ''}`}>
-            <a href="#lab" onClick={() => setMobileNavOpen(false)}>Roadmap</a>
+            <a href="#vaults" onClick={() => setMobileNavOpen(false)}>Roadmap</a>
             <Link href="/build-in-public" onClick={() => setMobileNavOpen(false)}>Build Log</Link>
             {hasCompletedPayment && <Link href="/subscriptions" onClick={() => setMobileNavOpen(false)}>Subscriptions</Link>}
           </nav>
