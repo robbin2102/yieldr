@@ -11,6 +11,9 @@ import VaultBuilder from './VaultBuilder';
 import { useAgentCycle, AgentSteps, AgentLog } from './AgentConsole';
 import './landing.css';
 
+const EDGE_APP = 'https://app.yieldr.org/edge';
+const edgeUrl = (placement: string) => `${EDGE_APP}?utm_source=landing&utm_content=${placement}`;
+
 const DEPTH_SECTIONS = [
   { id: 'top', label: 'Top' },
   { id: 'lab', label: 'Proof' },
@@ -148,7 +151,7 @@ export default function HomePage() {
             <a href="https://x.com/yieldrdotorg" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter"><XIcon /></a>
             <a href="https://github.com/robbin2102/yieldr-app" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GitHubIcon /></a>
           </div>
-          <Link className="cta green" href="/prelaunch-edge">Find Your Edge <span className="dot">↗</span></Link>
+          <a className="cta green" href={edgeUrl('nav')} target="_blank" rel="noopener noreferrer">Find Your Edge <span className="dot">↗</span></a>
           <button className="nav-burger" aria-label="Toggle menu" aria-expanded={mobileNavOpen} onClick={() => setMobileNavOpen((v) => !v)}>
             <span /><span /><span />
           </button>
@@ -164,9 +167,10 @@ export default function HomePage() {
             <h1>Invest in the <em>edge</em>,<br />not the trade.</h1>
             <p className="hero-sub">Yieldr maps how the best onchain traders repeatedly win, proves it isn&apos;t luck, and turns it into agent-run vaults anyone can back or launch.</p>
             <div className="hero-acts">
-              <a className="cta green" href="#lab">See a real edge <span className="dot">↓</span></a>
-              <a className="cta ghost" href="#patterns">Browse the pattern library <span className="dot">→</span></a>
+              <a className="cta green" href={edgeUrl('hero')} target="_blank" rel="noopener noreferrer">Scan your FOMO wallet <span className="dot">↗</span></a>
+              <a className="cta ghost" href="#lab">See a real edge <span className="dot">↓</span></a>
             </div>
+            <p className="hero-note">Live for FOMO traders · Free · Read-only, no keys</p>
             <div className="hero-stats">
               <div><AnimatedStat target={100542} /><span>TRADES ANALYZED<em>across 1,284 wallets</em></span></div>
               <div><AnimatedStat target={47} /><span>VALIDATED TRADER EDGES</span></div>
@@ -210,6 +214,10 @@ export default function HomePage() {
           </div>
           <div className="edgeline rise" style={{ marginBottom: 28 }} />
           <LabDemo />
+          <div className="lab-foot rise">
+            <p>That was a sample wallet. Edge Detection runs the same tests on yours.</p>
+            <a className="cta green" href={edgeUrl('lab')} target="_blank" rel="noopener noreferrer">Run this on your own wallet <span className="dot">↗</span></a>
+          </div>
         </div>
       </section>
 
@@ -260,7 +268,7 @@ export default function HomePage() {
             <span className="soon">AGENT VAULTS · Q1 2027</span>
             <h2>Everyone becomes<br />a fund manager.</h2>
             <p className="lede">Pick the patterns you believe in, from any traders. Launch a vault. Others back it, your agent runs it, you earn the fee.</p>
-            <p className="vault-note">This is a preview of the vault builder. Quant Agent — the wallet-grading engine behind it — opens for Genesis subscribers in Q4 2026.</p>
+            <p className="vault-note">This is a preview of the vault builder. Edge Detection, the engine behind it, is live for FOMO traders. Genesis members get the Quant Terminal beta before its Q4 2026 public release.</p>
           </div>
           <VaultBuilder selected={selectedPatterns} onRemove={togglePattern} />
         </div>
@@ -300,7 +308,7 @@ export default function HomePage() {
         </div>
         <div className="wrap">
           <div className="rail rise">
-            <div className="app"><div className="nm">FOMO</div><div className="st bld">◐ In Development</div><div className="ch">Base · Solana<br />Robinhood Chain</div></div>
+            <a className="app" href={edgeUrl('coverage')} target="_blank" rel="noopener noreferrer"><div className="nm">FOMO</div><div className="st live">● Live</div><div className="ch">Base · Solana<br />Robinhood Chain</div></a>
             <div className="app"><div className="nm">pump.fun</div><div className="st bld">◐ Building</div><div className="ch">Solana</div></div>
             <div className="app"><div className="nm">Polymarket</div><div className="st up">○ Upcoming</div><div className="ch">Predictions</div></div>
             <div className="app"><div className="nm">Uniswap</div><div className="st up">○ Upcoming</div><div className="ch">DeFi</div></div>
@@ -314,10 +322,11 @@ export default function HomePage() {
         <div className="wrap">
           <h2 className="rise">Every real edge<br /><em>deserves a fund.</em></h2>
           <p className="rise d1">Yieldr puts it onchain, runs it with agents, and lets anyone back it. Agent Vaults are the next thing we ship.</p>
-          <div className="rise d2" style={{ marginTop: 32 }}>
-            <Link className="cta green" href="/prelaunch-edge">Reserve Genesis access <span className="dot">→</span></Link>
+          <div className="mani-acts rise d2">
+            <a className="cta green" href={edgeUrl('footer')} target="_blank" rel="noopener noreferrer">Find your edge, free for FOMO traders <span className="dot">↗</span></a>
+            <Link className="cta ghost" href="/prelaunch-edge">Reserve Genesis access <span className="dot">→</span></Link>
           </div>
-          <p className="fine rise d3">Quant Agent launches Q4 2026. Agent Vaults open to deposits in Q1 2027.</p>
+          <p className="fine rise d3">Edge Detection is live for FOMO traders. Quant Terminal public beta in Q4 2026, Genesis members first. Agent Vaults open to deposits in Q1 2027.</p>
         </div>
       </section>
 
