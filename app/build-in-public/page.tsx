@@ -185,14 +185,14 @@ export default function BuildInPublicPage() {
               </div>
             </div>
 
-            {/* AUGUST 2026 */}
+            {/* AUGUST–SEPTEMBER 2026 */}
             <div className="tl-month">
               <div className="tl-month-head">
-                <span className="tl-month-name">August 2026</span>
+                <span className="tl-month-name">Aug–Sep 2026</span>
                 <span className="tl-month-badge complete">&#10003; Complete</span>
               </div>
               <div className="tl-highlight vision">Circuit Accelerator — Pivot to Meme &amp; Alt Markets</div>
-              <div className="tl-summary">Went through the Circuit Accelerator (Base &times; Newcampus, Singapore) and moved off perps/prediction-market agents onto meme and alt-coin traders, where most traders actually are. In parallel, shipped real Genesis subscription payments, a homepage redesign, and the Vaults Explorer.</div>
+              <div className="tl-summary">Went through the Circuit Accelerator (Base &times; Newcampus, Singapore) across both months and moved off perps/prediction-market agents onto meme and alt-coin traders, where most traders actually are. Alongside the accelerator, shipped real Genesis subscription payments, a homepage redesign, the Vaults Explorer, and a full site redesign ahead of the Edge Detection launch.</div>
               <div className="tl-item">
                 <div className="tl-item-h">Circuit Accelerator — Strategic Pivot</div>
                 <div className="tl-item-p">Completed the Base &times; Newcampus Circuit Accelerator in Singapore. Refocused from perps and prediction-market agents onto meme and alt-coin markets — about 95% of meme traders lose money, and that&apos;s where the edge-detection thesis has the most signal.</div>
@@ -209,6 +209,12 @@ export default function BuildInPublicPage() {
                 <div className="tl-item-p">Full homepage redesign framing Yieldr as the agent stack for onchain funds, plus a dedicated Vaults Explorer page replacing the earlier placeholder.</div>
                 <div className="tl-tags"><span className="tl-tag">UI</span><span className="tl-tag">Design</span><span className="tl-tag green">Vaults</span></div>
                 <GhLink url="https://github.com/robbin2102/yieldr/commit/851e183" />
+              </div>
+              <div className="tl-item">
+                <div className="tl-item-h">Site Redesign — New Design System</div>
+                <div className="tl-item-p">Rebuilt the landing page and restyled prelaunch, subscriptions, and build-in-public to a new visual design system ahead of the Edge Detection launch, including a canvas-driven particle background.</div>
+                <div className="tl-tags"><span className="tl-tag">UI</span><span className="tl-tag">Design</span></div>
+                <GhLink url="https://github.com/robbin2102/yieldr/commit/fffac34" />
               </div>
             </div>
 
