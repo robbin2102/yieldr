@@ -172,8 +172,8 @@ export default function HomePage() {
             </div>
             <p className="hero-note">Live for FOMO traders · Free · Read-only, no keys</p>
             <div className="hero-stats">
-              <div><AnimatedStat target={100542} /><span>TRADES ANALYZED<em>across 1,284 wallets</em></span></div>
-              <div><AnimatedStat target={47} /><span>VALIDATED TRADER EDGES</span></div>
+              <div><AnimatedStat target={200} suffix="K+" /><span>TRADING ACTIONS INDEXED<em>across 13K+ tokens</em></span></div>
+              <div><AnimatedStat target={1200} suffix="+" /><span>PATTERN EVALUATIONS</span></div>
               <div><AnimatedStat target={genesisMembers} /><span>GENESIS SUBSCRIBERS</span></div>
             </div>
           </div>
