@@ -196,7 +196,7 @@ export default function HomePage() {
           <div className="inner">
             <span className="mark">World I · <b>the record</b></span>
             <h2>Every trade leaves<br />a <em>trace</em>.</h2>
-            <p>1,284 wallets, public and permanent. Most people read a wallet as a single number. A record this dense is not a number — it is a sky.</p>
+            <p>200K+ trading actions across 13K+ tokens, public and permanent. Most people read a wallet as a single number. A record this dense is not a number — it is a sky.</p>
           </div>
           <span className="cue">keep going<i /></span>
         </div>

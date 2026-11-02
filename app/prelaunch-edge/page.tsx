@@ -30,9 +30,8 @@ const PRICES = {
   Desk:   { m: PLAN_PRICES.Desk.monthly,   a: PLAN_PRICES.Desk.annual },
 };
 
-// Edge Detection totals, matching the landing page hero and yieldr-app's README.
-const TRADES_ANALYZED = 100542;
-const WALLETS_ANALYZED = 1284;
+// Edge Detection totals, matching the landing page hero stats.
+const ACTIONS_INDEXED_K = 200;
 
 const APPS = [
   { name: 'FOMO', logo: '/images/fomo.png', st: 'live', label: '● Live', where: 'Base · Solana · Robinhood Chain', href: 'https://app.yieldr.org/edge?utm_source=prelaunch&utm_content=coverage' },
@@ -86,7 +85,7 @@ export default function PrelaunchEdgePage() {
   const router = useRouter();
   const [billing, setBilling] = useState<Billing>('m');
   const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set([0]));
-  const [trades, setTrades] = useState(0);
+  const [actionsK, setActionsK] = useState(0);
   const [buyers, setBuyers] = useState(0);
   const [arr, setArr] = useState(0);
   const [slotsTotal, setSlotsTotal] = useState(1000);
@@ -128,7 +127,7 @@ export default function PrelaunchEdgePage() {
   }, [activeChainId]);
 
   useEffect(() => {
-    animateCount(setTrades, TRADES_ANALYZED, 1400);
+    animateCount(setActionsK, ACTIONS_INDEXED_K, 1400);
   }, []);
 
   // Genesis members and ARR are the true actual counts from Mongo, no baseline
@@ -302,9 +301,9 @@ export default function PrelaunchEdgePage() {
       <div className="pe-ticker">
         <div className="pe-wrap pe-ticker-in">
           <div className="pe-tick-cell">
-            <div className="pe-tick-lbl"><span className="pe-ld" />Trades Analyzed</div>
-            <div className="pe-tick-val pe-num">{trades.toLocaleString()}</div>
-            <div className="pe-tick-src">across {WALLETS_ANALYZED.toLocaleString()} wallets by Edge Detection</div>
+            <div className="pe-tick-lbl"><span className="pe-ld" />Trading Actions Indexed</div>
+            <div className="pe-tick-val pe-num">{actionsK}K+</div>
+            <div className="pe-tick-src">across 13K+ tokens by Edge Detection</div>
           </div>
           <div
             className="pe-tick-cell clickable"
